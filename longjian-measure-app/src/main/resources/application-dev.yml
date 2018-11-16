@@ -3,7 +3,7 @@ management.port: 9981
 
 spring:
   application:
-    name: longjian-basic-app
+    name: longjian-measure-app
   cloud:
     consul:
       enabled: true
@@ -26,7 +26,7 @@ longfor:
   web:
     swagger:
       enabled: true
-      description: api docs for longjian basic app
+      description: api docs for longjian measure app
       basePackage: com.longfor
       contact:
         name: lipeishuai
@@ -49,9 +49,9 @@ longfor:
       supportMethodsArguments: true
       params: count=countSql
     mybatis:
-      typeAliasesPackage: com.longfor.longjian.basic.dao
+      typeAliasesPackage: com.longfor.longjian.measure.dao
       mapperLocations:
-      - classpath:com/longfor/longjian/basic/dao/*.xml
+      - classpath:com/longfor/longjian/measure/dao/*.xml
     mapper:
       notEmpty: true
     #多数据源配置
@@ -106,7 +106,7 @@ longfor:
           username: zhijian
           password: JM4tLp9u6pPANLhT
     redis:
-      namespace: longjian:basic:app
+      namespace: longjian:measure:app
       connection:
         demoRedis:
           database: 10
