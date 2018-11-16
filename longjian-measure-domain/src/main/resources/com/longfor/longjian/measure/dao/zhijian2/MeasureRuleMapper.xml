@@ -19,13 +19,8 @@
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="delete_at" property="deleteAt" jdbcType="TIMESTAMP" />
-  </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.longfor.longjian.measure.po.MeasureRuleWithBLOBs" extends="BaseResultMap" >
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <result column="formula" property="formula" jdbcType="LONGVARCHAR" />
-    <result column="points" property="points" jdbcType="LONGVARCHAR" />
+    <result column="formula" property="formula" jdbcType="VARCHAR" />
+    <result column="points" property="points" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     <!--
