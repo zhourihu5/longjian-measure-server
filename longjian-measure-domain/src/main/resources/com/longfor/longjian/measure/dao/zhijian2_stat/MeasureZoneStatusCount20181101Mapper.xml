@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.longfor.longjian.measure.dao.zhijian2_stat.MeasureZoneStatusCountMapper" >
-  <resultMap id="BaseResultMap" type="com.longfor.longjian.measure.po.zhijian2_stat.MeasureZoneStatusCount" >
+<mapper namespace="com.longfor.longjian.measure.dao.zhijian2_stat.MeasureZoneStatusCount20181101Mapper" >
+  <resultMap id="BaseResultMap" type="com.longfor.longjian.measure.po.zhijian2_stat.MeasureZoneStatusCount20181101" >
     <!--
       WARNING - @mbg.generated
     -->

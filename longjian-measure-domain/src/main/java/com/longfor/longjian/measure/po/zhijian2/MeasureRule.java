@@ -8,40 +8,79 @@ public class MeasureRule {
     @Id
     private Integer id;
 
-    @Column(name = "team_id")
-    private Integer teamId;
-
-    @Column(name = "rule_type")
-    private Integer ruleType;
-
+    /**
+     * 所属任务类型Key category_v3.key
+     */
     @Column(name = "category_key")
     private String categoryKey;
 
+    /**
+     * 规则说明
+     */
     private String desc;
 
+    /**
+     * 自定义公式
+     */
     @Column(name = "formula_default")
-    private Short formulaDefault;
+    private Integer formulaDefault;
 
-    @Column(name = "group_count_min")
-    private Integer groupCountMin;
-
-    @Column(name = "group_count_max")
-    private Integer groupCountMax;
-
+    /**
+     * 初始组数
+     */
     @Column(name = "group_count_init")
     private Integer groupCountInit;
 
-    private String textures;
+    /**
+     * 最大组数
+     */
+    @Column(name = "group_count_max")
+    private Integer groupCountMax;
 
+    /**
+     * 最小组数
+     */
+    @Column(name = "group_count_min")
+    private Integer groupCountMin;
+
+    /**
+     * 必填测点名数
+     */
     @Column(name = "point_need")
     private Integer pointNeed;
 
+    /**
+     * 规则类型
+     */
+    @Column(name = "rule_type")
+    private Integer ruleType;
+
+    /**
+     * 所属集团Id zhijian2_apisvr.team.id
+     */
+    @Column(name = "team_id")
+    private Integer teamId;
+
+    /**
+     * 测点可选类型(材质),半角逗号分
+     */
+    private String textures;
+
+    /**
+     * 创建时间
+     */
     @Column(name = "create_at")
     private Date createAt;
 
+    /**
+     * 更新时间
+     */
     @Column(name = "update_at")
     private Date updateAt;
 
+    /**
+     * 删除时间
+     */
     @Column(name = "delete_at")
     private Date deleteAt;
 
@@ -60,182 +99,234 @@ public class MeasureRule {
     }
 
     /**
-     * @return team_id
-     */
-    public Integer getTeamId() {
-        return teamId;
-    }
-
-    /**
-     * @param teamId
-     */
-    public void setTeamId(Integer teamId) {
-        this.teamId = teamId;
-    }
-
-    /**
-     * @return rule_type
-     */
-    public Integer getRuleType() {
-        return ruleType;
-    }
-
-    /**
-     * @param ruleType
-     */
-    public void setRuleType(Integer ruleType) {
-        this.ruleType = ruleType;
-    }
-
-    /**
-     * @return category_key
+     * 获取所属任务类型Key category_v3.key
+     *
+     * @return category_key - 所属任务类型Key category_v3.key
      */
     public String getCategoryKey() {
         return categoryKey;
     }
 
     /**
-     * @param categoryKey
+     * 设置所属任务类型Key category_v3.key
+     *
+     * @param categoryKey 所属任务类型Key category_v3.key
      */
     public void setCategoryKey(String categoryKey) {
         this.categoryKey = categoryKey == null ? null : categoryKey.trim();
     }
 
     /**
-     * @return desc
+     * 获取规则说明
+     *
+     * @return desc - 规则说明
      */
     public String getDesc() {
         return desc;
     }
 
     /**
-     * @param desc
+     * 设置规则说明
+     *
+     * @param desc 规则说明
      */
     public void setDesc(String desc) {
         this.desc = desc == null ? null : desc.trim();
     }
 
     /**
-     * @return formula_default
+     * 获取自定义公式
+     *
+     * @return formula_default - 自定义公式
      */
-    public Short getFormulaDefault() {
+    public Integer getFormulaDefault() {
         return formulaDefault;
     }
 
     /**
-     * @param formulaDefault
+     * 设置自定义公式
+     *
+     * @param formulaDefault 自定义公式
      */
-    public void setFormulaDefault(Short formulaDefault) {
+    public void setFormulaDefault(Integer formulaDefault) {
         this.formulaDefault = formulaDefault;
     }
 
     /**
-     * @return group_count_min
-     */
-    public Integer getGroupCountMin() {
-        return groupCountMin;
-    }
-
-    /**
-     * @param groupCountMin
-     */
-    public void setGroupCountMin(Integer groupCountMin) {
-        this.groupCountMin = groupCountMin;
-    }
-
-    /**
-     * @return group_count_max
-     */
-    public Integer getGroupCountMax() {
-        return groupCountMax;
-    }
-
-    /**
-     * @param groupCountMax
-     */
-    public void setGroupCountMax(Integer groupCountMax) {
-        this.groupCountMax = groupCountMax;
-    }
-
-    /**
-     * @return group_count_init
+     * 获取初始组数
+     *
+     * @return group_count_init - 初始组数
      */
     public Integer getGroupCountInit() {
         return groupCountInit;
     }
 
     /**
-     * @param groupCountInit
+     * 设置初始组数
+     *
+     * @param groupCountInit 初始组数
      */
     public void setGroupCountInit(Integer groupCountInit) {
         this.groupCountInit = groupCountInit;
     }
 
     /**
-     * @return textures
+     * 获取最大组数
+     *
+     * @return group_count_max - 最大组数
      */
-    public String getTextures() {
-        return textures;
+    public Integer getGroupCountMax() {
+        return groupCountMax;
     }
 
     /**
-     * @param textures
+     * 设置最大组数
+     *
+     * @param groupCountMax 最大组数
      */
-    public void setTextures(String textures) {
-        this.textures = textures == null ? null : textures.trim();
+    public void setGroupCountMax(Integer groupCountMax) {
+        this.groupCountMax = groupCountMax;
     }
 
     /**
-     * @return point_need
+     * 获取最小组数
+     *
+     * @return group_count_min - 最小组数
+     */
+    public Integer getGroupCountMin() {
+        return groupCountMin;
+    }
+
+    /**
+     * 设置最小组数
+     *
+     * @param groupCountMin 最小组数
+     */
+    public void setGroupCountMin(Integer groupCountMin) {
+        this.groupCountMin = groupCountMin;
+    }
+
+    /**
+     * 获取必填测点名数
+     *
+     * @return point_need - 必填测点名数
      */
     public Integer getPointNeed() {
         return pointNeed;
     }
 
     /**
-     * @param pointNeed
+     * 设置必填测点名数
+     *
+     * @param pointNeed 必填测点名数
      */
     public void setPointNeed(Integer pointNeed) {
         this.pointNeed = pointNeed;
     }
 
     /**
-     * @return create_at
+     * 获取规则类型
+     *
+     * @return rule_type - 规则类型
+     */
+    public Integer getRuleType() {
+        return ruleType;
+    }
+
+    /**
+     * 设置规则类型
+     *
+     * @param ruleType 规则类型
+     */
+    public void setRuleType(Integer ruleType) {
+        this.ruleType = ruleType;
+    }
+
+    /**
+     * 获取所属集团Id zhijian2_apisvr.team.id
+     *
+     * @return team_id - 所属集团Id zhijian2_apisvr.team.id
+     */
+    public Integer getTeamId() {
+        return teamId;
+    }
+
+    /**
+     * 设置所属集团Id zhijian2_apisvr.team.id
+     *
+     * @param teamId 所属集团Id zhijian2_apisvr.team.id
+     */
+    public void setTeamId(Integer teamId) {
+        this.teamId = teamId;
+    }
+
+    /**
+     * 获取测点可选类型(材质),半角逗号分
+     *
+     * @return textures - 测点可选类型(材质),半角逗号分
+     */
+    public String getTextures() {
+        return textures;
+    }
+
+    /**
+     * 设置测点可选类型(材质),半角逗号分
+     *
+     * @param textures 测点可选类型(材质),半角逗号分
+     */
+    public void setTextures(String textures) {
+        this.textures = textures == null ? null : textures.trim();
+    }
+
+    /**
+     * 获取创建时间
+     *
+     * @return create_at - 创建时间
      */
     public Date getCreateAt() {
         return createAt;
     }
 
     /**
-     * @param createAt
+     * 设置创建时间
+     *
+     * @param createAt 创建时间
      */
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
     }
 
     /**
-     * @return update_at
+     * 获取更新时间
+     *
+     * @return update_at - 更新时间
      */
     public Date getUpdateAt() {
         return updateAt;
     }
 
     /**
-     * @param updateAt
+     * 设置更新时间
+     *
+     * @param updateAt 更新时间
      */
     public void setUpdateAt(Date updateAt) {
         this.updateAt = updateAt;
     }
 
     /**
-     * @return delete_at
+     * 获取删除时间
+     *
+     * @return delete_at - 删除时间
      */
     public Date getDeleteAt() {
         return deleteAt;
     }
 
     /**
-     * @param deleteAt
+     * 设置删除时间
+     *
+     * @param deleteAt 删除时间
      */
     public void setDeleteAt(Date deleteAt) {
         this.deleteAt = deleteAt;

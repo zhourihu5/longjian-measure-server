@@ -6,17 +6,17 @@
       WARNING - @mbg.generated
     -->
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="uuid" property="uuid" jdbcType="VARCHAR" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
-    <result column="list_id" property="listId" jdbcType="INTEGER" />
-    <result column="region_uuid" property="regionUuid" jdbcType="VARCHAR" />
     <result column="area_id" property="areaId" jdbcType="INTEGER" />
     <result column="area_path_and_id" property="areaPathAndId" jdbcType="VARCHAR" />
+    <result column="uuid" property="uuid" jdbcType="VARCHAR" />
     <result column="category_key" property="categoryKey" jdbcType="VARCHAR" />
     <result column="category_path_and_key" property="categoryPathAndKey" jdbcType="VARCHAR" />
-    <result column="src_type" property="srcType" jdbcType="INTEGER" />
-    <result column="finish_status" property="finishStatus" jdbcType="INTEGER" />
     <result column="close_status" property="closeStatus" jdbcType="INTEGER" />
+    <result column="finish_status" property="finishStatus" jdbcType="INTEGER" />
+    <result column="list_id" property="listId" jdbcType="INTEGER" />
+    <result column="region_uuid" property="regionUuid" jdbcType="VARCHAR" />
+    <result column="src_type" property="srcType" jdbcType="INTEGER" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="delete_at" property="deleteAt" jdbcType="TIMESTAMP" />
@@ -25,8 +25,8 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, uuid, project_id, list_id, region_uuid, area_id, area_path_and_id, category_key, 
-    category_path_and_key, src_type, finish_status, close_status, create_at, update_at, 
+    id, project_id, area_id, area_path_and_id, uuid, category_key, category_path_and_key, 
+    close_status, finish_status, list_id, region_uuid, src_type, create_at, update_at, 
     delete_at
   </sql>
 </mapper>

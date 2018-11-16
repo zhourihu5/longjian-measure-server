@@ -6,36 +6,31 @@
       WARNING - @mbg.generated
     -->
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="uuid" property="uuid" jdbcType="VARCHAR" />
-    <result column="region_index" property="regionIndex" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="area_id" property="areaId" jdbcType="INTEGER" />
-    <result column="rel_id" property="relId" jdbcType="INTEGER" />
-    <result column="src_type" property="srcType" jdbcType="INTEGER" />
     <result column="area_path_and_id" property="areaPathAndId" jdbcType="VARCHAR" />
     <result column="drawing_md5" property="drawingMd5" jdbcType="VARCHAR" />
+    <result column="region_index" property="regionIndex" jdbcType="INTEGER" />
+    <result column="rel_id" property="relId" jdbcType="INTEGER" />
+    <result column="src_type" property="srcType" jdbcType="INTEGER" />
+    <result column="uuid" property="uuid" jdbcType="VARCHAR" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="delete_at" property="deleteAt" jdbcType="TIMESTAMP" />
+    <result column="polygon" property="polygon" jdbcType="VARCHAR" />
     <result column="tag_id_list" property="tagIdList" jdbcType="VARCHAR" />
-  </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.longfor.longjian.measure.po.zhijian2.MeasureRegion" extends="BaseResultMap" >
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <result column="polygon" property="polygon" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     <!--
       WARNING - @mbg.generated
     -->
-    id, uuid, region_index, project_id, area_id, rel_id, src_type, area_path_and_id, 
-    drawing_md5, create_at, update_at, delete_at, tag_id_list
+    id, project_id, area_id, area_path_and_id, drawing_md5, region_index, rel_id, src_type, 
+    uuid, create_at, update_at, delete_at
   </sql>
   <sql id="Blob_Column_List" >
     <!--
       WARNING - @mbg.generated
     -->
-    polygon
+    polygon, tag_id_list
   </sql>
 </mapper>

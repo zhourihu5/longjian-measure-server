@@ -8,42 +8,70 @@ public class MeasureRegion {
     @Id
     private Integer id;
 
-    private String uuid;
-
-    @Column(name = "region_index")
-    private Integer regionIndex;
-
+    /**
+     * 所属项目id project.id
+     */
     @Column(name = "project_id")
     private Integer projectId;
 
+    /**
+     * 所在区域id area.id
+     */
     @Column(name = "area_id")
     private Integer areaId;
 
-    @Column(name = "rel_id")
-    private Integer relId;
-
-    @Column(name = "src_type")
-    private Integer srcType;
-
+    /**
+     * 区域路径
+     */
     @Column(name = "area_path_and_id")
     private String areaPathAndId;
 
+    /**
+     * 图纸md5
+     */
     @Column(name = "drawing_md5")
     private String drawingMd5;
 
+    /**
+     * 项目下描画区域序号
+     */
+    @Column(name = "region_index")
+    private Integer regionIndex;
+
+    /**
+     * 所属描画区域关联关系Id measure_region_rel.id
+     */
+    @Column(name = "rel_id")
+    private Integer relId;
+
+    /**
+     * 来源类型：1，后台添加；2，客户端添加
+     */
+    @Column(name = "src_type")
+    private Integer srcType;
+
+    /**
+     * uuid
+     */
+    private String uuid;
+
+    /**
+     * 创建时间
+     */
     @Column(name = "create_at")
     private Date createAt;
 
+    /**
+     * 更新时间
+     */
     @Column(name = "update_at")
     private Date updateAt;
 
+    /**
+     * 删除时间
+     */
     @Column(name = "delete_at")
     private Date deleteAt;
-
-    @Column(name = "tag_id_list")
-    private String tagIdList;
-
-    private String polygon;
 
     /**
      * @return id
@@ -60,184 +88,200 @@ public class MeasureRegion {
     }
 
     /**
-     * @return uuid
-     */
-    public String getUuid() {
-        return uuid;
-    }
-
-    /**
-     * @param uuid
-     */
-    public void setUuid(String uuid) {
-        this.uuid = uuid == null ? null : uuid.trim();
-    }
-
-    /**
-     * @return region_index
-     */
-    public Integer getRegionIndex() {
-        return regionIndex;
-    }
-
-    /**
-     * @param regionIndex
-     */
-    public void setRegionIndex(Integer regionIndex) {
-        this.regionIndex = regionIndex;
-    }
-
-    /**
-     * @return project_id
+     * 获取所属项目id project.id
+     *
+     * @return project_id - 所属项目id project.id
      */
     public Integer getProjectId() {
         return projectId;
     }
 
     /**
-     * @param projectId
+     * 设置所属项目id project.id
+     *
+     * @param projectId 所属项目id project.id
      */
     public void setProjectId(Integer projectId) {
         this.projectId = projectId;
     }
 
     /**
-     * @return area_id
+     * 获取所在区域id area.id
+     *
+     * @return area_id - 所在区域id area.id
      */
     public Integer getAreaId() {
         return areaId;
     }
 
     /**
-     * @param areaId
+     * 设置所在区域id area.id
+     *
+     * @param areaId 所在区域id area.id
      */
     public void setAreaId(Integer areaId) {
         this.areaId = areaId;
     }
 
     /**
-     * @return rel_id
-     */
-    public Integer getRelId() {
-        return relId;
-    }
-
-    /**
-     * @param relId
-     */
-    public void setRelId(Integer relId) {
-        this.relId = relId;
-    }
-
-    /**
-     * @return src_type
-     */
-    public Integer getSrcType() {
-        return srcType;
-    }
-
-    /**
-     * @param srcType
-     */
-    public void setSrcType(Integer srcType) {
-        this.srcType = srcType;
-    }
-
-    /**
-     * @return area_path_and_id
+     * 获取区域路径
+     *
+     * @return area_path_and_id - 区域路径
      */
     public String getAreaPathAndId() {
         return areaPathAndId;
     }
 
     /**
-     * @param areaPathAndId
+     * 设置区域路径
+     *
+     * @param areaPathAndId 区域路径
      */
     public void setAreaPathAndId(String areaPathAndId) {
         this.areaPathAndId = areaPathAndId == null ? null : areaPathAndId.trim();
     }
 
     /**
-     * @return drawing_md5
+     * 获取图纸md5
+     *
+     * @return drawing_md5 - 图纸md5
      */
     public String getDrawingMd5() {
         return drawingMd5;
     }
 
     /**
-     * @param drawingMd5
+     * 设置图纸md5
+     *
+     * @param drawingMd5 图纸md5
      */
     public void setDrawingMd5(String drawingMd5) {
         this.drawingMd5 = drawingMd5 == null ? null : drawingMd5.trim();
     }
 
     /**
-     * @return create_at
+     * 获取项目下描画区域序号
+     *
+     * @return region_index - 项目下描画区域序号
+     */
+    public Integer getRegionIndex() {
+        return regionIndex;
+    }
+
+    /**
+     * 设置项目下描画区域序号
+     *
+     * @param regionIndex 项目下描画区域序号
+     */
+    public void setRegionIndex(Integer regionIndex) {
+        this.regionIndex = regionIndex;
+    }
+
+    /**
+     * 获取所属描画区域关联关系Id measure_region_rel.id
+     *
+     * @return rel_id - 所属描画区域关联关系Id measure_region_rel.id
+     */
+    public Integer getRelId() {
+        return relId;
+    }
+
+    /**
+     * 设置所属描画区域关联关系Id measure_region_rel.id
+     *
+     * @param relId 所属描画区域关联关系Id measure_region_rel.id
+     */
+    public void setRelId(Integer relId) {
+        this.relId = relId;
+    }
+
+    /**
+     * 获取来源类型：1，后台添加；2，客户端添加
+     *
+     * @return src_type - 来源类型：1，后台添加；2，客户端添加
+     */
+    public Integer getSrcType() {
+        return srcType;
+    }
+
+    /**
+     * 设置来源类型：1，后台添加；2，客户端添加
+     *
+     * @param srcType 来源类型：1，后台添加；2，客户端添加
+     */
+    public void setSrcType(Integer srcType) {
+        this.srcType = srcType;
+    }
+
+    /**
+     * 获取uuid
+     *
+     * @return uuid - uuid
+     */
+    public String getUuid() {
+        return uuid;
+    }
+
+    /**
+     * 设置uuid
+     *
+     * @param uuid uuid
+     */
+    public void setUuid(String uuid) {
+        this.uuid = uuid == null ? null : uuid.trim();
+    }
+
+    /**
+     * 获取创建时间
+     *
+     * @return create_at - 创建时间
      */
     public Date getCreateAt() {
         return createAt;
     }
 
     /**
-     * @param createAt
+     * 设置创建时间
+     *
+     * @param createAt 创建时间
      */
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
     }
 
     /**
-     * @return update_at
+     * 获取更新时间
+     *
+     * @return update_at - 更新时间
      */
     public Date getUpdateAt() {
         return updateAt;
     }
 
     /**
-     * @param updateAt
+     * 设置更新时间
+     *
+     * @param updateAt 更新时间
      */
     public void setUpdateAt(Date updateAt) {
         this.updateAt = updateAt;
     }
 
     /**
-     * @return delete_at
+     * 获取删除时间
+     *
+     * @return delete_at - 删除时间
      */
     public Date getDeleteAt() {
         return deleteAt;
     }
 
     /**
-     * @param deleteAt
+     * 设置删除时间
+     *
+     * @param deleteAt 删除时间
      */
     public void setDeleteAt(Date deleteAt) {
         this.deleteAt = deleteAt;
-    }
-
-    /**
-     * @return tag_id_list
-     */
-    public String getTagIdList() {
-        return tagIdList;
-    }
-
-    /**
-     * @param tagIdList
-     */
-    public void setTagIdList(String tagIdList) {
-        this.tagIdList = tagIdList == null ? null : tagIdList.trim();
-    }
-
-    /**
-     * @return polygon
-     */
-    public String getPolygon() {
-        return polygon;
-    }
-
-    /**
-     * @param polygon
-     */
-    public void setPolygon(String polygon) {
-        this.polygon = polygon == null ? null : polygon.trim();
     }
 }

@@ -6,8 +6,8 @@
       WARNING - @mbg.generated
     -->
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="list_id" property="listId" jdbcType="INTEGER" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="squad_id" property="squadId" jdbcType="INTEGER" />
     <result column="user_id" property="userId" jdbcType="INTEGER" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
@@ -18,6 +18,6 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, project_id, list_id, squad_id, user_id, create_at, update_at, delete_at
+    id, list_id, project_id, squad_id, user_id, create_at, update_at, delete_at
   </sql>
 </mapper>

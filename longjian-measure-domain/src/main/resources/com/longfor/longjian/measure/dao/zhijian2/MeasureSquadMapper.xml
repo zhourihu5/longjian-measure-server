@@ -6,8 +6,8 @@
       WARNING - @mbg.generated
     -->
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="list_id" property="listId" jdbcType="INTEGER" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="plan_rate" property="planRate" jdbcType="INTEGER" />
     <result column="rate" property="rate" jdbcType="INTEGER" />
@@ -19,6 +19,6 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, project_id, list_id, name, plan_rate, rate, create_at, update_at, delete_at
+    id, list_id, project_id, name, plan_rate, rate, create_at, update_at, delete_at
   </sql>
 </mapper>

@@ -6,23 +6,18 @@
       WARNING - @mbg.generated
     -->
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="desc" property="desc" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="delete_at" property="deleteAt" jdbcType="TIMESTAMP" />
-  </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.longfor.longjian.measure.po.zhijian2.MeasureRegionRel" extends="BaseResultMap" >
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <result column="region_ids" property="regionIds" jdbcType="LONGVARCHAR" />
+    <result column="region_ids" property="regionIds" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     <!--
       WARNING - @mbg.generated
     -->
-    id, project_id, desc, create_at, update_at, delete_at
+    id, desc, project_id, create_at, update_at, delete_at
   </sql>
   <sql id="Blob_Column_List" >
     <!--

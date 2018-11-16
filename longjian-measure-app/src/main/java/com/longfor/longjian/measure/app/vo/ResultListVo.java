@@ -9,6 +9,6 @@ import java.util.List;
  * 2018-11-16 18:24
  */
 @Data
-public class CheckItemListVO {
-    List<CheckItemVO> result;
+public class ResultListVo {
+    List<CheckItemVo> result;
 }

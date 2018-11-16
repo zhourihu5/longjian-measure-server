@@ -2,8 +2,8 @@ package com.longfor.longjian.measure.po.zhijian2_stat;
 
 import javax.persistence.*;
 
-@Table(name = "measure_building_pass_rate_stat")
-public class MeasureBuildingPassRateStat {
+@Table(name = "measure_proj_partner_pass_rate_stat")
+public class MeasureProjPartnerPassRateStat {
     @Id
     private Integer id;
 
@@ -26,6 +26,18 @@ public class MeasureBuildingPassRateStat {
     private Integer tfIdx;
 
     /**
+     * 集团ID
+     */
+    @Column(name = "group_id")
+    private Integer groupId;
+
+    /**
+     * 公司ID
+     */
+    @Column(name = "team_id")
+    private Integer teamId;
+
+    /**
      * 项目ID
      */
     @Column(name = "proj_id")
@@ -38,15 +50,39 @@ public class MeasureBuildingPassRateStat {
     private String rootCategoryKey;
 
     /**
+     * 检查项key
+     */
+    @Column(name = "category_key")
+    private String categoryKey;
+
+    /**
+     * 检查项路径
+     */
+    @Column(name = "category_path_and_key")
+    private String categoryPathAndKey;
+
+    /**
      * 版本
      */
     private Integer version;
 
     /**
-     * 楼栋ID
+     * 公司角色ID
      */
-    @Column(name = "building_id")
-    private Integer buildingId;
+    @Column(name = "company_role_id")
+    private Integer companyRoleId;
+
+    /**
+     * 合作伙伴ID
+     */
+    @Column(name = "team_group_company_id")
+    private Integer teamGroupCompanyId;
+
+    /**
+     * 项目合作伙伴ID
+     */
+    @Column(name = "project_company_id")
+    private Integer projectCompanyId;
 
     /**
      * 测点合格数
@@ -86,7 +122,8 @@ public class MeasureBuildingPassRateStat {
     /**
      * 测点合格率排名
      */
-    private Integer rank;
+    @Column(name = "rank_in_group")
+    private Integer rankInGroup;
 
     /**
      * @return id
@@ -157,6 +194,42 @@ public class MeasureBuildingPassRateStat {
     }
 
     /**
+     * 获取集团ID
+     *
+     * @return group_id - 集团ID
+     */
+    public Integer getGroupId() {
+        return groupId;
+    }
+
+    /**
+     * 设置集团ID
+     *
+     * @param groupId 集团ID
+     */
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
+    }
+
+    /**
+     * 获取公司ID
+     *
+     * @return team_id - 公司ID
+     */
+    public Integer getTeamId() {
+        return teamId;
+    }
+
+    /**
+     * 设置公司ID
+     *
+     * @param teamId 公司ID
+     */
+    public void setTeamId(Integer teamId) {
+        this.teamId = teamId;
+    }
+
+    /**
      * 获取项目ID
      *
      * @return proj_id - 项目ID
@@ -193,6 +266,42 @@ public class MeasureBuildingPassRateStat {
     }
 
     /**
+     * 获取检查项key
+     *
+     * @return category_key - 检查项key
+     */
+    public String getCategoryKey() {
+        return categoryKey;
+    }
+
+    /**
+     * 设置检查项key
+     *
+     * @param categoryKey 检查项key
+     */
+    public void setCategoryKey(String categoryKey) {
+        this.categoryKey = categoryKey == null ? null : categoryKey.trim();
+    }
+
+    /**
+     * 获取检查项路径
+     *
+     * @return category_path_and_key - 检查项路径
+     */
+    public String getCategoryPathAndKey() {
+        return categoryPathAndKey;
+    }
+
+    /**
+     * 设置检查项路径
+     *
+     * @param categoryPathAndKey 检查项路径
+     */
+    public void setCategoryPathAndKey(String categoryPathAndKey) {
+        this.categoryPathAndKey = categoryPathAndKey == null ? null : categoryPathAndKey.trim();
+    }
+
+    /**
      * 获取版本
      *
      * @return version - 版本
@@ -211,21 +320,57 @@ public class MeasureBuildingPassRateStat {
     }
 
     /**
-     * 获取楼栋ID
+     * 获取公司角色ID
      *
-     * @return building_id - 楼栋ID
+     * @return company_role_id - 公司角色ID
      */
-    public Integer getBuildingId() {
-        return buildingId;
+    public Integer getCompanyRoleId() {
+        return companyRoleId;
     }
 
     /**
-     * 设置楼栋ID
+     * 设置公司角色ID
      *
-     * @param buildingId 楼栋ID
+     * @param companyRoleId 公司角色ID
      */
-    public void setBuildingId(Integer buildingId) {
-        this.buildingId = buildingId;
+    public void setCompanyRoleId(Integer companyRoleId) {
+        this.companyRoleId = companyRoleId;
+    }
+
+    /**
+     * 获取合作伙伴ID
+     *
+     * @return team_group_company_id - 合作伙伴ID
+     */
+    public Integer getTeamGroupCompanyId() {
+        return teamGroupCompanyId;
+    }
+
+    /**
+     * 设置合作伙伴ID
+     *
+     * @param teamGroupCompanyId 合作伙伴ID
+     */
+    public void setTeamGroupCompanyId(Integer teamGroupCompanyId) {
+        this.teamGroupCompanyId = teamGroupCompanyId;
+    }
+
+    /**
+     * 获取项目合作伙伴ID
+     *
+     * @return project_company_id - 项目合作伙伴ID
+     */
+    public Integer getProjectCompanyId() {
+        return projectCompanyId;
+    }
+
+    /**
+     * 设置项目合作伙伴ID
+     *
+     * @param projectCompanyId 项目合作伙伴ID
+     */
+    public void setProjectCompanyId(Integer projectCompanyId) {
+        this.projectCompanyId = projectCompanyId;
     }
 
     /**
@@ -339,18 +484,18 @@ public class MeasureBuildingPassRateStat {
     /**
      * 获取测点合格率排名
      *
-     * @return rank - 测点合格率排名
+     * @return rank_in_group - 测点合格率排名
      */
-    public Integer getRank() {
-        return rank;
+    public Integer getRankInGroup() {
+        return rankInGroup;
     }
 
     /**
      * 设置测点合格率排名
      *
-     * @param rank 测点合格率排名
+     * @param rankInGroup 测点合格率排名
      */
-    public void setRank(Integer rank) {
-        this.rank = rank;
+    public void setRankInGroup(Integer rankInGroup) {
+        this.rankInGroup = rankInGroup;
     }
 }

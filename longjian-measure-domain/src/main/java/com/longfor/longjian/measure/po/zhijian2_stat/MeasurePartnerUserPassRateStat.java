@@ -2,8 +2,8 @@ package com.longfor.longjian.measure.po.zhijian2_stat;
 
 import javax.persistence.*;
 
-@Table(name = "measure_building_pass_rate_stat")
-public class MeasureBuildingPassRateStat {
+@Table(name = "measure_partner_user_pass_rate_stat")
+public class MeasurePartnerUserPassRateStat {
     @Id
     private Integer id;
 
@@ -43,10 +43,22 @@ public class MeasureBuildingPassRateStat {
     private Integer version;
 
     /**
-     * 楼栋ID
+     * 公司角色ID
      */
-    @Column(name = "building_id")
-    private Integer buildingId;
+    @Column(name = "company_role_id")
+    private Integer companyRoleId;
+
+    /**
+     * 合作伙伴人员ID
+     */
+    @Column(name = "partner_user_id")
+    private Integer partnerUserId;
+
+    /**
+     * 用户ID
+     */
+    @Column(name = "user_id")
+    private Integer userId;
 
     /**
      * 测点合格数
@@ -211,21 +223,57 @@ public class MeasureBuildingPassRateStat {
     }
 
     /**
-     * 获取楼栋ID
+     * 获取公司角色ID
      *
-     * @return building_id - 楼栋ID
+     * @return company_role_id - 公司角色ID
      */
-    public Integer getBuildingId() {
-        return buildingId;
+    public Integer getCompanyRoleId() {
+        return companyRoleId;
     }
 
     /**
-     * 设置楼栋ID
+     * 设置公司角色ID
      *
-     * @param buildingId 楼栋ID
+     * @param companyRoleId 公司角色ID
      */
-    public void setBuildingId(Integer buildingId) {
-        this.buildingId = buildingId;
+    public void setCompanyRoleId(Integer companyRoleId) {
+        this.companyRoleId = companyRoleId;
+    }
+
+    /**
+     * 获取合作伙伴人员ID
+     *
+     * @return partner_user_id - 合作伙伴人员ID
+     */
+    public Integer getPartnerUserId() {
+        return partnerUserId;
+    }
+
+    /**
+     * 设置合作伙伴人员ID
+     *
+     * @param partnerUserId 合作伙伴人员ID
+     */
+    public void setPartnerUserId(Integer partnerUserId) {
+        this.partnerUserId = partnerUserId;
+    }
+
+    /**
+     * 获取用户ID
+     *
+     * @return user_id - 用户ID
+     */
+    public Integer getUserId() {
+        return userId;
+    }
+
+    /**
+     * 设置用户ID
+     *
+     * @param userId 用户ID
+     */
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     /**

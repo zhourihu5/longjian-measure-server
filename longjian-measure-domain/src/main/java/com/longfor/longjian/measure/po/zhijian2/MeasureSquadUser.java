@@ -8,24 +8,45 @@ public class MeasureSquadUser {
     @Id
     private Integer id;
 
-    @Column(name = "project_id")
-    private Integer projectId;
-
+    /**
+     * 所属清单id measure_list.id
+     */
     @Column(name = "list_id")
     private Integer listId;
 
+    /**
+     * 所属项目id project.id
+     */
+    @Column(name = "project_id")
+    private Integer projectId;
+
+    /**
+     * 测量小组id measure_squad.id
+     */
     @Column(name = "squad_id")
     private Integer squadId;
 
+    /**
+     * 关联用户id zhijian2_apisvr.user.id
+     */
     @Column(name = "user_id")
     private Integer userId;
 
+    /**
+     * 创建时间
+     */
     @Column(name = "create_at")
     private Date createAt;
 
+    /**
+     * 更新时间
+     */
     @Column(name = "update_at")
     private Date updateAt;
 
+    /**
+     * 删除时间
+     */
     @Column(name = "delete_at")
     private Date deleteAt;
 
@@ -44,98 +65,126 @@ public class MeasureSquadUser {
     }
 
     /**
-     * @return project_id
-     */
-    public Integer getProjectId() {
-        return projectId;
-    }
-
-    /**
-     * @param projectId
-     */
-    public void setProjectId(Integer projectId) {
-        this.projectId = projectId;
-    }
-
-    /**
-     * @return list_id
+     * 获取所属清单id measure_list.id
+     *
+     * @return list_id - 所属清单id measure_list.id
      */
     public Integer getListId() {
         return listId;
     }
 
     /**
-     * @param listId
+     * 设置所属清单id measure_list.id
+     *
+     * @param listId 所属清单id measure_list.id
      */
     public void setListId(Integer listId) {
         this.listId = listId;
     }
 
     /**
-     * @return squad_id
+     * 获取所属项目id project.id
+     *
+     * @return project_id - 所属项目id project.id
+     */
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    /**
+     * 设置所属项目id project.id
+     *
+     * @param projectId 所属项目id project.id
+     */
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
+    }
+
+    /**
+     * 获取测量小组id measure_squad.id
+     *
+     * @return squad_id - 测量小组id measure_squad.id
      */
     public Integer getSquadId() {
         return squadId;
     }
 
     /**
-     * @param squadId
+     * 设置测量小组id measure_squad.id
+     *
+     * @param squadId 测量小组id measure_squad.id
      */
     public void setSquadId(Integer squadId) {
         this.squadId = squadId;
     }
 
     /**
-     * @return user_id
+     * 获取关联用户id zhijian2_apisvr.user.id
+     *
+     * @return user_id - 关联用户id zhijian2_apisvr.user.id
      */
     public Integer getUserId() {
         return userId;
     }
 
     /**
-     * @param userId
+     * 设置关联用户id zhijian2_apisvr.user.id
+     *
+     * @param userId 关联用户id zhijian2_apisvr.user.id
      */
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
     /**
-     * @return create_at
+     * 获取创建时间
+     *
+     * @return create_at - 创建时间
      */
     public Date getCreateAt() {
         return createAt;
     }
 
     /**
-     * @param createAt
+     * 设置创建时间
+     *
+     * @param createAt 创建时间
      */
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
     }
 
     /**
-     * @return update_at
+     * 获取更新时间
+     *
+     * @return update_at - 更新时间
      */
     public Date getUpdateAt() {
         return updateAt;
     }
 
     /**
-     * @param updateAt
+     * 设置更新时间
+     *
+     * @param updateAt 更新时间
      */
     public void setUpdateAt(Date updateAt) {
         this.updateAt = updateAt;
     }
 
     /**
-     * @return delete_at
+     * 获取删除时间
+     *
+     * @return delete_at - 删除时间
      */
     public Date getDeleteAt() {
         return deleteAt;
     }
 
     /**
-     * @param deleteAt
+     * 设置删除时间
+     *
+     * @param deleteAt 删除时间
      */
     public void setDeleteAt(Date deleteAt) {
         this.deleteAt = deleteAt;
