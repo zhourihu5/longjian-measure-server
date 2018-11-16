@@ -2,10 +2,15 @@ package com.longfor.longjian.measure.app.controller;
 
 import com.longfor.gaia.gfs.web.mock.MockOperation;
 import com.longfor.longjian.common.base.LjBaseResponse;
-import com.longfor.longjian.measure.app.vo.ResultListVo;
+import com.longfor.longjian.measure.app.vo.ItemsVo;
+import com.longfor.longjian.measure.app.vo.measureAnalysisVo.CheckItemVo;
+import com.longfor.longjian.measure.app.vo.measureAnalysisVo.JTPOPTotalListVo;
+import com.longfor.longjian.measure.app.vo.ResultVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  *
@@ -24,7 +29,18 @@ public class MeasureAnalysisController {
      */
     @MockOperation
     @PostMapping(value = "res/category", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<ResultListVo> getAnalysisCheckItems(RequestParam requestParam){
+    public LjBaseResponse<ResultVo<List<CheckItemVo>>> getAnalysisCheckItems(RequestParam requestParam){
+        return null;
+    }
+
+    /**
+     * 集团统计分析统计指标合格率
+     * @param requestParam
+     * @return
+     */
+    @MockOperation
+    @PostMapping(value = "stat_measure/stat/group", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public LjBaseResponse<ResultVo<ItemsVo<List<JTPOPTotalListVo>>>> getJTPOPTotal(RequestParam requestParam){
         return null;
     }
 }

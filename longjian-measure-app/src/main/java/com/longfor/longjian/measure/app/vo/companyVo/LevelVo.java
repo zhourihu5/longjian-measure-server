@@ -1,4 +1,4 @@
-package com.longfor.longjian.measure.app.vo;
+package com.longfor.longjian.measure.app.vo.companyVo;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

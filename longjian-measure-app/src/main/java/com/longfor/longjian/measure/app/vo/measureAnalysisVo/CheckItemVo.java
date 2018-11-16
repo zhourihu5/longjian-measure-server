@@ -1,4 +1,4 @@
-package com.longfor.longjian.measure.app.vo;
+package com.longfor.longjian.measure.app.vo.measureAnalysisVo;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 public class CheckItemVo {
     private String fatherKey;
     private boolean isLeaf;
-    private Integer key;
+    private String key;
     private String label;
     private String name;
-    private Integer value;
+    private String value;
 }

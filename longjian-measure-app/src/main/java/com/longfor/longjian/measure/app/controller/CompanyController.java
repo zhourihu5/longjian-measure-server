@@ -2,8 +2,8 @@ package com.longfor.longjian.measure.app.controller;
 
 import com.google.common.collect.Lists;
 import com.longfor.gaia.gfs.web.mock.MockOperation;
-import com.longfor.longjian.measure.app.vo.CompanyListVo;
-import com.longfor.longjian.measure.app.vo.LevelVo;
+import com.longfor.longjian.measure.app.vo.companyVo.CompanyListVo;
+import com.longfor.longjian.measure.app.vo.companyVo.LevelVo;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.common.consts.CompanyLevelEnum;
 import lombok.extern.slf4j.Slf4j;
