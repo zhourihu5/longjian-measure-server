@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.longfor.longjian.measure.dao.zhijian2.MeasureListMapper">
+  <resultMap id="BaseResultMap" type="com.longfor.longjian.measure.po.zhijian2.MeasureList">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="project_id" jdbcType="INTEGER" property="projectId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="finish_status" jdbcType="INTEGER" property="finishStatus" />
+    <result column="close_status" jdbcType="INTEGER" property="closeStatus" />
+    <result column="plan_begin_on" jdbcType="TIMESTAMP" property="planBeginOn" />
+    <result column="plan_end_on" jdbcType="TIMESTAMP" property="planEndOn" />
+    <result column="area_type" jdbcType="VARCHAR" property="areaType" />
+    <result column="root_category_key" jdbcType="VARCHAR" property="rootCategoryKey" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
+    <result column="delete_at" jdbcType="TIMESTAMP" property="deleteAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, project_id, name, finish_status, close_status, plan_begin_on, plan_end_on, area_type, 
+    root_category_key, create_at, update_at, delete_at
+  </sql>
+  <resultMap id="BaseResultMap" type="com.longfor.longjian.measure.po.zhijian2.MeasureList">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="project_id" jdbcType="INTEGER" property="projectId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="finish_status" jdbcType="INTEGER" property="finishStatus" />
+    <result column="close_status" jdbcType="INTEGER" property="closeStatus" />
+    <result column="plan_begin_on" jdbcType="TIMESTAMP" property="planBeginOn" />
+    <result column="plan_end_on" jdbcType="TIMESTAMP" property="planEndOn" />
+    <result column="area_type" jdbcType="VARCHAR" property="areaType" />
+    <result column="root_category_key" jdbcType="VARCHAR" property="rootCategoryKey" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
+    <result column="delete_at" jdbcType="TIMESTAMP" property="deleteAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, project_id, name, finish_status, close_status, plan_begin_on, plan_end_on, area_type, 
+    root_category_key, create_at, update_at, delete_at
+  </sql>
+</mapper>

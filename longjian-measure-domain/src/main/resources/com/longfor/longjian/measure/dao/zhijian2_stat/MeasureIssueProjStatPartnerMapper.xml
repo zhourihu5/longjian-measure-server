@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.longfor.longjian.measure.dao.zhijian2_stat.MeasureIssueProjStatPartnerMapper" >
+  <resultMap id="BaseResultMap" type="com.longfor.longjian.measure.po.zhijian2_stat.MeasureIssueProjStatPartner" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="day" property="day" jdbcType="VARCHAR" />
+    <result column="group_id" property="groupId" jdbcType="INTEGER" />
+    <result column="team_id" property="teamId" jdbcType="INTEGER" />
+    <result column="proj_id" property="projId" jdbcType="INTEGER" />
+    <result column="section_id" property="sectionId" jdbcType="INTEGER" />
+    <result column="category_path_and_key" property="categoryPathAndKey" jdbcType="VARCHAR" />
+    <result column="project_company_id" property="projectCompanyId" jdbcType="INTEGER" />
+    <result column="team_group_company_id" property="teamGroupCompanyId" jdbcType="INTEGER" />
+    <result column="company_role_id" property="companyRoleId" jdbcType="INTEGER" />
+    <result column="category_key" property="categoryKey" jdbcType="VARCHAR" />
+    <result column="overdue_to_assign" property="overdueToAssign" jdbcType="INTEGER" />
+    <result column="overdue_to_reform" property="overdueToReform" jdbcType="INTEGER" />
+    <result column="overdue_to_check" property="overdueToCheck" jdbcType="INTEGER" />
+    <result column="overdue_checked" property="overdueChecked" jdbcType="INTEGER" />
+    <result column="intime_to_assign" property="intimeToAssign" jdbcType="INTEGER" />
+    <result column="intime_to_reform" property="intimeToReform" jdbcType="INTEGER" />
+    <result column="intime_to_check" property="intimeToCheck" jdbcType="INTEGER" />
+    <result column="intime_checked" property="intimeChecked" jdbcType="INTEGER" />
+    <result column="notset_to_assign" property="notsetToAssign" jdbcType="INTEGER" />
+    <result column="notset_to_reform" property="notsetToReform" jdbcType="INTEGER" />
+    <result column="notset_to_check" property="notsetToCheck" jdbcType="INTEGER" />
+    <result column="notset_checked" property="notsetChecked" jdbcType="INTEGER" />
+    <result column="create_at" property="createAt" jdbcType="DOUBLE" />
+    <result column="delete_at" property="deleteAt" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, day, group_id, team_id, proj_id, section_id, category_path_and_key, project_company_id, 
+    team_group_company_id, company_role_id, category_key, overdue_to_assign, overdue_to_reform, 
+    overdue_to_check, overdue_checked, intime_to_assign, intime_to_reform, intime_to_check, 
+    intime_checked, notset_to_assign, notset_to_reform, notset_to_check, notset_checked, 
+    create_at, delete_at
+  </sql>
+</mapper>

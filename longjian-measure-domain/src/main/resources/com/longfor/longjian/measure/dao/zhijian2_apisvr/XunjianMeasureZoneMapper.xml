@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.longfor.longjian.measure.dao.zhijian2_apisvr.XunjianMeasureZoneMapper" >
+  <resultMap id="BaseResultMap" type="com.longfor.longjian.measure.po.zhijian2_apisvr.XunjianMeasureZone" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uuid" property="uuid" jdbcType="VARCHAR" />
+    <result column="area_id" property="areaId" jdbcType="INTEGER" />
+    <result column="area_path_and_id" property="areaPathAndId" jdbcType="VARCHAR" />
+    <result column="category_key" property="categoryKey" jdbcType="VARCHAR" />
+    <result column="category_path_and_key" property="categoryPathAndKey" jdbcType="VARCHAR" />
+    <result column="task_id" property="taskId" jdbcType="INTEGER" />
+    <result column="proj_id" property="projId" jdbcType="INTEGER" />
+    <result column="client_create_at" property="clientCreateAt" jdbcType="INTEGER" />
+    <result column="sender_id" property="senderId" jdbcType="INTEGER" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="delete_at" property="deleteAt" jdbcType="TIMESTAMP" />
+    <result column="root_category_id" property="rootCategoryId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, uuid, area_id, area_path_and_id, category_key, category_path_and_key, task_id, 
+    proj_id, client_create_at, sender_id, create_at, update_at, delete_at, root_category_id
+  </sql>
+</mapper>

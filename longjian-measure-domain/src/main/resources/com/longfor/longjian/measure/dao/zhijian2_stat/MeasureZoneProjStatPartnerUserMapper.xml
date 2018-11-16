@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.longfor.longjian.measure.dao.zhijian2_stat.MeasureZoneProjStatPartnerUserMapper" >
+  <resultMap id="BaseResultMap" type="com.longfor.longjian.measure.po.zhijian2_stat.MeasureZoneProjStatPartnerUser" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="day" property="day" jdbcType="VARCHAR" />
+    <result column="group_id" property="groupId" jdbcType="INTEGER" />
+    <result column="team_id" property="teamId" jdbcType="INTEGER" />
+    <result column="proj_id" property="projId" jdbcType="INTEGER" />
+    <result column="section_id" property="sectionId" jdbcType="INTEGER" />
+    <result column="category_key" property="categoryKey" jdbcType="VARCHAR" />
+    <result column="category_path_and_key" property="categoryPathAndKey" jdbcType="VARCHAR" />
+    <result column="team_group_company_id" property="teamGroupCompanyId" jdbcType="INTEGER" />
+    <result column="project_company_id" property="projectCompanyId" jdbcType="INTEGER" />
+    <result column="company_role_id" property="companyRoleId" jdbcType="INTEGER" />
+    <result column="partner_user_id" property="partnerUserId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="total_zone_count" property="totalZoneCount" jdbcType="INTEGER" />
+    <result column="finished_zone_count" property="finishedZoneCount" jdbcType="INTEGER" />
+    <result column="issue_zone_count" property="issueZoneCount" jdbcType="INTEGER" />
+    <result column="create_at" property="createAt" jdbcType="DOUBLE" />
+    <result column="delete_at" property="deleteAt" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, day, group_id, team_id, proj_id, section_id, category_key, category_path_and_key, 
+    team_group_company_id, project_company_id, company_role_id, partner_user_id, user_id, 
+    total_zone_count, finished_zone_count, issue_zone_count, create_at, delete_at
+  </sql>
+</mapper>

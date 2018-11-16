@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.longfor.longjian.measure.dao.zhijian2.MeasureRuleMapper" >
+  <resultMap id="BaseResultMap" type="com.longfor.longjian.measure.po.zhijian2.MeasureRule" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="team_id" property="teamId" jdbcType="INTEGER" />
+    <result column="rule_type" property="ruleType" jdbcType="INTEGER" />
+    <result column="category_key" property="categoryKey" jdbcType="VARCHAR" />
+    <result column="desc" property="desc" jdbcType="VARCHAR" />
+    <result column="formula_default" property="formulaDefault" jdbcType="SMALLINT" />
+    <result column="group_count_min" property="groupCountMin" jdbcType="INTEGER" />
+    <result column="group_count_max" property="groupCountMax" jdbcType="INTEGER" />
+    <result column="group_count_init" property="groupCountInit" jdbcType="INTEGER" />
+    <result column="textures" property="textures" jdbcType="VARCHAR" />
+    <result column="point_need" property="pointNeed" jdbcType="INTEGER" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="delete_at" property="deleteAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.longfor.longjian.measure.po.MeasureRuleWithBLOBs" extends="BaseResultMap" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="formula" property="formula" jdbcType="LONGVARCHAR" />
+    <result column="points" property="points" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, team_id, rule_type, category_key, desc, formula_default, group_count_min, group_count_max, 
+    group_count_init, textures, point_need, create_at, update_at, delete_at
+  </sql>
+  <sql id="Blob_Column_List" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    formula, points
+  </sql>
+</mapper>
