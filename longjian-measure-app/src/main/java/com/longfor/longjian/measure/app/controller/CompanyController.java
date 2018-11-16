@@ -40,7 +40,6 @@ public class CompanyController {
     @MockOperation
     @GetMapping(value = "mycompany", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<CompanyListVo> myCompanyList(RequestParam requestParam){
-
         return null;
     }
 

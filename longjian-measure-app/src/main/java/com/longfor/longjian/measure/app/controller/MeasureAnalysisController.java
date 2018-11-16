@@ -2,10 +2,14 @@ package com.longfor.longjian.measure.app.controller;
 
 import com.longfor.gaia.gfs.web.mock.MockOperation;
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.measure.app.vo.CheckItemListVO;
+import com.longfor.longjian.measure.app.vo.CheckItemVO;
 import com.longfor.longjian.measure.app.vo.CompanyListVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  *
@@ -24,7 +28,7 @@ public class MeasureAnalysisController {
      */
     @MockOperation
     @PostMapping(value = "res/category", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse getAnalysisCheckItems(RequestParam requestParam){
+    public LjBaseResponse<CheckItemListVO> getAnalysisCheckItems(RequestParam requestParam){
         return null;
     }
 }
