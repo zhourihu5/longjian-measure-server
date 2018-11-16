@@ -1,17 +1,7 @@
 package com.longfor.longjian.basic.dao;
 
+import com.longfor.gaia.gfs.data.mybatis.LFMySQLMapper;
 import com.longfor.longjian.basic.po.User;
 
-public interface UserMapper {
-    int deleteByPrimaryKey(Integer userId);
-
-    int insert(User record);
-
-    int insertSelective(User record);
-
-    User selectByPrimaryKey(Integer userId);
-
-    int updateByPrimaryKeySelective(User record);
-
-    int updateByPrimaryKey(User record);
+public interface UserMapper extends LFMySQLMapper<User> {
 }
