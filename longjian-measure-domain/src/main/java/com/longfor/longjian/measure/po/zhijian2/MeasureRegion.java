@@ -33,6 +33,11 @@ public class MeasureRegion {
     private String drawingMd5;
 
     /**
+     * 点
+     */
+    private String polygon;
+
+    /**
      * 项目下描画区域序号
      */
     @Column(name = "region_index")
@@ -54,6 +59,12 @@ public class MeasureRegion {
      * uuid
      */
     private String uuid;
+
+    /**
+     * 标签id列表以逗号分隔 measure_tag.id
+     */
+    @Column(name = "tag_id_list")
+    private String tagIdList;
 
     /**
      * 创建时间
@@ -160,6 +171,24 @@ public class MeasureRegion {
     }
 
     /**
+     * 获取点
+     *
+     * @return polygon - 点
+     */
+    public String getPolygon() {
+        return polygon;
+    }
+
+    /**
+     * 设置点
+     *
+     * @param polygon 点
+     */
+    public void setPolygon(String polygon) {
+        this.polygon = polygon == null ? null : polygon.trim();
+    }
+
+    /**
      * 获取项目下描画区域序号
      *
      * @return region_index - 项目下描画区域序号
@@ -229,6 +258,24 @@ public class MeasureRegion {
      */
     public void setUuid(String uuid) {
         this.uuid = uuid == null ? null : uuid.trim();
+    }
+
+    /**
+     * 获取标签id列表以逗号分隔 measure_tag.id
+     *
+     * @return tag_id_list - 标签id列表以逗号分隔 measure_tag.id
+     */
+    public String getTagIdList() {
+        return tagIdList;
+    }
+
+    /**
+     * 设置标签id列表以逗号分隔 measure_tag.id
+     *
+     * @param tagIdList 标签id列表以逗号分隔 measure_tag.id
+     */
+    public void setTagIdList(String tagIdList) {
+        this.tagIdList = tagIdList == null ? null : tagIdList.trim();
     }
 
     /**

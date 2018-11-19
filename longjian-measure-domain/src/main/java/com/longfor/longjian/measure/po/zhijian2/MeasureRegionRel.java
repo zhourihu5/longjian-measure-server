@@ -20,6 +20,12 @@ public class MeasureRegionRel {
     private Integer projectId;
 
     /**
+     * 描画区域列表 measure_region.id
+     */
+    @Column(name = "region_ids")
+    private String regionIds;
+
+    /**
      * 创建时间
      */
     @Column(name = "create_at")
@@ -36,12 +42,6 @@ public class MeasureRegionRel {
      */
     @Column(name = "delete_at")
     private Date deleteAt;
-
-    /**
-     * 描画区域列表 measure_region.id
-     */
-    @Column(name = "region_ids")
-    private String regionIds;
 
     /**
      * @return id
@@ -91,6 +91,24 @@ public class MeasureRegionRel {
      */
     public void setProjectId(Integer projectId) {
         this.projectId = projectId;
+    }
+
+    /**
+     * 获取描画区域列表 measure_region.id
+     *
+     * @return region_ids - 描画区域列表 measure_region.id
+     */
+    public String getRegionIds() {
+        return regionIds;
+    }
+
+    /**
+     * 设置描画区域列表 measure_region.id
+     *
+     * @param regionIds 描画区域列表 measure_region.id
+     */
+    public void setRegionIds(String regionIds) {
+        this.regionIds = regionIds == null ? null : regionIds.trim();
     }
 
     /**
@@ -145,23 +163,5 @@ public class MeasureRegionRel {
      */
     public void setDeleteAt(Date deleteAt) {
         this.deleteAt = deleteAt;
-    }
-
-    /**
-     * 获取描画区域列表 measure_region.id
-     *
-     * @return region_ids - 描画区域列表 measure_region.id
-     */
-    public String getRegionIds() {
-        return regionIds;
-    }
-
-    /**
-     * 设置描画区域列表 measure_region.id
-     *
-     * @param regionIds 描画区域列表 measure_region.id
-     */
-    public void setRegionIds(String regionIds) {
-        this.regionIds = regionIds == null ? null : regionIds.trim();
     }
 }

@@ -8,31 +8,26 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="category_key" property="categoryKey" jdbcType="VARCHAR" />
     <result column="desc" property="desc" jdbcType="VARCHAR" />
+    <result column="formula" property="formula" jdbcType="VARCHAR" />
     <result column="formula_default" property="formulaDefault" jdbcType="INTEGER" />
     <result column="group_count_init" property="groupCountInit" jdbcType="INTEGER" />
     <result column="group_count_max" property="groupCountMax" jdbcType="INTEGER" />
     <result column="group_count_min" property="groupCountMin" jdbcType="INTEGER" />
     <result column="point_need" property="pointNeed" jdbcType="INTEGER" />
+    <result column="points" property="points" jdbcType="VARCHAR" />
     <result column="rule_type" property="ruleType" jdbcType="INTEGER" />
     <result column="team_id" property="teamId" jdbcType="INTEGER" />
     <result column="textures" property="textures" jdbcType="VARCHAR" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="delete_at" property="deleteAt" jdbcType="TIMESTAMP" />
-    <result column="formula" property="formula" jdbcType="VARCHAR" />
-    <result column="points" property="points" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     <!--
       WARNING - @mbg.generated
     -->
-    id, category_key, desc, formula_default, group_count_init, group_count_max, group_count_min, 
-    point_need, rule_type, team_id, textures, create_at, update_at, delete_at
-  </sql>
-  <sql id="Blob_Column_List" >
-    <!--
-      WARNING - @mbg.generated
-    -->
-    formula, points
+    id, category_key, desc, formula, formula_default, group_count_init, group_count_max, 
+    group_count_min, point_need, points, rule_type, team_id, textures, create_at, update_at, 
+    delete_at
   </sql>
 </mapper>

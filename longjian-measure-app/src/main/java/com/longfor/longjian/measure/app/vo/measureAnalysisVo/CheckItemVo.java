@@ -14,4 +14,6 @@ public class CheckItemVo {
     private String label;
     private String name;
     private String value;
+
+    private Integer id;
 }

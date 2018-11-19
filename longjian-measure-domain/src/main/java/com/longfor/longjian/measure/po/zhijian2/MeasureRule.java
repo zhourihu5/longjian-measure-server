@@ -20,6 +20,11 @@ public class MeasureRule {
     private String desc;
 
     /**
+     * 公式
+     */
+    private String formula;
+
+    /**
      * 自定义公式
      */
     @Column(name = "formula_default")
@@ -48,6 +53,11 @@ public class MeasureRule {
      */
     @Column(name = "point_need")
     private Integer pointNeed;
+
+    /**
+     * 测点规则集。调用公式时，按照本字段顺序传递参
+     */
+    private String points;
 
     /**
      * 规则类型
@@ -132,6 +142,24 @@ public class MeasureRule {
      */
     public void setDesc(String desc) {
         this.desc = desc == null ? null : desc.trim();
+    }
+
+    /**
+     * 获取公式
+     *
+     * @return formula - 公式
+     */
+    public String getFormula() {
+        return formula;
+    }
+
+    /**
+     * 设置公式
+     *
+     * @param formula 公式
+     */
+    public void setFormula(String formula) {
+        this.formula = formula == null ? null : formula.trim();
     }
 
     /**
@@ -222,6 +250,24 @@ public class MeasureRule {
      */
     public void setPointNeed(Integer pointNeed) {
         this.pointNeed = pointNeed;
+    }
+
+    /**
+     * 获取测点规则集。调用公式时，按照本字段顺序传递参
+     *
+     * @return points - 测点规则集。调用公式时，按照本字段顺序传递参
+     */
+    public String getPoints() {
+        return points;
+    }
+
+    /**
+     * 设置测点规则集。调用公式时，按照本字段顺序传递参
+     *
+     * @param points 测点规则集。调用公式时，按照本字段顺序传递参
+     */
+    public void setPoints(String points) {
+        this.points = points == null ? null : points.trim();
     }
 
     /**
