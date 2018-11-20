@@ -1,6 +1,5 @@
-package com.longfor.longjian.measure.app.vo.ProMeasureVo;
+package com.longfor.longjian.measure.app.vo.proMeasureVo;
 
-import io.swagger.models.auth.In;
 import lombok.Data;
 
 /**

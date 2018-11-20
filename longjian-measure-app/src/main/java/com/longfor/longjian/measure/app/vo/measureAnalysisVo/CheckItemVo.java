@@ -1,7 +1,6 @@
 package com.longfor.longjian.measure.app.vo.measureAnalysisVo;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * Created by wangxs on 2018/11/16.

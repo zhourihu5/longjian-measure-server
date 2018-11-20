@@ -57,4 +57,50 @@ public class RankingVo {
     private String partnerName;
     private String roleType;
 
+
+    /**
+     *集团使用功能统计横向分析查询
+     * 集团使用功能统计趋势查询
+     */
+    private Integer actionCount;
+    private Integer actionCountPerUser;
+    private Integer activeUserRate;
+    private Integer activeUserTotal;
+    private Integer checkedCount;
+    private Integer issueCheckedCount;
+    private Integer issueCreatedCount;
+    private Integer issueReformedCount;
+    private Double projArea;
+    private Integer userTotal;
+
+
+    /**
+     * 项目实测实量统计分析
+     */
+    private Integer finishedZoneCount;
+    private Integer issueZoneCount;
+    private Integer totalZoneCount;
+
+    private Integer areaId;
+    private String areaName;
+
+    private String categoryKey;
+    private String categoryName;
+
+
+
+    /**
+     * 对比人员横向查询
+     */
+    private Integer partnerUserId;
+    private Integer partnerUserName;
+
+    /**
+     * 项目统计分析人员对比工作量查询
+     */
+    private Integer userId;
+    private String userName;
+
+
+
 }

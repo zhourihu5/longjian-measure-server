@@ -1,4 +1,4 @@
-package com.longfor.longjian.measure.app.vo.CheckItemsVo;
+package com.longfor.longjian.measure.app.vo.checkItemsVo;
 
 import lombok.Data;
 

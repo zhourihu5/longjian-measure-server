@@ -3,10 +3,8 @@ package com.longfor.longjian.measure.app.controller;
 import com.longfor.gaia.gfs.web.mock.MockOperation;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
-import com.longfor.longjian.measure.app.vo.ProMeasureVo.*;
+import com.longfor.longjian.measure.app.vo.proMeasureVo.*;
 import lombok.extern.slf4j.Slf4j;
-import org.bouncycastle.cert.ocsp.Req;
-import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,12 +67,14 @@ public class ProMeasureQuickSearchController {
     /**
      * go项目实测爆点整改区域
      * http://192.168.37.159:3000/mock/8//oapi/v3/area/area/subs/?_ct=json&project_id=927&page_level=project&group_id=4&team_id=25
+     * go项目实测快速查询区域合格率选择区域
+     * http://192.168.37.159:3000/mock/8///oapi/v3/area/area/subs/?_ct=json&project_id=927&page_level=project&group_id=4&team_id=25
      * @param requestParam
      * @return
      */
     @MockOperation
     @GetMapping(value = "area/area/subs/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<ItemsVo<List<ProMeasureAreaVo>>> getBlisterAreaList(RequestParam requestParam){
+    public LjBaseResponse<AreaInfoVo> getBlisterAreaList(RequestParam requestParam){
         return null;
     }
 
@@ -138,4 +138,41 @@ public class ProMeasureQuickSearchController {
     public LjBaseResponse<BlisterRateInfoVo> getBlisterRateInfo(RequestParam requestParam){
         return null;
     }
+
+
+    /**
+     * go项目实测快速查询爆点情况时间节点
+     * http://192.168.37.159:3000/mock/8/oapi/v3/measure/measure_statistic/issue_trend_json/?_ct=json&project_id=927&page_level=project&group_id=4&team_id=25&measure_list_id=5527&begin_on=0&end_on=0
+     * @param requestParam
+     * @return
+     */
+    @MockOperation
+    @GetMapping(value = "measure/measure_statistic/issue_trend_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public LjBaseResponse<ItemsVo<List<BlisterTimeNotesVo>>> getBlisterRateInfoTimeNotes(RequestParam requestParam){
+        return null;
+    }
+
+    /**
+     * go项目实测快速查询爆点情况检查项
+     * http://192.168.37.159:3000/mock/8/oapi/v3/measure/measure_statistic/issue_distribution_category_json/?_ct=json&project_id=927&page_level=project&group_id=4&team_id=25&measure_list_id=5527&category_key=
+     * @param requestParam
+     * @return
+     */
+    @MockOperation
+    @GetMapping(value = "measure/measure_statistic/issue_distribution_category_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public LjBaseResponse<BlisterCheckItemsVo> getBlisterRateCheckItems(RequestParam requestParam){
+        return null;
+    }
+
+    /**
+     * go项目实测快速查询区域合格率查询
+     * http://192.168.37.159:3000/mock/8/oapi/v3/measure/measure_statistic/sub_category_area_percentage/?_ct=json&project_id=927&page_level=project&group_id=4&team_id=25&list_ids=5525&area_ids=2942526&parent_category_key=10203
+     * @return
+     */
+    @MockOperation
+    @GetMapping(value = "measure/measure_statistic/sub_category_area_percentage/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public LjBaseResponse<ItemsVo<List<AreaPOPVo>>> getAreaPOP(RequestParam requestParam){
+        return null;
+    }
+    
 }

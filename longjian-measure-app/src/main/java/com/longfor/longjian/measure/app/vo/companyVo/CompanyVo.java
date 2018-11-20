@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by lipeishuai on 2018/11/11.
@@ -18,7 +19,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class CompanyVo implements Serializable {
 
-    @ApiModelProperty(value = "自增id")
     private int id;
     private String name;
     private int parent_id;
@@ -26,5 +26,7 @@ public class CompanyVo implements Serializable {
     private int level;
     private int display_index;
     private int is_group;
+
+    private List<ProjVo> projs;
 
 }
