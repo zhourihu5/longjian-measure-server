@@ -8,4 +8,6 @@ import lombok.Data;
  */
 @Data
 public class RelVo {
+    private Integer id;
+    private Integer project_id;
 }
