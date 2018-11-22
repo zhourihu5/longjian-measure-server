@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- *
+ * GO服务
  * @author wangxs
  * @date 2018-11-17 12:17
  */

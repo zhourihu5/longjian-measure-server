@@ -1,4 +1,4 @@
-package com.longfor.longjian.measure.app.controller;
+package com.longfor.longjian.measure.app.controller.appController;
 
 import com.longfor.gaia.gfs.web.mock.MockOperation;
 import com.longfor.longjian.common.base.LjBaseResponse;

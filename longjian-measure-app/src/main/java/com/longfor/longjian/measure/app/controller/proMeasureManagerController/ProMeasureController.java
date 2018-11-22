@@ -1,4 +1,4 @@
-package com.longfor.longjian.measure.app.controller;
+package com.longfor.longjian.measure.app.controller.proMeasureManagerController;
 
 import com.longfor.gaia.gfs.web.mock.MockOperation;
 import com.longfor.longjian.common.base.LjBaseResponse;
@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- *
+ * go服务
+ * 项目实测实量
  * @author wangxs
  * @date 2018-11-17 14:07
  */

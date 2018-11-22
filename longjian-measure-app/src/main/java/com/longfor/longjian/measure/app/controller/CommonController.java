@@ -24,6 +24,7 @@ import java.util.List;
 public class CommonController {
 
     /**
+     * zj_bgtask_server 服务
      * 项目实测实量任务记录导出pdf
      * http://192.168.37.159:3000/project/8/interface/api/744
      * 项目创建实测实量任务生成任务
@@ -38,6 +39,7 @@ public class CommonController {
     }
 
     /**
+     * zj_core_check_item 服务
      * 项目创建实测实量任务请求检查项
      * http://192.168.37.159:3000/project/8/interface/api/746
      * @return

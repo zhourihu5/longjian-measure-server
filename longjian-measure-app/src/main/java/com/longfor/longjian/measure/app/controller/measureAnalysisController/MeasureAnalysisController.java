@@ -1,9 +1,8 @@
-package com.longfor.longjian.measure.app.controller;
+package com.longfor.longjian.measure.app.controller.measureAnalysisController;
 
 import com.longfor.gaia.gfs.web.mock.MockOperation;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
-import com.longfor.longjian.measure.app.vo.companyVo.CompanyVo;
 import com.longfor.longjian.measure.app.vo.measureAnalysisVo.*;
 import com.longfor.longjian.measure.app.vo.ResultVo;
 import lombok.extern.slf4j.Slf4j;
@@ -20,12 +19,13 @@ import java.util.List;
  * @date 2018-11-16 14:16
  */
 @RestController
-@RequestMapping("gapi/v3/")
+@RequestMapping("gapi/v3/stat_measure/")
 @Slf4j
 public class MeasureAnalysisController {
 
     /**
      * 集团统计分析检查项
+     * http://192.168.37.159:3000/project/8/interface/api/64
      * 集团合作伙伴检查项标准
      * 公司统计分析检查项
      * http://192.168.37.159:3000/mock/8/////gapi/v3/res/category?team_id=25&page_level=team&group_id=4&tip=categorySubs
@@ -40,11 +40,11 @@ public class MeasureAnalysisController {
      * @param requestParam
      * @return
      */
-    @MockOperation
-    @PostMapping(value = "res/category", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<ResultVo<List<CheckItemVo>>> getAnalysisCheckItems(RequestParam requestParam){
-        return null;
-    }
+//    @MockOperation
+//    @PostMapping(value = "res/category", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//    public LjBaseResponse<ResultVo<List<CheckItemVo>>> getAnalysisCheckItems(RequestParam requestParam){
+//        return null;
+//    }
 
     /**
      * 集团统计分析统计指标合格率 + 每天
@@ -60,7 +60,7 @@ public class MeasureAnalysisController {
      * @return
      */
     @MockOperation
-    @PostMapping(value = "stat_measure/stat/group", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "stat/group", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<ResultVo<ItemsVo<List<RankingVo>>>> getJTPOPTotal(RequestParam requestParam){
         return null;
     }
@@ -76,11 +76,11 @@ public class MeasureAnalysisController {
      * @param requestParam
      * @return
      */
-    @MockOperation
-    @PostMapping(value = "res/org", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<ResultVo<CompanyVo>> getCompanyList(RequestParam requestParam){
-        return null;
-    }
+//    @MockOperation
+//    @PostMapping(value = "res/org", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//    public LjBaseResponse<ResultVo<CompanyVo>> getCompanyList(RequestParam requestParam){
+//        return null;
+//    }
 
     /**
      * 集团统计合作伙伴选择组织 ResultVo<List<OrganizationInfoVo>>
@@ -93,7 +93,7 @@ public class MeasureAnalysisController {
      * @return
      */
     @MockOperation
-    @PostMapping(value = "stat_measure/stat/partner_board", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "stat/partner_board", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<ResultVo<OrganizationVo>> getOrganization(RequestParam requestParam){
         return null;
     }
@@ -115,7 +115,7 @@ public class MeasureAnalysisController {
      * @return
      */
     @MockOperation
-    @PostMapping(value = "stat_measure/issue_action", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "issue_action", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<ResultVo<UsedFuncAnalysisVo>> getUsedFunc(RequestParam requestParam){
         return null;
     }
@@ -138,7 +138,7 @@ public class MeasureAnalysisController {
      * @return
      */
     @MockOperation
-    @PostMapping(value = "stat_measure/stat/team", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "stat/team", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<ResultVo<AnalysisVo>> getTeamPOPTotal(RequestParam requestParam){
         return null;
     }
@@ -173,7 +173,7 @@ public class MeasureAnalysisController {
      * @return
      */
     @MockOperation
-    @PostMapping(value = "stat_measure/stat/proj", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "stat/proj", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<ResultVo<AnalysisVo>> getProjPOPTotal(RequestParam requestParam){
         return null;
     }
@@ -184,9 +184,9 @@ public class MeasureAnalysisController {
      * @param requestParam
      * @return
      */
-    @MockOperation
-    @PostMapping(value = "res/area", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<ResultVo<List<AreaInfoVo>>> getAreaList(RequestParam requestParam){
-        return null;
-    }
+//    @MockOperation
+//    @PostMapping(value = "res/area", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//    public LjBaseResponse<ResultVo<List<AreaInfoVo>>> getAreaList(RequestParam requestParam){
+//        return null;
+//    }
 }

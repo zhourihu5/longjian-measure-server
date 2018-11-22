@@ -1,4 +1,4 @@
-package com.longfor.longjian.measure.app.controller;
+package com.longfor.longjian.measure.app.controller.paintAreaController;
 
 import com.longfor.gaia.gfs.web.mock.MockOperation;
 import com.longfor.longjian.common.base.LjBaseResponse;
@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ * app_area 服务
+ * 属于公共服务
  * 项目描画区域管理
  * 请求区域
  * wangxs

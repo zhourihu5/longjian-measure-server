@@ -1,4 +1,4 @@
-package com.longfor.longjian.measure.app.controller;
+package com.longfor.longjian.measure.app.controller.appController;
 
 import com.longfor.gaia.gfs.web.mock.MockOperation;
 import com.longfor.longjian.common.base.LjBaseResponse;
@@ -170,6 +170,8 @@ public class APPMeasureSyncController {
     /**
      * 读取测量结果-分批
      * http://192.168.37.159:3000/project/8/interface/api/432
+     * 项目同步/v3/api/measure/measure_zone_result_v2
+     * http://192.168.37.159:3000/project/8/interface/api/644
      * @return
      */
     @MockOperation

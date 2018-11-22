@@ -1,4 +1,4 @@
-package com.longfor.longjian.measure.app.controller;
+package com.longfor.longjian.measure.app.controller.appController;
 
 import com.longfor.gaia.gfs.web.mock.MockOperation;
 import com.longfor.longjian.common.base.LjBaseResponse;
@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- *   app 端实测实量统计分析
+ * app 端实测实量统计分析
  * wangxs
  * 2018-11-20
  */
 @RestController
 @RequestMapping("gapi/v3")
 @Slf4j
-public class APPAnalysis {
+public class APPAnalysisController {
     /**
      * 统计-获取整改追踪问题列表
      * http://192.168.37.159:3000/project/8/interface/api/450
