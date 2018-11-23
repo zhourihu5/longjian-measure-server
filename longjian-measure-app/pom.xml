@@ -29,8 +29,24 @@
         </dependency>
         <dependency>
             <groupId>com.longfor.longjian</groupId>
+            <artifactId>longjian-measure-common</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.longfor.longjian</groupId>
             <artifactId>longjian-common</artifactId>
             <version>1.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphql-spring-boot-starter</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphiql-spring-boot-starter</artifactId>
+            <version>4.0.0</version>
         </dependency>
 
     </dependencies>

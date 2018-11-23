@@ -27,4 +27,30 @@
     id, project_id, area_id, area_path_and_id, drawing_md5, polygon, region_index, rel_id, 
     src_type, uuid, tag_id_list, create_at, update_at, delete_at
   </sql>
+
+  <select id="getProjMeasureRegionByAreaId" resultType="map">
+    SELECT
+    mr.area_id,
+    mr.area_path_and_id,
+    mr.drawing_md5,
+    mr.id,
+    mr.polygon AS Polygon,
+    mr.project_id AS proj_id,
+    mr.region_index,
+    mr.rel_id,
+    mr.src_type,
+    mr.tag_id_list,
+    mr.uuid,
+    mrr.id AS relId,
+    mrr.`desc`,
+    mrr.region_ids
+    FROM
+    measure_region mr
+    JOIN measure_region_rel mrr ON mr.rel_id = mrr.id
+    WHERE
+    mr.project_id = #{projId}
+    AND mr.area_id = #{areaId}
+    AND mr.delete_at IS NULL
+    AND mrr.delete_at IS NULL
+  </select>
 </mapper>

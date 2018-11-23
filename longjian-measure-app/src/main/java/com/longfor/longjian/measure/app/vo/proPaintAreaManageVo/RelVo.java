@@ -8,6 +8,16 @@ import lombok.Data;
  */
 @Data
 public class RelVo {
+    /**
+     * '关系id'
+     */
     private Integer id;
-    private Integer project_id;
+    /**
+     * '描述'
+     */
+    private String desc;
+    /**
+     * '描区id列表'
+     */
+    private String region_ids;
 }

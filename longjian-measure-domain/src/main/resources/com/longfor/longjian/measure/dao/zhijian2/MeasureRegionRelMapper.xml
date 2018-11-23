@@ -19,4 +19,16 @@
     -->
     id, desc, project_id, region_ids, create_at, update_at, delete_at
   </sql>
+
+  <select id="selectByRelId" resultType="map">
+    SELECT
+    id,
+    `desc`,
+    region_ids
+    FROM
+    measure_region_rel
+    WHERE
+    id = #{relId}
+    AND delete_at IS NULL
+  </select>
 </mapper>

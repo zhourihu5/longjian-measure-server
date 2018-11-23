@@ -1,11 +1,11 @@
-package com.longfor.longjian.measure.consts;
+package com.longfor.longjian.measure.consts.Enum;
 
 /**
  * Created by lipeishuai on 2018/11/11.
  */
-public enum GroupPaymentEnum {
+public enum CompanyLevelEnum {
 
-    TRIAL(10, "未付费"),PURCHASED(20, "已付费");
+    Group(1, "集团"),Team(2, "公司"),SubTeam(3, "子公司");
 
     private Integer id;
     private String value;
@@ -26,8 +26,10 @@ public enum GroupPaymentEnum {
         this.value = value;
     }
 
-    GroupPaymentEnum(Integer id, String value) {
+    CompanyLevelEnum(Integer id, String value) {
         this.id = id;
         this.value = value;
     }
+
+
 }

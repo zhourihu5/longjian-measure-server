@@ -20,4 +20,35 @@
     -->
     id, name, group_id, proj_id, ownership, create_at, update_at, delete_at
   </sql>
+
+  <select id="searchByGroupId" resultType="map">
+    SELECT
+    id tag_id,
+    NAME name,
+    group_id,
+    proj_id,
+    ownership
+    FROM
+    measure_tag
+    WHERE
+    group_id = #{groupId}
+    AND ownership = #{ownership}
+    AND delete_at IS NULL
+  </select>
+
+  <select id="searchByGroupIdAndProjId" resultType="map">
+    SELECT
+    id tag_id,
+    NAME name,
+    group_id,
+    proj_id,
+    ownership
+    FROM
+    measure_tag
+    WHERE
+    group_id = #{groupId}
+    AND proj_id = #{projId}
+    AND ownership = #{ownership}
+    AND delete_at IS NULL
+  </select>
 </mapper>

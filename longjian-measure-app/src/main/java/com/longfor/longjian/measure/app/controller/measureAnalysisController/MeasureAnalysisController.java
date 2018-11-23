@@ -2,16 +2,21 @@ package com.longfor.longjian.measure.app.controller.measureAnalysisController;
 
 import com.longfor.gaia.gfs.web.mock.MockOperation;
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.measure.app.appService.measureAnalysisService.IStatGroupService;
+import com.longfor.longjian.measure.app.req.measureAnalysisReq.StatGroupReq;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
 import com.longfor.longjian.measure.app.vo.measureAnalysisVo.*;
 import com.longfor.longjian.measure.app.vo.ResultVo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
+ * zhijian_server_stat_measure 服务
  * 集团统计分析
  * 公司统计分析
  * 项目统计分析
@@ -22,6 +27,9 @@ import java.util.List;
 @RequestMapping("gapi/v3/stat_measure/")
 @Slf4j
 public class MeasureAnalysisController {
+
+    @Autowired
+    private IStatGroupService statGroupService;
 
     /**
      * 集团统计分析检查项
@@ -48,6 +56,8 @@ public class MeasureAnalysisController {
 
     /**
      * 集团统计分析统计指标合格率 + 每天
+     * http://192.168.37.159:3000/project/8/interface/api/68
+     * http://192.168.37.159:3000/project/8/interface/api/70
      * 集团统计分析组织对比公司排名
      * 集团统计分析组织对项目对比
      * 集团统计分析组织对比总包单位对比，分包单位对比，监理单位对比
@@ -56,13 +66,14 @@ public class MeasureAnalysisController {
      * 集团合作伙伴横向对比检查项
      * 集团合作伙伴分项详情
      * http://192.168.37.159:3000/mock/8////gapi/v3/stat_measure/stat/group?group_id=4&page_level=group&tip=partnersByRoleType Request Method: POST
-     * @param requestParam
+     * @param statGroupReq
      * @return
      */
     @MockOperation
     @PostMapping(value = "stat/group", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<ResultVo<ItemsVo<List<RankingVo>>>> getJTPOPTotal(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<ResultVo<ItemsVo<List<RankingVo>>>> statGroup(@Valid@RequestParam StatGroupReq statGroupReq){
+        LjBaseResponse<ResultVo<ItemsVo<List<RankingVo>>>> ljBaseResponse = statGroupService.getStatGroup(statGroupReq);
+        return ljBaseResponse;
     }
 
     /**
