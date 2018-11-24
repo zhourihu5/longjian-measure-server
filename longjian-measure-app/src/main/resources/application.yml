@@ -17,6 +17,7 @@ logging:
   level:
     ROOT: WARN
     com.longfor: INFO
+    com.longfor.longjian.measure.dao : debug
 
 management:
   security:

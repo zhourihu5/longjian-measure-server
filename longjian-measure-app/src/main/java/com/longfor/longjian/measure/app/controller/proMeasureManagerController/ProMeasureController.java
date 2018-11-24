@@ -2,18 +2,21 @@ package com.longfor.longjian.measure.app.controller.proMeasureManagerController;
 
 import com.longfor.gaia.gfs.web.mock.MockOperation;
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.measure.app.appService.proMeasureManagerService.IProMeasureService;
+import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasurePlanListReq;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
-import com.longfor.longjian.measure.app.vo.proMeasureVo.CheckerVo;
-import com.longfor.longjian.measure.app.vo.proMeasureVo.ProMeasureAreaVo;
-import com.longfor.longjian.measure.app.vo.proMeasureVo.ProMeasureCheckIteamVo;
-import com.longfor.longjian.measure.app.vo.proMeasureVo.ProMeasurePlanVo;
+import com.longfor.longjian.measure.app.vo.proMeasureVo.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -27,15 +30,20 @@ import java.util.List;
 @Slf4j
 public class ProMeasureController {
 
+    @Autowired
+    private IProMeasureService proMeasureService;
+
     /**
      * go项目实测任务列表
-     * @param requestParam
+     *
+     * @param getProMeasurePlanListReq
      * @return
      */
-    @MockOperation
     @GetMapping(value = "measure/measure_list/search_json/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<ItemsVo<List<ProMeasurePlanVo>>> getProMeasurePlanList(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<ProMeasurePlanListVo> getProMeasurePlanList(@Valid GetProMeasurePlanListReq getProMeasurePlanListReq) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
+        System.out.println(getProMeasurePlanListReq.getUser_ids());
+        LjBaseResponse<ProMeasurePlanListVo> ljBaseResponse = proMeasureService.getProMeasurePlanList(getProMeasurePlanListReq);
+        return ljBaseResponse;
     }
 
     /**

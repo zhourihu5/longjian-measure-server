@@ -2,7 +2,6 @@ package com.longfor.longjian.measure.app.controller.measureAnalysisController;
 
 import com.longfor.gaia.gfs.web.mock.MockOperation;
 import com.longfor.longjian.common.base.LjBaseResponse;
-import com.longfor.longjian.measure.app.appService.measureAnalysisService.IStatGroupService;
 import com.longfor.longjian.measure.app.req.measureAnalysisReq.StatGroupReq;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
 import com.longfor.longjian.measure.app.vo.measureAnalysisVo.*;
@@ -28,8 +27,6 @@ import java.util.List;
 @Slf4j
 public class MeasureAnalysisController {
 
-    @Autowired
-    private IStatGroupService statGroupService;
 
     /**
      * 集团统计分析检查项
@@ -71,9 +68,8 @@ public class MeasureAnalysisController {
      */
     @MockOperation
     @PostMapping(value = "stat/group", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<ResultVo<ItemsVo<List<RankingVo>>>> statGroup(@Valid@RequestParam StatGroupReq statGroupReq){
-        LjBaseResponse<ResultVo<ItemsVo<List<RankingVo>>>> ljBaseResponse = statGroupService.getStatGroup(statGroupReq);
-        return ljBaseResponse;
+    public LjBaseResponse<ResultVo<ItemsVo<List<RankingVo>>>> statGroup(@Valid StatGroupReq statGroupReq){
+        return null;
     }
 
     /**

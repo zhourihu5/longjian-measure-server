@@ -54,22 +54,11 @@
 
 
         <!-- 指定数据库表 -->
-        <table schema="" tableName="measure_region" enableCountByExample="false" enableUpdateByExample="false"
+        <table schema="" tableName="area" enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
-            <columnOverride column = "polygon" javaType = "java.lang.String" jdbcType="VARCHAR" />
-            <columnOverride column = "tag_id_list" javaType = "java.lang.String" jdbcType="VARCHAR" />
-        </table>
-        <table schema="" tableName="measure_region_rel" enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false">
-            <columnOverride column = "region_ids" javaType = "java.lang.String" jdbcType="VARCHAR" />
-        </table>
-        <table schema="" tableName="measure_rule" enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false">
-            <columnOverride column = "formula" javaType = "java.lang.String" jdbcType="VARCHAR" />
-            <columnOverride column = "points" javaType = "java.lang.String" jdbcType="VARCHAR" />
+            <!--<columnOverride column = "formula" javaType = "java.lang.String" jdbcType="VARCHAR" />-->
+            <!--<columnOverride column = "points" javaType = "java.lang.String" jdbcType="VARCHAR" />-->
         </table>
     </context>
 </generatorConfiguration>

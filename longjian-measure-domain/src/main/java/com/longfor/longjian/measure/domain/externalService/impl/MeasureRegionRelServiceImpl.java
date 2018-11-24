@@ -5,6 +5,7 @@ import com.longfor.longjian.measure.domain.externalService.IMeasureRegionRelServ
 import com.longfor.longjian.measure.po.zhijian2.MeasureRegionRel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.Map;
 
 @Service

@@ -25,4 +25,83 @@
     id, name, project_id, area_type, close_status, finish_status, root_category_key, 
     plan_begin_on, plan_end_on, create_at, update_at, delete_at
   </sql>
+
+  <select id="getMeasureList" resultType="map">
+    SELECT
+    ml.close_status as closeStatusId,
+    ml.create_at as createAt,
+    ml.finish_status as finishStatusId,
+    ml.id,
+    ml. NAME AS `name`,
+    cv3.`name` AS root_category
+    FROM
+    measure_list ml
+    JOIN category_v3 cv3 ON ml.root_category_key = cv3.`key`
+    AND cv3.delete_at IS NULL
+    <if test="userIds != null and userIds.length > 0 ">
+      JOIN measure_squad_user msu on msu.list_id = ml.id
+      AND msu.project_id = #{projectId}
+      AND msu.user_id in
+      <foreach collection="userIds" index="index" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+    <if test="categoryPathAndKey != null and categoryPathAndKey != ''">
+      JOIN measure_zone mz on mz.list_id = ml.id
+      AND mz.project_id = #{projectId}
+      AND mz.category_path_and_key LIKE concat(#{categoryPathAndKey},'%')
+    </if>
+    <if test="areaPathAndId != null and areaPathAndId != ''">
+      JOIN measure_list_area mla on mla.list_id = ml.id
+      AND mla.project_id = #{projectId}
+      AND mla.area_path_and_id LIKE concat(#{areaPathAndId},'%')
+    </if>
+    WHERE
+    ml.project_id = #{projectId}
+    AND ml.delete_at IS NULL
+    <if test="finishStatus != null and finishStatus > 0">
+     AND ml.finish_status = #{finishStatus}
+    </if>
+    <if test="q != null and q != ''">
+     AND ml.name like concat('%',#{q},'%')
+    </if>
+    LIMIT #{page} ,#{pageSize}
+  </select>
+
+  <select id="getTotalMeasure" resultType="int">
+    SELECT
+    count(ml.id)
+    FROM
+    measure_list ml
+    JOIN category_v3 cv3 ON ml.root_category_key = cv3.`key`
+    AND cv3.delete_at IS NULL
+    <if test="userIds != null and userIds.length > 0 ">
+      JOIN measure_squad_user msu on msu.list_id = ml.id
+      AND msu.project_id = #{projectId}
+      AND msu.user_id in
+      <foreach collection="userIds" index="index" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+    <if test="categoryPathAndKey != null and categoryPathAndKey != ''">
+      JOIN measure_zone mz on mz.list_id = ml.id
+      AND mz.project_id = #{projectId}
+      AND mz.category_path_and_key LIKE concat(#{categoryPathAndKey},'%')
+    </if>
+    <if test="areaPathAndId != null and areaPathAndId != ''">
+      JOIN measure_list_area mla on mla.list_id = ml.id
+      AND mla.project_id = #{projectId}
+      AND mla.area_path_and_id LIKE concat(#{areaPathAndId},'%')
+    </if>
+    WHERE
+    ml.project_id = #{projectId}
+    AND ml.delete_at IS NULL
+    <if test="finishStatus != null and finishStatus > 0">
+      AND ml.finish_status = #{finishStatus}
+    </if>
+    <if test="q != null and q != ''">
+      AND ml.name like concat('%',#{q},'%')
+    </if>
+  </select>
+
 </mapper>

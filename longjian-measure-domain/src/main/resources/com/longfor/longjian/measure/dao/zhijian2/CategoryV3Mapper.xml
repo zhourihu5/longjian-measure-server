@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.longfor.longjian.measure.dao.zhijian2.CategoryV3Mapper" >
+  <resultMap id="BaseResultMap" type="com.longfor.longjian.measure.po.zhijian2.CategoryV3" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="father_key" property="fatherKey" jdbcType="VARCHAR" />
+    <result column="key" property="key" jdbcType="VARCHAR" />
+    <result column="path" property="path" jdbcType="VARCHAR" />
+    <result column="cls" property="cls" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="root_category_id" property="rootCategoryId" jdbcType="INTEGER" />
+    <result column="team_id" property="teamId" jdbcType="INTEGER" />
+    <result column="order" property="order" jdbcType="VARCHAR" />
+    <result column="zj_std_key" property="zjStdKey" jdbcType="VARCHAR" />
+    <result column="custom_key" property="customKey" jdbcType="VARCHAR" />
+    <result column="desc" property="desc" jdbcType="VARCHAR" />
+    <result column="node_status" property="nodeStatus" jdbcType="INTEGER" />
+    <result column="file_md5" property="fileMd5" jdbcType="VARCHAR" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="delete_at" property="deleteAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, father_key, key, path, cls, name, root_category_id, team_id, order, zj_std_key, 
+    custom_key, desc, node_status, file_md5, create_at, update_at, delete_at
+  </sql>
+</mapper>
