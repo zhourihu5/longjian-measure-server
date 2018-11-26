@@ -39,4 +39,28 @@
     -->
     location
   </sql>
+
+  <select id="selectByFatherId" resultType="map">
+    SELECT
+    area_class_id areaClassId,
+    create_at createAt,
+    delete_at deleteAt,
+    drawing_md5 drawingMd5,
+    father_id fatherId,
+    id,
+    is_lock isLock,
+    location,
+    `name`,
+    order_by orderBy,
+    path,
+    project_id projectId,
+    type typ,
+    update_at updateAt
+    FROM
+    area
+    WHERE
+    project_id = #{projectId}
+    AND father_id = #{areaId}
+    AND delete_at IS NULL
+  </select>
 </mapper>

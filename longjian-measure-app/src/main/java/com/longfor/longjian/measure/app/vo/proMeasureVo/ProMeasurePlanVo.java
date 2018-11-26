@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class ProMeasurePlanVo {
     private String close_status;
-    private Integer create_at;
+    private Long create_at;
     private String finish_status;
     private Integer id;
     private Integer issue_count;

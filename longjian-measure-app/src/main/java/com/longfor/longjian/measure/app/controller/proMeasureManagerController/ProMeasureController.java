@@ -3,6 +3,8 @@ package com.longfor.longjian.measure.app.controller.proMeasureManagerController;
 import com.longfor.gaia.gfs.web.mock.MockOperation;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.proMeasureManagerService.IProMeasureService;
+import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureAreaListReq;
+import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureCheckItemsReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasurePlanListReq;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.*;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -35,38 +38,40 @@ public class ProMeasureController {
 
     /**
      * go项目实测任务列表
-     *
+     * http://192.168.37.159:3000/project/8/interface/api/140
      * @param getProMeasurePlanListReq
      * @return
      */
     @GetMapping(value = "measure/measure_list/search_json/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<ProMeasurePlanListVo> getProMeasurePlanList(@Valid GetProMeasurePlanListReq getProMeasurePlanListReq) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
-        System.out.println(getProMeasurePlanListReq.getUser_ids());
+    public LjBaseResponse<ProMeasurePlanListVo> getProMeasurePlanList(@Valid GetProMeasurePlanListReq getProMeasurePlanListReq) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException, ParseException {
         LjBaseResponse<ProMeasurePlanListVo> ljBaseResponse = proMeasureService.getProMeasurePlanList(getProMeasurePlanListReq);
         return ljBaseResponse;
     }
 
     /**
      * go项目实测任务列表请求检查项
-     * @param requestParam
+     * http://192.168.37.159:3000/project/8/interface/api/148
+     * @param getProMeasureCheckItemsReq
      * @return
      */
-    @MockOperation
     @GetMapping(value = "measure/measure_list/sub_categorys/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<ItemsVo<List<ProMeasureCheckIteamVo>>> getProMeasureCheckItems(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<ItemsVo<List<ProMeasureCheckIteamVo>>> getProMeasureCheckItems(GetProMeasureCheckItemsReq getProMeasureCheckItemsReq) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        LjBaseResponse<ItemsVo<List<ProMeasureCheckIteamVo>>> ljBaseResponse = proMeasureService.getProMeasureCheckItems(getProMeasureCheckItemsReq);
+        return ljBaseResponse;
     }
 
     /**
      * go项目实测任务列表区域
+     * http://192.168.37.159:3000/project/8/interface/api/150
      * go项目实测任务列表区域详情楼层
-     * @param requestParam
+     * http://192.168.37.159:3000/project/8/interface/api/160
+     * @param getProMeasureAreaListReq
      * @return
      */
-    @MockOperation
     @GetMapping(value = "area/area/subs/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<ItemsVo<List<ProMeasureAreaVo>>> getProMeasureAreaList(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<ItemsVo<List<ProMeasureAreaVo>>> getProMeasureAreaList(@Valid GetProMeasureAreaListReq getProMeasureAreaListReq) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        LjBaseResponse<ItemsVo<List<ProMeasureAreaVo>>> ljBaseResponse = proMeasureService.getProMeasureAreaList(getProMeasureAreaListReq);
+        return ljBaseResponse;
     }
 
     /**

@@ -1,9 +1,8 @@
 package com.longfor.longjian.measure.app.controller.paintAreaController;
 
-import com.longfor.gaia.gfs.web.mock.MockOperation;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.paintAreaService.IProPaintAreaManageService;
-import com.longfor.longjian.measure.app.req.GetProjMeasureRegionReq;
+import com.longfor.longjian.measure.app.req.paintAreaReq.GetProjMeasureRegionReq;
 import com.longfor.longjian.measure.app.req.paintAreaReq.GetGroupMeasureRegionTagReq;
 import com.longfor.longjian.measure.app.req.paintAreaReq.GetProjMeasureRegionTagReq;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.AreaRegionTagVo;

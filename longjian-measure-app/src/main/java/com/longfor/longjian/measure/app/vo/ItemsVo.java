@@ -8,5 +8,5 @@ import lombok.Data;
  */
 @Data
 public class ItemsVo<T> {
-    private T iteams;
+    private T items;
 }

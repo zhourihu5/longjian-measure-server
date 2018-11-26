@@ -1,4 +1,4 @@
-package com.longfor.longjian.measure.app.req;
+package com.longfor.longjian.measure.app.req.paintAreaReq;
 
 import lombok.Data;
 

@@ -1,29 +1,34 @@
 package com.longfor.longjian.measure.app.appService.proMeasureManagerService.impl;
 
-import com.alibaba.druid.sql.ast.statement.SQLForeignKeyImpl;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.proMeasureManagerService.IProMeasureService;
+import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureAreaListReq;
+import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureCheckItemsReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasurePlanListReq;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
+import com.longfor.longjian.measure.app.vo.proMeasureVo.ProMeasureAreaVo;
+import com.longfor.longjian.measure.app.vo.proMeasureVo.ProMeasureCheckIteamVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.ProMeasurePlanListVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.ProMeasurePlanVo;
-import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.TagListVo;
+import com.longfor.longjian.measure.consts.constant.CategoryClsTypeConstant;
 import com.longfor.longjian.measure.consts.util.ConvertUtil;
+import com.longfor.longjian.measure.consts.util.DateUtil;
 import com.longfor.longjian.measure.domain.externalService.IAreaService;
-import com.longfor.longjian.measure.domain.externalService.ICategoryService;
+import com.longfor.longjian.measure.domain.externalService.ICategoryV3Service;
+import com.longfor.longjian.measure.domain.externalService.IMeasureListIssueService;
 import com.longfor.longjian.measure.domain.externalService.IMeasureListService;
 import com.longfor.longjian.measure.po.zhijian2.Area;
 import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
-import com.longfor.longjian.measure.po.zhijian2.MeasureList;
-import com.sun.org.apache.regexp.internal.RE;
+import com.longfor.longjian.measure.po.zhijian2_apisvr.Team;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.longfor.longjian.measure.consts.constant.MeasureListConstant;
 
-import javax.sql.rowset.spi.SyncResolver;
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
 import java.util.*;
 
 @Service
@@ -31,14 +36,16 @@ import java.util.*;
 public class ProMeasureServiceImpl implements IProMeasureService {
 
     @Autowired
-    private ICategoryService categoryService;
+    private ICategoryV3Service categoryV3Service;
     @Autowired
     private IAreaService areaService;
     @Autowired
     private IMeasureListService measureListService;
+    @Autowired
+    private IMeasureListIssueService measureListIssueService;
 
     @Override
-    public LjBaseResponse<ProMeasurePlanListVo> getProMeasurePlanList(GetProMeasurePlanListReq getProMeasurePlanListReq) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    public LjBaseResponse<ProMeasurePlanListVo> getProMeasurePlanList(GetProMeasurePlanListReq getProMeasurePlanListReq) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException, ParseException {
         LjBaseResponse<ProMeasurePlanListVo> ljBaseResponse = new LjBaseResponse<>();
         ProMeasurePlanListVo proMeasurePlanListVo = new ProMeasurePlanListVo();
         // todo 权限鉴定（通过http请求公共方法），获取项目（包括用户？）信息等，暂时项目id从前端获取
@@ -57,6 +64,65 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         proMeasurePlanListVo.setItems(list);
         proMeasurePlanListVo.setTotal(total);
         ljBaseResponse.setData(proMeasurePlanListVo);
+        return ljBaseResponse;
+    }
+
+    @Override
+    public LjBaseResponse<ItemsVo<List<ProMeasureCheckIteamVo>>> getProMeasureCheckItems(GetProMeasureCheckItemsReq getProMeasureCheckItemsReq) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
+        LjBaseResponse<ItemsVo<List<ProMeasureCheckIteamVo>>> ljBaseResponse = new LjBaseResponse<>();
+        ItemsVo<List<ProMeasureCheckIteamVo>> itemsVo = new ItemsVo<>();
+        List<ProMeasureCheckIteamVo> proMeasureCheckIteamVoArrayList = new ArrayList<>();
+        //todo 从sessionz中取出group信息（Team表）,然后找到最顶层的父级team ,暂时手动赋值
+        Team team = new Team();
+        team.setTeamId(4);
+        List<Map<String,Object>> list = new ArrayList<>();
+        if (StringUtils.isNotBlank(getProMeasureCheckItemsReq.getKey())){
+            //查子集
+            list = categoryV3Service.getCategoryByFatherKey(getProMeasureCheckItemsReq.getKey());
+        }else {
+            //查root级
+            list = categoryV3Service.getRootCategoryByClsTeamId(CategoryClsTypeConstant.MEASURE,team.getTeamId());
+        }
+        for (Map<String,Object> map: list) {
+            //map转换成vo
+            ProMeasureCheckIteamVo proMeasureCheckIteamVo = (ProMeasureCheckIteamVo) ConvertUtil.convertMap(ProMeasureCheckIteamVo.class,map);
+            //isParent
+            proMeasureCheckIteamVo.setIsParent(categoryV3Service.getCategoryByFatherKey(map.get("key").toString()).size() > 0);
+            proMeasureCheckIteamVoArrayList.add(proMeasureCheckIteamVo);
+        }
+        itemsVo.setItems(proMeasureCheckIteamVoArrayList);
+        ljBaseResponse.setData(itemsVo);
+        return ljBaseResponse;
+    }
+
+    @Override
+    public LjBaseResponse<ItemsVo<List<ProMeasureAreaVo>>> getProMeasureAreaList(GetProMeasureAreaListReq getProMeasureAreaListReq) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
+        LjBaseResponse<ItemsVo<List<ProMeasureAreaVo>>> ljBaseResponse = new LjBaseResponse<>();
+        ItemsVo<List<ProMeasureAreaVo>> itemsVo = new ItemsVo<>();
+        List<ProMeasureAreaVo> proMeasureAreaVos = new ArrayList<>();
+        List<Map<String,Object>> list = areaService.getProMeasureAreaListByFatherId(getProMeasureAreaListReq.getProject_id(),getProMeasureAreaListReq.getArea_id());
+        for (Map<String,Object> map:list
+             ) {
+            //map转换成vo
+            ProMeasureAreaVo proMeasureAreaVo = (ProMeasureAreaVo) ConvertUtil.convertMap(ProMeasureAreaVo.class,map);
+            proMeasureAreaVo.setIsParent(areaService.getProMeasureAreaListByFatherId(getProMeasureAreaListReq.getProject_id(),map.get("id").toString()).size() > 0);
+            //设置pathNames
+            List<String> names = new ArrayList<>();
+            for (String s:map.get("path").toString().split("/")
+                 ) {
+                if (StringUtils.isNotBlank(s)) {
+                    Area area = areaService.getAreaByProjIdAndAreaId(Integer.parseInt(getProMeasureAreaListReq.getProject_id()), Integer.parseInt(s));
+                    if (area != null) {
+                        names.add(area.getName());
+                    }
+                }
+            }
+            names.add(map.get("name").toString());
+            proMeasureAreaVo.setPathNames(names);
+            proMeasureAreaVos.add(proMeasureAreaVo);
+        }
+        itemsVo.setItems(proMeasureAreaVos);
+        ljBaseResponse.setData(itemsVo);
         return ljBaseResponse;
     }
 
@@ -88,7 +154,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         String categoryPathAndKey = "";
         if (StringUtils.isNoneBlank(getProMeasurePlanListReq.getCategory_key())){
             //查找子集
-            CategoryV3 categoryV3 = categoryService.getCategoryByKey(getProMeasurePlanListReq.getCategory_key());
+            CategoryV3 categoryV3 = categoryV3Service.getCategoryByKey(getProMeasurePlanListReq.getCategory_key());
             if (categoryV3 != null){
                 categoryPathAndKey = categoryV3.getPath() + categoryV3.getKey() + "/";
             }
@@ -104,7 +170,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
      * @param areaPathAndId
      * @return
      */
-    private List<ProMeasurePlanVo> SearchByProjIdCategoryKeyAreaIdStatusUserIdInPage(GetProMeasurePlanListReq getProMeasurePlanListReq, String[] userIds, String categoryPathAndKey, String areaPathAndId) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
+    private List<ProMeasurePlanVo> SearchByProjIdCategoryKeyAreaIdStatusUserIdInPage(GetProMeasurePlanListReq getProMeasurePlanListReq, String[] userIds, String categoryPathAndKey, String areaPathAndId) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException, ParseException {
         List<ProMeasurePlanVo> measurePlanVoList = new ArrayList<>();
         //查询 MeasureList
         List<Map<String,Object>> list = measureListService.getMeasureList(getProMeasurePlanListReq.getFinish_status(),getProMeasurePlanListReq.getQ(),getProMeasurePlanListReq.getProject_id(),categoryPathAndKey,areaPathAndId,userIds,getProMeasurePlanListReq.getPage(),getProMeasurePlanListReq.getPage_size());
@@ -113,12 +179,17 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             //map转换成vo
             ProMeasurePlanVo measurePlanVo = (ProMeasurePlanVo) ConvertUtil.convertMap(ProMeasurePlanVo.class,map);
             if ("1".equals(map.get("closeStatusId").toString())){
-                measurePlanVo.setClose_status("打开");
+                measurePlanVo.setClose_status(MeasureListConstant.UNCLOSE);
+            }else {
+                measurePlanVo.setClose_status(MeasureListConstant.CLOSED);
             }
             if ("1".equals(map.get("finishStatusId").toString())){
-                measurePlanVo.setFinish_status("进行中");
+                measurePlanVo.setFinish_status(MeasureListConstant.UNFINISH);
+            }else {
+                measurePlanVo.setFinish_status(MeasureListConstant.FINISHED);
             }
-            measurePlanVo.setCreate_at(111111);
+            measurePlanVo.setIssue_count(measureListIssueService.countByMeasureListId(map.get("id").toString()));
+            measurePlanVo.setCreate_at(DateUtil.getLongFromString(map.get("createAt").toString()));
             // todo area 数据处理
             measurePlanVoList.add(measurePlanVo);
         }

@@ -2,6 +2,7 @@ package com.longfor.longjian.measure.app.vo.proMeasureVo;
 
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -11,13 +12,13 @@ import java.util.List;
 @Data
 public class ProMeasureAreaVo {
     private Integer areaClassId;
-    private String createAt;
-    private String deleteAt;
+    private Date createAt;
+    private Date deleteAt;
     private String drawingMd5;
     private Integer fatherId;
     private Integer id;
     private Integer isLock;
-    private boolean isParent;
+    private Boolean isParent;
     private String location;
     private String name;
     private Integer orderBy;
@@ -25,6 +26,6 @@ public class ProMeasureAreaVo {
     private List<String> pathNames;
     private Integer projectId;
     private Integer typ;
-    private String updateAt;
+    private Date updateAt;
 
 }

@@ -2,10 +2,9 @@ package com.longfor.longjian.measure.app.appService.paintAreaService.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.google.gson.JsonObject;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.paintAreaService.IProPaintAreaManageService;
-import com.longfor.longjian.measure.app.req.GetProjMeasureRegionReq;
+import com.longfor.longjian.measure.app.req.paintAreaReq.GetProjMeasureRegionReq;
 import com.longfor.longjian.measure.app.req.paintAreaReq.GetGroupMeasureRegionTagReq;
 import com.longfor.longjian.measure.app.req.paintAreaReq.GetProjMeasureRegionTagReq;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.*;
@@ -14,15 +13,11 @@ import com.longfor.longjian.measure.consts.util.ConvertUtil;
 import com.longfor.longjian.measure.domain.externalService.IMeasureRegionRelService;
 import com.longfor.longjian.measure.domain.externalService.IMeasureRegionService;
 import com.longfor.longjian.measure.domain.externalService.IMeasureTagService;
-import com.longfor.longjian.measure.po.zhijian2.MeasureRegionRel;
-import com.longfor.longjian.measure.po.zhijian2.MeasureTag;
-import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

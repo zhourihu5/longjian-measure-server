@@ -30,4 +30,30 @@
     id, father_key, key, path, cls, name, root_category_id, team_id, order, zj_std_key, 
     custom_key, desc, node_status, file_md5, create_at, update_at, delete_at
   </sql>
+
+  <select id="getCategoryByFatherKey" resultType="map">
+    SELECT
+    id,
+    `key`,
+    `name`
+    FROM
+    category_v3
+    WHERE
+    father_key = #{fatherKey}
+    AND delete_at IS NULL
+  </select>
+
+  <select id="getRootCategoryByClsTeamId" resultType="map">
+    SELECT
+    id,
+    `key`,
+    `name`
+    FROM
+    category_v3
+    WHERE
+    cls = #{cls}
+    AND team_id = #{teamId}
+    and path = '/'
+    AND delete_at IS NULL
+  </select>
 </mapper>
