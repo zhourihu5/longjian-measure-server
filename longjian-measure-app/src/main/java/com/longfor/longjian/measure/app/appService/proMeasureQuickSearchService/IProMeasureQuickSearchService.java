@@ -2,9 +2,11 @@ package com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService
 
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetAreaPOPCheckItemListReq;
+import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetBlisterReformerReq;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetQuickSearchPlanListReq;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.CategoryListVo;
+import com.longfor.longjian.measure.app.vo.proMeasureVo.CheckerVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.QuickSearchPlanVo;
 
 import java.util.List;
@@ -25,4 +27,5 @@ public interface IProMeasureQuickSearchService {
      * @return
      */
     LjBaseResponse<CategoryListVo> getAreaPOPCheckItemList(GetAreaPOPCheckItemListReq getAreaPOPCheckItemList);
+
 }

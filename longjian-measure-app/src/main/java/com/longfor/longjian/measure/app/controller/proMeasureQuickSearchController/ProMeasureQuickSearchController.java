@@ -2,8 +2,11 @@ package com.longfor.longjian.measure.app.controller.proMeasureQuickSearchControl
 
 import com.longfor.gaia.gfs.web.mock.MockOperation;
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.measure.app.appService.proMeasureManagerService.IProMeasureService;
 import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.IProMeasureQuickSearchService;
+import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetCheckerListReq;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetAreaPOPCheckItemListReq;
+import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetBlisterReformerReq;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetQuickSearchPlanListReq;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.*;
@@ -32,6 +35,8 @@ public class ProMeasureQuickSearchController {
 
     @Autowired
     private IProMeasureQuickSearchService proMeasureQuickSearchService;
+    @Autowired
+    private IProMeasureService proMeasureService;
 
     /**
      * go项目实测快速查询任务概览
@@ -63,14 +68,16 @@ public class ProMeasureQuickSearchController {
 
     /**
      * go项目实测爆点整改整改人
-     * http://192.168.37.159:3000/mock/8//oapi/v3/project/user/simple_list/?_ct=json&project_id=927&page_level=project
-     * @param requestParam
+     * http://192.168.37.159:3000/project/8/interface/api/208
+     * @param getBlisterReformerReq
      * @return
      */
-    @MockOperation
     @GetMapping(value = "project/user/simple_list/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<ItemsVo<List<CheckerVo>>> getBlisterReformer(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<ItemsVo<List<CheckerVo>>> getBlisterReformer(GetBlisterReformerReq getBlisterReformerReq){
+        GetCheckerListReq getCheckerListReq = new GetCheckerListReq();
+        getCheckerListReq.setProject_id(getBlisterReformerReq.getProject_id());
+        LjBaseResponse<ItemsVo<List<CheckerVo>>> ljBaseResponse = proMeasureService.getCheckerList(getCheckerListReq);
+        return ljBaseResponse;
     }
 
     /**
