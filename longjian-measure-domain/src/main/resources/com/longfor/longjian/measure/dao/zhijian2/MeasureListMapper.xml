@@ -104,4 +104,16 @@
     </if>
   </select>
 
+  <select id="searchByProjectId" resultType="map">
+    SELECT
+    id,
+    `name`,
+    root_category_key
+    FROM
+    measure_list
+    WHERE
+    project_id = #{project_id}
+    AND delete_at IS NULL
+  </select>
+
 </mapper>

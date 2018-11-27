@@ -29,4 +29,11 @@ public interface IMeasureListService {
      * @return
      */
     Integer getTotalMeasure(Integer finish_status, String q, Integer project_id, String categoryPathAndKey, String areaPathAndId, String[] userIds);
+
+    /**
+     *
+     * @param project_id
+     * @return
+     */
+    List<Map<String,Object>> searchByProjectId(Integer project_id);
 }

@@ -11,6 +11,7 @@ import com.longfor.longjian.measure.app.vo.proMeasureVo.*;
 import com.longfor.longjian.measure.consts.constant.CategoryClsTypeConstant;
 import com.longfor.longjian.measure.consts.util.ConvertUtil;
 import com.longfor.longjian.measure.consts.util.DateUtil;
+import com.longfor.longjian.measure.consts.util.LambdaExceptionUtil;
 import com.longfor.longjian.measure.domain.externalService.*;
 import com.longfor.longjian.measure.po.zhijian2.Area;
 import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
@@ -132,20 +133,10 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         List<CheckerVo> checkerVos = new ArrayList<>();
         List<Integer> userIds = userInProjectService.getUserIdByProjectIds(new int[]{getCheckerListReq.getProject_id()});
         List<Map<String,Object>> users = userService.getUserByUserIds(userIds);
-        users.forEach(user -> {
-            try {
+        users.forEach(LambdaExceptionUtil.throwingConsumerWrapper(user -> {
                 CheckerVo checkerVo = (CheckerVo) ConvertUtil.convertMap(CheckerVo.class,user);
                 checkerVos.add(checkerVo);
-            } catch (IntrospectionException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            }
-        });
+        }));
         itemsVo.setItems(checkerVos);
         ljBaseResponse.setData(itemsVo);
         return ljBaseResponse;

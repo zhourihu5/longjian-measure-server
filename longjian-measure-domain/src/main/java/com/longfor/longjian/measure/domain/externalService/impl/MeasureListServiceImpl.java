@@ -24,4 +24,9 @@ public class MeasureListServiceImpl implements IMeasureListService {
     public Integer getTotalMeasure(Integer finish_status, String q, Integer project_id, String categoryPathAndKey, String areaPathAndId, String[] userIds) {
         return measureListMapper.getTotalMeasure(finish_status,q,project_id,categoryPathAndKey,areaPathAndId,userIds);
     }
+
+    @Override
+    public List<Map<String, Object>> searchByProjectId(Integer project_id) {
+        return measureListMapper.searchByProjectId(project_id);
+    }
 }

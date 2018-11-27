@@ -33,4 +33,11 @@ public interface MeasureListMapper extends LFMySQLMapper<MeasureList> {
      * @return
      */
     Integer getTotalMeasure(@Param("finishStatus") Integer finish_status, @Param("q") String q, @Param("projectId") Integer project_id, @Param("categoryPathAndKey") String categoryPathAndKey, @Param("areaPathAndId") String areaPathAndId, @Param("userIds") String[] userIds);
+
+    /**
+     *
+     * @param project_id
+     * @return
+     */
+    List<Map<String,Object>> searchByProjectId(@Param("project_id") Integer project_id);
 }
