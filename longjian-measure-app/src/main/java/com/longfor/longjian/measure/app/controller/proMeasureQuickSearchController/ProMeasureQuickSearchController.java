@@ -6,6 +6,7 @@ import com.longfor.longjian.measure.app.appService.proMeasureManagerService.IPro
 import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.IProMeasureQuickSearchService;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetCheckerListReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureAreaListReq;
+import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureCheckItemsReq;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetAreaPOPCheckItemListReq;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetBlisterAreaListReq;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetBlisterReformerReq;
@@ -73,13 +74,11 @@ public class ProMeasureQuickSearchController {
     /**
      * go项目实测爆点整改整改人
      * http://192.168.37.159:3000/project/8/interface/api/208
-     * @param getBlisterReformerReq
+     * @param getCheckerListReq
      * @return
      */
     @GetMapping(value = "project/user/simple_list/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<ItemsVo<List<CheckerVo>>> getBlisterReformer(GetBlisterReformerReq getBlisterReformerReq){
-        GetCheckerListReq getCheckerListReq = new GetCheckerListReq();
-        getCheckerListReq.setProject_id(getBlisterReformerReq.getProject_id());
+    public LjBaseResponse<ItemsVo<List<CheckerVo>>> getBlisterReformer(GetCheckerListReq getCheckerListReq){
         LjBaseResponse<ItemsVo<List<CheckerVo>>> ljBaseResponse = proMeasureService.getCheckerList(getCheckerListReq);
         return ljBaseResponse;
     }
@@ -89,27 +88,23 @@ public class ProMeasureQuickSearchController {
      * http://192.168.37.159:3000/project/8/interface/api/212
      * go项目实测快速查询区域合格率选择区域
      * http://192.168.37.159:3000/project/8/interface/api/268
-     * @param getBlisterAreaListReq
+     * @param getProMeasureAreaListReq
      * @return
      */
     @GetMapping(value = "area/area/subs/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<AreaInfoVo> getBlisterAreaList(GetBlisterAreaListReq getBlisterAreaListReq) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
-        GetProMeasureAreaListReq getProMeasureAreaListReq = new GetProMeasureAreaListReq();
-        getProMeasureAreaListReq.setArea_id(getBlisterAreaListReq.getArea_id());
-        getProMeasureAreaListReq.setProject_id(getBlisterAreaListReq.getProject_id());
+    public LjBaseResponse<AreaInfoVo> getBlisterAreaList(GetProMeasureAreaListReq getProMeasureAreaListReq) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
         return proMeasureService.getProMeasureAreaList(getProMeasureAreaListReq);
     }
 
     /**
      * go项目实测爆点整改检查项
-     * http://192.168.37.159:3000/mock/8/oapi/v3/measure/measure_list/sub_categorys/?_ct=json&project_id=927&page_level=project&group_id=4&team_id=25
-     * @param requestParam
+     * http://192.168.37.159:3000/project/8/interface/api/214
+     * @param getProMeasureCheckItemsReq
      * @return
      */
-    @MockOperation
     @GetMapping(value = "measure/measure_list/sub_categorys/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<ItemsVo<List<ProMeasureCheckIteamVo>>> getBlisterCheckItems(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<ItemsVo<List<ProMeasureCheckIteamVo>>> getBlisterCheckItems(GetProMeasureCheckItemsReq getProMeasureCheckItemsReq) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        return proMeasureService.getProMeasureCheckItems(getProMeasureCheckItemsReq);
     }
 
     /**
