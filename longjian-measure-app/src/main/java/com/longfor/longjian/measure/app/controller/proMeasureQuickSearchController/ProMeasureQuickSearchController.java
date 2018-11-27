@@ -3,6 +3,7 @@ package com.longfor.longjian.measure.app.controller.proMeasureQuickSearchControl
 import com.longfor.gaia.gfs.web.mock.MockOperation;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.IProMeasureQuickSearchService;
+import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetAreaPOPCheckItemListReq;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetQuickSearchPlanListReq;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.*;
@@ -50,14 +51,14 @@ public class ProMeasureQuickSearchController {
 
     /**
      * go项目实测快速查询区域合格率检查项
-     * http://192.168.37.159:3000/mock/8/oapi/v3/measure/ajax_json/get_root_category/?_ct=json&project_id=927&page_level=project&group_id=4&team_id=25
-     * @param requestParam
+     * http://192.168.37.159:3000/project/8/interface/api/180
+     * @param getAreaPOPCheckItemList
      * @return
      */
-    @MockOperation
     @GetMapping(value = "measure/ajax_json/get_root_category/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<CategoryListVo> getAreaPOPCheckItemList(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<CategoryListVo> getAreaPOPCheckItemList(GetAreaPOPCheckItemListReq getAreaPOPCheckItemList){
+        LjBaseResponse<CategoryListVo> ljBaseResponse = proMeasureQuickSearchService.getAreaPOPCheckItemList(getAreaPOPCheckItemList);
+        return ljBaseResponse;
     }
 
     /**

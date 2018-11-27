@@ -1,8 +1,10 @@
 package com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetAreaPOPCheckItemListReq;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetQuickSearchPlanListReq;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
+import com.longfor.longjian.measure.app.vo.proMeasureVo.CategoryListVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.QuickSearchPlanVo;
 
 import java.util.List;
@@ -16,4 +18,11 @@ public interface IProMeasureQuickSearchService {
      * @return
      */
     LjBaseResponse<ItemsVo<List<QuickSearchPlanVo>>> getQuickSearchPlanList(GetQuickSearchPlanListReq getQuickSearchPlanListReq);
+
+    /**
+     * go项目实测快速查询区域合格率检查项
+     * @param getAreaPOPCheckItemList
+     * @return
+     */
+    LjBaseResponse<CategoryListVo> getAreaPOPCheckItemList(GetAreaPOPCheckItemListReq getAreaPOPCheckItemList);
 }
