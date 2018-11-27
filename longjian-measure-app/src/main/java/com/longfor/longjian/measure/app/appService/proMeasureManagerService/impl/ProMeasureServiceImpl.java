@@ -2,21 +2,16 @@ package com.longfor.longjian.measure.app.appService.proMeasureManagerService.imp
 
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.proMeasureManagerService.IProMeasureService;
+import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetCheckerListReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureAreaListReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureCheckItemsReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasurePlanListReq;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
-import com.longfor.longjian.measure.app.vo.proMeasureVo.ProMeasureAreaVo;
-import com.longfor.longjian.measure.app.vo.proMeasureVo.ProMeasureCheckIteamVo;
-import com.longfor.longjian.measure.app.vo.proMeasureVo.ProMeasurePlanListVo;
-import com.longfor.longjian.measure.app.vo.proMeasureVo.ProMeasurePlanVo;
+import com.longfor.longjian.measure.app.vo.proMeasureVo.*;
 import com.longfor.longjian.measure.consts.constant.CategoryClsTypeConstant;
 import com.longfor.longjian.measure.consts.util.ConvertUtil;
 import com.longfor.longjian.measure.consts.util.DateUtil;
-import com.longfor.longjian.measure.domain.externalService.IAreaService;
-import com.longfor.longjian.measure.domain.externalService.ICategoryV3Service;
-import com.longfor.longjian.measure.domain.externalService.IMeasureListIssueService;
-import com.longfor.longjian.measure.domain.externalService.IMeasureListService;
+import com.longfor.longjian.measure.domain.externalService.*;
 import com.longfor.longjian.measure.po.zhijian2.Area;
 import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
 import com.longfor.longjian.measure.po.zhijian2_apisvr.Team;
@@ -43,6 +38,10 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     private IMeasureListService measureListService;
     @Autowired
     private IMeasureListIssueService measureListIssueService;
+    @Autowired
+    private IUserInProjectService userInProjectService;
+    @Autowired
+    private IUserService userService;
 
     @Override
     public LjBaseResponse<ProMeasurePlanListVo> getProMeasurePlanList(GetProMeasurePlanListReq getProMeasurePlanListReq) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException, ParseException {
@@ -122,6 +121,32 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             proMeasureAreaVos.add(proMeasureAreaVo);
         }
         itemsVo.setItems(proMeasureAreaVos);
+        ljBaseResponse.setData(itemsVo);
+        return ljBaseResponse;
+    }
+
+    @Override
+    public LjBaseResponse<ItemsVo<List<CheckerVo>>> getCheckerList(GetCheckerListReq getCheckerListReq) {
+        LjBaseResponse<ItemsVo<List<CheckerVo>>> ljBaseResponse = new LjBaseResponse<>();
+        ItemsVo<List<CheckerVo>> itemsVo = new ItemsVo<>();
+        List<CheckerVo> checkerVos = new ArrayList<>();
+        List<Integer> userIds = userInProjectService.getUserIdByProjectIds(new int[]{getCheckerListReq.getProject_id()});
+        List<Map<String,Object>> users = userService.getUserByUserIds(userIds);
+        users.forEach(user -> {
+            try {
+                CheckerVo checkerVo = (CheckerVo) ConvertUtil.convertMap(CheckerVo.class,user);
+                checkerVos.add(checkerVo);
+            } catch (IntrospectionException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        });
+        itemsVo.setItems(checkerVos);
         ljBaseResponse.setData(itemsVo);
         return ljBaseResponse;
     }

@@ -3,6 +3,7 @@ package com.longfor.longjian.measure.app.controller.proMeasureManagerController;
 import com.longfor.gaia.gfs.web.mock.MockOperation;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.proMeasureManagerService.IProMeasureService;
+import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetCheckerListReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureAreaListReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureCheckItemsReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasurePlanListReq;
@@ -76,13 +77,14 @@ public class ProMeasureController {
 
     /**
      * go项目实测任务列表请求检查人员
-     * @param requestParam
+     * http://192.168.37.159:3000/project/8/interface/api/154
+     * @param getCheckerListReq
      * @return
      */
-    @MockOperation
     @GetMapping(value = "measure/ajax_json/user_list/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<ItemsVo<List<CheckerVo>>> getCheckerList(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<ItemsVo<List<CheckerVo>>> getCheckerList(@Valid GetCheckerListReq getCheckerListReq){
+        LjBaseResponse<ItemsVo<List<CheckerVo>>> ljBaseResponse = proMeasureService.getCheckerList(getCheckerListReq);
+        return ljBaseResponse;
     }
 
 
