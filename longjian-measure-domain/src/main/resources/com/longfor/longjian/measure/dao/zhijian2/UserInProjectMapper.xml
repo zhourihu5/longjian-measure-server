@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.longfor.longjian.measure.dao.zhijian2.UserInProjectMapper" >
+  <resultMap id="BaseResultMap" type="com.longfor.longjian.measure.po.zhijian2.UserInProject" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="role_id" property="roleId" jdbcType="INTEGER" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="alias_name" property="aliasName" jdbcType="VARCHAR" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="delete_at" property="deleteAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, project_id, user_id, role_id, role_name, alias_name, create_at, update_at, delete_at
+  </sql>
+
+  <select id="getUserIdByProjectIds" resultMap="BaseResultMap">
+    SELECT
+    *
+    FROM
+    user_in_project
+    WHERE
+    project_id IN
+    <foreach collection="projectIds" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+    AND delete_at IS NULL
+  </select>
+</mapper>
