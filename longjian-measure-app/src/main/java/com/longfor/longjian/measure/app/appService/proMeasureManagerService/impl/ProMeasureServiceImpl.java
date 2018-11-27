@@ -96,9 +96,9 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     }
 
     @Override
-    public LjBaseResponse<ItemsVo<List<ProMeasureAreaVo>>> getProMeasureAreaList(GetProMeasureAreaListReq getProMeasureAreaListReq) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
-        LjBaseResponse<ItemsVo<List<ProMeasureAreaVo>>> ljBaseResponse = new LjBaseResponse<>();
-        ItemsVo<List<ProMeasureAreaVo>> itemsVo = new ItemsVo<>();
+    public LjBaseResponse<AreaInfoVo> getProMeasureAreaList(GetProMeasureAreaListReq getProMeasureAreaListReq) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
+        LjBaseResponse<AreaInfoVo> ljBaseResponse = new LjBaseResponse<>();
+        AreaInfoVo areaInfoVo = new AreaInfoVo();
         List<ProMeasureAreaVo> proMeasureAreaVos = new ArrayList<>();
         List<Map<String,Object>> list = areaService.getProMeasureAreaListByFatherId(getProMeasureAreaListReq.getProject_id(),getProMeasureAreaListReq.getArea_id());
         for (Map<String,Object> map:list
@@ -121,8 +121,10 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             proMeasureAreaVo.setPathNames(names);
             proMeasureAreaVos.add(proMeasureAreaVo);
         }
-        itemsVo.setItems(proMeasureAreaVos);
-        ljBaseResponse.setData(itemsVo);
+        areaInfoVo.setItems(proMeasureAreaVos);
+        // todo go代码暂时没有赋值
+        areaInfoVo.setTotal(0);
+        ljBaseResponse.setData(areaInfoVo);
         return ljBaseResponse;
     }
 

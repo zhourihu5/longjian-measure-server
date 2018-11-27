@@ -34,7 +34,7 @@ public interface IProMeasureService  {
      * @param getProMeasureAreaListReq
      * @return
      */
-    LjBaseResponse<ItemsVo<List<ProMeasureAreaVo>>> getProMeasureAreaList(GetProMeasureAreaListReq getProMeasureAreaListReq) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException;
+    LjBaseResponse<AreaInfoVo> getProMeasureAreaList(GetProMeasureAreaListReq getProMeasureAreaListReq) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException;
 
     /**
      * go项目实测任务列表请求检查人员

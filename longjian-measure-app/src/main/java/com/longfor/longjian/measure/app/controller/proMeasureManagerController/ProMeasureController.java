@@ -70,8 +70,8 @@ public class ProMeasureController {
      * @return
      */
     @GetMapping(value = "area/area/subs/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<ItemsVo<List<ProMeasureAreaVo>>> getProMeasureAreaList(@Valid GetProMeasureAreaListReq getProMeasureAreaListReq) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
-        LjBaseResponse<ItemsVo<List<ProMeasureAreaVo>>> ljBaseResponse = proMeasureService.getProMeasureAreaList(getProMeasureAreaListReq);
+    public LjBaseResponse<AreaInfoVo> getProMeasureAreaList(@Valid GetProMeasureAreaListReq getProMeasureAreaListReq) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        LjBaseResponse<AreaInfoVo> ljBaseResponse = proMeasureService.getProMeasureAreaList(getProMeasureAreaListReq);
         return ljBaseResponse;
     }
 

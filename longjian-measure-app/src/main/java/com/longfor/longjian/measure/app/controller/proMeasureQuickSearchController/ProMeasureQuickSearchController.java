@@ -5,7 +5,9 @@ import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.proMeasureManagerService.IProMeasureService;
 import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.IProMeasureQuickSearchService;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetCheckerListReq;
+import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureAreaListReq;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetAreaPOPCheckItemListReq;
+import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetBlisterAreaListReq;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetBlisterReformerReq;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetQuickSearchPlanListReq;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -82,16 +86,18 @@ public class ProMeasureQuickSearchController {
 
     /**
      * go项目实测爆点整改区域
-     * http://192.168.37.159:3000/mock/8//oapi/v3/area/area/subs/?_ct=json&project_id=927&page_level=project&group_id=4&team_id=25
+     * http://192.168.37.159:3000/project/8/interface/api/212
      * go项目实测快速查询区域合格率选择区域
-     * http://192.168.37.159:3000/mock/8///oapi/v3/area/area/subs/?_ct=json&project_id=927&page_level=project&group_id=4&team_id=25
-     * @param requestParam
+     * http://192.168.37.159:3000/project/8/interface/api/268
+     * @param getBlisterAreaListReq
      * @return
      */
-    @MockOperation
     @GetMapping(value = "area/area/subs/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<AreaInfoVo> getBlisterAreaList(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<AreaInfoVo> getBlisterAreaList(GetBlisterAreaListReq getBlisterAreaListReq) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        GetProMeasureAreaListReq getProMeasureAreaListReq = new GetProMeasureAreaListReq();
+        getProMeasureAreaListReq.setArea_id(getBlisterAreaListReq.getArea_id());
+        getProMeasureAreaListReq.setProject_id(getBlisterAreaListReq.getProject_id());
+        return proMeasureService.getProMeasureAreaList(getProMeasureAreaListReq);
     }
 
     /**
