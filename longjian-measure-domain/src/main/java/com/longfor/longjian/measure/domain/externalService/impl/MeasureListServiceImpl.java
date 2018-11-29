@@ -2,6 +2,7 @@ package com.longfor.longjian.measure.domain.externalService.impl;
 
 import com.longfor.longjian.measure.dao.zhijian2.MeasureListMapper;
 import com.longfor.longjian.measure.domain.externalService.IMeasureListService;
+import com.longfor.longjian.measure.po.zhijian2.MeasureList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,5 +29,14 @@ public class MeasureListServiceImpl implements IMeasureListService {
     @Override
     public List<Map<String, Object>> searchByProjectId(Integer project_id) {
         return measureListMapper.searchByProjectId(project_id);
+    }
+
+    @Override
+    public MeasureList searchByProjectIdAndMeasureListId(Integer project_id, Integer measure_list_id) {
+        MeasureList measureList = new MeasureList();
+        measureList.setId(measure_list_id);
+        measureList.setProjectId(project_id);
+        measureList.setDeleteAt(null);
+        return measureListMapper.selectOne(measureList);
     }
 }

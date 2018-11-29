@@ -12,6 +12,8 @@ spring:
       enabled: true
     livereload:
       enabled: true
+#    jackson: 这个是设置返回值是null的时候不返回，不过不太好使
+#      default-property-inclusion: non_null
 
 logging:
   level:

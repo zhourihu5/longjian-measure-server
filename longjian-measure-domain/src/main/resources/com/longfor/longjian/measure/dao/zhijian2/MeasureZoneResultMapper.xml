@@ -45,4 +45,52 @@
     -->
     data
   </sql>
+
+  <select id="statMeasureListZoneResultCountByListIdGroupBySquad" resultType="map">
+    SELECT
+    count(mzr.id),
+    mzr.squad_id as squadId
+    FROM
+    measure_zone_result mzr
+    WHERE
+    mzr.list_id = #{listId}
+    AND mzr.delete_at IS NULL
+    GROUP BY
+    mzr.squad_id
+  </select>
+
+  <select id="statMearureZoneResultSquadTotalCountByListIdCategoryKey" resultType="map">
+    SELECT
+    squad_id AS squadId,
+    count(*) AS count,
+    SUM(total) AS total_sum,
+    SUM(ok_total) AS ok_total_sum,
+    SUM(ok_total) / SUM(total) AS pass_percent
+    FROM
+    measure_zone_result
+    WHERE
+    delete_at IS NULL
+    AND list_id = #{listId}
+    <if test="categoryKey != null and categoryKey != ''">
+      AND category_key like concat('%',#{category_key},'%')
+    </if>
+    GROUP BY squad_id
+  </select>
+
+  <select id="StatMearureZoneResultSquadTotalCountByListIdGroupByCategoryKey" resultType="map">
+    SELECT
+    squad_id AS squadId,
+    category_key AS categoryKey,
+    count(*) AS count,
+    SUM(total) AS total_sum,
+    SUM(ok_total) AS ok_total_sum,
+    SUM(ok_total) / SUM(total) AS pass_percent
+    FROM
+    measure_zone_result
+    WHERE
+    delete_at IS NULL
+    AND list_id = #{listId}
+    GROUP BY
+    squad_id,category_key
+  </select>
 </mapper>

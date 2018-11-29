@@ -29,4 +29,18 @@
     close_status, finish_status, list_id, region_uuid, src_type, create_at, update_at, 
     delete_at
   </sql>
+
+  <select id="searchTotalByProjectIdAndMeasureListId" resultType="int">
+    SELECT
+    count(id)
+    FROM
+    measure_zone
+    WHERE
+    project_id = #{projectId}
+    AND list_id IN
+    <foreach collection="measureListIds" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+    AND delete_at IS NULL
+  </select>
 </mapper>

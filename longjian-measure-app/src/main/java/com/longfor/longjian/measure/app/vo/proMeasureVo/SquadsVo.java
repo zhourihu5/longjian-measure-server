@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.app.vo.proMeasureVo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 /**
@@ -7,6 +8,7 @@ import lombok.Data;
  * 2018-11-17 15:45
  */
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SquadsVo {
     private String complete_percent;
     private Integer id;

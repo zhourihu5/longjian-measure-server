@@ -7,10 +7,7 @@ import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetCheckerListReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureAreaListReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureCheckItemsReq;
-import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetAreaPOPCheckItemListReq;
-import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetBlisterAreaListReq;
-import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetBlisterReformerReq;
-import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetQuickSearchPlanListReq;
+import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.*;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.*;
 import lombok.extern.slf4j.Slf4j;
@@ -109,14 +106,13 @@ public class ProMeasureQuickSearchController {
 
     /**
      * go项目实测快速查询组间对比检查组
-     * http://192.168.37.159:3000/mock/8/oapi/v3/measure/measure_statistic/squad_completeness_json/?_ct=json&measure_list_id=5527&project_id=927&page_level=project&group_id=4&team_id=25
-     * @param requestParam
+     * http://192.168.37.159:3000/project/8/interface/api/236
+     * @param getCompareBetweenGroupReq
      * @return
      */
-    @MockOperation
     @GetMapping(value = "measure/measure_statistic/squad_completeness_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<SquadsAndPassVo> getCompareBetweenGroup(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<SquadsAndPassVo> getCompareBetweenGroup(GetCompareBetweenGroupReq getCompareBetweenGroupReq){
+        return  proMeasureService.getCompareBetweenGroup(getCompareBetweenGroupReq);
     }
 
 

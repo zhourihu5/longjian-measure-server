@@ -5,6 +5,7 @@ import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetCheckerListR
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureAreaListReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureCheckItemsReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasurePlanListReq;
+import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetCompareBetweenGroupReq;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.*;
 
@@ -42,4 +43,11 @@ public interface IProMeasureService  {
      * @return
      */
     LjBaseResponse<ItemsVo<List<CheckerVo>>> getCheckerList(GetCheckerListReq getCheckerListReq);
+
+    /**
+     * go项目实测快速查询组间对比检查组
+     * @param getCompareBetweenGroupReq
+     * @return
+     */
+    LjBaseResponse<SquadsAndPassVo> getCompareBetweenGroup(GetCompareBetweenGroupReq getCompareBetweenGroupReq);
 }

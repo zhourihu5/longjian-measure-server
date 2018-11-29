@@ -6,6 +6,7 @@ import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetCheckerListR
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureAreaListReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureCheckItemsReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasurePlanListReq;
+import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetCompareBetweenGroupReq;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.*;
 import com.longfor.longjian.measure.consts.constant.CategoryClsTypeConstant;
@@ -15,6 +16,8 @@ import com.longfor.longjian.measure.consts.util.LambdaExceptionUtil;
 import com.longfor.longjian.measure.domain.externalService.*;
 import com.longfor.longjian.measure.po.zhijian2.Area;
 import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
+import com.longfor.longjian.measure.po.zhijian2.MeasureSquad;
+import com.longfor.longjian.measure.po.zhijian2.MeasureZoneResult;
 import com.longfor.longjian.measure.po.zhijian2_apisvr.Team;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -43,6 +46,12 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     private IUserInProjectService userInProjectService;
     @Autowired
     private IUserService userService;
+    @Autowired
+    private IMeasureZoneService measureZoneService;
+    @Autowired
+    private IMeasureZoneResultService measureZoneResultService;
+    @Autowired
+    private IMeasureSquadService measureSquadService;
 
     @Override
     public LjBaseResponse<ProMeasurePlanListVo> getProMeasurePlanList(GetProMeasurePlanListReq getProMeasurePlanListReq) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException, ParseException {
@@ -142,6 +151,102 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         itemsVo.setItems(checkerVos);
         ljBaseResponse.setData(itemsVo);
         return ljBaseResponse;
+    }
+
+    @Override
+    public LjBaseResponse<SquadsAndPassVo> getCompareBetweenGroup(GetCompareBetweenGroupReq getCompareBetweenGroupReq) {
+        LjBaseResponse<SquadsAndPassVo> ljBaseResponse = new LjBaseResponse<>();
+        SquadsAndPassVo squadsAndPassVo = new SquadsAndPassVo();
+        //验证任务是否属于这个项目
+        boolean existPlan = measureListService.searchByProjectIdAndMeasureListId(getCompareBetweenGroupReq.getProject_id(),getCompareBetweenGroupReq.getMeasure_list_id()) != null;
+        if (!existPlan){
+            //任务不存在,抛出异常
+            new Throwable("任务不存在");
+        }
+        // 获取测区数量
+        Integer total = measureZoneService.searchTotalByProjectIdAndMeasureListId(getCompareBetweenGroupReq.getProject_id(),new int[]{getCompareBetweenGroupReq.getMeasure_list_id()});
+        // 计算出所有小组的总检查数，map格式，无需转换
+        List<Map<String,Object>> squadCounts = measureZoneResultService.statMeasureListZoneResultCountByListIdGroupBySquad(getCompareBetweenGroupReq.getMeasure_list_id());
+        //查询组
+        List<MeasureSquad> measureSquadlist = measureSquadService.searchOnlyMeasureSquadByProjIdAndListId(getCompareBetweenGroupReq.getProject_id(),getCompareBetweenGroupReq.getMeasure_list_id());
+        // 填写完成进度数据
+        List<SquadsVo> squads = getSquads(measureSquadlist,total,squadCounts);
+        // 算出各组的平均合格率
+        List<Map<String,Object>> measureZoneResults = measureZoneResultService.statMearureZoneResultSquadTotalCountByListIdCategoryKey(getCompareBetweenGroupReq.getMeasure_list_id(),"");
+        // 计算各项的数据
+        List<Map<String,Object>> results = measureZoneResultService.StatMearureZoneResultSquadTotalCountByListIdGroupByCategoryKey(getCompareBetweenGroupReq.getMeasure_list_id());
+        //填写合格率数据
+        List<SquadsPassVo> squads_pass = getSquadsPassVos(measureSquadlist,total,measureZoneResults,results);
+        squadsAndPassVo.setSquads(squads);
+        squadsAndPassVo.setSquads_pass(squads_pass);
+        ljBaseResponse.setData(squadsAndPassVo);
+        return ljBaseResponse;
+    }
+
+    /**
+     * 填写合格率数据
+     * @param measureSquadlist
+     * @param total
+     * @param measureZoneResults
+     * @return
+     */
+    private List<SquadsPassVo> getSquadsPassVos(List<MeasureSquad> measureSquadlist, Integer total, List<Map<String, Object>> measureZoneResults,List<Map<String,Object>> results) {
+        List<SquadsPassVo> squadsPassVos = new ArrayList<>();
+        measureSquadlist.forEach(measureSquad -> {
+            SquadsPassVo squadsPassVo = new SquadsPassVo();
+            squadsPassVo.setId(measureSquad.getId());
+            squadsPassVo.setName(measureSquad.getName());
+            squadsPassVo.setAverage_percent("0");
+            squadsPassVo.setLt60_count(0);
+            squadsPassVo.setGte60_count(0);
+            squadsPassVo.setGte80_count(0);
+            measureZoneResults.forEach(measureZoneResult -> {
+                if (total > 0 && measureSquad.getId().toString().equals(measureZoneResult.get("squadId").toString())){
+                    squadsPassVo.setAverage_percent(Float.parseFloat(measureZoneResult.get("ok_total_sum").toString()) / Float.parseFloat(measureZoneResult.get("total_sum").toString()) * 100.0 + "");
+                }
+            });
+            results.forEach(result -> {
+                if (result.get("total_sum") != null && Integer.parseInt(result.get("total_sum").toString()) > 0 && measureSquad.getId().toString().equals(result.get("squadId").toString())){
+                    float rate = Float.parseFloat(result.get("total_sum").toString()) / Float.parseFloat(result.get("ok_total_sum").toString());
+                    if (rate < 0.6){
+                        squadsPassVo.setLt60_count(squadsPassVo.getLt60_count() + 1 );
+                    }
+                    if (rate >= 0.6){
+                        squadsPassVo.setGte60_count(squadsPassVo.getGte60_count() + 1 );
+                    }
+                    if (rate >= 0.8){
+                        squadsPassVo.setGte80_count(squadsPassVo.getGte80_count() + 1 );
+                    }
+                }
+            });
+            squadsPassVos.add(squadsPassVo);
+        });
+        return squadsPassVos;
+    }
+
+    /**
+     * 填写完成进度数据
+     * @param measureSquadlist
+     * @param total
+     * @param squadCounts
+     * @return
+     */
+    private List<SquadsVo> getSquads(List<MeasureSquad> measureSquadlist, Integer total, List<Map<String,Object>> squadCounts) {
+        List<SquadsVo> squadsVos = new ArrayList<>();
+        measureSquadlist.forEach(measureSquad -> {
+            SquadsVo squadsVo = new SquadsVo();
+            squadsVo.setId(measureSquad.getId());
+            squadsVo.setName(measureSquad.getName());
+            squadsVo.setRequire_percent(measureSquad.getPlanRate().toString());
+            squadsVo.setComplete_percent("0");
+            squadCounts.forEach(squadCount -> {
+                if (total > 0 && measureSquad.getId().toString().equals(squadCount.get("squadId").toString())){
+                    squadsVo.setComplete_percent(Float.parseFloat(squadCount.get("count").toString()) / Float.parseFloat(total.toString()) * 100.0*100.0 / Float.parseFloat(measureSquad.getPlanRate().toString()) + "");
+                }
+            });
+            squadsVos.add(squadsVo);
+        });
+        return squadsVos;
     }
 
     /**
