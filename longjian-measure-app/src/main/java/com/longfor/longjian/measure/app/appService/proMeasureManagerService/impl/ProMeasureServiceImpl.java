@@ -1,5 +1,9 @@
 package com.longfor.longjian.measure.app.appService.proMeasureManagerService.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonObject;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.proMeasureManagerService.IProMeasureService;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetCheckerListReq;
@@ -7,6 +11,7 @@ import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureAr
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureCheckItemsReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasurePlanListReq;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetCompareBetweenGroupReq;
+import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetLoserCompareBetweenGroupReq;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.*;
 import com.longfor.longjian.measure.consts.constant.CategoryClsTypeConstant;
@@ -21,6 +26,7 @@ import com.longfor.longjian.measure.po.zhijian2.MeasureZoneResult;
 import com.longfor.longjian.measure.po.zhijian2_apisvr.Team;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.omg.CORBA.ObjectHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.longfor.longjian.measure.consts.constant.MeasureListConstant;
@@ -174,13 +180,97 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         // 算出各组的平均合格率
         List<Map<String,Object>> measureZoneResults = measureZoneResultService.statMearureZoneResultSquadTotalCountByListIdCategoryKey(getCompareBetweenGroupReq.getMeasure_list_id(),"");
         // 计算各项的数据
-        List<Map<String,Object>> results = measureZoneResultService.StatMearureZoneResultSquadTotalCountByListIdGroupByCategoryKey(getCompareBetweenGroupReq.getMeasure_list_id());
+        List<Map<String,Object>> results = measureZoneResultService.statMearureZoneResultSquadTotalCountByListIdGroupByCategoryKey(getCompareBetweenGroupReq.getMeasure_list_id());
         //填写合格率数据
         List<SquadsPassVo> squads_pass = getSquadsPassVos(measureSquadlist,total,measureZoneResults,results);
         squadsAndPassVo.setSquads(squads);
         squadsAndPassVo.setSquads_pass(squads_pass);
         ljBaseResponse.setData(squadsAndPassVo);
         return ljBaseResponse;
+    }
+
+    @Override
+    public LjBaseResponse<PassDiffVo> getLoserCompareBetweenGroup(GetLoserCompareBetweenGroupReq getLoserCompareBetweenGroupReq) {
+        LjBaseResponse<PassDiffVo> ljBaseResponse = new LjBaseResponse<>();
+        PassDiffVo passDiffVo = new PassDiffVo();
+        //验证任务是否属于这个项目
+        boolean existPlan = measureListService.searchByProjectIdAndMeasureListId(getLoserCompareBetweenGroupReq.getProject_id(),getLoserCompareBetweenGroupReq.getMeasure_list_id()) != null;
+        if (!existPlan){
+            //任务不存在,抛出异常
+            new Throwable("任务不存在");
+        }
+        //获取分组信息
+        List<MeasureSquad> measureSquadlist = measureSquadService.searchOnlyMeasureSquadByProjIdAndListId(getLoserCompareBetweenGroupReq.getProject_id(),getLoserCompareBetweenGroupReq.getMeasure_list_id());
+        List<String> pass_diff_largest_squad_names = new ArrayList<>();
+        List<String> pass_percentage_smallest_squad_names = new ArrayList<>();
+        measureSquadlist.forEach( measureSquad -> {
+            pass_diff_largest_squad_names.add(measureSquad.getName());
+            pass_percentage_smallest_squad_names.add(measureSquad.getName());
+        });
+        //设置合格率差值最大组
+        List<MeasureStatisticSquadsPassDiffLargestInfoVo> pass_diff_largest = searchCategoryDiffLargestByMeasureListId(getLoserCompareBetweenGroupReq.getMeasure_list_id());
+        //设置合格率最小组
+        List<MeasureStatisticSquadsSmallestPassPercentInfoVo> pass_percentage_smallest = searchCategorySquadSmallestByMeasureListId(getLoserCompareBetweenGroupReq.getMeasure_list_id());
+        passDiffVo.setPass_diff_largest_squad_names(pass_diff_largest_squad_names);
+        passDiffVo.setPass_percentage_smallest_squad_names(pass_percentage_smallest_squad_names);
+        passDiffVo.setPass_diff_largest(pass_diff_largest);
+        passDiffVo.setPass_percentage_smallest(pass_percentage_smallest);
+        ljBaseResponse.setData(passDiffVo);
+        return ljBaseResponse;
+    }
+
+    /**
+     * 设置合格率最小组
+     * @param measure_list_id
+     * @return
+     */
+    private List<MeasureStatisticSquadsSmallestPassPercentInfoVo> searchCategorySquadSmallestByMeasureListId(Integer measure_list_id) {
+        List<MeasureStatisticSquadsSmallestPassPercentInfoVo> measureStatisticSquadsSmallestPassPercentInfoVos = new ArrayList<>();
+        List<Map<String,Object>> categoryKeys = measureZoneResultService.getSquadPassPercentSmallestCategoryKeyListByMeasureListId(measure_list_id);
+        categoryKeys.forEach(categoryKey -> {
+            MeasureStatisticSquadsSmallestPassPercentInfoVo measureStatisticSquadsSmallestPassPercentInfoVo = new MeasureStatisticSquadsSmallestPassPercentInfoVo();
+            CategoryV3 categoryV3 = categoryV3Service.getCategoryByKey(categoryKey.get("category_key").toString());
+            List<Map<String,Object>> sInfos = measureZoneResultService.getSquadsZoneResultPassPercentByListIdAndCategoryKey(measure_list_id,categoryKey.get("category_key").toString(),MeasureListConstant.CLOSEDCODE);
+            if (sInfos != null && sInfos.size() > 0) {
+                measureStatisticSquadsSmallestPassPercentInfoVo.setCategory_key(categoryV3.getKey());
+                measureStatisticSquadsSmallestPassPercentInfoVo.setCategory_name(categoryV3.getName());
+                List<String> squads = new ArrayList<>();
+                sInfos.forEach(squadsInfo -> {
+                    JSONObject squadsInfoJson = (JSONObject) squadsInfo;
+                    squads.add(Float.parseFloat(squadsInfoJson.get("pass_percent").toString()) * 100.0 + "");
+                });
+                measureStatisticSquadsSmallestPassPercentInfoVo.setSquads(squads);
+                measureStatisticSquadsSmallestPassPercentInfoVos.add(measureStatisticSquadsSmallestPassPercentInfoVo);
+            }
+        });
+        return measureStatisticSquadsSmallestPassPercentInfoVos;
+    }
+
+    /**
+     * 设置合格率差值最大组
+     * @param measure_list_id
+     * @return
+     */
+    private List<MeasureStatisticSquadsPassDiffLargestInfoVo> searchCategoryDiffLargestByMeasureListId(Integer measure_list_id) {
+        List<MeasureStatisticSquadsPassDiffLargestInfoVo> measureStatisticSquadsPassDiffLargestInfoVos = new ArrayList<>();
+        List<Map<String,Object>> categoryKeys = measureZoneResultService.getPassPercentDiffCategoryKeyListByMeasureListId(measure_list_id);
+        categoryKeys.forEach(categoryKey -> {
+            MeasureStatisticSquadsPassDiffLargestInfoVo measureStatisticSquadsPassDiffLargestInfoVo = new MeasureStatisticSquadsPassDiffLargestInfoVo();
+            CategoryV3 categoryV3 = categoryV3Service.getCategoryByKey(categoryKey.get("category_key").toString());
+            List<Map<String,Object>> sInfos = measureZoneResultService.getSquadsZoneResultPassPercentByListIdAndCategoryKey(measure_list_id,categoryKey.get("category_key").toString(),MeasureListConstant.CLOSEDCODE);
+            if (sInfos != null && sInfos.size() > 0) {
+                measureStatisticSquadsPassDiffLargestInfoVo.setCategory_key(categoryV3.getKey());
+                measureStatisticSquadsPassDiffLargestInfoVo.setCategory_name(categoryV3.getName());
+                List<String> squads = new ArrayList<>();
+                sInfos.forEach(squadsInfo -> {
+                    JSONObject squadsInfoJson = (JSONObject) squadsInfo;
+                    squads.add(Float.parseFloat(squadsInfoJson.get("pass_percent").toString()) * 100.0 + "");
+                });
+                measureStatisticSquadsPassDiffLargestInfoVo.setSquads(squads);
+                measureStatisticSquadsPassDiffLargestInfoVos.add(measureStatisticSquadsPassDiffLargestInfoVo);
+            }
+        });
+        return measureStatisticSquadsPassDiffLargestInfoVos;
     }
 
     /**

@@ -29,5 +29,28 @@ public interface MeasureZoneResultMapper extends LFMySQLMapper<MeasureZoneResult
      * @param measure_list_id
      * @return
      */
-    List<Map<String,Object>> StatMearureZoneResultSquadTotalCountByListIdGroupByCategoryKey(Integer measure_list_id);
+    List<Map<String,Object>> statMearureZoneResultSquadTotalCountByListIdGroupByCategoryKey(@Param("listId") Integer measure_list_id);
+
+    /**
+     *
+     * @param measure_list_id
+     * @return
+     */
+    List<Map<String,Object>> getPassPercentDiffCategoryKeyListByMeasureListId(@Param("listId") Integer measure_list_id);
+
+    /**
+     *
+     * @param measure_list_id
+     * @param category_key
+     * @param CLOSEDCODE
+     * @return
+     */
+    List<Map<String,Object>> getSquadsZoneResultPassPercentByListIdAndCategoryKey(@Param("listId") Integer measure_list_id, @Param("categoryKey") String category_key, @Param("CLOSEDCODE") String CLOSEDCODE);
+
+    /**
+     *
+     * @param measure_list_id
+     * @return
+     */
+    List<Map<String,Object>> getSquadPassPercentSmallestCategoryKeyListByMeasureListId(@Param("listId") Integer measure_list_id);
 }

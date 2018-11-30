@@ -9,4 +9,7 @@ public class MeasureListConstant {
     public static String UNCLOSE = "打开";
     public static String CLOSED = "关闭";
 
+    public static String UNCLOSECODE = "1";
+    public static String CLOSEDCODE = "2";
+
 }

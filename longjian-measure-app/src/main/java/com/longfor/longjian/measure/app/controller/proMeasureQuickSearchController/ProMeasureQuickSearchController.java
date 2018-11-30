@@ -118,14 +118,13 @@ public class ProMeasureQuickSearchController {
 
     /**
      * go项目实测快查组间对比合格率最低项
-     * http://192.168.37.159:3000/mock/8/oapi/v3/measure/measure_statistic/squad_special_point_json/?_ct=json&measure_list_id=5527&project_id=927&page_level=project&group_id=4&team_id=25
-     * @param requestParam
+     * http://192.168.37.159:3000/project/8/interface/api/240
+     * @param getLoserCompareBetweenGroupReq
      * @return
      */
-    @MockOperation
     @GetMapping(value = "measure/measure_statistic/squad_special_point_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<PassDiffVo> getLoserCompareBetweenGroup(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<PassDiffVo> getLoserCompareBetweenGroup(GetLoserCompareBetweenGroupReq getLoserCompareBetweenGroupReq){
+        return proMeasureService.getLoserCompareBetweenGroup(getLoserCompareBetweenGroupReq);
     }
 
     /**

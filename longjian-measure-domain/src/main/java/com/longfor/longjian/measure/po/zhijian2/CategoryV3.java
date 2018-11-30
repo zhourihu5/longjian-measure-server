@@ -20,6 +20,7 @@ public class CategoryV3 {
     /**
      * kEY
      */
+    @Column(name = "`key`")
     private String key;
 
     /**
@@ -35,6 +36,7 @@ public class CategoryV3 {
     /**
      * 检查项名
      */
+    @Column(name = "`name`")
     private String name;
 
     /**
@@ -52,6 +54,7 @@ public class CategoryV3 {
     /**
      * 排序
      */
+    @Column(name = "`order`")
     private String order;
 
     /**
@@ -69,6 +72,7 @@ public class CategoryV3 {
     /**
      * 描述
      */
+    @Column(name = "`desc`")
     private String desc;
 
     /**

@@ -77,7 +77,7 @@
     GROUP BY squad_id
   </select>
 
-  <select id="StatMearureZoneResultSquadTotalCountByListIdGroupByCategoryKey" resultType="map">
+  <select id="statMearureZoneResultSquadTotalCountByListIdGroupByCategoryKey" resultType="map">
     SELECT
     squad_id AS squadId,
     category_key AS categoryKey,
@@ -92,5 +92,99 @@
     AND list_id = #{listId}
     GROUP BY
     squad_id,category_key
+  </select>
+
+  <select id="getPassPercentDiffCategoryKeyListByMeasureListId" resultType="map">
+    SELECT
+    MAX(pass_percent) - MIN(pass_percent) AS diff,
+    COUNT(*) AS squad_count,
+    category_key,
+    category_path_and_key
+    FROM
+    (
+    SELECT
+    ok_total,
+    total,
+    SUM(ok_total) / SUM(total) AS pass_percent,
+    squad_id,
+    category_key,
+    category_path_and_key
+    FROM
+    measure_zone_result
+    WHERE
+    list_id = #{listId}
+    AND (
+    `delete_at` IS NULL
+    OR `delete_at` = '0001-01-01 00:00:00'
+    )
+    AND (
+    `delete_at` IS NULL
+    OR `delete_at` = '0001-01-01 00:00:00'
+    )
+    GROUP BY
+    squad_id,
+    category_key
+    ) AS t
+    GROUP BY
+    category_key
+    HAVING
+    squad_count > 1
+    ORDER BY
+    diff DESC
+  </select>
+
+  <select id="getSquadsZoneResultPassPercentByListIdAndCategoryKey" resultType="map">
+    SELECT
+    ok_total,
+    total,
+    SUM(ok_total) / SUM(total) AS pass_percent,
+    squad_id
+    FROM
+    measure_zone_result
+    WHERE
+    (
+    `delete_at` IS NULL
+    OR `delete_at` = '0001-01-01 00:00:00'
+    )
+    AND zone_uuid IN (
+    SELECT
+    uuid
+    FROM
+    measure_zone
+    WHERE
+    list_id = #{listId}
+    AND close_status &lt;&gt; #{CLOSEDCODE}
+    AND category_key = #{categoryKey}
+    AND (
+    `delete_at` IS NULL
+    OR `delete_at` = '0001-01-01 00:00:00'
+    )
+    )
+    GROUP BY
+    squad_id
+  </select>
+
+  <select id="getSquadPassPercentSmallestCategoryKeyListByMeasureListId" resultType="map">
+    SELECT
+    ok_total,
+    total,
+    SUM(ok_total) / SUM(total) AS pass_percent,
+    squad_id,
+    category_key,
+    category_path_and_key
+    FROM
+    measure_zone_result
+    WHERE
+    list_id = #{listId}
+    AND (
+    `delete_at` IS NULL
+    OR `delete_at` = '0001-01-01 00:00:00'
+    )
+    GROUP BY
+    squad_id,
+    category_key
+    ORDER BY
+    squad_id,
+    pass_percent ASC
   </select>
 </mapper>
