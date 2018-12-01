@@ -187,4 +187,17 @@
     squad_id,
     pass_percent ASC
   </select>
+
+  <select id="getSubActiveMeasureCategoryZonesByListIdCategoryKey" resultMap="BaseResultMap">
+    SELECT DISTINCT
+    category_path_and_key
+    FROM
+    measure_zone_result
+    WHERE
+    list_id = #{listId}
+    <if test="categoryKey != null and categoryKey != ''">
+      AND category_key like concat('%',#{categoryKey},'%')
+    </if>
+    AND delete_at IS NULL
+  </select>
 </mapper>

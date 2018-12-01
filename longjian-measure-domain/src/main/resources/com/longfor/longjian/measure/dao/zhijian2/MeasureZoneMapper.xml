@@ -43,4 +43,16 @@
     </foreach>
     AND delete_at IS NULL
   </select>
+
+  <select id="getMeasureZoneCountByListIdCategoryKey" resultType="int">
+    SELECT
+    count(id)
+    FROM
+    measure_zone
+    WHERE
+    project_id = #{projectId}
+    AND list_id = #{listId}
+    AND category_path_and_key LIKE concat('%/',#{subKey},'/%')
+    and delete_at is null
+  </select>
 </mapper>

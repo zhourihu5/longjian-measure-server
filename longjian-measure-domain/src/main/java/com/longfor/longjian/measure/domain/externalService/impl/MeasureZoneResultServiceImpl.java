@@ -2,6 +2,7 @@ package com.longfor.longjian.measure.domain.externalService.impl;
 
 import com.longfor.longjian.measure.dao.zhijian2.MeasureZoneResultMapper;
 import com.longfor.longjian.measure.domain.externalService.IMeasureZoneResultService;
+import com.longfor.longjian.measure.po.zhijian2.MeasureZoneResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,5 +43,10 @@ public class MeasureZoneResultServiceImpl implements IMeasureZoneResultService {
     @Override
     public List<Map<String, Object>> getSquadPassPercentSmallestCategoryKeyListByMeasureListId(Integer measure_list_id) {
         return measureZoneResultMapper.getSquadPassPercentSmallestCategoryKeyListByMeasureListId(measure_list_id);
+    }
+
+    @Override
+    public List<MeasureZoneResult> getSubActiveMeasureCategoryZonesByListIdCategoryKey(Integer project_id, Integer measure_list_id, String category_key) {
+        return measureZoneResultMapper.getSubActiveMeasureCategoryZonesByListIdCategoryKey(project_id,measure_list_id,category_key);
     }
 }

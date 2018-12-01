@@ -8,4 +8,13 @@ public interface IMeasureZoneService {
      * @return
      */
     Integer searchTotalByProjectIdAndMeasureListId(Integer project_id, int[] ints);
+
+    /**
+     *
+     * @param project_id
+     * @param measure_list_id
+     * @param subKey
+     * @return
+     */
+    Integer getMeasureZoneCountByListIdCategoryKey(Integer project_id, Integer measure_list_id, String subKey);
 }

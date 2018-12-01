@@ -17,7 +17,16 @@ public class SquadsPassVo {
     private Integer lt60_count;
     private String name;
 
+    /**
+     * 分组ID
+     */
     private Integer squad_id;
+    /**
+     * 分组名称
+     */
     private String squad_name;
+    /**
+     * 检查率
+     */
     private String rate;
 }

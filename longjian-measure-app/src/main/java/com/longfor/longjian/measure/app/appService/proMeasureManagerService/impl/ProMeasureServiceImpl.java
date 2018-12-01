@@ -11,6 +11,7 @@ import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureAr
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureCheckItemsReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasurePlanListReq;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetCompareBetweenGroupReq;
+import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetCompareItemBetweenSquadsReq;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetLoserCompareBetweenGroupReq;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.*;
@@ -19,10 +20,7 @@ import com.longfor.longjian.measure.consts.util.ConvertUtil;
 import com.longfor.longjian.measure.consts.util.DateUtil;
 import com.longfor.longjian.measure.consts.util.LambdaExceptionUtil;
 import com.longfor.longjian.measure.domain.externalService.*;
-import com.longfor.longjian.measure.po.zhijian2.Area;
-import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
-import com.longfor.longjian.measure.po.zhijian2.MeasureSquad;
-import com.longfor.longjian.measure.po.zhijian2.MeasureZoneResult;
+import com.longfor.longjian.measure.po.zhijian2.*;
 import com.longfor.longjian.measure.po.zhijian2_apisvr.Team;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -160,14 +158,14 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     }
 
     @Override
-    public LjBaseResponse<SquadsAndPassVo> getCompareBetweenGroup(GetCompareBetweenGroupReq getCompareBetweenGroupReq) {
+    public LjBaseResponse<SquadsAndPassVo> getCompareBetweenGroup(GetCompareBetweenGroupReq getCompareBetweenGroupReq) throws Exception {
         LjBaseResponse<SquadsAndPassVo> ljBaseResponse = new LjBaseResponse<>();
         SquadsAndPassVo squadsAndPassVo = new SquadsAndPassVo();
         //验证任务是否属于这个项目
         boolean existPlan = measureListService.searchByProjectIdAndMeasureListId(getCompareBetweenGroupReq.getProject_id(),getCompareBetweenGroupReq.getMeasure_list_id()) != null;
         if (!existPlan){
             //任务不存在,抛出异常
-            new Throwable("任务不存在");
+            throw new Exception("任务不存在");
         }
         // 获取测区数量
         Integer total = measureZoneService.searchTotalByProjectIdAndMeasureListId(getCompareBetweenGroupReq.getProject_id(),new int[]{getCompareBetweenGroupReq.getMeasure_list_id()});
@@ -190,14 +188,14 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     }
 
     @Override
-    public LjBaseResponse<PassDiffVo> getLoserCompareBetweenGroup(GetLoserCompareBetweenGroupReq getLoserCompareBetweenGroupReq) {
+    public LjBaseResponse<PassDiffVo> getLoserCompareBetweenGroup(GetLoserCompareBetweenGroupReq getLoserCompareBetweenGroupReq) throws Exception {
         LjBaseResponse<PassDiffVo> ljBaseResponse = new LjBaseResponse<>();
         PassDiffVo passDiffVo = new PassDiffVo();
         //验证任务是否属于这个项目
         boolean existPlan = measureListService.searchByProjectIdAndMeasureListId(getLoserCompareBetweenGroupReq.getProject_id(),getLoserCompareBetweenGroupReq.getMeasure_list_id()) != null;
         if (!existPlan){
             //任务不存在,抛出异常
-            new Throwable("任务不存在");
+            throw new Exception("任务不存在");
         }
         //获取分组信息
         List<MeasureSquad> measureSquadlist = measureSquadService.searchOnlyMeasureSquadByProjIdAndListId(getLoserCompareBetweenGroupReq.getProject_id(),getLoserCompareBetweenGroupReq.getMeasure_list_id());
@@ -217,6 +215,108 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         passDiffVo.setPass_percentage_smallest(pass_percentage_smallest);
         ljBaseResponse.setData(passDiffVo);
         return ljBaseResponse;
+    }
+
+    @Override
+    public LjBaseResponse<CompareItemBetweenSquadsVo> getCompareItemBetweenSquads(GetCompareItemBetweenSquadsReq getCompareItemBetweenSquadsReq) throws Exception {
+        LjBaseResponse<CompareItemBetweenSquadsVo> ljBaseResponse = new LjBaseResponse<>();
+        CompareItemBetweenSquadsVo compareItemBetweenSquadsVo = new CompareItemBetweenSquadsVo();
+        //验证任务是否属于这个项目
+        MeasureList measureList = measureListService.searchByProjectIdAndMeasureListId(getCompareItemBetweenSquadsReq.getProject_id(),getCompareItemBetweenSquadsReq.getMeasure_list_id());
+        if (measureList == null){
+            //任务不存在,抛出异常
+            throw new Exception("任务不存在");
+        }
+        // 获取分组信息，否则不管
+        List<MeasureSquad> measureSquadlist = measureSquadService.searchOnlyMeasureSquadByProjIdAndListId(getCompareItemBetweenSquadsReq.getProject_id(),getCompareItemBetweenSquadsReq.getMeasure_list_id());
+        List<SquadsPassVo> squads_rate = new ArrayList<>();
+        measureSquadlist.forEach(measureSquad -> {
+            SquadsPassVo squadsPassVo = new SquadsPassVo();
+            squadsPassVo.setSquad_id(measureSquad.getId());
+            squadsPassVo.setSquad_name(measureSquad.getName());
+            squadsPassVo.setRate(measureSquad.getPlanRate() + "");
+            squads_rate.add(squadsPassVo);
+        });
+        List<CategoryDetailsVo> category_details = getCategoryDetails(getCompareItemBetweenSquadsReq,measureList);
+        compareItemBetweenSquadsVo.setCategory_details(category_details);
+        compareItemBetweenSquadsVo.setSquads_rate(squads_rate);
+        ljBaseResponse.setData(compareItemBetweenSquadsVo);
+        return ljBaseResponse;
+    }
+
+    /**
+     *
+     * @param getCompareItemBetweenSquadsReq
+     * @param measureList
+     * @return
+     */
+    private List<CategoryDetailsVo> getCategoryDetails(GetCompareItemBetweenSquadsReq getCompareItemBetweenSquadsReq, MeasureList measureList) {
+        List<CategoryDetailsVo> categoryDetailsVos = new ArrayList<>();
+        if (StringUtils.isBlank(getCompareItemBetweenSquadsReq.getCategory_key())){
+            //没传CategoryKey，取最顶级
+            getCompareItemBetweenSquadsReq.setCategory_key(measureList.getRootCategoryKey());
+        }
+        List<MeasureZoneResult> measureZoneResults = measureZoneResultService.getSubActiveMeasureCategoryZonesByListIdCategoryKey(getCompareItemBetweenSquadsReq.getProject_id(),getCompareItemBetweenSquadsReq.getMeasure_list_id(),getCompareItemBetweenSquadsReq.getCategory_key());
+        measureZoneResults.forEach(measureZoneResult -> {
+            CategoryDetailsVo categoryDetailsVo = new CategoryDetailsVo();
+            //获取子节点
+            String[] subKeys = getSubKeyByKeyPathAndKey(measureZoneResult.getCategoryPathAndKey(),getCompareItemBetweenSquadsReq.getCategory_key());
+            String subKey = subKeys[0];
+            //是否是叶子节点
+            boolean isLeaf = subKey.length() == 1;
+            CategoryV3 categoryV3 = categoryV3Service.getCategoryByKey(subKey);
+            if (categoryV3 == null){
+                return;
+            }
+            //zoneCount
+            int zoneCount = measureZoneService.getMeasureZoneCountByListIdCategoryKey(getCompareItemBetweenSquadsReq.getProject_id(),getCompareItemBetweenSquadsReq.getMeasure_list_id(),subKey);
+            if (zoneCount <= 0){
+                return;
+            }
+            //squads
+            List<Map<String,Object>> squadList = measureZoneResultService.statMearureZoneResultSquadTotalCountByListIdCategoryKey(getCompareItemBetweenSquadsReq.getMeasure_list_id(),categoryV3.getKey());
+            categoryDetailsVo.setCategory_key(categoryV3.getKey());
+            categoryDetailsVo.setCategory_name(categoryV3.getName());
+            categoryDetailsVo.setIs_leaf(isLeaf);
+            categoryDetailsVo.setZone_count(zoneCount);
+            List<SquadsVo> squads = new ArrayList<>();
+            squadList.forEach(squad -> {
+                SquadsVo squadsVo = new SquadsVo();
+                squadsVo.setSquad_id(Integer.parseInt(squad.get("squadId").toString()));
+                squadsVo.setPass_percent(Float.parseFloat(squad.get("pass_percent").toString()) * 100 + "");
+                if (isLeaf){
+                    squadsVo.setChecked_percent(Float.parseFloat(squad.get("count").toString()) / zoneCount * 100.0 + "");
+                }
+                squads.add(squadsVo);
+            });
+            categoryDetailsVo.setSquads(squads);
+            categoryDetailsVos.add(categoryDetailsVo);
+        });
+        return categoryDetailsVos;
+    }
+
+    /**
+     * 获取子节点
+     * @param categoryPathAndKey
+     * @param category_key
+     * @return
+     */
+    private String [] getSubKeyByKeyPathAndKey(String categoryPathAndKey, String category_key) {
+        String key = "/" + category_key + "/";
+        if (categoryPathAndKey.charAt(0) == '/'){
+            categoryPathAndKey  = categoryPathAndKey.substring(1);
+        }
+        if (categoryPathAndKey.charAt(categoryPathAndKey.length() - 1) == '/'){
+            categoryPathAndKey = categoryPathAndKey.substring(0,categoryPathAndKey.length() - 1);
+        }
+        categoryPathAndKey = "/" + categoryPathAndKey + "/";
+        int index = categoryPathAndKey.indexOf(key);
+        if (index < 0){
+            return new String[]{""};
+        }
+        index += key.length();
+        String [] subKeys = categoryPathAndKey.substring(index).split("/");
+        return subKeys;
     }
 
     /**

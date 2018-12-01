@@ -12,4 +12,13 @@ public interface MeasureZoneMapper extends LFMySQLMapper<MeasureZone> {
      * @return
      */
     Integer searchTotalByProjectIdAndMeasureListId(@Param("projectId") Integer project_id, @Param("measureListIds") int[] ints);
+
+    /**
+     *
+     * @param project_id
+     * @param measure_list_id
+     * @param subKey
+     * @return
+     */
+    Integer getMeasureZoneCountByListIdCategoryKey(@Param("projectId") Integer project_id, @Param("listId") Integer measure_list_id, @Param("subKey") String subKey);
 }

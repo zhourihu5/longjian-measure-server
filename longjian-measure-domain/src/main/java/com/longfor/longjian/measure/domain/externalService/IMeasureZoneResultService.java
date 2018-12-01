@@ -1,5 +1,7 @@
 package com.longfor.longjian.measure.domain.externalService;
 
+import com.longfor.longjian.measure.po.zhijian2.MeasureZoneResult;
+
 import java.util.List;
 import java.util.Map;
 
@@ -46,4 +48,13 @@ public interface IMeasureZoneResultService {
      * @return
      */
     List<Map<String,Object>> getSquadPassPercentSmallestCategoryKeyListByMeasureListId(Integer measure_list_id);
+
+    /**
+     *
+     * @param project_id
+     * @param measure_list_id
+     * @param category_key
+     * @return
+     */
+    List<MeasureZoneResult> getSubActiveMeasureCategoryZonesByListIdCategoryKey(Integer project_id, Integer measure_list_id, String category_key);
 }

@@ -6,6 +6,7 @@ import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureAr
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureCheckItemsReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasurePlanListReq;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetCompareBetweenGroupReq;
+import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetCompareItemBetweenSquadsReq;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetLoserCompareBetweenGroupReq;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.*;
@@ -50,12 +51,19 @@ public interface IProMeasureService  {
      * @param getCompareBetweenGroupReq
      * @return
      */
-    LjBaseResponse<SquadsAndPassVo> getCompareBetweenGroup(GetCompareBetweenGroupReq getCompareBetweenGroupReq);
+    LjBaseResponse<SquadsAndPassVo> getCompareBetweenGroup(GetCompareBetweenGroupReq getCompareBetweenGroupReq) throws Exception;
 
     /**
      * go项目实测快查组间对比合格率最低项
      * @param getLoserCompareBetweenGroupReq
      * @return
      */
-    LjBaseResponse<PassDiffVo> getLoserCompareBetweenGroup(GetLoserCompareBetweenGroupReq getLoserCompareBetweenGroupReq);
+    LjBaseResponse<PassDiffVo> getLoserCompareBetweenGroup(GetLoserCompareBetweenGroupReq getLoserCompareBetweenGroupReq) throws Exception;
+
+    /**
+     * go项目实测快查组间对比检查项
+     * @param getCompareItemBetweenSquadsReq
+     * @return
+     */
+    LjBaseResponse<CompareItemBetweenSquadsVo> getCompareItemBetweenSquads(GetCompareItemBetweenSquadsReq getCompareItemBetweenSquadsReq) throws Exception;
 }

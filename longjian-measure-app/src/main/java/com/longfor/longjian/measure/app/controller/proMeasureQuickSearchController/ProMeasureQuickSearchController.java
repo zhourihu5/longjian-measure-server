@@ -111,7 +111,7 @@ public class ProMeasureQuickSearchController {
      * @return
      */
     @GetMapping(value = "measure/measure_statistic/squad_completeness_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<SquadsAndPassVo> getCompareBetweenGroup(GetCompareBetweenGroupReq getCompareBetweenGroupReq){
+    public LjBaseResponse<SquadsAndPassVo> getCompareBetweenGroup(GetCompareBetweenGroupReq getCompareBetweenGroupReq) throws Exception {
         return  proMeasureService.getCompareBetweenGroup(getCompareBetweenGroupReq);
     }
 
@@ -123,20 +123,19 @@ public class ProMeasureQuickSearchController {
      * @return
      */
     @GetMapping(value = "measure/measure_statistic/squad_special_point_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<PassDiffVo> getLoserCompareBetweenGroup(GetLoserCompareBetweenGroupReq getLoserCompareBetweenGroupReq){
+    public LjBaseResponse<PassDiffVo> getLoserCompareBetweenGroup(GetLoserCompareBetweenGroupReq getLoserCompareBetweenGroupReq) throws Exception {
         return proMeasureService.getLoserCompareBetweenGroup(getLoserCompareBetweenGroupReq);
     }
 
     /**
      * go项目实测快查组间对比检查项
-     * http://192.168.37.159:3000/mock/8/oapi/v3/measure/measure_statistic/category_details_json/?_ct=json&measure_list_id=5527&project_id=927&page_level=project&group_id=4&team_id=25&category_key=
-     * @param requestParam
+     * http://192.168.37.159:3000/project/8/interface/api/246
+     * @param getCompareItemBetweenSquadsReq
      * @return
      */
-    @MockOperation
     @GetMapping(value = "measure/measure_statistic/category_details_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<CompareItemBetweenSquadsVo> getCompareItemBetweenSquads(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<CompareItemBetweenSquadsVo> getCompareItemBetweenSquads(GetCompareItemBetweenSquadsReq getCompareItemBetweenSquadsReq) throws Exception {
+        return proMeasureService.getCompareItemBetweenSquads(getCompareItemBetweenSquadsReq);
     }
 
     /**

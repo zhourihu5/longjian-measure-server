@@ -164,6 +164,22 @@ public class DateUtil {
     }
 
     public static void main(String[] args) throws ParseException {
-        System.out.println(getYeasterShortDateByDate(new Date()));
+        String category_key = "1605";
+        String categoryPathAndKey = "/1605/1605_21_0/1605_55_0/";
+        String key = "/" + category_key + "/";
+        if (categoryPathAndKey.charAt(0) == '/'){
+            categoryPathAndKey  = categoryPathAndKey.substring(1);
+        }
+        if (categoryPathAndKey.charAt(categoryPathAndKey.length() - 1) == '/'){
+            categoryPathAndKey = categoryPathAndKey.substring(0,categoryPathAndKey.length() - 1);
+        }
+        categoryPathAndKey = "/" + categoryPathAndKey + "/";
+        int index = categoryPathAndKey.indexOf(key);
+//        if (index < 0){
+//            return "";
+//        }
+        index += key.length();
+        String [] subKeys = categoryPathAndKey.substring(index).split("/");
+        System.out.print(subKeys[0]);
     }
 }

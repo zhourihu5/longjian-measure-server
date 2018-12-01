@@ -53,4 +53,13 @@ public interface MeasureZoneResultMapper extends LFMySQLMapper<MeasureZoneResult
      * @return
      */
     List<Map<String,Object>> getSquadPassPercentSmallestCategoryKeyListByMeasureListId(@Param("listId") Integer measure_list_id);
+
+    /**
+     *
+     * @param project_id
+     * @param measure_list_id
+     * @param category_key
+     * @return
+     */
+    List<MeasureZoneResult> getSubActiveMeasureCategoryZonesByListIdCategoryKey(@Param("projectId") Integer project_id, @Param("listId") Integer measure_list_id, @Param("categoryKey") String category_key);
 }
