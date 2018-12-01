@@ -5,6 +5,7 @@ import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetCheckerListR
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureAreaListReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureCheckItemsReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasurePlanListReq;
+import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetBlisterRateInfoReq;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetCompareBetweenGroupReq;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetCompareItemBetweenSquadsReq;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetLoserCompareBetweenGroupReq;
@@ -66,4 +67,11 @@ public interface IProMeasureService  {
      * @return
      */
     LjBaseResponse<CompareItemBetweenSquadsVo> getCompareItemBetweenSquads(GetCompareItemBetweenSquadsReq getCompareItemBetweenSquadsReq) throws Exception;
+
+    /**
+     * go项目实测快速查询爆点情况
+     * @param getBlisterRateInfoReq
+     * @return
+     */
+    LjBaseResponse<BlisterRateInfoVo> getBlisterRateInfo(GetBlisterRateInfoReq getBlisterRateInfoReq) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException;
 }

@@ -140,14 +140,13 @@ public class ProMeasureQuickSearchController {
 
     /**
      * go项目实测快速查询爆点情况
-     * http://192.168.37.159:3000/mock/8/oapi/v3/measure/measure_statistic/issue_brief_json/?_ct=json&project_id=927&page_level=project&group_id=4&team_id=25&measure_list_id=5527
-     * @param requestParam
+     * http://192.168.37.159:3000/project/8/interface/api/252
+     * @param getBlisterRateInfoReq
      * @return
      */
-    @MockOperation
     @GetMapping(value = "measure/measure_statistic/issue_brief_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<BlisterRateInfoVo> getBlisterRateInfo(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<BlisterRateInfoVo> getBlisterRateInfo(GetBlisterRateInfoReq getBlisterRateInfoReq) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        return proMeasureService.getBlisterRateInfo(getBlisterRateInfoReq);
     }
 
 

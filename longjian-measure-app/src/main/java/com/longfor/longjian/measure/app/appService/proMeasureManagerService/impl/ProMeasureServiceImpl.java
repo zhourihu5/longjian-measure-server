@@ -10,12 +10,14 @@ import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetCheckerListR
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureAreaListReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureCheckItemsReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasurePlanListReq;
+import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetBlisterRateInfoReq;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetCompareBetweenGroupReq;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetCompareItemBetweenSquadsReq;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetLoserCompareBetweenGroupReq;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.*;
 import com.longfor.longjian.measure.consts.constant.CategoryClsTypeConstant;
+import com.longfor.longjian.measure.consts.constant.MeasureListIssueType;
 import com.longfor.longjian.measure.consts.util.ConvertUtil;
 import com.longfor.longjian.measure.consts.util.DateUtil;
 import com.longfor.longjian.measure.consts.util.LambdaExceptionUtil;
@@ -241,6 +243,16 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         compareItemBetweenSquadsVo.setCategory_details(category_details);
         compareItemBetweenSquadsVo.setSquads_rate(squads_rate);
         ljBaseResponse.setData(compareItemBetweenSquadsVo);
+        return ljBaseResponse;
+    }
+
+    @Override
+    public LjBaseResponse<BlisterRateInfoVo> getBlisterRateInfo(GetBlisterRateInfoReq getBlisterRateInfoReq) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
+        LjBaseResponse<BlisterRateInfoVo> ljBaseResponse = new LjBaseResponse<>();
+        Map<String,Object> issue = measureListIssueService.getMeasureListIssueBrief(getBlisterRateInfoReq.getProject_id(),getBlisterRateInfoReq.getMeasure_list_id()
+                ,MeasureListConstant.UNCLOSECODE, MeasureListIssueType.REPAIRABLE,MeasureListIssueType.NOREPAIRABLE,MeasureListIssueType.NOTENOASSIGN,MeasureListIssueType.ASSIGNNOREFORM,MeasureListIssueType.REFORMNOCHECK,MeasureListIssueType.CHECKYES);
+        BlisterRateInfoVo blisterRateInfoVo = (BlisterRateInfoVo)ConvertUtil.convertMap(BlisterRateInfoVo.class,issue);
+        ljBaseResponse.setData(blisterRateInfoVo);
         return ljBaseResponse;
     }
 

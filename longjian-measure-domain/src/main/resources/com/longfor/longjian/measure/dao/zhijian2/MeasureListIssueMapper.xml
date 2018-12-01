@@ -50,4 +50,40 @@
     last_assigner_at, list_id, pos_x, pos_y, project_id, status, typ, uuid, region_uuid, 
     zone_uuid, client_create_at, create_at, update_at, delete_at
   </sql>
+
+  <select id="getZoneCount" resultType="int">
+    SELECT
+    COUNT(DISTINCT zone_uuid) AS count
+    FROM
+    measure_list_issue
+    WHERE
+    delete_at IS NULL
+    AND project_id = #{projectId}
+    AND list_id = #{listId}
+    AND close_status = #{unclosecode}
+  </select>
+
+  <select id="getCountByTyp" resultType="int">
+    SELECT
+    COUNT(id) AS count
+    FROM
+    measure_list_issue
+    WHERE
+    delete_at IS NULL
+    AND project_id = #{projectId}
+    AND list_id = #{listId}
+    AND typ = #{typ}
+  </select>
+
+  <select id="getCountByStatus" resultType="int">
+    SELECT
+    COUNT(id) AS count
+    FROM
+    measure_list_issue
+    WHERE
+    delete_at IS NULL
+    AND project_id = #{projectId}
+    AND list_id = #{listId}
+    AND `status` = #{status}
+  </select>
 </mapper>
