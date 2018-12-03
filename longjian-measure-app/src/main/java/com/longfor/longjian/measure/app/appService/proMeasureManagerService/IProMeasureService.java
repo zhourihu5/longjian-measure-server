@@ -5,10 +5,7 @@ import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetCheckerListR
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureAreaListReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureCheckItemsReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasurePlanListReq;
-import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetBlisterRateInfoReq;
-import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetCompareBetweenGroupReq;
-import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetCompareItemBetweenSquadsReq;
-import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetLoserCompareBetweenGroupReq;
+import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.*;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.*;
 
@@ -74,4 +71,11 @@ public interface IProMeasureService  {
      * @return
      */
     LjBaseResponse<BlisterRateInfoVo> getBlisterRateInfo(GetBlisterRateInfoReq getBlisterRateInfoReq) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException;
+
+    /**
+     * go项目实测快速查询爆点情况时间节点
+     * @param getBlisterRateInfoTimeNotesReq
+     * @return
+     */
+    LjBaseResponse<ItemsVo<List<BlisterTimeNotesVo>>> getBlisterRateInfoTimeNotes(GetBlisterRateInfoTimeNotesReq getBlisterRateInfoTimeNotesReq) throws ParseException;
 }

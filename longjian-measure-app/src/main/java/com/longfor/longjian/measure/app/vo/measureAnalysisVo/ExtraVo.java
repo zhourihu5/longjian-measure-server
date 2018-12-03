@@ -1,6 +1,5 @@
 package com.longfor.longjian.measure.app.vo.measureAnalysisVo;
 
-import jdk.internal.org.objectweb.asm.commons.RemappingAnnotationAdapter;
 import lombok.Data;
 
 import java.util.List;

@@ -10,10 +10,7 @@ import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetCheckerListR
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureAreaListReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureCheckItemsReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasurePlanListReq;
-import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetBlisterRateInfoReq;
-import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetCompareBetweenGroupReq;
-import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetCompareItemBetweenSquadsReq;
-import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetLoserCompareBetweenGroupReq;
+import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.*;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.*;
 import com.longfor.longjian.measure.consts.constant.CategoryClsTypeConstant;
@@ -253,6 +250,31 @@ public class ProMeasureServiceImpl implements IProMeasureService {
                 ,MeasureListConstant.UNCLOSECODE, MeasureListIssueType.REPAIRABLE,MeasureListIssueType.NOREPAIRABLE,MeasureListIssueType.NOTENOASSIGN,MeasureListIssueType.ASSIGNNOREFORM,MeasureListIssueType.REFORMNOCHECK,MeasureListIssueType.CHECKYES);
         BlisterRateInfoVo blisterRateInfoVo = (BlisterRateInfoVo)ConvertUtil.convertMap(BlisterRateInfoVo.class,issue);
         ljBaseResponse.setData(blisterRateInfoVo);
+        return ljBaseResponse;
+    }
+
+    @Override
+    public LjBaseResponse<ItemsVo<List<BlisterTimeNotesVo>>> getBlisterRateInfoTimeNotes(GetBlisterRateInfoTimeNotesReq getBlisterRateInfoTimeNotesReq) throws ParseException {
+        LjBaseResponse<ItemsVo<List<BlisterTimeNotesVo>>> ljBaseResponse = new LjBaseResponse<>();
+        ItemsVo<List<BlisterTimeNotesVo>> itemsVo = new ItemsVo<>();
+        List<BlisterTimeNotesVo> blisterTimeNotesVos = new ArrayList<>();
+        String startTime = "";
+        String endTime = "";
+        //如果客户端传上来的为0 ，查找最近一周的
+        if (getBlisterRateInfoTimeNotesReq.getBegin_on() <= 0 && getBlisterRateInfoTimeNotesReq.getEnd_on() <= 0){
+            startTime = DateUtil.getBeforeWeekShortDate(new Date());
+            endTime = DateUtil.getStringDate(new Date());
+        }else {
+            startTime = DateUtil.getShortDateStringByLong(getBlisterRateInfoTimeNotesReq.getBegin_on());
+            endTime = DateUtil.getShortDateStringByLong(getBlisterRateInfoTimeNotesReq.getEnd_on());
+        }
+        List<Map<String,Object>> blisterTimeNotesList = measureListIssueService.searchMeasureListIssueTrend(getBlisterRateInfoTimeNotesReq.getProject_id(),getBlisterRateInfoTimeNotesReq.getMeasure_list_id(),startTime,endTime,MeasureListConstant.UNCLOSECODE);
+        blisterTimeNotesList.forEach(LambdaExceptionUtil.throwingConsumerWrapper(blisterTimeNote -> {
+            BlisterTimeNotesVo blisterTimeNotesVo = (BlisterTimeNotesVo)ConvertUtil.convertMap(BlisterTimeNotesVo.class,blisterTimeNote);
+            blisterTimeNotesVos.add(blisterTimeNotesVo);
+        }));
+        itemsVo.setItems(blisterTimeNotesVos);
+        ljBaseResponse.setData(itemsVo);
         return ljBaseResponse;
     }
 

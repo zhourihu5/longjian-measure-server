@@ -86,4 +86,44 @@
     AND list_id = #{listId}
     AND `status` = #{status}
   </select>
+
+  <select id="searchMeasureListIssueTrendNewCountList" resultType="map">
+    SELECT
+    COUNT(`client_create_at`) AS new_count,
+    DATE_FORMAT(
+    `client_create_at`,
+    '%Y-%m-%d'
+    ) AS days
+    FROM
+    measure_list_issue
+    WHERE
+    project_id = #{projectId}
+    AND list_id = #{listId}
+    AND close_status = #{unclosecode}
+    AND delete_at IS NULL
+    AND client_create_at &gt;= concat(#{startTime},'00:00:00')
+    AND client_create_at &lt;= concat(#{endTime},'23:59:59')
+    GROUP BY
+    days
+  </select>
+
+  <select id="searchMeasureListIssueTrendReformList" resultType="map">
+    SELECT
+    COUNT(`end_on`) AS reform_count,
+    DATE_FORMAT(
+    `end_on`,
+    '%Y-%m-%d'
+    ) AS days
+    FROM
+    measure_list_issue
+    WHERE
+    project_id = #{projectId}
+    AND list_id = #{listId}
+    AND close_status = #{unclosecode}
+    AND delete_at IS NULL
+    AND end_on &gt;= UNIX_TIMESTAMP(#{startTime})
+    AND end_on &lt;= UNIX_TIMESTAMP(#{endTime})
+    GROUP BY
+    days
+  </select>
 </mapper>

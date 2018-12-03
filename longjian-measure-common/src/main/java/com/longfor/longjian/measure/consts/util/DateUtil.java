@@ -28,12 +28,12 @@ public class DateUtil {
     private DateUtil(){}
 
     /**
-     * 获取现在时间
+     * 返回短时间格式
      *
      * @return返回短时间格式 yyyy-MM-dd
      */
-    public static Date getNowDateShort()  {
-        String dateString = formatter.format(new Date());
+    public static Date getNowDateShort(Date date)  {
+        String dateString = formatter.format(date);
         Date dd= null;
         try {
             dd = formatter.parse(dateString);
@@ -64,8 +64,8 @@ public class DateUtil {
      *
      * @return返回字符串格式 yyyy-MM-dd HH:mm:ss
      */
-    public static String getStringDate() {
-        return dateFormatter.format(new Date());
+    public static String getStringDate(Date date) {
+        return dateFormatter.format(date);
     }
 
     /**
@@ -99,8 +99,8 @@ public class DateUtil {
      *
      * @return 返回短时间字符串格式yyyy-MM-dd
      */
-    public static String getStringDateShort() {
-        return formatter.format( new Date());
+    public static String getStringDateShort(Date date) {
+        return formatter.format(date);
     }
 
 
@@ -163,23 +163,53 @@ public class DateUtil {
         return lTime;
     }
 
-    public static void main(String[] args) throws ParseException {
-        String category_key = "1605";
-        String categoryPathAndKey = "/1605/1605_21_0/1605_55_0/";
-        String key = "/" + category_key + "/";
-        if (categoryPathAndKey.charAt(0) == '/'){
-            categoryPathAndKey  = categoryPathAndKey.substring(1);
-        }
-        if (categoryPathAndKey.charAt(categoryPathAndKey.length() - 1) == '/'){
-            categoryPathAndKey = categoryPathAndKey.substring(0,categoryPathAndKey.length() - 1);
-        }
-        categoryPathAndKey = "/" + categoryPathAndKey + "/";
-        int index = categoryPathAndKey.indexOf(key);
-//        if (index < 0){
-//            return "";
-//        }
-        index += key.length();
-        String [] subKeys = categoryPathAndKey.substring(index).split("/");
-        System.out.print(subKeys[0]);
+    /**
+     * 获取某个时间前7天（一周）短时间
+     * @return
+     * @throws ParseException
+     */
+    public static String getBeforeWeekShortDate(Date date) throws ParseException {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE, - 7);
+        Date date1 = calendar.getTime();
+        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd");
+        Long time = date1.getTime();
+        String d = format.format(time);
+//        Date startDate = format.parse(d);
+        return d;
     }
+
+    /**
+     * Long 转 短时间 字符串
+     * @param dateLong
+     * @return
+     * @throws ParseException
+     */
+    public static String getShortDateStringByLong(Long dateLong) throws ParseException {
+        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd");
+        String d = format.format(dateLong);
+        return d;
+    }
+
+//    public static void main(String[] args) throws ParseException {
+////        String category_key = "1605";
+////        String categoryPathAndKey = "/1605/1605_21_0/1605_55_0/";
+////        String key = "/" + category_key + "/";
+////        if (categoryPathAndKey.charAt(0) == '/'){
+////            categoryPathAndKey  = categoryPathAndKey.substring(1);
+////        }
+////        if (categoryPathAndKey.charAt(categoryPathAndKey.length() - 1) == '/'){
+////            categoryPathAndKey = categoryPathAndKey.substring(0,categoryPathAndKey.length() - 1);
+////        }
+////        categoryPathAndKey = "/" + categoryPathAndKey + "/";
+////        int index = categoryPathAndKey.indexOf(key);
+//////        if (index < 0){
+//////            return "";
+//////        }
+////        index += key.length();
+////        String [] subKeys = categoryPathAndKey.substring(index).split("/");
+////        System.out.print(subKeys[0]);
+////        System.out.println(getYeasterShortDate(new Date()));
+//    }
 }

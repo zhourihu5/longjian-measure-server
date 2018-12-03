@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -152,14 +153,13 @@ public class ProMeasureQuickSearchController {
 
     /**
      * go项目实测快速查询爆点情况时间节点
-     * http://192.168.37.159:3000/mock/8/oapi/v3/measure/measure_statistic/issue_trend_json/?_ct=json&project_id=927&page_level=project&group_id=4&team_id=25&measure_list_id=5527&begin_on=0&end_on=0
-     * @param requestParam
+     * http://192.168.37.159:3000/project/8/interface/api/256
+     * @param getBlisterRateInfoTimeNotesReq
      * @return
      */
-    @MockOperation
     @GetMapping(value = "measure/measure_statistic/issue_trend_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<ItemsVo<List<BlisterTimeNotesVo>>> getBlisterRateInfoTimeNotes(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<ItemsVo<List<BlisterTimeNotesVo>>> getBlisterRateInfoTimeNotes(GetBlisterRateInfoTimeNotesReq getBlisterRateInfoTimeNotesReq) throws ParseException {
+        return proMeasureService.getBlisterRateInfoTimeNotes(getBlisterRateInfoTimeNotesReq);
     }
 
     /**

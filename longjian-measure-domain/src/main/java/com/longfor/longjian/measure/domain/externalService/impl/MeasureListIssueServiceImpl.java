@@ -7,7 +7,9 @@ import com.longfor.longjian.measure.po.zhijian2.MeasureListIssue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -44,5 +46,40 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
             map.put("zone_percentage",zonePercentage);
         }
         return map;
+    }
+
+    @Override
+    public List<Map<String, Object>> searchMeasureListIssueTrend(Integer project_id, Integer measure_list_id, String startTime, String endTime, String UNCLOSECODE) {
+        List<Map<String, Object>> result = new ArrayList<>();
+        List<Map<String, Object>> newCountList = measureListIssueMapper.searchMeasureListIssueTrendNewCountList(project_id,measure_list_id,startTime,endTime,UNCLOSECODE);
+        List<Map<String, Object>> trendReformList = measureListIssueMapper.searchMeasureListIssueTrendReformList(project_id,measure_list_id,startTime,endTime,UNCLOSECODE);
+        newCountList.forEach(newCount -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("date",newCount.get("days").toString());
+            map.put("new_count",Integer.parseInt(newCount.get("new_count").toString()));
+            result.add(map);
+        });
+        //数据合并
+        trendReformList.forEach(trendReform -> {
+            boolean flag = true;
+            for (Map<String ,Object> r:result
+                 ) {
+                if (r.get("date").equals(trendReform.get("days").toString())){
+                    r.put("reform_count",Integer.parseInt(trendReform.get("reform_count").toString()));
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag){
+                Map<String, Object> map = new HashMap<>();
+                map.put("date",trendReform.get("days").toString());
+                map.put("reform_count",Integer.parseInt(trendReform.get("reform_count").toString()));
+                result.add(map);
+            }
+        });
+        //数据排序 TODO
+        //往中间补全信息 TODO
+//        Collections.sort(humans, Comparator.comparing(Human::getName));
+        return result;
     }
 }
