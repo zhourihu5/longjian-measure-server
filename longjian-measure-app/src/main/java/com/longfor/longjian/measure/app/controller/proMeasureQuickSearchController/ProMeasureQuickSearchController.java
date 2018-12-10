@@ -164,25 +164,24 @@ public class ProMeasureQuickSearchController {
 
     /**
      * go项目实测快速查询爆点情况检查项
-     * http://192.168.37.159:3000/mock/8/oapi/v3/measure/measure_statistic/issue_distribution_category_json/?_ct=json&project_id=927&page_level=project&group_id=4&team_id=25&measure_list_id=5527&category_key=
-     * @param requestParam
+     * http://192.168.37.159:3000/project/8/interface/api/260
+     * todo
+     * @param getBlisterRateCheckItemsReq
      * @return
      */
-    @MockOperation
     @GetMapping(value = "measure/measure_statistic/issue_distribution_category_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<BlisterCheckItemsVo> getBlisterRateCheckItems(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<BlisterCheckItemsVo> getBlisterRateCheckItems(GetBlisterRateCheckItemsReq getBlisterRateCheckItemsReq){
+        return proMeasureService.getBlisterRateCheckItems(getBlisterRateCheckItemsReq);
     }
 
     /**
      * go项目实测快速查询区域合格率查询
-     * http://192.168.37.159:3000/mock/8/oapi/v3/measure/measure_statistic/sub_category_area_percentage/?_ct=json&project_id=927&page_level=project&group_id=4&team_id=25&list_ids=5525&area_ids=2942526&parent_category_key=10203
+     * http://192.168.37.159:3000/project/8/interface/api/270
      * @return
      */
-    @MockOperation
     @GetMapping(value = "measure/measure_statistic/sub_category_area_percentage/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<ItemsVo<List<AreaPOPVo>>> getAreaPOP(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<ItemsVo<List<AreaPOPVo>>> getAreaPOP(GetAreaPOPReq getAreaPOPreq) throws Exception {
+        return proMeasureService.getAreaPOP(getAreaPOPreq);
     }
     
 }

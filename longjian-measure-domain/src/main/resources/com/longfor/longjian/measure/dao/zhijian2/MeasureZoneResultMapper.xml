@@ -200,4 +200,36 @@
     </if>
     AND delete_at IS NULL
   </select>
+
+  <select id="getMeasureZoneResultPassPercentageByListIdsAndCategoryKeyAndAreaId" resultType="map">
+SELECT
+	SUM( total ) AS total,
+	SUM( ok_total ) AS ok_total
+FROM
+	measure_zone_result
+WHERE
+	delete_at IS NULL
+	AND list_id IN
+    <foreach collection="listIds" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+	AND category_path_and_key LIKE concat('%/',#{key},'/%')
+	AND area_path_and_id LIKE concat('%/',#{areaId},'/%')
+  </select>
+
+  <select id="countMeasureZoneByListIdsAndCategoryKeyAndAreaId" resultType="int">
+    SELECT
+    count( id )
+    FROM
+    measure_zone_result
+    WHERE
+    delete_at IS NULL
+    AND list_id in
+    <foreach collection="listIds" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+    AND category_path_and_key LIKE concat('%/',#{categoryKey},'/%')
+    AND area_path_and_id LIKE concat('%/',#{areaId},'/%')
+    AND project_id = #{projectId}
+  </select>
 </mapper>

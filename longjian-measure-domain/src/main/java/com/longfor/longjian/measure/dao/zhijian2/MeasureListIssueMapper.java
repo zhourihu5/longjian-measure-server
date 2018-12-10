@@ -57,4 +57,23 @@ public interface MeasureListIssueMapper extends LFMySQLMapper<MeasureListIssue> 
      * @return
      */
     List<Map<String,Object>> searchMeasureListIssueTrendReformList(@Param("projectId") Integer project_id, @Param("listId") Integer measure_list_id, @Param("startTime") String startTime, @Param("endTime") String endTime, @Param("unclosecode") String unclosecode);
+
+    /**
+     *
+     * @param project_id
+     * @param measure_list_id
+     * @param unclosecode
+     * @return
+     */
+    Integer countMeasureListIssueDistributionCategory(@Param("projectId") Integer project_id, @Param("listId") Integer measure_list_id, @Param("unclosecode") String unclosecode);
+
+    /**
+     *
+     * @param listIds
+     * @param cateChildPath
+     * @param areaChilePath
+     * @param closedcode
+     * @return
+     */
+    List<Map<String, Object>> getMeasureListIssueStatusMapByListIdsAndCategoryKeyAndAreaId(@Param("listIds") String[] listIds, @Param("cateChildPath") String cateChildPath, @Param("areaChilePath") String areaChilePath, @Param("closedcode") String closedcode);
 }

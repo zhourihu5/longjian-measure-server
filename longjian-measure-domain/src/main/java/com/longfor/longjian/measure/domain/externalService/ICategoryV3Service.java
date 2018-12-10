@@ -27,4 +27,39 @@ public interface ICategoryV3Service {
      * @return
      */
     List<Map<String,Object>> getRootCategoryByClsTeamId(Integer measure, Integer teamId);
+
+    /**
+     *
+     * @param categoryKeys
+     * @return
+     */
+    List<CategoryV3> getCategoryByKeys(List<String> categoryKeys);
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    List<CategoryV3> searchByRootCategoryId(Integer id);
+
+    /**
+     *
+     * @param rootCategory
+     * @return
+     */
+    Map<String, Object> getPathTreeByRootCategory(CategoryV3 rootCategory);
+
+    /**
+     * 取出所有的category子项
+     * @param parent_category_key
+     * @return
+     */
+    List<CategoryV3> searchSubCategoryByFatherKey(String parent_category_key);
+
+    /**
+     * 查询子集个数
+     * @param key
+     * @return
+     */
+    Integer countCategoryByFatherKey(String key);
 }

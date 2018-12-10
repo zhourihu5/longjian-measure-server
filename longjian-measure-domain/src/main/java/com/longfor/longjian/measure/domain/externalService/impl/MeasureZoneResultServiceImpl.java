@@ -49,4 +49,13 @@ public class MeasureZoneResultServiceImpl implements IMeasureZoneResultService {
     public List<MeasureZoneResult> getSubActiveMeasureCategoryZonesByListIdCategoryKey(Integer project_id, Integer measure_list_id, String category_key) {
         return measureZoneResultMapper.getSubActiveMeasureCategoryZonesByListIdCategoryKey(project_id,measure_list_id,category_key);
     }
+
+    @Override
+    public Map<String, Object> getMeasureZoneResultPassPercentageByListIdsAndCategoryKeyAndAreaId(String[] listIds, String key, String areaId) {
+        return measureZoneResultMapper.getMeasureZoneResultPassPercentageByListIdsAndCategoryKeyAndAreaId(listIds,key,areaId);
+    }
+    @Override
+    public Integer countMeasureZoneByListIdsAndCategoryKeyAndAreaId(Integer project_id, String[] listIds, String key, String areaId) {
+        return measureZoneResultMapper.countMeasureZoneByListIdsAndCategoryKeyAndAreaId(project_id,listIds,key,areaId);
+    }
 }

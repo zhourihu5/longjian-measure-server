@@ -5,6 +5,7 @@ import com.longfor.longjian.measure.domain.externalService.IAreaService;
 import com.longfor.longjian.measure.po.zhijian2.Area;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 import java.util.Map;
@@ -27,5 +28,14 @@ public class AreaServiceImpl implements IAreaService {
     @Override
     public List<Map<String, Object>> getProMeasureAreaListByFatherId(String project_id, String area_id) {
         return areaMapper.selectByFatherId(project_id == null?"":project_id,area_id == null?"":area_id);
+    }
+
+    @Override
+    public Area getAreaById(String areaId) {
+        Example example = new Example(Area.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("id",areaId);
+        criteria.andIsNull("deleteAt");
+        return areaMapper.selectOneByExample(example);
     }
 }

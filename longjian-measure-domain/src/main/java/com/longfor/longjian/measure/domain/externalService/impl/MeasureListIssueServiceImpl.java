@@ -3,14 +3,17 @@ package com.longfor.longjian.measure.domain.externalService.impl;
 import com.longfor.longjian.measure.dao.zhijian2.MeasureListIssueMapper;
 import com.longfor.longjian.measure.dao.zhijian2.MeasureZoneMapper;
 import com.longfor.longjian.measure.domain.externalService.IMeasureListIssueService;
+import com.longfor.longjian.measure.po.zhijian2.Area;
+import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
+import com.longfor.longjian.measure.po.zhijian2.MeasureList;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListIssue;
+import com.longfor.longjian.measure.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.util.*;
 
 @Service
 public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
@@ -49,37 +52,65 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     }
 
     @Override
-    public List<Map<String, Object>> searchMeasureListIssueTrend(Integer project_id, Integer measure_list_id, String startTime, String endTime, String UNCLOSECODE) {
+    public List<Map<String, Object>> searchMeasureListIssueTrend(Integer project_id, Integer measure_list_id, String startTime, String endTime, String UNCLOSECODE) throws ParseException {
         List<Map<String, Object>> result = new ArrayList<>();
         List<Map<String, Object>> newCountList = measureListIssueMapper.searchMeasureListIssueTrendNewCountList(project_id,measure_list_id,startTime,endTime,UNCLOSECODE);
         List<Map<String, Object>> trendReformList = measureListIssueMapper.searchMeasureListIssueTrendReformList(project_id,measure_list_id,startTime,endTime,UNCLOSECODE);
-        newCountList.forEach(newCount -> {
+        //数据合并，把两个查询出来的时间合并到开始到结束时间，数据是空就记0
+        do {
             Map<String, Object> map = new HashMap<>();
-            map.put("date",newCount.get("days").toString());
-            map.put("new_count",Integer.parseInt(newCount.get("new_count").toString()));
-            result.add(map);
-        });
-        //数据合并
-        trendReformList.forEach(trendReform -> {
-            boolean flag = true;
-            for (Map<String ,Object> r:result
+            map.put("date", startTime);
+            boolean newCountListFlag = false;
+            for (Map<String ,Object> newCount:newCountList
                  ) {
-                if (r.get("date").equals(trendReform.get("days").toString())){
-                    r.put("reform_count",Integer.parseInt(trendReform.get("reform_count").toString()));
-                    flag = false;
+                if (startTime.equals(newCount.get("days").toString())) {
+                    map.put("new_count", Integer.parseInt(newCount.get("new_count").toString()));
+                    newCountListFlag = true;
                     break;
                 }
             }
-            if (flag){
-                Map<String, Object> map = new HashMap<>();
-                map.put("date",trendReform.get("days").toString());
-                map.put("reform_count",Integer.parseInt(trendReform.get("reform_count").toString()));
-                result.add(map);
+            if (!newCountListFlag){
+                map.put("new_count",0);
             }
-        });
-        //数据排序 TODO
-        //往中间补全信息 TODO
+            boolean trendReformListFlag = false;
+            for (Map<String ,Object> trendReform:trendReformList
+            ) {
+                if (startTime.equals(trendReform.get("days").toString())) {
+                    map.put("reform_count",Integer.parseInt(trendReform.get("reform_count").toString()));
+                    trendReformListFlag = true;
+                    break;
+                }
+            }
+            if (!newCountListFlag){
+                map.put("reform_count",0);
+            }
+            result.add(map);
+            startTime = DateUtil.getShortDateStringByStringDate(startTime,1);
+        }while (DateUtil.getLongFromShortString(startTime) <= DateUtil.getLongFromShortString(endTime));
 //        Collections.sort(humans, Comparator.comparing(Human::getName));
         return result;
+    }
+
+    @Override
+    public Integer countMeasureListIssueDistributionCategory(Integer project_id, Integer measure_list_id, String UNCLOSECODE) {
+        return measureListIssueMapper.countMeasureListIssueDistributionCategory(project_id,measure_list_id,UNCLOSECODE);
+    }
+
+    @Override
+    public List<MeasureListIssue> searchMeasureListIssueDistributionCategory(Integer project_id, Integer measure_list_id, String unclosecode) {
+        Example example = new Example(MeasureListIssue.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId",project_id);
+        criteria.andEqualTo("listId",measure_list_id);
+        criteria.andEqualTo("closeStatus",unclosecode);
+        criteria.andIsNull("deleteAt");
+        return measureListIssueMapper.selectByExample(example);
+    }
+
+    @Override
+    public List<Map<String, Object>> getMeasureListIssueStatusMapByListIdsAndCategoryKeyAndAreaId(String[] listIds, CategoryV3 categoryV3, Area area, String closedcode) {
+        String cateChildPath = categoryV3.getPath() + categoryV3.getKey() + "/";
+        String areaChilePath = area.getPath() + area.getId() + "/";
+        return measureListIssueMapper.getMeasureListIssueStatusMapByListIdsAndCategoryKeyAndAreaId(listIds,cateChildPath,areaChilePath,closedcode);
     }
 }

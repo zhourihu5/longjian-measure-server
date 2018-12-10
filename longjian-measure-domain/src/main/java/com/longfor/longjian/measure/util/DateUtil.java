@@ -1,4 +1,4 @@
-package com.longfor.longjian.measure.consts.util;
+package com.longfor.longjian.measure.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,11 +62,10 @@ public class DateUtil {
     /**
      * 获取现在时间
      *
-     * @return返回字符串格式 yyyy-MM-dd
+     * @return返回字符串格式 yyyy-MM-dd HH:mm:ss
      */
     public static String getStringDate(Date date) {
-        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd");
-        return format.format(date);
+        return dateFormatter.format(date);
     }
 
     /**
@@ -193,6 +192,32 @@ public class DateUtil {
         return d;
     }
 
+    /**
+     * 通过短时间日期字符串转换时间再加一再转换时间字符串
+     * @param startDate
+     * @param day
+     * @return
+     * @throws ParseException
+     */
+    public static String getShortDateStringByStringDate(String startDate,int day) throws ParseException {
+        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd");
+        Date startTime = format.parse(startDate);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(startTime);
+        calendar.add(Calendar.DATE, day);
+        Date endDate = calendar.getTime();
+        Long time = endDate.getTime();
+        String d = format.format(time);
+        return d;
+    }
+
+    public static Long getLongFromShortString(String time) throws ParseException {
+        SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
+        Date dt2 = sdf.parse(time);
+        long lTime = dt2.getTime();
+        return lTime;
+    }
+
 //    public static void main(String[] args) throws ParseException {
 ////        String category_key = "1605";
 ////        String categoryPathAndKey = "/1605/1605_21_0/1605_55_0/";
@@ -212,5 +237,6 @@ public class DateUtil {
 ////        String [] subKeys = categoryPathAndKey.substring(index).split("/");
 ////        System.out.print(subKeys[0]);
 ////        System.out.println(getYeasterShortDate(new Date()));
+//        System.out.println(getShortDateStringByStringDate("2018-12-8",1));
 //    }
 }

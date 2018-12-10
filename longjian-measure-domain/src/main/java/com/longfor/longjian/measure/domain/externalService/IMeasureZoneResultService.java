@@ -57,4 +57,23 @@ public interface IMeasureZoneResultService {
      * @return
      */
     List<MeasureZoneResult> getSubActiveMeasureCategoryZonesByListIdCategoryKey(Integer project_id, Integer measure_list_id, String category_key);
+
+    /**
+     * 通过任务Id列表和检查项和区域Id获取测区的测点数和合格率
+     * @param listIds
+     * @param key
+     * @param areaId
+     * @return
+     */
+    Map<String, Object> getMeasureZoneResultPassPercentageByListIdsAndCategoryKeyAndAreaId(String[] listIds, String key, String areaId);
+
+    /**
+     *
+     * @param project_id
+     * @param listIds
+     * @param key
+     * @param areaId
+     * @return
+     */
+    Integer countMeasureZoneByListIdsAndCategoryKeyAndAreaId(Integer project_id, String[] listIds, String key, String areaId);
 }

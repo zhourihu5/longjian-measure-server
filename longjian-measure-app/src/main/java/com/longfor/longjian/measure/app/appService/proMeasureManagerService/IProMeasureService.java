@@ -78,4 +78,18 @@ public interface IProMeasureService  {
      * @return
      */
     LjBaseResponse<ItemsVo<List<BlisterTimeNotesVo>>> getBlisterRateInfoTimeNotes(GetBlisterRateInfoTimeNotesReq getBlisterRateInfoTimeNotesReq) throws ParseException;
+
+    /**
+     * go项目实测快速查询爆点情况检查项
+     * @param getBlisterRateCheckItemsReq
+     * @return
+     */
+    LjBaseResponse<BlisterCheckItemsVo> getBlisterRateCheckItems(GetBlisterRateCheckItemsReq getBlisterRateCheckItemsReq);
+
+    /**
+     * go项目实测快速查询区域合格率查询
+     * @param getAreaPOPreq
+     * @return
+     */
+    LjBaseResponse<ItemsVo<List<AreaPOPVo>>> getAreaPOP(GetAreaPOPReq getAreaPOPreq) throws Exception;
 }

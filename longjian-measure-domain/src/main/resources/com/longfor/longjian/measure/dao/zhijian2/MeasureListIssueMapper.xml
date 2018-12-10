@@ -126,4 +126,35 @@
     GROUP BY
     days
   </select>
+
+  <select id="countMeasureListIssueDistributionCategory" resultType="int">
+    SELECT
+	count( id )
+FROM
+	measure_list_issue
+WHERE
+	delete_at IS NULL
+	AND project_id = #{projectId}
+	AND list_id = #{listId}
+	AND close_status = #{unclosecode}
+  </select>
+
+  <select id="getMeasureListIssueStatusMapByListIdsAndCategoryKeyAndAreaId" resultType="map">
+    SELECT
+    `status`,
+    COUNT( * ) AS count
+    FROM
+    measure_list_issue
+    WHERE
+    delete_at IS NULL
+    AND category_path_and_key LIKE concat(#{cateChildPath},'%')
+    AND area_path_and_id LIKE concat(#{areaChilePath},'%')
+    AND close_status &lt;&gt; #{closedcode}
+    AND list_id IN
+    <foreach collection="listIds" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+    GROUP BY
+    `status`
+  </select>
 </mapper>

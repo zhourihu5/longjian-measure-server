@@ -62,4 +62,23 @@ public interface MeasureZoneResultMapper extends LFMySQLMapper<MeasureZoneResult
      * @return
      */
     List<MeasureZoneResult> getSubActiveMeasureCategoryZonesByListIdCategoryKey(@Param("projectId") Integer project_id, @Param("listId") Integer measure_list_id, @Param("categoryKey") String category_key);
+
+    /**
+     * 通过任务Id列表和检查项和区域Id获取测区的测点数和合格率
+     * @param listIds
+     * @param key
+     * @param areaId
+     * @return
+     */
+    Map<String, Object> getMeasureZoneResultPassPercentageByListIdsAndCategoryKeyAndAreaId(@Param("listIds") String[] listIds, @Param("key") String key, @Param("areaId") String areaId);
+
+    /**
+     *
+     * @param project_id
+     * @param listIds
+     * @param key
+     * @param areaId
+     * @return
+     */
+    Integer countMeasureZoneByListIdsAndCategoryKeyAndAreaId(@Param("projectId") Integer project_id, @Param("listIds") String[] listIds, @Param("categoryKey") String key, @Param("areaId") String areaId);
 }

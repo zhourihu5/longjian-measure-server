@@ -1,5 +1,7 @@
 package com.longfor.longjian.measure.app.vo.proMeasureVo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.List;
@@ -9,8 +11,16 @@ import java.util.List;
  * 2018-11-19 13:37
  */
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AreaPOPVo {
-    private List<String> area_dist;
+    /**
+     * 区域分布
+     */
+    private List<MeasureStatisticAreaDistributeVo> area_dist;
     private String category_key;
     private String category_name;
+    /**
+     * 是否叶子节点
+     */
+    private Boolean is_leaf;
 }

@@ -56,4 +56,37 @@
     and path = '/'
     AND delete_at IS NULL
   </select>
+
+  <select id="getCategoryByKeys" resultMap="BaseResultMap">
+SELECT
+	*
+FROM
+	category_v3
+WHERE
+	delete_at IS NULL
+	AND `key` IN
+    <foreach collection="categoryKeys" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
+
+  <select id="searchByRootCategoryId" resultMap="BaseResultMap">
+SELECT
+	*
+FROM
+	category_v3
+WHERE
+	delete_at IS NULL
+	AND root_category_id = #{id}
+  </select>
+
+  <select id="countCategoryByFatherKey" resultType="int">
+SELECT
+	count( id )
+FROM
+	category_v3
+WHERE
+	delete_at IS NULL
+	AND father_key = #{fatherKey}
+  </select>
 </mapper>

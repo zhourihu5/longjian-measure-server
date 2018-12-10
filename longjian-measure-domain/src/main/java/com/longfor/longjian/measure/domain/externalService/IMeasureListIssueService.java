@@ -1,5 +1,10 @@
 package com.longfor.longjian.measure.domain.externalService;
 
+import com.longfor.longjian.measure.po.zhijian2.Area;
+import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
+import com.longfor.longjian.measure.po.zhijian2.MeasureListIssue;
+
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -35,5 +40,33 @@ public interface IMeasureListIssueService {
      * @param UNCLOSECODE
      * @return
      */
-    List<Map<String, Object>> searchMeasureListIssueTrend(Integer project_id, Integer measure_list_id, String startTime, String endTime, String UNCLOSECODE);
+    List<Map<String, Object>> searchMeasureListIssueTrend(Integer project_id, Integer measure_list_id, String startTime, String endTime, String UNCLOSECODE) throws ParseException;
+
+    /**
+     *
+     * @param project_id
+     * @param measure_list_id
+     * @param UNCLOSECODE
+     * @return
+     */
+    Integer countMeasureListIssueDistributionCategory(Integer project_id, Integer measure_list_id, String UNCLOSECODE);
+
+    /**
+     *
+     * @param project_id
+     * @param measure_list_id
+     * @param unclosecode
+     * @return
+     */
+    List<MeasureListIssue> searchMeasureListIssueDistributionCategory(Integer project_id, Integer measure_list_id, String unclosecode);
+
+    /**
+     *
+     * @param listIds
+     * @param categoryV3
+     * @param area
+     * @param closedcode
+     * @return
+     */
+    List<Map<String, Object>> getMeasureListIssueStatusMapByListIdsAndCategoryKeyAndAreaId(String[] listIds, CategoryV3 categoryV3, Area area, String closedcode);
 }

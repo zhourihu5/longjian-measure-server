@@ -278,6 +278,222 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         return ljBaseResponse;
     }
 
+    @Override
+    public LjBaseResponse<BlisterCheckItemsVo> getBlisterRateCheckItems(GetBlisterRateCheckItemsReq getBlisterRateCheckItemsReq) {
+        LjBaseResponse<BlisterCheckItemsVo> ljBaseResponse = new LjBaseResponse<>();
+        BlisterCheckItemsVo blisterCheckItemsVo = new BlisterCheckItemsVo();
+        List<BlisterCategoryDetailsVo> items = new ArrayList<>();
+        if (StringUtils.isBlank(getBlisterRateCheckItemsReq.getCategory_key())){
+            //如果没传父集..取root
+            Integer count = measureListIssueService.countMeasureListIssueDistributionCategory(getBlisterRateCheckItemsReq.getProject_id(),getBlisterRateCheckItemsReq.getMeasure_list_id(),MeasureListConstant.UNCLOSECODE);
+            blisterCheckItemsVo.setTotal(count);
+        }
+        //TODO 不会做了
+        List<Map<String,Object>> blisterCategoryDetailss = searchMeasureListIssueDistributionCategory(getBlisterRateCheckItemsReq);
+        blisterCheckItemsVo.setItems(items);
+        ljBaseResponse.setData(blisterCheckItemsVo);
+        return ljBaseResponse;
+    }
+
+    @Override
+    public LjBaseResponse<ItemsVo<List<AreaPOPVo>>> getAreaPOP(GetAreaPOPReq getAreaPOPreq) throws Exception {
+        LjBaseResponse<ItemsVo<List<AreaPOPVo>>> ljBaseResponse = new LjBaseResponse<>();
+        ItemsVo<List<AreaPOPVo>> itemsVo = new ItemsVo<>();
+        List<AreaPOPVo> areaPOPVos = new ArrayList<>();
+        //鉴权 todo 获取prod.id 暂时从前端获取
+        String [] listIds = getAreaPOPreq.getList_ids().split(",");
+        String [] areaIds = getAreaPOPreq.getArea_ids().split(",");
+        if (listIds.length == 0 || areaIds.length == 0 || getAreaPOPreq.getParent_category_key().length() == 0){
+            throw new Exception("参数不完整");
+        }
+        List<Map<String,Object>> list = searchMeasureCategoryAreaStatByProjectIdAndListIdsAndParentCategoryKeyAndAreaIds(getAreaPOPreq.getProject_id(),listIds,getAreaPOPreq.getParent_category_key(),areaIds);
+        list.forEach(LambdaExceptionUtil.throwingConsumerWrapper(map -> {
+            AreaPOPVo areaPOPVo = (AreaPOPVo)ConvertUtil.convertMap(AreaPOPVo.class,map);
+            List<MeasureStatisticAreaDistributeVo> area_dist = new ArrayList<>();
+            ((ArrayList<Map<String,Object>>)map.get("areaDist")).forEach(LambdaExceptionUtil.throwingConsumerWrapper(areaDist -> {
+                MeasureStatisticAreaDistributeVo measureStatisticAreaDistributeVo = (MeasureStatisticAreaDistributeVo)ConvertUtil.convertMap(MeasureStatisticAreaDistributeVo.class,areaDist);
+                area_dist.add(measureStatisticAreaDistributeVo);
+            }));
+            areaPOPVo.setArea_dist(area_dist);
+            areaPOPVos.add(areaPOPVo);
+        }));
+        itemsVo.setItems(areaPOPVos);
+        ljBaseResponse.setData(itemsVo);
+        return ljBaseResponse;
+    }
+
+    /**
+     * 统计检查项和区域的统计数据
+     * @param project_id
+     * @param listIds
+     * @param parent_category_key
+     * @param areaIds
+     * @return
+     */
+    private List<Map<String, Object>> searchMeasureCategoryAreaStatByProjectIdAndListIdsAndParentCategoryKeyAndAreaIds(Integer project_id, String[] listIds, String parent_category_key, String[] areaIds) {
+        List<Map<String, Object>> list = new ArrayList<>();
+        // 取出所有的category子项
+        List<CategoryV3> categoryV3s = categoryV3Service.searchSubCategoryByFatherKey(parent_category_key);
+        categoryV3s.forEach(categoryV3 -> {
+            Map<String,Object> map = new HashMap<>();
+            map.put("category_key",categoryV3.getKey());
+            map.put("category_name",categoryV3.getName());
+            map.put("is_leaf",false);
+            Integer count = categoryV3Service.countCategoryByFatherKey(categoryV3.getKey());
+            if (count == 0){
+                map.put("is_leaf",true);
+            }
+            List<Map<String,Object>> areaDistList = new ArrayList<>();
+            for (String areaId:areaIds
+                 ) {
+                // 考虑到有可能很多测区是没有数据的，先count一下后再执行，测区为0就返回空值
+                Integer c = measureZoneResultService.countMeasureZoneByListIdsAndCategoryKeyAndAreaId(project_id,listIds,categoryV3.getKey(),areaId);
+                if (c <= 0){
+                    continue;
+                }
+                Map<String,Object> areaDist = getMeasureCategoryAreaStatByListIdsAndCategoryKeyAndAreaId(listIds,categoryV3.getKey(),areaId);
+                if (areaDist == null){
+                    continue;
+                }
+                areaDistList.add(areaDist);
+            }
+            map.put("areaDist",areaDistList);
+            list.add(map);
+        });
+        return list;
+    }
+
+    /**
+     * 通过任务Id列表和检查项和区域Id获取问题数、销项问题数、实测合格率
+     * @param listIds
+     * @param key
+     * @param areaId
+     * @return
+     */
+    private Map<String, Object> getMeasureCategoryAreaStatByListIdsAndCategoryKeyAndAreaId(String[] listIds, String key, String areaId) {
+        Map<String, Object> areaDist = new HashMap<>();
+        areaDist.put("area_id",Integer.parseInt(areaId));
+        areaDist.put("checked_issue_count",0);
+        areaDist.put("issue_count",0);
+        Map<Integer,Integer> statusMap = getMeasureListIssueStatusMapByListIdsAndCategoryKeyAndAreaId(listIds,key,areaId);
+        if (statusMap == null) {
+            return null;
+        }
+        for (Map.Entry<Integer, Integer> entry : statusMap.entrySet()){
+            if (entry.getKey() == Integer.parseInt(MeasureListIssueType.CHECKYES)){
+                areaDist.put("checked_issue_count",entry.getValue());
+            }
+            Integer issueCount = Integer.parseInt(areaDist.get("issue_count").toString());
+            areaDist.put("issue_count",issueCount + entry.getValue());
+        }
+        areaDist.put("percentage",getMeasureZoneResultPassPercentageByListIdsAndCategoryKeyAndAreaId(listIds,key,areaId));
+        return areaDist;
+    }
+
+    /**
+     * 通过任务Id列表和检查项和区域Id获取测区的测点数和合格率
+     * @param listIds
+     * @param key
+     * @param areaId
+     * @return
+     */
+    private Object getMeasureZoneResultPassPercentageByListIdsAndCategoryKeyAndAreaId(String[] listIds, String key, String areaId) {
+        double percentage = 0;
+        Map<String,Object> item = measureZoneResultService.getMeasureZoneResultPassPercentageByListIdsAndCategoryKeyAndAreaId(listIds,key,areaId);
+        if (Integer.parseInt(item.get("total").toString()) > 0){
+            percentage = Float.parseFloat(item.get("ok_total").toString()) / Float.parseFloat(item.get("total").toString()) * 100.0;
+        }
+        return String.format("%.2f", percentage);
+    }
+
+    /**
+     * 通过任务Id列表和检查项和区域Id获取问题的各个状态分布
+     * @param listIds
+     * @param key
+     * @param areaId
+     * @return
+     */
+    private Map<Integer, Integer> getMeasureListIssueStatusMapByListIdsAndCategoryKeyAndAreaId(String[] listIds, String key, String areaId) {
+        CategoryV3 categoryV3 = categoryV3Service.getCategoryByKey(key);
+        if (categoryV3 == null){
+            return null;
+        }
+        Area area = areaService.getAreaById(areaId);
+        if (area == null){
+            return null;
+        }
+        List<Map<String,Object>> items = measureListIssueService.getMeasureListIssueStatusMapByListIdsAndCategoryKeyAndAreaId(listIds,categoryV3,area,MeasureListConstant.CLOSEDCODE);
+        if (items == null || items.size() <= 0){
+            return null;
+        }
+        Map<Integer, Integer> smap = new HashMap<>();
+        items.forEach(map -> {
+            smap.put(Integer.parseInt(map.get("status").toString()),Integer.parseInt(map.get("count").toString()));
+        });
+        return smap;
+    }
+
+    /**
+     *
+     * @param getBlisterRateCheckItemsReq
+     * @return
+     */
+    private List<Map<String, Object>> searchMeasureListIssueDistributionCategory(GetBlisterRateCheckItemsReq getBlisterRateCheckItemsReq) {
+        List<MeasureListIssue> issues = measureListIssueService.searchMeasureListIssueDistributionCategory(getBlisterRateCheckItemsReq.getProject_id(),getBlisterRateCheckItemsReq.getMeasure_list_id(),MeasureListConstant.UNCLOSECODE);
+        if (issues == null || issues.size() <= 0){
+            return null;
+        }
+        //map去重，获取categorys
+        Map<String,String> mCategory = new HashMap<>();
+        issues.forEach(issue -> {
+            mCategory.put(issue.getCategoryKey(),issue.getCategoryKey());
+        });
+        List<String> categoryKeys = new ArrayList<>();
+        for (Map.Entry<String,String> entry : mCategory.entrySet()) {
+            categoryKeys.add(entry.getValue());
+        }
+        if (StringUtils.isBlank(getBlisterRateCheckItemsReq.getCategory_key())){
+            //获取顶级检查项
+            List<CategoryV3> categoryV3s = SearchCategoryTopByCategoryKeyIn(categoryKeys);
+        }
+        return null;
+    }
+
+    /**
+     *
+     * @param categoryKeys
+     * @return
+     */
+    private List<CategoryV3> SearchCategoryTopByCategoryKeyIn(List<String> categoryKeys) {
+        List<CategoryV3> categoryV3s = categoryV3Service.getCategoryByKeys(categoryKeys);
+        List<String> rootCategoryIds = new ArrayList<>();
+        categoryV3s.forEach(categoryV3 -> {
+            rootCategoryIds.add(categoryV3.getRootCategoryId().toString());
+        });
+        List<CategoryV3> rootCategorys = categoryV3Service.getCategoryByKeys(rootCategoryIds);
+        Map<Integer,Map<String,Object>> trees = new HashMap<>();
+        rootCategorys.forEach(rootCategory -> {
+            trees.put(rootCategory.getId(),getPathTreeByRootCategory(rootCategory));
+        });
+        return null;
+    }
+
+    /**
+     *
+     * @param rootCategory
+     * @return
+     */
+    private Map<String, Object> getPathTreeByRootCategory(CategoryV3 rootCategory) {
+        List<CategoryV3> categoryV3s = categoryV3Service.searchByRootCategoryId(rootCategory.getId());
+        categoryV3s.add(rootCategory);
+        Map<String,String> categoryPathMap = new HashMap<>();
+        categoryV3s.forEach(categoryV3 -> {
+            categoryPathMap.put(categoryV3.getKey(),categoryV3.getPath()+categoryV3.getKey() + "/");
+        });
+        Map<String, Object> tree = categoryV3Service.getPathTreeByRootCategory(rootCategory);
+        return null;
+    }
+
     /**
      *
      * @param getCompareItemBetweenSquadsReq

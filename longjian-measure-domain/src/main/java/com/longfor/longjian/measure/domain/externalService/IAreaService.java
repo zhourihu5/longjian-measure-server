@@ -21,4 +21,11 @@ public interface IAreaService {
      * @return
      */
     List<Map<String,Object>> getProMeasureAreaListByFatherId(String project_id, String area_id);
+
+    /**
+     *
+     * @param areaId
+     * @return
+     */
+    Area getAreaById(String areaId);
 }
