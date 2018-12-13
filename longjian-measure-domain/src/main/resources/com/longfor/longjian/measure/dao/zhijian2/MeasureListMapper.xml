@@ -1,110 +1,110 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.longfor.longjian.measure.dao.zhijian2.MeasureListMapper" >
-  <resultMap id="BaseResultMap" type="com.longfor.longjian.measure.po.zhijian2.MeasureList" >
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="project_id" property="projectId" jdbcType="INTEGER" />
-    <result column="area_type" property="areaType" jdbcType="VARCHAR" />
-    <result column="close_status" property="closeStatus" jdbcType="INTEGER" />
-    <result column="finish_status" property="finishStatus" jdbcType="INTEGER" />
-    <result column="root_category_key" property="rootCategoryKey" jdbcType="VARCHAR" />
-    <result column="plan_begin_on" property="planBeginOn" jdbcType="TIMESTAMP" />
-    <result column="plan_end_on" property="planEndOn" jdbcType="TIMESTAMP" />
-    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
-    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
-    <result column="delete_at" property="deleteAt" jdbcType="TIMESTAMP" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    <!--
-      WARNING - @mbg.generated
-    -->
-    id, name, project_id, area_type, close_status, finish_status, root_category_key, 
-    plan_begin_on, plan_end_on, create_at, update_at, delete_at
-  </sql>
+<mapper namespace="com.longfor.longjian.measure.dao.zhijian2.MeasureListMapper">
+    <resultMap id="BaseResultMap" type="com.longfor.longjian.measure.po.zhijian2.MeasureList">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="project_id" property="projectId" jdbcType="INTEGER"/>
+        <result column="area_type" property="areaType" jdbcType="VARCHAR"/>
+        <result column="close_status" property="closeStatus" jdbcType="INTEGER"/>
+        <result column="finish_status" property="finishStatus" jdbcType="INTEGER"/>
+        <result column="root_category_key" property="rootCategoryKey" jdbcType="VARCHAR"/>
+        <result column="plan_begin_on" property="planBeginOn" jdbcType="TIMESTAMP"/>
+        <result column="plan_end_on" property="planEndOn" jdbcType="TIMESTAMP"/>
+        <result column="create_at" property="createAt" jdbcType="TIMESTAMP"/>
+        <result column="update_at" property="updateAt" jdbcType="TIMESTAMP"/>
+        <result column="delete_at" property="deleteAt" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        id, name, project_id, area_type, close_status, finish_status, root_category_key,
+        plan_begin_on, plan_end_on, create_at, update_at, delete_at
+    </sql>
 
-  <select id="getMeasureList" resultType="map">
-    SELECT
-    ml.close_status as closeStatusId,
-    ml.create_at as createAt,
-    ml.finish_status as finishStatusId,
-    ml.id,
-    ml. NAME AS `name`,
-    cv3.`name` AS root_category
-    FROM
-    measure_list ml
-    JOIN category_v3 cv3 ON ml.root_category_key = cv3.`key`
-    AND cv3.delete_at IS NULL
-    <if test="userIds != null and userIds.length > 0 ">
-      JOIN measure_squad_user msu on msu.list_id = ml.id
-      AND msu.project_id = #{projectId}
-      AND msu.user_id in
-      <foreach collection="userIds" index="index" item="item" open="(" separator="," close=")">
-        #{item}
-      </foreach>
-    </if>
-    <if test="categoryPathAndKey != null and categoryPathAndKey != ''">
-      JOIN measure_zone mz on mz.list_id = ml.id
-      AND mz.project_id = #{projectId}
-      AND mz.category_path_and_key LIKE concat(#{categoryPathAndKey},'%')
-    </if>
-    <if test="areaPathAndId != null and areaPathAndId != ''">
-      JOIN measure_list_area mla on mla.list_id = ml.id
-      AND mla.project_id = #{projectId}
-      AND mla.area_path_and_id LIKE concat(#{areaPathAndId},'%')
-    </if>
-    WHERE
-    ml.project_id = #{projectId}
-    AND ml.delete_at IS NULL
-    <if test="finishStatus != null and finishStatus > 0">
-     AND ml.finish_status = #{finishStatus}
-    </if>
-    <if test="q != null and q != ''">
-     AND ml.name like concat('%',#{q},'%')
-    </if>
-    LIMIT #{page} ,#{pageSize}
-  </select>
+    <select id="getMeasureList" resultType="map">
+        SELECT
+        ml.close_status as closeStatusId,
+        ml.create_at as createAt,
+        ml.finish_status as finishStatusId,
+        ml.id,
+        ml. NAME AS `name`,
+        cv3.`name` AS root_category
+        FROM
+        measure_list ml
+        JOIN category_v3 cv3 ON ml.root_category_key = cv3.`key`
+        AND cv3.delete_at IS NULL
+        <if test="userIds != null and userIds.length > 0 ">
+            JOIN measure_squad_user msu on msu.list_id = ml.id
+            AND msu.project_id = #{projectId}
+            AND msu.user_id in
+            <foreach collection="userIds" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="categoryPathAndKey != null and categoryPathAndKey != ''">
+            JOIN measure_zone mz on mz.list_id = ml.id
+            AND mz.project_id = #{projectId}
+            AND mz.category_path_and_key LIKE concat(#{categoryPathAndKey},'%')
+        </if>
+        <if test="areaPathAndId != null and areaPathAndId != ''">
+            JOIN measure_list_area mla on mla.list_id = ml.id
+            AND mla.project_id = #{projectId}
+            AND mla.area_path_and_id LIKE concat(#{areaPathAndId},'%')
+        </if>
+        WHERE
+        ml.project_id = #{projectId}
+        AND ml.delete_at IS NULL
+        <if test="finishStatus != null and finishStatus > 0">
+            AND ml.finish_status = #{finishStatus}
+        </if>
+        <if test="q != null and q != ''">
+            AND ml.name like concat('%',#{q},'%')
+        </if>
+        LIMIT #{page} ,#{pageSize}
+    </select>
 
-  <select id="getTotalMeasure" resultType="int">
-    SELECT
-    count(ml.id)
-    FROM
-    measure_list ml
-    JOIN category_v3 cv3 ON ml.root_category_key = cv3.`key`
-    AND cv3.delete_at IS NULL
-    <if test="userIds != null and userIds.length > 0 ">
-      JOIN measure_squad_user msu on msu.list_id = ml.id
-      AND msu.project_id = #{projectId}
-      AND msu.user_id in
-      <foreach collection="userIds" index="index" item="item" open="(" separator="," close=")">
-        #{item}
-      </foreach>
-    </if>
-    <if test="categoryPathAndKey != null and categoryPathAndKey != ''">
-      JOIN measure_zone mz on mz.list_id = ml.id
-      AND mz.project_id = #{projectId}
-      AND mz.category_path_and_key LIKE concat(#{categoryPathAndKey},'%')
-    </if>
-    <if test="areaPathAndId != null and areaPathAndId != ''">
-      JOIN measure_list_area mla on mla.list_id = ml.id
-      AND mla.project_id = #{projectId}
-      AND mla.area_path_and_id LIKE concat(#{areaPathAndId},'%')
-    </if>
-    WHERE
-    ml.project_id = #{projectId}
-    AND ml.delete_at IS NULL
-    <if test="finishStatus != null and finishStatus > 0">
-      AND ml.finish_status = #{finishStatus}
-    </if>
-    <if test="q != null and q != ''">
-      AND ml.name like concat('%',#{q},'%')
-    </if>
-  </select>
+    <select id="getTotalMeasure" resultType="int">
+        SELECT
+        count(ml.id)
+        FROM
+        measure_list ml
+        JOIN category_v3 cv3 ON ml.root_category_key = cv3.`key`
+        AND cv3.delete_at IS NULL
+        <if test="userIds != null and userIds.length > 0 ">
+            JOIN measure_squad_user msu on msu.list_id = ml.id
+            AND msu.project_id = #{projectId}
+            AND msu.user_id in
+            <foreach collection="userIds" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="categoryPathAndKey != null and categoryPathAndKey != ''">
+            JOIN measure_zone mz on mz.list_id = ml.id
+            AND mz.project_id = #{projectId}
+            AND mz.category_path_and_key LIKE concat(#{categoryPathAndKey},'%')
+        </if>
+        <if test="areaPathAndId != null and areaPathAndId != ''">
+            JOIN measure_list_area mla on mla.list_id = ml.id
+            AND mla.project_id = #{projectId}
+            AND mla.area_path_and_id LIKE concat(#{areaPathAndId},'%')
+        </if>
+        WHERE
+        ml.project_id = #{projectId}
+        AND ml.delete_at IS NULL
+        <if test="finishStatus != null and finishStatus > 0">
+            AND ml.finish_status = #{finishStatus}
+        </if>
+        <if test="q != null and q != ''">
+            AND ml.name like concat('%',#{q},'%')
+        </if>
+    </select>
 
-  <select id="searchByProjectId" resultType="map">
+    <select id="searchByProjectId" resultType="map">
     SELECT
     id,
     `name`,
@@ -115,5 +115,15 @@
     project_id = #{project_id}
     AND delete_at IS NULL
   </select>
-
+    <!--List<Map<String,Object>> searchListByProjId(@Param("projectId")String projectId);-->
+    <select id="searchListByProjId" resultType="map">
+    select
+     id, `name`, project_id, area_type, close_status, finish_status, root_category_key,
+    plan_begin_on, plan_end_on, create_at, update_at, delete_at
+    from
+    measure_list
+    where
+    project_id=#{project_id}
+    AND delete_at IS NULL
+  </select>
 </mapper>

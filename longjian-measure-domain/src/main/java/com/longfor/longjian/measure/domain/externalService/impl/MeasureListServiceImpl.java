@@ -18,12 +18,12 @@ public class MeasureListServiceImpl implements IMeasureListService {
     @Override
     public List<Map<String, Object>> getMeasureList(Integer finish_status, String q, Integer project_id, String categoryPathAndKey, String areaPathAndId, String[] userIds, Integer page, Integer page_size) {
         page = page - 1;
-        return measureListMapper.getMeasureList(finish_status,q,project_id,categoryPathAndKey,areaPathAndId,userIds,page,page_size);
+        return measureListMapper.getMeasureList(finish_status, q, project_id, categoryPathAndKey, areaPathAndId, userIds, page, page_size);
     }
 
     @Override
     public Integer getTotalMeasure(Integer finish_status, String q, Integer project_id, String categoryPathAndKey, String areaPathAndId, String[] userIds) {
-        return measureListMapper.getTotalMeasure(finish_status,q,project_id,categoryPathAndKey,areaPathAndId,userIds);
+        return measureListMapper.getTotalMeasure(finish_status, q, project_id, categoryPathAndKey, areaPathAndId, userIds);
     }
 
     @Override
@@ -38,5 +38,13 @@ public class MeasureListServiceImpl implements IMeasureListService {
         measureList.setProjectId(project_id);
         measureList.setDeleteAt(null);
         return measureListMapper.selectOne(measureList);
+    }
+
+    @Override
+    public List<Map<String, Object>> searchListByProjIdUserId(String project_id, Integer userId) {
+        //todo userId暂不知道用途
+        List<Map<String, Object>> measureList = measureListMapper.searchListByProjId(project_id);
+
+        return measureList;
     }
 }
