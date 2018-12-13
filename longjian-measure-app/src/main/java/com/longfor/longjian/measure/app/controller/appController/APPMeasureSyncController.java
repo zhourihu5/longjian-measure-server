@@ -7,6 +7,7 @@ import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureService
 import com.longfor.longjian.measure.app.req.apiMeasureRuleReq.ApiMeasureRuleReq;
 import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionReq;
 import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionReqV2;
+import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionTotalReqV2;
 import com.longfor.longjian.measure.app.req.appReq.ApiMeasureReportIssueReq;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.*;
 import lombok.extern.slf4j.Slf4j;
@@ -82,13 +83,12 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/410
      * 项目同步/v3/api/info/measure_region_v2_total
      * http://192.168.37.159:3000/project/8/interface/api/574
-     * @param requestParam
+     * @param apiMeasureRegionTotalReqV2
      * @return
      */
-    @MockOperation
     @GetMapping(value = "info/measure_region_v2_total/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<TotalVo> getMeasureRegionV2Total(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<TotalVo> getMeasureRegionV2Total(ApiMeasureRegionTotalReqV2 apiMeasureRegionTotalReqV2) throws Exception {
+        return appMeasureService.getMeasureRegionV2Total(apiMeasureRegionTotalReqV2);
     }
 
     /**

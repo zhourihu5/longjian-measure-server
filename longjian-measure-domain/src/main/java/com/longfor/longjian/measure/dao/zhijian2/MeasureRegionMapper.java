@@ -34,4 +34,12 @@ public interface MeasureRegionMapper extends LFMySQLMapper<MeasureRegion> {
      * @return
      */
     List<MeasureRegion> searchUnscopedByProjIdLastIdUpdateAtGt(@Param("projectId") Integer project_id, @Param("lastId") Integer last_id, @Param("timestamp") Long timestamp, @Param("measureApiGetPerTime") Integer measureApiGetPerTime, @Param("start") Integer start);
+
+    /**
+     *
+     * @param project_id
+     * @param timestamp
+     * @return
+     */
+    Integer getCountUnscopedByProjIdUpdateAtGt(@Param("projectId") Integer project_id, @Param("timestamp") Long timestamp);
 }

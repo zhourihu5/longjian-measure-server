@@ -8,10 +8,12 @@ import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureService
 import com.longfor.longjian.measure.app.appService.appService.IKeyProcedureTaskAppService;
 import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionReq;
 import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionReqV2;
+import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionTotalReqV2;
 import com.longfor.longjian.measure.app.req.appReq.ApiMeasureReportIssueReq;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.MeasureRegionV2Vo;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.MeasureRegionVo;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.ReportIssueVo;
+import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.TotalVo;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.PolygonVo;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.RegionListVo;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.RelVo;
@@ -119,6 +121,21 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         }catch (Exception e){
             log.error("SearchUnscopedByProjIdLastIdUpdateAtGt" + "[" + apiMeasureRegionReqV2.getProject_id() + "],error:" + e);
             throw new Exception("读取数据失败，code:region");
+        }
+        return ljBaseResponse;
+    }
+
+    @Override
+    public LjBaseResponse<TotalVo> getMeasureRegionV2Total(ApiMeasureRegionTotalReqV2 apiMeasureRegionTotalReqV2) throws Exception {
+        LjBaseResponse<TotalVo> ljBaseResponse = new LjBaseResponse<>();
+        TotalVo totalVo = new TotalVo();
+        try {
+            Integer total = measureRegionService.getCountUnscopedByProjIdUpdateAtGt(apiMeasureRegionTotalReqV2.getProject_id(),apiMeasureRegionTotalReqV2.getTimestamp());
+            totalVo.setTotal(total);
+            ljBaseResponse.setData(totalVo);
+        }catch (Exception e){
+            log.error("GetCountUnscopedByProjIdUpdateAtGt" + "[" + apiMeasureRegionTotalReqV2.getProject_id() + "],error:" + e);
+            throw new Exception("读取数据失败，code:region_total");
         }
         return ljBaseResponse;
     }

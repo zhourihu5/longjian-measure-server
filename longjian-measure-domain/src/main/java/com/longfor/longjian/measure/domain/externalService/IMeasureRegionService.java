@@ -32,4 +32,12 @@ public interface IMeasureRegionService {
      * @return
      */
     List<MeasureRegion> searchUnscopedByProjIdLastIdUpdateAtGt(Integer project_id, Integer last_id, Long timestamp, Integer measureApiGetPerTime, Integer start);
+
+    /**
+     *
+     * @param project_id
+     * @param timestamp
+     * @return
+     */
+    Integer getCountUnscopedByProjIdUpdateAtGt(Integer project_id, Long timestamp);
 }

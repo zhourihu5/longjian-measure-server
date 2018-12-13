@@ -83,4 +83,16 @@ WHERE
       LIMIT #{start},#{measureApiGetPerTime}
     </if>
   </select>
+
+  <select id="getCountUnscopedByProjIdUpdateAtGt" resultType="int">
+    SELECT
+    count(id)
+    FROM
+    measure_region
+    WHERE
+    project_id = #{projectId}
+    <if test="timestamp != null and timestamp >= 0">
+    AND update_at > FROM_UNIXTIME( #{timestamp} )
+    </if>
+  </select>
 </mapper>

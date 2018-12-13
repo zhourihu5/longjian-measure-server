@@ -36,4 +36,9 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
         List<MeasureRegion> measureRegions = measureRegionMapper.searchUnscopedByProjIdLastIdUpdateAtGt(project_id,last_id,timestamp,measureApiGetPerTime,start);
         return measureRegions;
     }
+
+    @Override
+    public Integer getCountUnscopedByProjIdUpdateAtGt(Integer project_id, Long timestamp) {
+        return measureRegionMapper.getCountUnscopedByProjIdUpdateAtGt(project_id,timestamp);
+    }
 }
