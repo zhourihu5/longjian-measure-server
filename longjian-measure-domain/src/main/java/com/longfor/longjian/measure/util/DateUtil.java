@@ -193,6 +193,18 @@ public class DateUtil {
     }
 
     /**
+     * Long 转 长时间 字符串
+     * @param dateLong
+     * @return
+     * @throws ParseException
+     */
+    public static String getDateStringByLong(Long dateLong) throws ParseException {
+        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String d = format.format(dateLong);
+        return d;
+    }
+
+    /**
      * 通过短时间日期字符串转换时间再加一再转换时间字符串
      * @param startDate
      * @param day

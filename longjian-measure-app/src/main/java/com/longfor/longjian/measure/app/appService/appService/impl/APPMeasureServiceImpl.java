@@ -7,7 +7,9 @@ import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureService;
 import com.longfor.longjian.measure.app.appService.appService.IKeyProcedureTaskAppService;
 import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionReq;
+import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionReqV2;
 import com.longfor.longjian.measure.app.req.appReq.ApiMeasureReportIssueReq;
+import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.MeasureRegionV2Vo;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.MeasureRegionVo;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.ReportIssueVo;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.PolygonVo;
@@ -18,6 +20,7 @@ import com.longfor.longjian.measure.domain.externalService.IMeasureRegionRelServ
 import com.longfor.longjian.measure.domain.externalService.IMeasureRegionService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureRegion;
 import com.longfor.longjian.measure.po.zhijian2.MeasureRegionRel;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +29,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class APPMeasureServiceImpl implements IAPPMeasureService {
+
+    private static Integer MEASURE_API_GET_PER_TIME = 5000;
 
     @Autowired
     IKeyProcedureTaskAppService keyProcedureTaskAppService;
@@ -34,6 +40,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     IMeasureRegionService measureRegionService;
     @Autowired
     IMeasureRegionRelService measureRegionRelService;
+
 
 
     @Override
@@ -87,7 +94,33 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         measureRegionVo.setRel_list(rel_list);
         measureRegionVo.setRegion_list(region_list);
         ljBaseResponse.setData(measureRegionVo);
-        return null;
+        return ljBaseResponse;
+    }
+
+    @Override
+    public LjBaseResponse<MeasureRegionV2Vo> getMeasureRegionV2(ApiMeasureRegionReqV2 apiMeasureRegionReqV2) throws Exception {
+        LjBaseResponse<MeasureRegionV2Vo> ljBaseResponse = new LjBaseResponse<>();
+        MeasureRegionV2Vo measureRegionV2Vo = new MeasureRegionV2Vo();
+        List<RegionListVo> region_list = new ArrayList<>();
+        Integer start = 0;
+        try {
+            List<MeasureRegion> items = measureRegionService.searchUnscopedByProjIdLastIdUpdateAtGt(apiMeasureRegionReqV2.getProject_id(),apiMeasureRegionReqV2.getLast_id(),apiMeasureRegionReqV2.getTimestamp(),MEASURE_API_GET_PER_TIME,start);
+            Integer newLastId = 0;
+            if (items.size() > 0){
+                newLastId = items.get(items.size() - 1).getId();
+            }
+            measureRegionV2Vo.setLast_id(newLastId);
+            items.forEach(measureRegion -> {
+                RegionListVo regionListVo = converMeasureRegionToRegionListVo(measureRegion);
+                region_list.add(regionListVo);
+            });
+            measureRegionV2Vo.setRegion_list(region_list);
+            ljBaseResponse.setData(measureRegionV2Vo);
+        }catch (Exception e){
+            log.error("SearchUnscopedByProjIdLastIdUpdateAtGt" + "[" + apiMeasureRegionReqV2.getProject_id() + "],error:" + e);
+            throw new Exception("读取数据失败，code:region");
+        }
+        return ljBaseResponse;
     }
 
     /**
@@ -97,12 +130,12 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
      */
     private RelVo converMeasureRegionRelToRegionRelListVo(MeasureRegionRel regionRel) {
         RelVo relVo = new RelVo();
-        relVo.setDelete_at(regionRel.getDeleteAt().getTime());
+        relVo.setDelete_at(regionRel.getDeleteAt() == null ? 0 : regionRel.getDeleteAt().getTime());
         relVo.setDesc(regionRel.getDesc());
         relVo.setId(regionRel.getId());
         relVo.setProject_id(regionRel.getProjectId());
         relVo.setRegion_ids(regionRel.getRegionIds());
-        relVo.setDelete_at(regionRel.getDeleteAt().getTime());
+        relVo.setUpdate_at(regionRel.getUpdateAt() == null ? 0 : regionRel.getUpdateAt().getTime());
         return relVo;
     }
 
@@ -115,7 +148,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         RegionListVo regionListVo = new RegionListVo();
         regionListVo.setArea_id(region.getAreaId());
         regionListVo.setArea_path_and_id(region.getAreaPathAndId());
-        regionListVo.setDelete_at(region.getDeleteAt().getTime());
+        regionListVo.setDelete_at(region.getDeleteAt() ==  null ? 0 : region.getDeleteAt().getTime());
         regionListVo.setDrawing_md5(region.getDrawingMd5());
         regionListVo.setId(region.getId());
         regionListVo.setProject_id(region.getProjectId());
@@ -123,7 +156,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         regionListVo.setRel_id(region.getRelId());
         regionListVo.setSrc_type(region.getSrcType());
         regionListVo.setTag_id_list(region.getTagIdList());
-        regionListVo.setUpdate_at(region.getUpdateAt().getTime());
+        regionListVo.setUpdate_at(region.getUpdateAt() ==  null ? 0 : region.getUpdateAt().getTime());
         regionListVo.setUuid(region.getUuid());
         JSONObject polygon = JSON.parseObject(region.getPolygon());
         PolygonVo polygonVo = new PolygonVo();

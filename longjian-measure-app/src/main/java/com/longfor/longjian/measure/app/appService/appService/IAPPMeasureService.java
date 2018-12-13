@@ -2,7 +2,9 @@ package com.longfor.longjian.measure.app.appService.appService;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionReq;
+import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionReqV2;
 import com.longfor.longjian.measure.app.req.appReq.ApiMeasureReportIssueReq;
+import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.MeasureRegionV2Vo;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.MeasureRegionVo;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.ReportIssueVo;
 
@@ -24,4 +26,11 @@ public interface IAPPMeasureService {
      * @return
      */
     LjBaseResponse<MeasureRegionVo> getMeasureRegion(ApiMeasureRegionReq apiMeasureRegionReq) throws Exception;
+
+    /**
+     *
+     * @param apiMeasureRegionReqV2
+     * @return
+     */
+    LjBaseResponse<MeasureRegionV2Vo> getMeasureRegionV2(ApiMeasureRegionReqV2 apiMeasureRegionReqV2) throws Exception;
 }
