@@ -47,4 +47,11 @@ public interface IMeasureListService {
      */
     MeasureList searchByProjectIdAndMeasureListId(Integer project_id, Integer measure_list_id);
 
+    /**
+     *
+     * @param project_id
+     * @param userId
+     * @return
+     */
+    List<Map<String, Object>> searchListByProjIdUserId(String project_id, Integer userId);
 }

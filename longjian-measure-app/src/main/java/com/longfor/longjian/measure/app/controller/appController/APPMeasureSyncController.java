@@ -6,6 +6,11 @@ import com.longfor.longjian.measure.app.appService.appMeasureSyncService.IAPPMea
 import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureService;
 import com.longfor.longjian.measure.app.req.apiMeasureRuleReq.ApiMeasureRuleReq;
 import com.longfor.longjian.measure.app.req.appReq.*;
+import com.longfor.longjian.measure.app.req.apiMeasureRuleReq.ApiMyTaskReq;
+import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionReq;
+import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionReqV2;
+import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionTotalReqV2;
+import com.longfor.longjian.measure.app.req.appReq.ApiMeasureReportIssueReq;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,13 +110,12 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/418
      * 项目请求任务列表
      * http://192.168.37.159:3000/project/8/interface/api/538
-     * @param requestParam
+     * @param apiMyTaskReq
      * @return
      */
-    @MockOperation
     @GetMapping(value = "measure/my_task/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MyTaskVo> getMyTask(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<MeasureListListVo> getMyTask(ApiMyTaskReq apiMyTaskReq, HttpServletRequest request) throws Exception {
+        return appMeasureSyncService.getMyTask(apiMyTaskReq,request);
     }
 
     /**
