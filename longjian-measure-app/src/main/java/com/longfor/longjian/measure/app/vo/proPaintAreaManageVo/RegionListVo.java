@@ -39,7 +39,7 @@ public class RegionListVo {
      */
     private Integer src_type;
     private String  uuid;
-    private String polygon;
+    private PolygonVo polygon;
     private RelVo rel;
     private String tag_id_list;
 

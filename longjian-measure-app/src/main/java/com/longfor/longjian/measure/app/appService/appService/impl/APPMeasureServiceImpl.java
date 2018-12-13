@@ -1,5 +1,8 @@
 package com.longfor.longjian.measure.app.appService.appService.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonObject;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureService;
 import com.longfor.longjian.measure.app.appService.appService.IKeyProcedureTaskAppService;
@@ -7,6 +10,7 @@ import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionReq;
 import com.longfor.longjian.measure.app.req.appReq.ApiMeasureReportIssueReq;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.MeasureRegionVo;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.ReportIssueVo;
+import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.PolygonVo;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.RegionListVo;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.RelVo;
 import com.longfor.longjian.measure.consts.constant.KeyProcedureTaskConstant;
@@ -121,7 +125,11 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         regionListVo.setTag_id_list(region.getTagIdList());
         regionListVo.setUpdate_at(region.getUpdateAt().getTime());
         regionListVo.setUuid(region.getUuid());
-        regionListVo.setPolygon(region.getPolygon());
+        JSONObject polygon = JSON.parseObject(region.getPolygon());
+        PolygonVo polygonVo = new PolygonVo();
+        polygonVo.setX(Double.parseDouble(polygon.get("X") + ""));
+        polygonVo.setY(Double.parseDouble(polygon.get("Y") + ""));
+        regionListVo.setPolygon(polygonVo);
         return regionListVo;
     }
 }

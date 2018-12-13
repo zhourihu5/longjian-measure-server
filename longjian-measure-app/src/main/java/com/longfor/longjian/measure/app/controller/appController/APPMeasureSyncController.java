@@ -33,19 +33,19 @@ import java.text.ParseException;
 @Slf4j
 public class APPMeasureSyncController {
 
-    /**
-     * 61读取测量规则
-     * http://192.168.37.159:3000/project/8/interface/api/346
-     * 项目同步/v3/api/info/measure_rule
-     * http://192.168.37.159:3000/project/8/interface/api/634
-     * @param requestParam
-     * @return
-     */
     @Autowired
     private IAPPMeasureSyncService appMeasureSyncService;
     @Autowired
     private IAPPMeasureService appMeasureService;
 
+    /**
+     * 61读取测量规则
+     * http://192.168.37.159:3000/project/8/interface/api/346
+     * 项目同步/v3/api/info/measure_rule
+     * http://192.168.37.159:3000/project/8/interface/api/634
+     * @param apiMeasureRuleReq
+     * @return
+     */
     @GetMapping(value = "info/measure_rule/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<MeasureRuleListVo> getMeasureRule(@Valid ApiMeasureRuleReq apiMeasureRuleReq) throws Exception {
         return appMeasureSyncService.getMeasureRule(apiMeasureRuleReq);
