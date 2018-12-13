@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.domain.externalService;
 
+import com.longfor.longjian.measure.po.zhijian2.MeasureRegion;
 import com.longfor.longjian.measure.po.zhijian2.MeasureRegionRel;
 import org.apache.ibatis.annotations.Param;
 
@@ -21,4 +22,5 @@ public interface IMeasureRegionRelService {
      * @return
      */
     List<MeasureRegionRel> searchRelUnscopedByProjIdUpdateAtGt(String projectId, String updateAtGte);
+
 }

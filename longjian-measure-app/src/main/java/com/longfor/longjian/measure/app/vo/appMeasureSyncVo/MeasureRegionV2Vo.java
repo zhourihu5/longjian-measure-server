@@ -11,6 +11,12 @@ import java.util.List;
  */
 @Data
 public class MeasureRegionV2Vo {
+    /**
+     * 描画区域列表
+     */
     private List<RegionListVo> region_list;
+    /**
+     * 本次获取的最后ID
+     */
     private Integer last_id;
 }
