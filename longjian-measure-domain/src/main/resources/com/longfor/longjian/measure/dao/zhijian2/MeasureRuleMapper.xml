@@ -1,33 +1,55 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.longfor.longjian.measure.dao.zhijian2.MeasureRuleMapper" >
-  <resultMap id="BaseResultMap" type="com.longfor.longjian.measure.po.zhijian2.MeasureRule" >
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="category_key" property="categoryKey" jdbcType="VARCHAR" />
-    <result column="desc" property="desc" jdbcType="VARCHAR" />
-    <result column="formula" property="formula" jdbcType="VARCHAR" />
-    <result column="formula_default" property="formulaDefault" jdbcType="INTEGER" />
-    <result column="group_count_init" property="groupCountInit" jdbcType="INTEGER" />
-    <result column="group_count_max" property="groupCountMax" jdbcType="INTEGER" />
-    <result column="group_count_min" property="groupCountMin" jdbcType="INTEGER" />
-    <result column="point_need" property="pointNeed" jdbcType="INTEGER" />
-    <result column="points" property="points" jdbcType="VARCHAR" />
-    <result column="rule_type" property="ruleType" jdbcType="INTEGER" />
-    <result column="team_id" property="teamId" jdbcType="INTEGER" />
-    <result column="textures" property="textures" jdbcType="VARCHAR" />
-    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
-    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
-    <result column="delete_at" property="deleteAt" jdbcType="TIMESTAMP" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    <!--
-      WARNING - @mbg.generated
-    -->
-    id, category_key, desc, formula, formula_default, group_count_init, group_count_max, 
-    group_count_min, point_need, points, rule_type, team_id, textures, create_at, update_at, 
-    delete_at
-  </sql>
+<mapper namespace="com.longfor.longjian.measure.dao.zhijian2.MeasureRuleMapper">
+    <resultMap id="BaseResultMap" type="com.longfor.longjian.measure.po.zhijian2.MeasureRule">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="category_key" property="categoryKey" jdbcType="VARCHAR"/>
+        <result column="desc" property="desc" jdbcType="VARCHAR"/>
+        <result column="formula" property="formula" jdbcType="VARCHAR"/>
+        <result column="formula_default" property="formulaDefault" jdbcType="INTEGER"/>
+        <result column="group_count_init" property="groupCountInit" jdbcType="INTEGER"/>
+        <result column="group_count_max" property="groupCountMax" jdbcType="INTEGER"/>
+        <result column="group_count_min" property="groupCountMin" jdbcType="INTEGER"/>
+        <result column="point_need" property="pointNeed" jdbcType="INTEGER"/>
+        <result column="points" property="points" jdbcType="VARCHAR"/>
+        <result column="rule_type" property="ruleType" jdbcType="INTEGER"/>
+        <result column="team_id" property="teamId" jdbcType="INTEGER"/>
+        <result column="textures" property="textures" jdbcType="VARCHAR"/>
+        <result column="create_at" property="createAt" jdbcType="TIMESTAMP"/>
+        <result column="update_at" property="updateAt" jdbcType="TIMESTAMP"/>
+        <result column="delete_at" property="deleteAt" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        id, category_key, desc, formula, formula_default, group_count_init, group_count_max,
+        group_count_min, point_need, points, rule_type, team_id, textures, create_at, update_at,
+        delete_at
+    </sql>
+    <!--List<Map<String,Object>> searchCategoryByKeyIn(@Param("categoryKeys") String[] categoryKeys);-->
+    <select id="searchCategoryByKeyIn" resultType="map">
+        select id, category_key, 'desc', formula, formula_default, group_count_init, group_count_max,
+        group_count_min, point_need, points, rule_type, team_id, textures, create_at, update_at,
+        delete_at from measure_rule where
+        delete_at IS NULL
+        and category_key
+        in
+        <foreach collection="categoryKeys" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <!--List<Map<String,Object>> searchUnscopedByTeamIdUpdateAtGt(@Param("teamId")Integer teamId, @Param("updateAtDate")Date updateAtDate);-->
+    <select id="searchUnscopedByTeamIdUpdateAtGt" resultType="map">
+         select id, category_key, 'desc', formula, formula_default, group_count_init, group_count_max,
+    group_count_min, point_need, points, rule_type, team_id, textures, create_at, update_at,
+    delete_at from  measure_rule where
+    delete_at IS NULL
+    and
+    team_id=#{teamId} and update_at > #{updateAtDate}
+
+    </select>
 </mapper>
