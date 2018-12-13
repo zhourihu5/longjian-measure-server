@@ -2,13 +2,18 @@ package com.longfor.longjian.measure.app.controller.appController;
 
 import com.longfor.gaia.gfs.web.mock.MockOperation;
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureSyncService;
+import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionReq;
+import com.longfor.longjian.measure.app.req.appReq.ApiMeasureReportIssueReq;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *   app 端实测实量同步
@@ -19,6 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("v3/api/")
 @Slf4j
 public class APPMeasureSyncController {
+
+    @Autowired
+    IAPPMeasureSyncService appMeasureSyncService;
 
     /**
      * 61读取测量规则
@@ -37,13 +45,13 @@ public class APPMeasureSyncController {
     /**
      * 获取指定项目的描画区域，此为全量接口
      * http://192.168.37.159:3000/project/8/interface/api/382
-     * @param requestParam
+     * @param apiMeasureRegionReq
      * @return
      */
-    @MockOperation
     @GetMapping(value = "info/measure_region/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureRegionVo> getMeasureRegion(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<MeasureRegionVo> getMeasureRegion(ApiMeasureRegionReq apiMeasureRegionReq) throws Exception {
+        LjBaseResponse<MeasureRegionVo> ljBaseResponse = appMeasureSyncService.getMeasureRegion(apiMeasureRegionReq);
+        return ljBaseResponse;
     }
 
     /**
@@ -263,10 +271,9 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/1468
      * @return
      */
-    @MockOperation
-    @GetMapping(value = "measure/report_issue/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<ReportIssuevO> reportIssue(RequestParam requestParam){
-        return null;
+    @PostMapping(value = "measure/report_issue/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public LjBaseResponse<ReportIssueVo> reportIssue(ApiMeasureReportIssueReq apiMeasureReportIssueReq, HttpServletRequest request) throws Exception {
+        return appMeasureSyncService.reportIssue(apiMeasureReportIssueReq,request);
     }
 
 }

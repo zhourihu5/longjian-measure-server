@@ -1,0 +1,45 @@
+scalar DateField
+
+schema {
+    query: gapiQuery
+}
+
+
+type gapiQuery{
+    progressStat(timeFrameType: TimeFrameTypeEnum, timeFrameMax: Int, timeFrameEnd: DateField, categoryKey: String):StatGroupItem
+}
+
+type StatGroupItem {
+    items: [StatGroup]
+}
+
+enum TimeFrameTypeEnum{
+    DAY
+    WEEK
+    MONTH
+    QUARTER
+    YEAR
+}
+
+type StatGroup{
+    groupId: Int
+    groupName: String
+    issueCount: Int
+    issueIntimeChecked: Int
+    issueIntimeToAssign: Int
+    issueIntimeToCheck: Int
+    issueIntimeToReform: Int
+    issueNotsetChecked: Int
+    issueNotsetToAssign: Int
+    issueNotsetToCheck: Int
+    issueNotsetToReform: Int
+    issueOverdueChecked: Int
+    issueOverdueToAssign: Int
+    issueOverdueToCheck: Int
+    issueOverdueToReform: Int
+    pointOkTotal: Int
+    pointTotal: Int
+    timeFrameIdx: Int
+    timeFrameType: String
+    year: Int
+}

@@ -1,5 +1,7 @@
 package com.longfor.longjian.measure.domain.externalService;
 
+import com.longfor.longjian.measure.po.zhijian2.MeasureRegion;
+
 import java.util.List;
 import java.util.Map;
 
@@ -11,4 +13,12 @@ public interface IMeasureRegionService {
      * @return
      */
     List<Map<String,Object>> getProjMeasureRegionByAreaId(Integer project_id, Integer area_id);
+
+    /**
+     *
+     * @param projectId
+     * @param updateAtGte
+     * @return
+     */
+    List<MeasureRegion> searchUnscopedByProjIdUpdateAtGt(String projectId, String updateAtGte);
 }

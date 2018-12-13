@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.app.vo.proPaintAreaManageVo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 /**
@@ -7,6 +8,7 @@ import lombok.Data;
  * 2018-11-20 10:02
  */
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RelVo {
     /**
      * '关系id'
@@ -20,4 +22,16 @@ public class RelVo {
      * '描区id列表'
      */
     private String region_ids;
+    /**
+     * 项目ID
+     */
+    private Integer project_id;
+    /**
+     * 更新时间
+     */
+    private Long update_at;
+    /**
+     * 删除时间
+     */
+    private Long delete_at;
 }

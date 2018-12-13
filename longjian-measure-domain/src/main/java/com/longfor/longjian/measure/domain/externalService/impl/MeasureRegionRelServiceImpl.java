@@ -6,6 +6,7 @@ import com.longfor.longjian.measure.po.zhijian2.MeasureRegionRel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -17,5 +18,10 @@ public class MeasureRegionRelServiceImpl implements IMeasureRegionRelService {
     @Override
     public Map<String, Object> selectByRelId(String rel_id) {
         return measureRegionRelMapper.selectByRelId(rel_id);
+    }
+
+    @Override
+    public List<MeasureRegionRel> searchRelUnscopedByProjIdUpdateAtGt(String projectId, String updateAtGte) {
+        return measureRegionRelMapper.searchRelUnscopedByProjIdUpdateAtGt(projectId,updateAtGte);
     }
 }

@@ -24,14 +24,36 @@ import java.util.List;
 public class RegionListVo {
     private Integer id;
     private Integer area_id;
+    /**
+     * 路径区域（暂勿使用）
+     */
     private String  area_path_and_id;
+    /**
+     * 图纸MD5
+     */
     private String  drawing_md5;
-    private Integer proj_id;
+    private Integer project_id;
     private Integer region_index;
+    /**
+     * 来源类型 1=后台添加 2=客户端添加
+     */
     private Integer src_type;
     private String  uuid;
-    private PolygonVo polygon;
+    private String polygon;
     private RelVo rel;
     private String tag_id_list;
 
+    /**
+     * 所属描画区域关联关系ID
+     */
+    private Integer rel_id;
+
+    /**
+     * 更新时间
+     */
+    private Long update_at;
+    /**
+     * 删除时间
+     */
+    private Long delete_at;
 }

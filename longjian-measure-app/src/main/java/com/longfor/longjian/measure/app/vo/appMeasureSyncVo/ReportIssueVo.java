@@ -7,7 +7,7 @@ import lombok.Data;
  * 2018-11-20
  */
 @Data
-public class ReportIssuevO {
+public class ReportIssueVo {
     /**
      * ID
      */

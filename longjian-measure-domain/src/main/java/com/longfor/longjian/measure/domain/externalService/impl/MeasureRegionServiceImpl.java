@@ -23,4 +23,9 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
     public List<Map<String, Object>> getProjMeasureRegionByAreaId(Integer project_id, Integer area_id) {
         return measureRegionMapper.getProjMeasureRegionByAreaId(project_id,area_id);
     }
+
+    @Override
+    public List<MeasureRegion> searchUnscopedByProjIdUpdateAtGt(String projectId, String updateAtGte) {
+        return measureRegionMapper.searchUnscopedByProjIdUpdateAtGt(projectId,updateAtGte);
+    }
 }

@@ -15,4 +15,12 @@ public interface MeasureRegionMapper extends LFMySQLMapper<MeasureRegion> {
      * @return
      */
     List<Map<String,Object>> getProjMeasureRegionByAreaId(@Param("projId") Integer project_id, @Param("areaId") Integer area_id);
+
+    /**
+     *
+     * @param projectId
+     * @param updateAtGte
+     * @return
+     */
+    List<MeasureRegion> searchUnscopedByProjIdUpdateAtGt(@Param("projectId") String projectId, @Param("updateAtGte") String updateAtGte);
 }

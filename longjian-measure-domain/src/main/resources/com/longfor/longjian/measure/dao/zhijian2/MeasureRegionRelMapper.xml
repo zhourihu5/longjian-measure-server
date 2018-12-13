@@ -31,4 +31,16 @@
     id = #{relId}
     AND delete_at IS NULL
   </select>
+
+  <select id="searchRelUnscopedByProjIdUpdateAtGt" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM
+    measure_region_rel
+    WHERE
+    project_id = #{projectId}
+    <if test="updateAtGte != null and updateAtGte != '0001-01-01 00:00:00'">
+      AND update_at = #{updateAtGte}
+    </if>
+  </select>
 </mapper>
