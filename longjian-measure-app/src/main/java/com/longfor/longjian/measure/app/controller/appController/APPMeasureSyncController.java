@@ -5,10 +5,7 @@ import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.appMeasureSyncService.IAPPMeasureSyncService;
 import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureService;
 import com.longfor.longjian.measure.app.req.apiMeasureRuleReq.ApiMeasureRuleReq;
-import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionReq;
-import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionReqV2;
-import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionTotalReqV2;
-import com.longfor.longjian.measure.app.req.appReq.ApiMeasureReportIssueReq;
+import com.longfor.longjian.measure.app.req.appReq.*;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,13 +92,12 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/414
      * 项目同步v3/api/info/measure_region_rel_v2/
      * http://192.168.37.159:3000/project/8/interface/api/624
-     * @param requestParam
+     * @param apiMeasureRegionRelReqV2
      * @return
      */
-    @MockOperation
     @GetMapping(value = "info/measure_region_rel_v2/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureRegionV2Vo> getMeasureRegionRelV2(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<MeasureRegionRelV2Vo> getMeasureRegionRelV2(ApiMeasureRegionRelReqV2 apiMeasureRegionRelReqV2) throws Exception {
+        return appMeasureService.getMeasureRegionRelV2(apiMeasureRegionRelReqV2);
     }
 
     /**

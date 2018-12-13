@@ -1,14 +1,8 @@
 package com.longfor.longjian.measure.app.appService.appService;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
-import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionReq;
-import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionReqV2;
-import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionTotalReqV2;
-import com.longfor.longjian.measure.app.req.appReq.ApiMeasureReportIssueReq;
-import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.MeasureRegionV2Vo;
-import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.MeasureRegionVo;
-import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.ReportIssueVo;
-import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.TotalVo;
+import com.longfor.longjian.measure.app.req.appReq.*;
+import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -42,4 +36,11 @@ public interface IAPPMeasureService {
      * @return
      */
     LjBaseResponse<TotalVo> getMeasureRegionV2Total(ApiMeasureRegionTotalReqV2 apiMeasureRegionTotalReqV2) throws Exception;
+
+    /**
+     *
+     * @param apiMeasureRegionRelReqV2
+     * @return
+     */
+    LjBaseResponse<MeasureRegionRelV2Vo> getMeasureRegionRelV2(ApiMeasureRegionRelReqV2 apiMeasureRegionRelReqV2) throws Exception;
 }

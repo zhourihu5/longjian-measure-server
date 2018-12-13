@@ -6,14 +6,8 @@ import com.google.gson.JsonObject;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureService;
 import com.longfor.longjian.measure.app.appService.appService.IKeyProcedureTaskAppService;
-import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionReq;
-import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionReqV2;
-import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionTotalReqV2;
-import com.longfor.longjian.measure.app.req.appReq.ApiMeasureReportIssueReq;
-import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.MeasureRegionV2Vo;
-import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.MeasureRegionVo;
-import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.ReportIssueVo;
-import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.TotalVo;
+import com.longfor.longjian.measure.app.req.appReq.*;
+import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.*;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.PolygonVo;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.RegionListVo;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.RelVo;
@@ -136,6 +130,32 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         }catch (Exception e){
             log.error("GetCountUnscopedByProjIdUpdateAtGt" + "[" + apiMeasureRegionTotalReqV2.getProject_id() + "],error:" + e);
             throw new Exception("读取数据失败，code:region_total");
+        }
+        return ljBaseResponse;
+    }
+
+    @Override
+    public LjBaseResponse<MeasureRegionRelV2Vo> getMeasureRegionRelV2(ApiMeasureRegionRelReqV2 apiMeasureRegionRelReqV2) throws Exception {
+        LjBaseResponse<MeasureRegionRelV2Vo>ljBaseResponse = new LjBaseResponse<>();
+        MeasureRegionRelV2Vo measureRegionRelV2Vo = new MeasureRegionRelV2Vo();
+        List<RelVo> rel_list = new ArrayList<>();
+        Integer start = 0;
+        try {
+            List<MeasureRegionRel> items = measureRegionRelService.searchRelUnscopedByProjIdLastIdUpdateAtGt(apiMeasureRegionRelReqV2.getProject_id(), apiMeasureRegionRelReqV2.getLast_id(), apiMeasureRegionRelReqV2.getTimestamp(), MEASURE_API_GET_PER_TIME, start);
+            Integer newLastId = 0;
+            if (items.size() > 0){
+                newLastId = items.get(items.size() - 1).getId();
+            }
+            measureRegionRelV2Vo.setLast_id(newLastId);
+            items.forEach(measureRegionRel -> {
+                RelVo relVo = converMeasureRegionRelToRegionRelListVo(measureRegionRel);
+                rel_list.add(relVo);
+            });
+            measureRegionRelV2Vo.setRel_list(rel_list);
+            ljBaseResponse.setData(measureRegionRelV2Vo);
+        }catch (Exception e){
+            log.error("SearchRelUnscopedByProjIdLastIdUpdateAtGt" + "[" + apiMeasureRegionRelReqV2.getProject_id() + "],error:" + e);
+            throw new Exception("读取数据失败，code:region_rel");
         }
         return ljBaseResponse;
     }
