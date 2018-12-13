@@ -12,15 +12,15 @@ import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.PolygonVo;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.RegionListVo;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.RelVo;
 import com.longfor.longjian.measure.consts.constant.KeyProcedureTaskConstant;
-import com.longfor.longjian.measure.domain.externalService.IMeasureRegionRelService;
-import com.longfor.longjian.measure.domain.externalService.IMeasureRegionService;
-import com.longfor.longjian.measure.po.zhijian2.MeasureRegion;
-import com.longfor.longjian.measure.po.zhijian2.MeasureRegionRel;
+import com.longfor.longjian.measure.domain.externalService.*;
+import com.longfor.longjian.measure.po.zhijian2.*;
+import com.longfor.longjian.measure.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.SQLClientInfoException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +36,14 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     IMeasureRegionService measureRegionService;
     @Autowired
     IMeasureRegionRelService measureRegionRelService;
-
+    @Autowired
+    IMeasureListService measureListService;
+    @Autowired
+    IMeasureSquadService measureSquadService;
+    @Autowired
+    IMeasureSquadUserService measureSquadUserService;
+    @Autowired
+    IMeasureRepairerUserService measureRepairerUserService;
 
 
     @Override
@@ -158,6 +165,98 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             throw new Exception("读取数据失败，code:region_rel");
         }
         return ljBaseResponse;
+    }
+
+    @Override
+    public LjBaseResponse<MeasureSquadAndRepairerVo> measureSquadAndRepairer(ApiMeasureSquadAndRepairerReq apiMeasureSquadAndRepairerReq) throws Exception {
+        LjBaseResponse<MeasureSquadAndRepairerVo> ljBaseResponse = new LjBaseResponse<>();
+        MeasureSquadAndRepairerVo measureSquadAndRepairerVo = new MeasureSquadAndRepairerVo();
+        List<SquadListVo> squad_list = new ArrayList<>();
+        List<SquadUserListVo> squad_user_list = new ArrayList<>();
+        List<RepairerListVo> repairer_list = new ArrayList<>();
+       MeasureList measureList = null;
+        try{
+            measureList = measureListService.getNoProjNoFoundErr(apiMeasureSquadAndRepairerReq.getList_id());
+            String updateAtGt = "";
+            if (apiMeasureSquadAndRepairerReq.getTimestamp() != null && apiMeasureSquadAndRepairerReq.getTimestamp() > 0){
+                updateAtGt = DateUtil.getDateStringByLong(apiMeasureSquadAndRepairerReq.getTimestamp());
+            }
+            List<MeasureSquad> squads = measureSquadService.searchMeasureSquadByListIdTimestampGt(measureList.getProjectId(),apiMeasureSquadAndRepairerReq.getList_id(),updateAtGt);
+            squads.forEach(measureSquad -> {
+                SquadListVo squadListVo = converMeasureSquadToSquadListVo(measureSquad);
+                squad_list.add(squadListVo);
+            });
+            measureSquadAndRepairerVo.setSquad_list(squad_list);
+            List<MeasureSquadUser> squadsUsers = measureSquadUserService.searchMeasureSquadUserByListIdTimestampGt(measureList.getProjectId(),apiMeasureSquadAndRepairerReq.getList_id(),updateAtGt);
+            squadsUsers.forEach(measureSquadUser -> {
+                SquadUserListVo squadUserListVo = converMeasureSquadUserToSquadUserListVo(measureSquadUser);
+                squad_user_list.add(squadUserListVo);
+            });
+            measureSquadAndRepairerVo.setSquad_user_list(squad_user_list);
+            List<MeasureRepairerUser> repairerUsers = measureRepairerUserService.searchMeasureReparierUserByListIdTimestampGt(measureList.getProjectId(),apiMeasureSquadAndRepairerReq.getList_id(),updateAtGt);
+            repairerUsers.forEach(measureRepairerUser -> {
+                RepairerListVo repairerListVo = converMeasureRepairerUserToRepairerListVo(measureRepairerUser);
+                repairer_list.add(repairerListVo);
+            });
+            measureSquadAndRepairerVo.setRepairer_list(repairer_list);
+        }catch (Exception e){
+            log.error(e + "");
+            throw new Exception(e);
+        }
+        ljBaseResponse.setData(measureSquadAndRepairerVo);
+        return ljBaseResponse;
+    }
+
+    /**
+     *
+     * @param measureRepairerUser
+     * @return
+     */
+    private RepairerListVo converMeasureRepairerUserToRepairerListVo(MeasureRepairerUser measureRepairerUser) {
+        RepairerListVo repairerListVo = new RepairerListVo();
+        repairerListVo.setDelete_at(measureRepairerUser.getDeleteAt() ==  null ? 0 : measureRepairerUser.getDeleteAt().getTime());
+        repairerListVo.setId(measureRepairerUser.getId());
+        repairerListVo.setList_id(measureRepairerUser.getListId());
+        repairerListVo.setProject_id(measureRepairerUser.getProjectId());
+        repairerListVo.setRole_type(measureRepairerUser.getRoleType());
+        repairerListVo.setUpdate_at(measureRepairerUser.getUpdateAt() == null ? 0 :measureRepairerUser.getUpdateAt().getTime());
+        repairerListVo.setUser_id(measureRepairerUser.getUserId());
+        return repairerListVo;
+    }
+
+    /**
+     *
+     * @param measureSquadUser
+     * @return
+     */
+    private SquadUserListVo converMeasureSquadUserToSquadUserListVo(MeasureSquadUser measureSquadUser) {
+        SquadUserListVo squadUserListVo = new SquadUserListVo();
+        squadUserListVo.setDelete_at(measureSquadUser.getDeleteAt() ==  null ? 0 : measureSquadUser.getDeleteAt().getTime());
+        squadUserListVo.setId(measureSquadUser.getId());
+        squadUserListVo.setList_id(measureSquadUser.getListId());
+        squadUserListVo.setProject_id(measureSquadUser.getProjectId());
+        squadUserListVo.setSquad_id(measureSquadUser.getSquadId());
+        squadUserListVo.setUpdate_at(measureSquadUser.getUpdateAt() ==  null ? 0 : measureSquadUser.getUpdateAt().getTime());
+        squadUserListVo.setUser_id(measureSquadUser.getUserId());
+        return squadUserListVo;
+    }
+
+    /**
+     *
+     * @param measureSquad
+     * @return
+     */
+    private SquadListVo converMeasureSquadToSquadListVo(MeasureSquad measureSquad) {
+        SquadListVo squadListVo = new SquadListVo();
+        squadListVo.setDelete_at(measureSquad.getDeleteAt() ==  null ? 0 : measureSquad.getDeleteAt().getTime());
+        squadListVo.setId(measureSquad.getId());
+        squadListVo.setList_id(measureSquad.getListId());
+        squadListVo.setName(measureSquad.getName());
+        squadListVo.setPlan_rate(measureSquad.getPlanRate());
+        squadListVo.setProject_id(measureSquad.getProjectId());
+        squadListVo.setRate(measureSquad.getRate());
+        squadListVo.setUpdate_at(measureSquad.getUpdateAt() ==  null ? 0 : measureSquad.getUpdateAt().getTime());
+        return squadListVo;
     }
 
     /**

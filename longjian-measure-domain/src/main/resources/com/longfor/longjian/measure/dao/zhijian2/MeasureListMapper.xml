@@ -22,7 +22,7 @@
         <!--
           WARNING - @mbg.generated
         -->
-        id, name, project_id, area_type, close_status, finish_status, root_category_key,
+        id, `name`, project_id, area_type, close_status, finish_status, root_category_key,
         plan_begin_on, plan_end_on, create_at, update_at, delete_at
     </sql>
 
@@ -126,4 +126,16 @@
     project_id=#{project_id}
     AND delete_at IS NULL
   </select>
+
+    <select id="getNoProjNoFoundErr" resultMap="BaseResultMap">
+SELECT
+	<include refid="Base_Column_List"/>
+FROM
+	measure_list
+WHERE
+	id = #{listId}
+	<if test="projectId != null and projectId > 0">
+        AND project_id = #{projectId}
+    </if>
+    </select>
 </mapper>

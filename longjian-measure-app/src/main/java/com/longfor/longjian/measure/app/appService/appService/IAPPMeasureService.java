@@ -43,4 +43,11 @@ public interface IAPPMeasureService {
      * @return
      */
     LjBaseResponse<MeasureRegionRelV2Vo> getMeasureRegionRelV2(ApiMeasureRegionRelReqV2 apiMeasureRegionRelReqV2) throws Exception;
+
+    /**
+     *
+     * @param apiMeasureSquadAndRepairerReq
+     * @return
+     */
+    LjBaseResponse<MeasureSquadAndRepairerVo> measureSquadAndRepairer(ApiMeasureSquadAndRepairerReq apiMeasureSquadAndRepairerReq) throws Exception;
 }

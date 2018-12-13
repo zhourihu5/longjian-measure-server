@@ -44,7 +44,11 @@ public class MeasureListServiceImpl implements IMeasureListService {
     public List<Map<String, Object>> searchListByProjIdUserId(String project_id, Integer userId) {
         //todo userId暂不知道用途
         List<Map<String, Object>> measureList = measureListMapper.searchListByProjId(project_id);
-
         return measureList;
+    }
+
+    @Override
+    public MeasureList getNoProjNoFoundErr(Integer list_id) {
+        return measureListMapper.getNoProjNoFoundErr(0,list_id);
     }
 }

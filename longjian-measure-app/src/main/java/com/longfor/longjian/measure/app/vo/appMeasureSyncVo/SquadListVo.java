@@ -35,10 +35,10 @@ public class SquadListVo {
     /**
      * 更新时间
      */
-    private Integer update_at;
+    private Long update_at;
     /**
      * 删除时间(0表示未删除
      */
-    private Integer delete_at;
+    private Long delete_at;
 
 }

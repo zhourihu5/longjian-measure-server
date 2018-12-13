@@ -164,13 +164,12 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/428
      * 项目同步v3/api/measure/measure_squad_and_repairer
      * http://192.168.37.159:3000/project/8/interface/api/654
-     * @param requestParam
+     * @param apiMeasureSquadAndRepairerReq
      * @return
      */
-    @MockOperation
     @GetMapping(value = "measure/measure_squad_and_repairer/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureSquadAndRepairerVo> measureSquadAndRepairer(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<MeasureSquadAndRepairerVo> measureSquadAndRepairer(ApiMeasureSquadAndRepairerReq apiMeasureSquadAndRepairerReq) throws Exception {
+        return appMeasureService.measureSquadAndRepairer(apiMeasureSquadAndRepairerReq);
     }
 
     /**
