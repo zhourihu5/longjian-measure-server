@@ -1,7 +1,7 @@
 package com.longfor.longjian.measure.app.appService.appService.impl;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
-import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureSyncService;
+import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureService;
 import com.longfor.longjian.measure.app.appService.appService.IKeyProcedureTaskAppService;
 import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionReq;
 import com.longfor.longjian.measure.app.req.appReq.ApiMeasureReportIssueReq;
@@ -14,7 +14,6 @@ import com.longfor.longjian.measure.domain.externalService.IMeasureRegionRelServ
 import com.longfor.longjian.measure.domain.externalService.IMeasureRegionService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureRegion;
 import com.longfor.longjian.measure.po.zhijian2.MeasureRegionRel;
-import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
+public class APPMeasureServiceImpl implements IAPPMeasureService {
 
     @Autowired
     IKeyProcedureTaskAppService keyProcedureTaskAppService;

@@ -2,11 +2,14 @@ package com.longfor.longjian.measure.app.controller.appController;
 
 import com.longfor.gaia.gfs.web.mock.MockOperation;
 import com.longfor.longjian.common.base.LjBaseResponse;
-import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureSyncService;
+import com.longfor.longjian.measure.app.appService.appMeasureSyncService.IAPPMeasureSyncService;
+import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureService;
+import com.longfor.longjian.measure.app.req.apiMeasureRuleReq.ApiMeasureRuleReq;
 import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionReq;
 import com.longfor.longjian.measure.app.req.appReq.ApiMeasureReportIssueReq;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
@@ -14,6 +17,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+
+import javax.validation.Valid;
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
 
 /**
  *   app 端实测实量同步
@@ -25,9 +33,6 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class APPMeasureSyncController {
 
-    @Autowired
-    IAPPMeasureSyncService appMeasureSyncService;
-
     /**
      * 61读取测量规则
      * http://192.168.37.159:3000/project/8/interface/api/346
@@ -36,10 +41,14 @@ public class APPMeasureSyncController {
      * @param requestParam
      * @return
      */
-    @MockOperation
-    @GetMapping(value = "info/measure_rule/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<RuleListVo> getMeasureRule(RequestParam requestParam){
-        return null;
+    @Autowired
+    private IAPPMeasureSyncService appMeasureSyncService;
+    @Autowired
+    private IAPPMeasureService appMeasureService;
+
+    @GetMapping(value = "info/measure_rule/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public LjBaseResponse<MeasureRuleListVo> getMeasureRule(@Valid ApiMeasureRuleReq apiMeasureRuleReq) throws Exception {
+        return appMeasureSyncService.getMeasureRule(apiMeasureRuleReq);
     }
 
     /**
@@ -50,7 +59,7 @@ public class APPMeasureSyncController {
      */
     @GetMapping(value = "info/measure_region/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<MeasureRegionVo> getMeasureRegion(ApiMeasureRegionReq apiMeasureRegionReq) throws Exception {
-        LjBaseResponse<MeasureRegionVo> ljBaseResponse = appMeasureSyncService.getMeasureRegion(apiMeasureRegionReq);
+        LjBaseResponse<MeasureRegionVo> ljBaseResponse = appMeasureService.getMeasureRegion(apiMeasureRegionReq);
         return ljBaseResponse;
     }
 
@@ -273,7 +282,7 @@ public class APPMeasureSyncController {
      */
     @PostMapping(value = "measure/report_issue/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<ReportIssueVo> reportIssue(ApiMeasureReportIssueReq apiMeasureReportIssueReq, HttpServletRequest request) throws Exception {
-        return appMeasureSyncService.reportIssue(apiMeasureReportIssueReq,request);
+        return appMeasureService.reportIssue(apiMeasureReportIssueReq,request);
     }
 
 }

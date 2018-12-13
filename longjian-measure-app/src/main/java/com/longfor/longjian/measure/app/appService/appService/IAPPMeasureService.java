@@ -8,7 +8,7 @@ import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.ReportIssueVo;
 
 import javax.servlet.http.HttpServletRequest;
 
-public interface IAPPMeasureSyncService {
+public interface IAPPMeasureService {
     /**
      * 上报爆点issue数据
      * v3/api/measure/report_issue/
