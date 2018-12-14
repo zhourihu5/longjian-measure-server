@@ -58,4 +58,9 @@ public class MeasureZoneResultServiceImpl implements IMeasureZoneResultService {
     public Integer countMeasureZoneByListIdsAndCategoryKeyAndAreaId(Integer project_id, String[] listIds, String key, String areaId) {
         return measureZoneResultMapper.countMeasureZoneByListIdsAndCategoryKeyAndAreaId(project_id,listIds,key,areaId);
     }
+
+    @Override
+    public List<MeasureZoneResult> searchResultUnscopedByListIdLastIdUpdateAtGt(Integer projectId, String listId, Integer lastId, Integer timestamp, Integer limit, Integer start) {
+        return measureZoneResultMapper.searchResultUnscopedByListIdLastIdUpdateAtGt(projectId, listId, lastId, timestamp, limit, start);
+    }
 }

@@ -175,13 +175,12 @@ public class APPMeasureSyncController {
     /**
      * 读取测量结果
      * http://192.168.37.159:3000/project/8/interface/api/430
-     * @param requestParam
+     * @param apiMeasureZoneResultReq
      * @return
      */
-    @MockOperation
     @GetMapping(value = "measure/measure_zone_result/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureZoneResultVo> measureZoneResult(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<MeasureZoneResultVo> measureZoneResult(ApiMeasureZoneResultReq apiMeasureZoneResultReq) throws Exception {
+        return appMeasureService.measureZoneResult(apiMeasureZoneResultReq);
     }
 
     /**

@@ -1,8 +1,8 @@
 package com.longfor.longjian.measure.app.appService.appService.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.google.gson.JsonObject;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureService;
 import com.longfor.longjian.measure.app.appService.appService.IKeyProcedureTaskAppService;
@@ -16,11 +16,12 @@ import com.longfor.longjian.measure.domain.externalService.*;
 import com.longfor.longjian.measure.po.zhijian2.*;
 import com.longfor.longjian.measure.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.xpath.axes.SelfIteratorNoPredicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLClientInfoException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +45,8 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     IMeasureSquadUserService measureSquadUserService;
     @Autowired
     IMeasureRepairerUserService measureRepairerUserService;
+    @Autowired
+    IMeasureZoneResultService measureZoneResultService;
 
 
     @Override
@@ -200,11 +203,147 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             });
             measureSquadAndRepairerVo.setRepairer_list(repairer_list);
         }catch (Exception e){
-            log.error(e + "");
-            throw new Exception(e);
+            log.error(e.getMessage());
+            throw e;
         }
         ljBaseResponse.setData(measureSquadAndRepairerVo);
         return ljBaseResponse;
+    }
+
+    @Override
+    public LjBaseResponse<MeasureZoneResultVo> measureZoneResult(ApiMeasureZoneResultReq apiMeasureZoneResultReq) throws Exception {
+        LjBaseResponse<MeasureZoneResultVo> ljBaseResponse = new LjBaseResponse<>();
+        MeasureZoneResultVo measureZoneResultVo = new MeasureZoneResultVo();
+        List<ResultListVo> result_list = new ArrayList<>();
+        if (apiMeasureZoneResultReq.getList_ids() == null || apiMeasureZoneResultReq.getList_ids().split(",").length == 0) {
+            throw new Exception("list is empty.");
+        }
+        String[] listIds = apiMeasureZoneResultReq.getList_ids().split(",");
+        Integer lastId = 0;
+        Integer limit = 0;
+        Integer start = 0;
+        Integer timestamp = 0;
+        try {
+            for (String listId : listIds
+            ) {
+                MeasureList measureList = measureListService.getNoProjNoFoundErr(Integer.parseInt(listId));
+                List<MeasureZoneResult> items = measureZoneResultService.searchResultUnscopedByListIdLastIdUpdateAtGt(measureList.getProjectId(), listId, lastId, timestamp, limit, start);
+                items.forEach(measureZoneResult -> {
+                    ResultListVo resultListVo = converMeasureZoneResultToResultListVo(measureZoneResult);
+                    result_list.add(resultListVo);
+                });
+            }
+            measureZoneResultVo.setResult_list(result_list);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw e;
+        }
+        ljBaseResponse.setData(measureZoneResultVo);
+        return ljBaseResponse;
+    }
+
+    /**
+     *
+     * @param measureZoneResult
+     * @return
+     */
+    private ResultListVo converMeasureZoneResultToResultListVo(MeasureZoneResult measureZoneResult) {
+        ResultListVo resultListVo = new ResultListVo();
+        resultListVo.setArea_id(measureZoneResult.getAreaId());
+        resultListVo.setArea_path_and_id(measureZoneResult.getAreaPathAndId());
+        resultListVo.setCategory_key(measureZoneResult.getCategoryKey());
+        resultListVo.setDelete_at(measureZoneResult.getDeleteAt() ==  null ? 0 : measureZoneResult.getDeleteAt().getTime());
+        resultListVo.setId(measureZoneResult.getId());
+        resultListVo.setList_id(measureZoneResult.getListId());
+        resultListVo.setCategory_path_and_key(measureZoneResult.getCategoryPathAndKey());
+        resultListVo.setOk_total(measureZoneResult.getOkTotal());
+        resultListVo.setProject_id(measureZoneResult.getProjectId());
+        resultListVo.setRegion_uuid(measureZoneResult.getRegionUuid());
+        resultListVo.setZone_uuid(measureZoneResult.getZoneUuid());
+        resultListVo.setUpdate_at(measureZoneResult.getUpdateAt() == null ? 0 : measureZoneResult.getUpdateAt().getTime());
+        resultListVo.setTotal(measureZoneResult.getTotal());
+        resultListVo.setUuid(measureZoneResult.getUuid());
+        resultListVo.setSquad_id(measureZoneResult.getSquadId());
+        resultListVo.setScore(measureZoneResult.getScore());
+        resultListVo.setRule_id(measureZoneResult.getRuleId());
+        List<TextResultVo> d = new ArrayList<>();
+        String data = measureZoneResult.getData();
+//        System.out.println(data);
+        if (StringUtils.isNotBlank(data)) {
+            JSONArray jsonArray = JSONArray.parseArray(data);
+            jsonArray.forEach(jsa -> {
+                JSONObject textResult = (JSONObject) jsa;
+                TextResultVo textResultVo = converDataToTextResultVo(textResult);
+                d.add(textResultVo);
+            });
+        }
+        resultListVo.setData(d);
+        return resultListVo;
+    }
+
+    /**
+     *
+     * @param textResult
+     * @return
+     */
+    private TextResultVo converDataToTextResultVo(JSONObject textResult) {
+        TextResultVo textResultVo = new TextResultVo();
+        textResultVo.setRecorder_id(textResult.getInteger("RecorderId"));
+        textResultVo.setScore(textResult.getDouble("Score"));
+        textResultVo.setTexture(textResult.getString("Texture"));
+        textResultVo.setUpdate_at(textResult.getDate("UpdateAt") == null ? 0 :textResult.getDate("UpdateAt").getTime());
+        List<SinglePointTestVo> d = new ArrayList<>();
+        String data = textResult.getString("Data");
+        if (StringUtils.isNotBlank(data)) {
+            JSONArray jsonArray = JSONArray.parseArray(data);
+            jsonArray.forEach(jsa -> {
+                JSONObject singlePointTest = (JSONObject) jsa;
+                SinglePointTestVo singlePointTestVo = converDataToSinglePointTestVo(singlePointTest);
+                d.add(singlePointTestVo);
+            });
+        }
+        textResultVo.setData(d);
+        return textResultVo;
+    }
+
+    /**
+     *
+     * @param singlePointTest
+     * @return
+     */
+    private SinglePointTestVo converDataToSinglePointTestVo(JSONObject singlePointTest) {
+        SinglePointTestVo singlePointTestVo = new SinglePointTestVo();
+        singlePointTestVo.setData_type(singlePointTest.getInteger("DataType"));
+        singlePointTestVo.setDesign_value(singlePointTest.getDouble("DesignValue"));
+        singlePointTestVo.setDesign_value_reqd(singlePointTest.getBoolean("DesignValueReqd"));
+        singlePointTestVo.setKey(singlePointTest.getString("Key"));
+        singlePointTestVo.setSeq(singlePointTest.getString("Seq"));
+        singlePointTestVo.setOk_total(singlePointTest.getInteger("OkTotal"));
+        singlePointTestVo.setTotal(singlePointTest.getInteger("Total"));
+        List<Object> data = (List<Object>)singlePointTest.get("Data");
+        if (data != null) {
+            data.forEach(d -> {
+                singlePointTestVo.setData(singlePointTestVo.getData() == null ? "" + "," + d : singlePointTestVo.getData() + "," + d);
+            });
+        }
+        if (!",".equals(singlePointTestVo.getData()) && StringUtils.isNotBlank(singlePointTestVo.getData())) {
+            singlePointTestVo.setData(singlePointTestVo.getData().substring(1));
+        }else {
+            singlePointTestVo.setData("");
+        }
+        singlePointTestVo.setData(singlePointTestVo.getData().substring(1));
+        List<Object> deviation = (List<Object>)singlePointTest.get("Deviation");
+        if (deviation != null) {
+            deviation.forEach(d -> {
+                singlePointTestVo.setDeviation(singlePointTestVo.getDeviation() == null ? "" + "," + d : singlePointTestVo.getDeviation() + "," + d);
+            });
+        }
+        if (!",".equals(singlePointTestVo.getDeviation()) && StringUtils.isNotBlank(singlePointTestVo.getDeviation())) {
+            singlePointTestVo.setDeviation(singlePointTestVo.getDeviation().substring(1));
+        }else {
+            singlePointTestVo.setDeviation("");
+        }
+        return singlePointTestVo;
     }
 
     /**

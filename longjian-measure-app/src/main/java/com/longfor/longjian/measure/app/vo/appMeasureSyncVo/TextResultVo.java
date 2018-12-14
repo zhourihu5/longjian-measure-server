@@ -29,5 +29,5 @@ public class TextResultVo {
     /**
      * 更新时间
      */
-    private Integer update_at;
+    private Long update_at;
 }
