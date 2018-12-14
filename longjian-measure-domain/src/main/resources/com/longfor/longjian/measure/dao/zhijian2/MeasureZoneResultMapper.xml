@@ -240,4 +240,16 @@ WHERE
     LIMIT #{start},#{limit}
   </if>
   </select>
+
+  <select id="getCountResultUnscopedByListIdLastIdUpdateAtGt" resultType="int">
+SELECT
+	count( id )
+FROM
+	measure_zone_result
+WHERE
+	list_id = #{listId}
+    <if test = "timestamp != null and timestamp >= 0" >
+      AND update_at > FROM_UNIXTIME(#{timestamp} )
+    </if>
+  </select>
 </mapper>

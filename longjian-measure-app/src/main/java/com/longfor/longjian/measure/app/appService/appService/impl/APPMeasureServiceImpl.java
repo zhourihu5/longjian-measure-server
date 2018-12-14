@@ -269,6 +269,22 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         return ljBaseResponse;
     }
 
+    @Override
+    public LjBaseResponse<TotalVo> measureZoneResultV2Total(ApiMeasureZoneResultTotalReqV2 apiMeasureZoneResultTotalReqV2) throws Exception {
+        LjBaseResponse<TotalVo> ljBaseResponse = new LjBaseResponse<>();
+        TotalVo totalVo = new TotalVo();
+        try {
+            MeasureList measureList = measureListService.getNoProjNoFoundErr(apiMeasureZoneResultTotalReqV2.getList_id());
+            Integer total = measureZoneResultService.getCountResultUnscopedByListIdLastIdUpdateAtGt(measureList.getProjectId(),apiMeasureZoneResultTotalReqV2.getList_id(),apiMeasureZoneResultTotalReqV2.getTimestamp());
+            totalVo.setTotal(total);
+        }catch (Exception e){
+            log.error("SearchUnscopedByProjIdLastIdUpdateAtGt" + "[" + apiMeasureZoneResultTotalReqV2.getList_id() + "],error:" + e.getMessage());
+            throw new Exception("读取数据失败，code:zone_total");
+        }
+        ljBaseResponse.setData(totalVo);
+        return ljBaseResponse;
+    }
+
     /**
      *
      * @param measureZoneResult

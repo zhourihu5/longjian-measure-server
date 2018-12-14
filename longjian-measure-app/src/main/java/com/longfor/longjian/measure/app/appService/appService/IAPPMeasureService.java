@@ -64,4 +64,11 @@ public interface IAPPMeasureService {
      * @return
      */
     LjBaseResponse<MeasureZoneResultVo> measureZoneResultV2(ApiMeasureZoneResultReqV2 apiMeasureZoneResultReqV2) throws Exception;
+
+    /**
+     *
+     * @param apiMeasureZoneResultTotalReqV2
+     * @return
+     */
+    LjBaseResponse<TotalVo> measureZoneResultV2Total(ApiMeasureZoneResultTotalReqV2 apiMeasureZoneResultTotalReqV2) throws Exception;
 }
