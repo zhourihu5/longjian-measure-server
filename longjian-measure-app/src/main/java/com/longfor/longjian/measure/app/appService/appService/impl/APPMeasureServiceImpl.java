@@ -242,6 +242,33 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         return ljBaseResponse;
     }
 
+    @Override
+    public LjBaseResponse<MeasureZoneResultVo> measureZoneResultV2(ApiMeasureZoneResultReqV2 apiMeasureZoneResultReqV2) throws Exception {
+        LjBaseResponse<MeasureZoneResultVo> ljBaseResponse = new LjBaseResponse<>();
+        MeasureZoneResultVo measureZoneResultVo = new MeasureZoneResultVo();
+        List<ResultListVo> result_list = new ArrayList<>();
+        try {
+            MeasureList measureList = measureListService.getNoProjNoFoundErr(apiMeasureZoneResultReqV2.getList_id());
+            Integer start = 0;
+            List<MeasureZoneResult> items = measureZoneResultService.searchResultUnscopedByListIdLastIdUpdateAtGt(measureList.getProjectId(), apiMeasureZoneResultReqV2.getList_id().toString(), apiMeasureZoneResultReqV2.getLast_id(), apiMeasureZoneResultReqV2.getTimestamp(), MEASURE_API_GET_PER_TIME, start);
+            Integer newLastId = 0;
+            if (items.size() > 0){
+                newLastId = items.get(items.size() - 1).getId();
+            }
+            measureZoneResultVo.setLast_id(newLastId);
+            items.forEach(measureZoneResult -> {
+                ResultListVo resultListVo = converMeasureZoneResultToResultListVo(measureZoneResult);
+                result_list.add(resultListVo);
+            });
+            measureZoneResultVo.setResult_list(result_list);
+        }catch (Exception e){
+            log.error("SearchUnscopedByProjIdLastIdUpdateAtGt" + "[" + apiMeasureZoneResultReqV2.getList_id() + "],error:" + e.getMessage());
+            throw new Exception("读取数据失败，code:zone");
+        }
+        ljBaseResponse.setData(measureZoneResultVo);
+        return ljBaseResponse;
+    }
+
     /**
      *
      * @param measureZoneResult

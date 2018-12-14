@@ -1,8 +1,8 @@
 package com.longfor.longjian.measure.app;
 
 
-import com.alibaba.druid.sql.visitor.functions.Char;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 /**
@@ -27,29 +27,18 @@ import java.util.Stack;
  */
 public class StringTest {
 
-    public  static String findStr(java.lang.String str) {
-        Stack <Character>stack = new Stack();
-        for (int i = 0; i < str.length(); i++) {
-            char split=str.charAt(i);
-            if(split!=stack.peek()&&!stack.contains(split)) {
-                stack.push(split);
-            }else{
-                stack.clear();
-            }
-        }
-        StringBuilder sb=new StringBuilder("");
-        for(Character c:stack){
-            sb.append(sb);
-        }
-        System.out.println(sb);
-        return stack.toString();
-    }
+    /**
+     * 1.将字符串转换为char字符数组/
+     * 2.定义一个2维数组.对char字符数组第一层遍历，第二层遍历相邻元素进行比较，如果不相等，则把下标i记录2维数组x，如果相等，则将这时的j记录2维数组y中
+     * 3.继续遍历 得到2维数组
+     * 4。遍历2维数组，找到j-i最大的
+     * 5.截取字符串，参数维i，j
+     */
 
 
 
-    public static void main(String[] args) {
-        findStr("abcabcbb");
-    }
+
+
 
 
 

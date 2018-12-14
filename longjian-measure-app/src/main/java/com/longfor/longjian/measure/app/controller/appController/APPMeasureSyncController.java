@@ -190,10 +190,9 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/644
      * @return
      */
-    @MockOperation
     @GetMapping(value = "measure/measure_zone_result_v2/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureZoneResultVo> measureZoneResultV2(){
-        return null;
+    public LjBaseResponse<MeasureZoneResultVo> measureZoneResultV2(ApiMeasureZoneResultReqV2 apiMeasureZoneResultReqV2) throws Exception {
+        return appMeasureService.measureZoneResultV2(apiMeasureZoneResultReqV2);
     }
 
     /**
