@@ -54,4 +54,11 @@ public interface IMeasureListService {
      * @return
      */
     List<Map<String, Object>> searchListByProjIdUserId(String project_id, Integer userId);
+
+    /**
+     *
+     * @param listId
+     * @return
+     */
+    List<MeasureList> getNoProjNoFoundErr(String listId);
 }

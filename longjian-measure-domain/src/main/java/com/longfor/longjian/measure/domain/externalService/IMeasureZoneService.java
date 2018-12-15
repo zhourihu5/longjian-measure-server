@@ -1,5 +1,8 @@
 package com.longfor.longjian.measure.domain.externalService;
 
+import java.util.List;
+import java.util.Map;
+
 public interface IMeasureZoneService {
     /**
      * 获取测区数量
@@ -18,4 +21,36 @@ public interface IMeasureZoneService {
      */
     Integer getMeasureZoneCountByListIdCategoryKey(Integer project_id, Integer measure_list_id, String subKey);
 
+    /**
+     *
+     * @param projectId
+     * @param listId
+     * @param lastId
+     * @param timestamp
+     * @param limit
+     * @param start
+     * @return
+     */
+    List<Map<String,Object>> searchZoneUnscopedByListIdLastIdUpdateAtGt(Integer projectId, String listId, Integer lastId, Long timestamp, Integer limit, Integer start);
+
+    /**
+     *
+     * @param projectId
+     * @param list_id
+     * @param last_id
+     * @param timestamp
+     * @param start
+     * @param limit
+     * @return
+     */
+    List<Map<String,Object>> searchZoneUnscopedByListIdLastIdUpdateAtGt2(Integer projectId, Integer list_id, Integer last_id, Long timestamp, Integer start, Integer limit);
+
+    /**
+     *
+     * @param projectId
+     * @param list_id
+     * @param timestamp
+     * @return
+     */
+    Integer getCountZoneUnscopedByListIdUpdateAtGt(Integer projectId, Integer list_id, Long timestamp);
 }

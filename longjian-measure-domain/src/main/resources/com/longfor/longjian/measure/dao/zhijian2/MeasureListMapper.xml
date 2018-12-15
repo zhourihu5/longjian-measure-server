@@ -126,4 +126,15 @@
     project_id=#{project_id}
     AND delete_at IS NULL
   </select>
+    <!--List<MeasureList> getNoProjNoFoundErr(@Param("listId") String listId);-->
+    <select id="getNoProjNoFoundErr" resultMap="BaseResultMap">
+        select
+     id, `name`, project_id, area_type, close_status, finish_status, root_category_key,
+    plan_begin_on, plan_end_on, create_at, update_at, delete_at
+    from
+    measure_list
+    where
+    id=#{listId}
+    AND delete_at IS NULL
+    </select>
 </mapper>

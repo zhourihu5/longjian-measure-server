@@ -40,11 +40,17 @@ public class MeasureListServiceImpl implements IMeasureListService {
         return measureListMapper.selectOne(measureList);
     }
 
+
     @Override
     public List<Map<String, Object>> searchListByProjIdUserId(String project_id, Integer userId) {
         //todo userId暂不知道用途
         List<Map<String, Object>> measureList = measureListMapper.searchListByProjId(project_id);
 
         return measureList;
+    }
+
+    @Override
+    public List<MeasureList> getNoProjNoFoundErr(String listId) {
+        return measureListMapper.getNoProjNoFoundErr(listId);
     }
 }
