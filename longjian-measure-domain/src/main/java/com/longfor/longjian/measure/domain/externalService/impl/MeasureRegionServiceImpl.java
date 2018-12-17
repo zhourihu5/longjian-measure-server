@@ -7,9 +7,7 @@ import com.longfor.longjian.measure.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * wangxs
@@ -40,5 +38,13 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
     @Override
     public Integer getCountUnscopedByProjIdUpdateAtGt(Integer project_id, Long timestamp) {
         return measureRegionMapper.getCountUnscopedByProjIdUpdateAtGt(project_id,timestamp);
+    }
+
+    @Override
+    public List<MeasureRegion> searchByUuids(Integer projId, Set<String> uuids) {
+        if (uuids == null || uuids.size() == 0){
+            return new ArrayList<>();
+        }
+        return measureRegionMapper.searchByUuids(projId,uuids);
     }
 }

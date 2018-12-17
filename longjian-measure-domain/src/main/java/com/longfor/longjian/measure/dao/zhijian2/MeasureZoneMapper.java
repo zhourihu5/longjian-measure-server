@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface MeasureZoneMapper extends LFMySQLMapper<MeasureZone> {
     /**
@@ -57,4 +58,14 @@ public interface MeasureZoneMapper extends LFMySQLMapper<MeasureZone> {
      * @return
      */
     Integer getCountZoneUnscopedByListIdUpdateAtGt(@Param("projectId")Integer projectId, @Param("list_id")Integer list_id, @Param("timestamp") Long timestamp);
+
+    /**
+     *
+     *
+     * @param projId
+     * @param zoneUuids
+     * @return
+     */
+    List<MeasureZone> searchZoneByUuid(@Param("projId") Integer projId, @Param("zoneUuids") Set<String> zoneUuids);
+
 }

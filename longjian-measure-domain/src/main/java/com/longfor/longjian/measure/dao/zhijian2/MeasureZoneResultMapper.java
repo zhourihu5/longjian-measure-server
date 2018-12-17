@@ -1,6 +1,7 @@
 package com.longfor.longjian.measure.dao.zhijian2;
 
 import com.longfor.gaia.gfs.data.mybatis.LFMySQLMapper;
+import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
 import com.longfor.longjian.measure.po.zhijian2.MeasureZoneResult;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -103,4 +104,15 @@ public interface MeasureZoneResultMapper extends LFMySQLMapper<MeasureZoneResult
      * @return
      */
     Integer getCountResultUnscopedByListIdLastIdUpdateAtGt(@Param("projectId") Integer projectId, @Param("listId") Integer listId, @Param("timestamp")Integer timestamp);
+
+    /**
+     *
+     * @param project_id
+     * @param list_id
+     * @param zone_uuid
+     * @param squad_id
+     * @return
+     */
+    List<MeasureZoneResult> getByProjIdListIdZoneUuidSquadId(@Param("projectId") Integer project_id, @Param("listId") Integer list_id, @Param("zoneUuid") String zone_uuid, @Param("squadId") Integer squad_id);
+
 }

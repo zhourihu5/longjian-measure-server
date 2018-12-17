@@ -249,8 +249,8 @@ public class APPMeasureSyncController {
      * @return
      */
     @GetMapping(value = "measure/report_zone_result/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<DroppedInfoVo> reportZoneResult(ApiMeasureReportZoneResultReq apiMeasureReportZoneResultReq){
-        return appMeasureService.reportZoneResult(apiMeasureReportZoneResultReq);
+    public LjBaseResponse<DroppedInfoVo> reportZoneResult(ApiMeasureReportZoneResultReq apiMeasureReportZoneResultReq, HttpServletRequest request) throws Exception {
+        return appMeasureService.reportZoneResult(apiMeasureReportZoneResultReq,request);
     }
 
     /**

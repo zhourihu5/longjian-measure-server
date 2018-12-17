@@ -1,7 +1,10 @@
 package com.longfor.longjian.measure.domain.externalService;
 
+import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
+
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface IMeasureZoneService {
     /**
@@ -53,4 +56,14 @@ public interface IMeasureZoneService {
      * @return
      */
     Integer getCountZoneUnscopedByListIdUpdateAtGt(Integer projectId, Integer list_id, Long timestamp);
+
+    /**
+     *
+     *
+     * @param projId
+     * @param zoneUuids
+     * @return
+     */
+    List<MeasureZone> searchZoneByUuid(Integer projId, Set<String> zoneUuids);
+
 }

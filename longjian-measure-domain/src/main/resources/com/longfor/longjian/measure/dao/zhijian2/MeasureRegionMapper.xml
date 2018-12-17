@@ -106,4 +106,17 @@ WHERE
     AND update_at > FROM_UNIXTIME( #{timestamp} )
     </if>
   </select>
+
+  <select id="searchByUuids" resultMap="BaseResultMap">
+SELECT
+	<include refid="Base_Column_List" />
+FROM
+	measure_region
+WHERE
+	project_id = #{projId}
+	AND uuid IN
+    <foreach collection="uuids" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
 </mapper>

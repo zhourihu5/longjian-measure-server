@@ -4,6 +4,7 @@ import com.longfor.longjian.measure.po.zhijian2.MeasureRegion;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface IMeasureRegionService {
     /**
@@ -40,4 +41,12 @@ public interface IMeasureRegionService {
      * @return
      */
     Integer getCountUnscopedByProjIdUpdateAtGt(Integer project_id, Long timestamp);
+
+    /**
+     *
+     * @param projId
+     * @param keySet
+     * @return
+     */
+    List<MeasureRegion> searchByUuids(Integer projId, Set<String> keySet);
 }

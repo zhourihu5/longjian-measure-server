@@ -97,4 +97,14 @@ public interface IMeasureZoneResultService {
      * @return
      */
     Integer getCountResultUnscopedByListIdLastIdUpdateAtGt(Integer projectId, Integer list_id, Integer timestamp);
+
+    /**
+     *
+     * @param project_id
+     * @param list_id
+     * @param zone_uuid
+     * @param squad_id
+     * @return
+     */
+    List<MeasureZoneResult> getByProjIdListIdZoneUuidSquadId(Integer project_id, Integer list_id, String zone_uuid, Integer squad_id);
 }

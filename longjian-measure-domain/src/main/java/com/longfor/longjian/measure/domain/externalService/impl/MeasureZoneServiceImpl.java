@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class MeasureZoneServiceImpl implements IMeasureZoneService {
@@ -41,4 +42,10 @@ public class MeasureZoneServiceImpl implements IMeasureZoneService {
     public Integer getCountZoneUnscopedByListIdUpdateAtGt(Integer projectId, Integer list_id, Long timestamp) {
         return measureZoneMapper.getCountZoneUnscopedByListIdUpdateAtGt(projectId,list_id,timestamp);
     }
+
+    @Override
+    public List<MeasureZone> searchZoneByUuid(Integer projId, Set<String> zoneUuids) {
+        return measureZoneMapper.searchZoneByUuid(projId,zoneUuids);
+    }
+
 }

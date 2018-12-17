@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface MeasureRegionMapper extends LFMySQLMapper<MeasureRegion> {
     /**
@@ -42,4 +43,12 @@ public interface MeasureRegionMapper extends LFMySQLMapper<MeasureRegion> {
      * @return
      */
     Integer getCountUnscopedByProjIdUpdateAtGt(@Param("projectId") Integer project_id, @Param("timestamp") Long timestamp);
+
+    /**
+     *
+     * @param projId
+     * @param uuids
+     * @return
+     */
+    List<MeasureRegion> searchByUuids(@Param("projId") Integer projId, @Param("uuids") Set<String> uuids);
 }

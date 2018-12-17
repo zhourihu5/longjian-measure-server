@@ -98,4 +98,17 @@
         and delete_at is null
 
     </select>
+
+    <select id="searchZoneByUuid" resultMap="BaseResultMap">
+SELECT
+	<include refid="Base_Column_List"/>
+FROM
+	measure_zone
+WHERE
+	project_id = #{projId}
+	AND uuid IN
+        <foreach collection="zoneUuids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
 </mapper>

@@ -264,4 +264,16 @@ WHERE
       AND update_at > FROM_UNIXTIME(#{timestamp} )
     </if>
   </select>
+
+  <select id="getByProjIdListIdZoneUuidSquadId" resultMap="BaseResultMap">
+SELECT
+	<include refid="Base_Column_List"/>
+FROM
+	measure_zone_result
+WHERE
+	list_id = #{listId}
+	AND zone_uuid = #{zoneUuid}
+	AND squad_id = #{squadId}
+	AND project_id = #{projectId}
+  </select>
 </mapper>

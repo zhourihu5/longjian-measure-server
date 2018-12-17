@@ -17,13 +17,12 @@ import com.longfor.longjian.measure.po.zhijian2.*;
 import com.longfor.longjian.measure.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.xpath.axes.SelfIteratorNoPredicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -32,21 +31,25 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     private static Integer MEASURE_API_GET_PER_TIME = 5000;
 
     @Autowired
-    IKeyProcedureTaskAppService keyProcedureTaskAppService;
+    private IKeyProcedureTaskAppService keyProcedureTaskAppService;
     @Autowired
-    IMeasureRegionService measureRegionService;
+    private IMeasureRegionService measureRegionService;
     @Autowired
-    IMeasureRegionRelService measureRegionRelService;
+    private IMeasureRegionRelService measureRegionRelService;
     @Autowired
-    IMeasureListService measureListService;
+    private IMeasureListService measureListService;
     @Autowired
-    IMeasureSquadService measureSquadService;
+    private IMeasureSquadService measureSquadService;
     @Autowired
-    IMeasureSquadUserService measureSquadUserService;
+    private IMeasureSquadUserService measureSquadUserService;
     @Autowired
-    IMeasureRepairerUserService measureRepairerUserService;
+    private IMeasureRepairerUserService measureRepairerUserService;
     @Autowired
-    IMeasureZoneResultService measureZoneResultService;
+    private IMeasureZoneResultService measureZoneResultService;
+    @Autowired
+    private IMeasureRuleService measureRuleService;
+    @Autowired
+    private IMeasureZoneService measureZoneService;
 
 
     @Override
@@ -65,7 +68,82 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     }
 
     @Override
-    public LjBaseResponse<DroppedInfoVo> reportZoneResult(ApiMeasureReportZoneResultReq apiMeasureReportZoneResultReq) {
+    public LjBaseResponse<DroppedInfoVo> reportZoneResult(ApiMeasureReportZoneResultReq apiMeasureReportZoneResultReq, HttpServletRequest request) throws Exception {
+        LjBaseResponse<DroppedInfoVo> ljBaseResponse = new LjBaseResponse<>();
+        DroppedInfoVo droppedInfoVo = new DroppedInfoVo();
+        // 检查uuid，没有uuid也可以执行以下代码以保存请求内容
+        String reportUuidStatus = KeyProcedureTaskConstant.ERROR;
+        // TODO session获取uid
+        Integer uid = 8;
+        try{
+            keyProcedureTaskAppService.startReport(apiMeasureReportZoneResultReq.getReport_uuid(), uid, request);
+        }catch (Exception e){
+            keyProcedureTaskAppService.updateReportStatus(apiMeasureReportZoneResultReq.getReport_uuid(), reportUuidStatus);
+            throw e;
+        }
+        List<ResultListVo> zoneResults = JSONArray.parseArray(apiMeasureReportZoneResultReq.getData(), ResultListVo.class);
+        List<DroppedVo> dropped = createZoneResultsNoProj(zoneResults);
+        reportUuidStatus = KeyProcedureTaskConstant.SUCCEED;
+        droppedInfoVo.setDropped(dropped);
+        ljBaseResponse.setData(droppedInfoVo);
+        return ljBaseResponse;
+    }
+
+    /**
+     *
+     * @param zoneResults
+     * @return
+     */
+    private List<DroppedVo> createZoneResultsNoProj(List<ResultListVo> zoneResults) {
+        Map<Integer,List<ResultListVo>> projData = new HashMap<>();
+        List<DroppedVo> dropData = new ArrayList<>();
+        zoneResults.forEach(resultListVo -> {
+            List<ResultListVo> projD = projData.get(resultListVo.getProject_id());
+            if (projD == null){
+                projD = new ArrayList<>();
+            }
+            projD.add(resultListVo);
+            projData.put(resultListVo.getProject_id(),projD);
+        });
+        for (Map.Entry<Integer, List<ResultListVo>> entry : projData.entrySet()) {
+            List<DroppedVo> droppedVo = createZoneResults(entry.getKey(),entry.getValue());
+            dropData.addAll(droppedVo);
+        }
+        return dropData;
+    }
+
+    private List<DroppedVo> createZoneResults(Integer projId, List<ResultListVo> data) {
+        Map<String,MeasureZone> zoneUuidMap = new HashMap<>();
+        Map<String,MeasureRule> ruleMap = new HashMap<>();
+        Map<String,CategoryV3> categoryMap = new HashMap<>();
+        zoneUuidMap = data.stream().collect(Collectors.toMap(ResultListVo::getZone_uuid, vo -> new MeasureZone()));
+        List<MeasureZone> measureZones = measureZoneService.searchZoneByUuid(projId,zoneUuidMap.keySet());
+        Map<String,Boolean> regionUuidMap = new HashMap<>();
+        for (MeasureZone measureZone:measureZones
+             ) {
+            zoneUuidMap.put(measureZone.getUuid(),measureZone);
+            regionUuidMap.put(measureZone.getRegionUuid(),true);
+        }
+        List<MeasureRegion> regions = measureRegionService.searchByUuids(projId,regionUuidMap.keySet());
+        Map<String,MeasureRegion> regionMap = regions.stream().collect(Collectors.toMap(MeasureRegion::getUuid,measureRegion -> measureRegion));
+        List<DroppedVo> droppedVos = new ArrayList<>();
+        List<MeasureZoneResult> msgPkg = new ArrayList<>();
+        for (ResultListVo resultListVo:data
+             ) {
+            //0、根据zone_uuid看是否有上传过
+            //如果有上传过就不让写入（在未有开关之前统一拒收）
+            try{
+                List<MeasureZoneResult> measureZoneResults = measureZoneResultService.getByProjIdListIdZoneUuidSquadId(resultListVo.getProject_id(),resultListVo.getList_id(),resultListVo.getZone_uuid(),resultListVo.getSquad_id());
+                boolean has = measureZoneResults == null || measureZoneResults.size() <= 0 ? false : true;
+                if (has){
+                    log.warn("zone result already uploaded, zone_uuid:" + resultListVo.getZone_uuid());
+//                    String reason =
+                }
+            }catch (Exception e){
+                log.warn("zoneResultDao.GetByZoneUuid:" + resultListVo.getZone_uuid());
+                throw e;
+            }
+        }
         return null;
     }
 
