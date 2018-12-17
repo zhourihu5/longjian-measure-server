@@ -65,6 +65,11 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     }
 
     @Override
+    public LjBaseResponse<DroppedInfoVo> reportZoneResult(ApiMeasureReportZoneResultReq apiMeasureReportZoneResultReq) {
+        return null;
+    }
+
+    @Override
     public LjBaseResponse<MeasureRegionVo> getMeasureRegion(ApiMeasureRegionReq apiMeasureRegionReq) throws Exception {
         LjBaseResponse<MeasureRegionVo> ljBaseResponse = new LjBaseResponse<>();
         MeasureRegionVo measureRegionVo = new MeasureRegionVo();
