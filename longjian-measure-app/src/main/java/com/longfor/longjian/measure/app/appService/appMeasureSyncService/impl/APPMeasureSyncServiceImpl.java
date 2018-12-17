@@ -292,6 +292,9 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
             }
             MeasureRegion measureRegion = new MeasureRegion();
             measureRegion.setUuid(reportRegionDataVo.getUuid());
+            measureRegion.setProjectId(reportRegionDataVo.getProject_id());
+            measureRegion.setAreaId(reportRegionDataVo.getArea_id());
+            //measureRegion.setSrcType();
             measureRegions.add(measureRegion);
         }
         return null;
