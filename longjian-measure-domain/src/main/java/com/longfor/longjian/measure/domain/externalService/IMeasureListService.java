@@ -60,5 +60,5 @@ public interface IMeasureListService {
      * @param listId
      * @return
      */
-    List<MeasureList> getNoProjNoFoundErr(String listId);
+    MeasureList getNoProjNoFoundErr(String listId);
 }

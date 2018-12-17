@@ -50,7 +50,7 @@ public class MeasureListServiceImpl implements IMeasureListService {
     }
 
     @Override
-    public List<MeasureList> getNoProjNoFoundErr(String listId) {
+    public MeasureList getNoProjNoFoundErr(String listId) {
         return measureListMapper.getNoProjNoFoundErr(listId);
     }
 }
