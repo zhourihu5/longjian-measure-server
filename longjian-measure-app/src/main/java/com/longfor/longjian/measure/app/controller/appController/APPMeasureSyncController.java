@@ -86,13 +86,12 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/414
      * 项目同步v3/api/info/measure_region_rel_v2/
      * http://192.168.37.159:3000/project/8/interface/api/624
-     * @param requestParam
+     * @param apiMeasureRegionRelReqV2
      * @return
      */
-    @MockOperation
     @GetMapping(value = "info/measure_region_rel_v2/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureRegionV2Vo> getMeasureRegionRelV2(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<MeasureRegionRelV2Vo> getMeasureRegionRelV2(ApiMeasureRegionRelReqV2 apiMeasureRegionRelReqV2) throws Exception {
+        return appMeasureService.getMeasureRegionRelV2(apiMeasureRegionRelReqV2);
     }
 
     /**
@@ -152,25 +151,23 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/428
      * 项目同步v3/api/measure/measure_squad_and_repairer
      * http://192.168.37.159:3000/project/8/interface/api/654
-     * @param requestParam
+     * @param apiMeasureSquadAndRepairerReq
      * @return
      */
-    @MockOperation
     @GetMapping(value = "measure/measure_squad_and_repairer/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureSquadAndRepairerVo> measureSquadAndRepairer(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<MeasureSquadAndRepairerVo> measureSquadAndRepairer(ApiMeasureSquadAndRepairerReq apiMeasureSquadAndRepairerReq) throws Exception {
+        return appMeasureService.measureSquadAndRepairer(apiMeasureSquadAndRepairerReq);
     }
 
     /**
      * 读取测量结果
      * http://192.168.37.159:3000/project/8/interface/api/430
-     * @param requestParam
+     * @param apiMeasureZoneResultReq
      * @return
      */
-    @MockOperation
     @GetMapping(value = "measure/measure_zone_result/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureZoneResultVo> measureZoneResult(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<MeasureZoneResultVo> measureZoneResult(ApiMeasureZoneResultReq apiMeasureZoneResultReq) throws Exception {
+        return appMeasureService.measureZoneResult(apiMeasureZoneResultReq);
     }
 
     /**
@@ -180,10 +177,9 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/644
      * @return
      */
-    @MockOperation
     @GetMapping(value = "measure/measure_zone_result_v2/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureZoneResultVo> measureZoneResultV2(){
-        return null;
+    public LjBaseResponse<MeasureZoneResultVo> measureZoneResultV2(ApiMeasureZoneResultReqV2 apiMeasureZoneResultReqV2) throws Exception {
+        return appMeasureService.measureZoneResultV2(apiMeasureZoneResultReqV2);
     }
 
     /**
@@ -193,10 +189,9 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/580
      * @return
      */
-    @MockOperation
     @GetMapping(value = "measure/measure_zone_result_v2_total/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<TotalVo> measureZoneResultV2Total(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<TotalVo> measureZoneResultV2Total(ApiMeasureZoneResultTotalReqV2 apiMeasureZoneResultTotalReqV2) throws Exception {
+        return appMeasureService.measureZoneResultV2Total(apiMeasureZoneResultTotalReqV2);
     }
 
     /**
