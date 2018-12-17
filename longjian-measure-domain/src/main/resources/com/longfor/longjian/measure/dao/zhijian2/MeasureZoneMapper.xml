@@ -55,8 +55,8 @@
     AND category_path_and_key LIKE concat('%/',#{subKey},'/%')
     and delete_at is null
   </select>
-    <!--List<Map<String,Object>> searchZoneUnscopedByListIdLastIdUpdateAtGt(Integer projectId, String listId, Integer lastId, Integer timestamp, Integer limit, Integer start);-->
-    <select id="searchZoneUnscopedByListIdLastIdUpdateAtGt" resultType="map">
+    <!--List<MeasureZone> searchZoneUnscopedByListIdLastIdUpdateAtGt(Integer projectId, String listId, Integer lastId, Integer timestamp, Integer limit, Integer start);-->
+    <select id="searchZoneUnscopedByListIdLastIdUpdateAtGt" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from measure_zone
@@ -70,8 +70,8 @@
         id ASC
         LIMIT #{start},#{limit}
     </select>
-    <!--List<Map<String,Object>> searchZoneUnscopedByListIdLastIdUpdateAtGt2(Integer projectId, Integer list_id, Integer last_id, Integer timestamp, Integer start, Integer limit);-->
-    <select id="searchZoneUnscopedByListIdLastIdUpdateAtGt2" resultType="map">
+    <!--List<MeasureZone> searchZoneUnscopedByListIdLastIdUpdateAtGt2(Integer projectId, Integer list_id, Integer last_id, Integer timestamp, Integer start, Integer limit);-->
+    <select id="searchZoneUnscopedByListIdLastIdUpdateAtGt2" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from measure_zone

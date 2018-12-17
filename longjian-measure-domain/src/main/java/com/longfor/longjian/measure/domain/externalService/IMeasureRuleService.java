@@ -1,6 +1,8 @@
 package com.longfor.longjian.measure.domain.externalService;
 
 
+import com.longfor.longjian.measure.po.zhijian2.MeasureRule;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -11,5 +13,5 @@ public interface IMeasureRuleService {
      * @param teamId
      * @param updateAtDate
      */
-    List<Map<String,Object>> searchUnscopedByTeamIdUpdateAtGt(Integer teamId, Date updateAtDate);
+    List<MeasureRule> searchUnscopedByTeamIdUpdateAtGt(Integer teamId, Date updateAtDate);
 }

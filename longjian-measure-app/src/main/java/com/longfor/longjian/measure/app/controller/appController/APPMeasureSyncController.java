@@ -40,7 +40,7 @@ public class APPMeasureSyncController {
      * @return
      */
     @GetMapping(value = "info/measure_rule/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureRuleListVo> getMeasureRule(@Valid ApiMeasureRuleReq apiMeasureRuleReq) throws Exception {
+    public LjBaseResponse<RuleListVo> getMeasureRule(@Valid ApiMeasureRuleReq apiMeasureRuleReq) throws Exception {
         return appMeasureSyncService.getMeasureRule(apiMeasureRuleReq);
     }
 
@@ -103,7 +103,7 @@ public class APPMeasureSyncController {
      * @return
      */
     @GetMapping(value = "measure/my_task/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureListListVo> getMyTask(ApiMyTaskReq apiMyTaskReq, HttpServletRequest request) throws Exception {
+    public LjBaseResponse<MyTaskVo> getMyTask(ApiMyTaskReq apiMyTaskReq, HttpServletRequest request) throws Exception {
         return appMeasureSyncService.getMyTask(apiMyTaskReq,request);
     }
 
@@ -114,7 +114,7 @@ public class APPMeasureSyncController {
      * @return
      */
     @GetMapping(value = "measure/measure_zone/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureZoneResultVo> getMeasureZone(ApiMeasureZoneReq apiMeasureZoneReq) throws Exception {
+    public LjBaseResponse<MeasureZoneVo> getMeasureZone(ApiMeasureZoneReq apiMeasureZoneReq) throws Exception {
 
         return appMeasureSyncService.getMeasureZone(apiMeasureZoneReq);
     }
@@ -128,7 +128,7 @@ public class APPMeasureSyncController {
      * @return
      */
     @GetMapping(value = "measure/measure_zone_v2/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureZoneResultVo> getMeasureZoneV2(ApiMeasureZoneReqV2 apiMeasureZoneReqV2) throws Exception {
+    public LjBaseResponse<MeasureZoneVo> getMeasureZoneV2(ApiMeasureZoneReqV2 apiMeasureZoneReqV2) throws Exception {
         return appMeasureSyncService.getMeasureZoneV2(apiMeasureZoneReqV2);
     }
 

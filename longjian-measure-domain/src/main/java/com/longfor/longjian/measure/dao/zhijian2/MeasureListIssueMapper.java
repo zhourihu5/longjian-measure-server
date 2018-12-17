@@ -86,5 +86,5 @@ public interface MeasureListIssueMapper extends LFMySQLMapper<MeasureListIssue> 
      * @param limit
      * @return
      */
-    List<Map<String,Object>> searchIssueListByListIdLastIdTimestampGt(@Param("list_id") Integer list_id, @Param("last_id") Integer last_id, @Param("timestamp") Long timestamp, @Param("start") Integer start, @Param("limit") Integer limit);
+    List<MeasureListIssue> searchIssueListByListIdLastIdTimestampGt(@Param("list_id") Integer list_id, @Param("last_id") Integer last_id, @Param("timestamp") Long timestamp, @Param("start") Integer start, @Param("limit") Integer limit);
 }
