@@ -43,4 +43,22 @@
       AND update_at = #{updateAtGte}
     </if>
   </select>
+
+  <select id="searchRelUnscopedByProjIdLastIdUpdateAtGt" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM
+    measure_region_rel
+    WHERE
+    project_id = #{projectId}
+    AND id > #{lastId}
+    <if test="timestamp != null and timestamp >= 0">
+      AND update_at > FROM_UNIXTIME( #{timestamp} )
+    </if>
+    <if test="measureApiGetPerTime != 0">
+      ORDER BY
+      id ASC
+      LIMIT #{start},#{measureApiGetPerTime}
+    </if>
+  </select>
 </mapper>

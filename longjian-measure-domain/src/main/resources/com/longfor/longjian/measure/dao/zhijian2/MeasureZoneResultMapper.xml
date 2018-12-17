@@ -232,4 +232,36 @@ WHERE
     AND area_path_and_id LIKE concat('%/',#{areaId},'/%')
     AND project_id = #{projectId}
   </select>
+
+  <select id="searchResultUnscopedByListIdLastIdUpdateAtGt" resultMap="BaseResultMap">
+    SELECT
+    <include refid = "Base_Column_List" />
+    FROM
+    measure_zone_result
+    WHERE
+    project_id = #{projectId}
+    AND list_id = #{listId}
+    AND id > #{lastId}
+    <if test = "timestamp != null and timestamp >= 0" >
+      AND update_at > FROM_UNIXTIME(#{timestamp} )
+    </if>
+    <if test = "limit != 0" >
+      ORDER BY
+      id ASC
+      LIMIT #{start},#{limit}
+    </if>
+  </select>
+
+
+  <select id="getCountResultUnscopedByListIdLastIdUpdateAtGt" resultType="int">
+    SELECT
+    count( id )
+    FROM
+    measure_zone_result
+    WHERE
+    list_id = #{listId}
+    <if test = "timestamp != null and timestamp >= 0" >
+      AND update_at > FROM_UNIXTIME(#{timestamp} )
+    </if>
+  </select>
 </mapper>

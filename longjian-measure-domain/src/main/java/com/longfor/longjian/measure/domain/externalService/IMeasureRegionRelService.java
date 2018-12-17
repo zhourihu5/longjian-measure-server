@@ -23,4 +23,14 @@ public interface IMeasureRegionRelService {
      */
     List<MeasureRegionRel> searchRelUnscopedByProjIdUpdateAtGt(String projectId, String updateAtGte);
 
+    /**
+     *
+     * @param project_id
+     * @param last_id
+     * @param timestamp
+     * @param measureApiGetPerTime
+     * @param start
+     * @return
+     */
+    List<MeasureRegionRel> searchRelUnscopedByProjIdLastIdUpdateAtGt(Integer project_id, Integer last_id, Long timestamp, Integer measureApiGetPerTime, Integer start);
 }
