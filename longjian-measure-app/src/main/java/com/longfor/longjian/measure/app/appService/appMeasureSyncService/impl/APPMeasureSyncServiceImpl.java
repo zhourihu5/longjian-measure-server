@@ -12,7 +12,7 @@ import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
 import com.longfor.longjian.measure.po.zhijian2.MeasureList;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -259,13 +259,12 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         try {
             keyProcedureTaskAppService.startReport(apiMeasureReportRegionReq.getReport_uuid(), uid, request);
         } catch (Exception e) {
-            keyProcedureTaskAppService.updateReportStatus(apiMeasureReportRegionReq.getReport_uuid(), reportUuidStatus.getValue().toString());
             throw new Exception(e);
+        }finally {
+            keyProcedureTaskAppService.updateReportStatus(apiMeasureReportRegionReq.getReport_uuid(), reportUuidStatus.getValue().toString());
         }
         List<ReportRegionDataVo> reportRegionDataVos = new ArrayList<>();
         //解析json数据
-        //JSONObject dataJson=new JSONObject(apiMeasureReportRegionReq.getData());
-        //todo data不知道什么格式的json，暂不知道怎么解析
         //reportRegionDataVos.add(dataJson);
         return null;
     }
