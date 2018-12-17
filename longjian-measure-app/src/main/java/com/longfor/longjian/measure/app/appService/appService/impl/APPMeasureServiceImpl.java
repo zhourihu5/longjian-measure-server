@@ -11,7 +11,10 @@ import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.*;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.PolygonVo;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.RegionListVo;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.RelVo;
+import com.longfor.longjian.measure.consts.Enum.ApiDropDataReasonEnum;
+import com.longfor.longjian.measure.consts.constant.ApiDropDataReasonConstant;
 import com.longfor.longjian.measure.consts.constant.KeyProcedureTaskConstant;
+import com.longfor.longjian.measure.consts.constant.MeasureListConstant;
 import com.longfor.longjian.measure.domain.externalService.*;
 import com.longfor.longjian.measure.po.zhijian2.*;
 import com.longfor.longjian.measure.util.DateUtil;
@@ -21,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -50,6 +54,8 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     private IMeasureRuleService measureRuleService;
     @Autowired
     private IMeasureZoneService measureZoneService;
+    @Autowired
+    private ICategoryV3Service categoryV3Service;
 
 
     @Override
@@ -94,7 +100,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
      * @param zoneResults
      * @return
      */
-    private List<DroppedVo> createZoneResultsNoProj(List<ResultListVo> zoneResults) {
+    private List<DroppedVo> createZoneResultsNoProj(List<ResultListVo> zoneResults) throws ParseException {
         Map<Integer,List<ResultListVo>> projData = new HashMap<>();
         List<DroppedVo> dropData = new ArrayList<>();
         zoneResults.forEach(resultListVo -> {
@@ -112,7 +118,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         return dropData;
     }
 
-    private List<DroppedVo> createZoneResults(Integer projId, List<ResultListVo> data) {
+    private List<DroppedVo> createZoneResults(Integer projId, List<ResultListVo> data) throws ParseException {
         Map<String,MeasureZone> zoneUuidMap = new HashMap<>();
         Map<String,MeasureRule> ruleMap = new HashMap<>();
         Map<String,CategoryV3> categoryMap = new HashMap<>();
@@ -137,14 +143,175 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                 boolean has = measureZoneResults == null || measureZoneResults.size() <= 0 ? false : true;
                 if (has){
                     log.warn("zone result already uploaded, zone_uuid:" + resultListVo.getZone_uuid());
-//                    String reason =
+                    ApiDropDataReasonEnum reason = ApiDropDataReasonEnum.MEASUREZONERESULTEXISTS;
+                    try{
+                        MeasureZoneResult measureZoneResult =  measureZoneResultService.getByUuid(projId,resultListVo.getUuid());
+                        has = measureZoneResult == null ? false : true;
+                        if (has) {
+                            reason = ApiDropDataReasonEnum.MEASUREZONERESULTUUIDEXISTS;
+                        }
+                        //已经存在，舍弃掉此信息
+                        DroppedVo droppedVo = new DroppedVo();
+                        droppedVo.setUuid(resultListVo.getUuid());
+                        droppedVo.setReason_type(Integer.parseInt(reason.getValue()));
+                        droppedVo.setReason(reason.getName());
+                        droppedVos.add(droppedVo);
+                        continue;
+                    }catch (Exception e){
+                        log.warn("zoneResultDao.GetByUuid:" + resultListVo.getUuid());
+                    }
+                }
+                //1、根据zone_uuid获取对应测区的数据，包括检查项，计算公式等
+                //zone info
+                MeasureZone zoneInfo = zoneUuidMap.get(resultListVo.getZone_uuid());
+                has = zoneInfo == null ? false:true;
+                if (!has){
+                    log.warn("zone info not found, zone_uuid:" + resultListVo.getZone_uuid());
+                    //找不到测区就舍弃此条记录
+                    DroppedVo droppedVo = new DroppedVo();
+                    droppedVo.setUuid(resultListVo.getUuid());
+                    droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonEnum.MEASYREZONENOTFOUND.getValue()));
+                    droppedVo.setReason(ApiDropDataReasonEnum.MEASYREZONENOTFOUND.getName());
+                    droppedVos.add(droppedVo);
+                    continue;
+                }else if (zoneInfo.getCloseStatus() == Integer.parseInt(MeasureListConstant.CLOSEDCODE)){
+                    //判断测区是否打开，如果没打开，就要舍弃数据
+                    log.warn("zone is close, zone_uuid:" + resultListVo.getZone_uuid());
+                    //找不到测区就舍弃此条记录
+                    DroppedVo droppedVo = new DroppedVo();
+                    droppedVo.setUuid(resultListVo.getUuid());
+                    droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonEnum.MEASUREZONEISCLOSE.getValue()));
+                    droppedVo.setReason(ApiDropDataReasonEnum.MEASUREZONEISCLOSE.getName());
+                    droppedVos.add(droppedVo);
+                    continue;
+                }
+                String currentCategoryKey = zoneInfo.getCategoryKey();
+                CategoryV3 category = categoryMap.get(currentCategoryKey);
+                if (category == null){
+                    category = categoryV3Service.getCategoryByKeyNoFoundErr(currentCategoryKey);
+                    categoryMap.put(currentCategoryKey,category);
+                }
+                Integer currentRuleId = 0;
+                //rule info
+                MeasureRule ruleInfo = ruleMap.get(currentCategoryKey);
+                has = ruleInfo == null ? false : true;
+                if (!has){
+                    ruleInfo = measureRuleService.getByCategoryKey(currentCategoryKey);
+                    has = ruleInfo == null ? false : true;
+                    if (!has){
+                        log.warn("ruleInfo not found, zone_uuid:" + resultListVo.getZone_uuid());
+                        DroppedVo droppedVo = new DroppedVo();
+                        droppedVo.setUuid(resultListVo.getUuid());
+                        droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonEnum.MeasureRuleNoFound.getValue()));
+                        droppedVo.setReason(ApiDropDataReasonEnum.MeasureRuleNoFound.getName());
+                        droppedVos.add(droppedVo);
+                        continue;
+                    }else {
+                        ruleMap.put(currentCategoryKey,ruleInfo);
+                        currentRuleId = ruleInfo.getId();
+                    }
+                }else {
+                    currentRuleId = ruleInfo.getId();
+                }
+                //2、根据计算公式，得出结果
+                //因暂时没有计算公式，所以结果先随便写
+                MeasureZoneResult zoneResult = new MeasureZoneResult();
+                zoneResult.setUuid(resultListVo.getUuid());
+                zoneResult.setProjectId(resultListVo.getProject_id());
+                zoneResult.setListId(resultListVo.getList_id());
+                zoneResult.setZoneUuid(resultListVo.getZone_uuid());
+                zoneResult.setSquadId(resultListVo.getSquad_id());
+                zoneResult.setRuleId(currentRuleId);
+                zoneResult.setRegionUuid(zoneInfo.getRegionUuid());
+                zoneResult.setCategoryKey(currentCategoryKey);
+                if (category != null){
+                    zoneResult.setCategoryPathAndKey(category.getPath() + category.getKey() + "/");
+                }
+                MeasureRegion region = regionMap.get(zoneInfo.getRegionUuid());
+                if (region != null){
+                    zoneResult.setAreaId(region.getAreaId());
+                    zoneResult.setAreaPathAndId(region.getAreaPathAndId());
+                }
+                List<TextResultVo> zoneResultData = new ArrayList<TextResultVo>();
+                resultListVo.getData().forEach(textResultVo -> {
+                    TextResultVo groupData = new TextResultVo();
+                    groupData.setRecorder_id(textResultVo.getRecorder_id());
+                    groupData.setUpdate_at(textResultVo.getUpdate_at());
+                    groupData.setTexture(textResultVo.getTexture());
+                    List<SinglePointTestVo> textResultData = new ArrayList<>();
+                    textResultVo.getData().forEach(singlePointTestVo -> {
+                        SinglePointTestVo pointData = new SinglePointTestVo();
+                        pointData.setKey(singlePointTestVo.getKey());
+                        pointData.setData(singlePointTestVo.getData());
+                        pointData.setData_type(singlePointTestVo.getData_type());
+                        pointData.setDesign_value(singlePointTestVo.getDesign_value());
+                        pointData.setDesign_value_reqd(singlePointTestVo.getDesign_value_reqd());
+                        textResultData.add(pointData);
+                    });
+                    groupData.setData(textResultData);
+                    zoneResultData.add(groupData);
+                });
+                zoneResult.setData(JSON.toJSONString(zoneResultData));
+                //计算结果是否合格
+                try{
+                    calcResult(ruleInfo.getFormula(),zoneResult);
+                }catch (Exception e){
+                    log.warn("calc result error:" + e.getMessage());
+                    DroppedVo droppedVo = new DroppedVo();
+                    droppedVo.setUuid(resultListVo.getUuid());
+                    droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonEnum.MeasureRuleError.getValue()));
+                    droppedVo.setReason(ApiDropDataReasonEnum.MeasureRuleError.getName());
+                    droppedVos.add(droppedVo);
+                    continue;
+                }
+//                zoneResult = measureZoneResultService.insertObjectNoAffectedErr(zoneResult);
+                try {
+                    measureZoneResultService.insertObjectNoAffectedErr(zoneResult);
+                }catch (Exception e) {
+                    log.warn("insert zone result error:%s",e.getMessage());
+                    DroppedVo droppedVo = new DroppedVo();
+                    droppedVo.setUuid(resultListVo.getUuid());
+                    droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonEnum.OTHER.getValue()));
+                    droppedVo.setReason(ApiDropDataReasonEnum.OTHER.getName());
+                    droppedVos.add(droppedVo);
+                    continue;
+                }
+                Integer senderId = 0;
+                String clientCreateAt = "0001-01-01 00:00:00";
+                int i = 0;
+                for (TextResultVo t:resultListVo.getData()
+                     ) {
+                    if (i == 0){
+                        senderId = t.getRecorder_id();
+                    }
+                    if (t.getUpdate_at() != null && t.getUpdate_at() >  DateUtil.getLongFromString(clientCreateAt)) {
+                        clientCreateAt = t.getUpdate_at().toString();
+                    }
+                    i ++ ;
                 }
             }catch (Exception e){
                 log.warn("zoneResultDao.GetByZoneUuid:" + resultListVo.getZone_uuid());
                 throw e;
             }
         }
-        return null;
+        //todo 消息推送
+        return droppedVos;
+    }
+
+    /**
+     * 计算结果是否合格
+     * @param formula
+     * @param zoneResult
+     */
+    private void calcResult(String formula, MeasureZoneResult zoneResult) {
+        //todo
+        // defer func() {
+        //		if errMsg := recover(); errMsg != nil {
+        //			log.Warning(errMsg)
+        //			err = core.ErrorEnum.CALC_RESULT_FAILED
+        //		}
+        //	}()不太懂这段
+        // 计算逻辑较复杂
     }
 
     @Override

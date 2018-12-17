@@ -1,6 +1,6 @@
-package com.longfor.longjian.measure.consts.util;
+package com.longfor.longjian.measure.util;
 
-import com.longfor.longjian.measure.consts.util.infac.ThrowingConsumer;
+import com.longfor.longjian.measure.util.infac.ThrowingConsumer;
 
 import java.util.function.Consumer;
 

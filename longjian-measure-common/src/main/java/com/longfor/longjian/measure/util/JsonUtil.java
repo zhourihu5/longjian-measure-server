@@ -1,4 +1,4 @@
-package com.longfor.longjian.measure.consts.util;
+package com.longfor.longjian.measure.util;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;

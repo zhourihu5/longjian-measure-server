@@ -44,4 +44,11 @@ public interface CategoryV3Mapper extends LFMySQLMapper<CategoryV3> {
      * @return
      */
     Integer countCategoryByFatherKey(@Param("fatherKey") String key);
+
+    /**
+     *
+     * @param currentCategoryKey
+     * @return
+     */
+    CategoryV3 getCategoryByKeyNoFoundErr(@Param("key") String currentCategoryKey);
 }

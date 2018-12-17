@@ -52,4 +52,13 @@
     team_id=#{teamId} and update_at > #{updateAtDate}
 
     </select>
+
+    <select id="getByCategoryKey" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM measure_rule
+        WHERE category_key = #{categoryKey}
+        AND delete_at IS  NULL
+    </select>
+
 </mapper>

@@ -1,9 +1,6 @@
 package com.longfor.longjian.measure.app.appService.proMeasureManagerService.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.google.gson.JsonObject;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.proMeasureManagerService.IProMeasureService;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetCheckerListReq;
@@ -15,15 +12,14 @@ import com.longfor.longjian.measure.app.vo.ItemsVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.*;
 import com.longfor.longjian.measure.consts.constant.CategoryClsTypeConstant;
 import com.longfor.longjian.measure.consts.constant.MeasureListIssueType;
-import com.longfor.longjian.measure.consts.util.ConvertUtil;
-import com.longfor.longjian.measure.consts.util.DateUtil;
-import com.longfor.longjian.measure.consts.util.LambdaExceptionUtil;
+import com.longfor.longjian.measure.util.ConvertUtil;
+import com.longfor.longjian.measure.util.DateUtil;
+import com.longfor.longjian.measure.util.LambdaExceptionUtil;
 import com.longfor.longjian.measure.domain.externalService.*;
 import com.longfor.longjian.measure.po.zhijian2.*;
 import com.longfor.longjian.measure.po.zhijian2_apisvr.Team;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.omg.CORBA.ObjectHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.longfor.longjian.measure.consts.constant.MeasureListConstant;

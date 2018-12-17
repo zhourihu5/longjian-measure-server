@@ -107,4 +107,19 @@ public interface IMeasureZoneResultService {
      * @return
      */
     List<MeasureZoneResult> getByProjIdListIdZoneUuidSquadId(Integer project_id, Integer list_id, String zone_uuid, Integer squad_id);
+
+    /**
+     *
+     * @param projId
+     * @param uuid
+     * @return
+     */
+    MeasureZoneResult getByUuid(Integer projId, String uuid);
+
+    /**
+     *
+     * @param zoneResult
+     * @return
+     */
+    int insertObjectNoAffectedErr(MeasureZoneResult zoneResult);
 }

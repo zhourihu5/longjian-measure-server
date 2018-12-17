@@ -22,4 +22,9 @@ public class MeasureRuleServiceImpl implements IMeasureRuleService {
             return measureRuleMapper.searchUnscopedByTeamIdUpdateAtGt(teamId,updateAtDate);
     }
 
+    @Override
+    public MeasureRule getByCategoryKey(String currentCategoryKey) {
+        return measureRuleMapper.getByCategoryKey(currentCategoryKey);
+    }
+
 }

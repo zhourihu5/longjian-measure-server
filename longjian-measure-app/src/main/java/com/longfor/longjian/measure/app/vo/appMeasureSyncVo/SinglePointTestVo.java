@@ -23,7 +23,7 @@ public class SinglePointTestVo {
     /**
      * 是否需要录入设计值
      */
-    private boolean design_value_reqd;
+    private Boolean design_value_reqd;
     /**
      * 设计值
      */

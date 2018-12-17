@@ -1,6 +1,6 @@
 package com.longfor.longjian.measure.app.appService.appService;
 
-import com.longfor.longjian.measure.consts.util.CommonException;
+import com.longfor.longjian.measure.util.CommonException;
 
 import javax.servlet.http.HttpServletRequest;
 

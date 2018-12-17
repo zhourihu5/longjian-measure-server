@@ -16,4 +16,11 @@ public interface MeasureRuleMapper extends LFMySQLMapper<MeasureRule> {
      * @return
      */
     List<MeasureRule> searchUnscopedByTeamIdUpdateAtGt(@Param("teamId")Integer teamId, @Param("updateAtDate")Date updateAtDate);
+
+    /**
+     *
+     * @param currentCategoryKey
+     * @return
+     */
+    MeasureRule getByCategoryKey(@Param("categoryKey") String currentCategoryKey);
 }

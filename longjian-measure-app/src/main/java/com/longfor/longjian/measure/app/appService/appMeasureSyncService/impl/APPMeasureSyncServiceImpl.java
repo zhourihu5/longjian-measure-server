@@ -1,21 +1,17 @@
 package com.longfor.longjian.measure.app.appService.appMeasureSyncService.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
-import com.google.gson.JsonObject;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.appMeasureSyncService.IAPPMeasureSyncService;
 import com.longfor.longjian.measure.app.appService.appService.IKeyProcedureTaskAppService;
 import com.longfor.longjian.measure.app.req.apiMeasureRuleReq.*;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.*;
 import com.longfor.longjian.measure.consts.Enum.ReportStatusEnum;
-import com.longfor.longjian.measure.consts.util.ConvertUtil;
-import com.longfor.longjian.measure.consts.util.JsonUtil;
+import com.longfor.longjian.measure.util.ConvertUtil;
+import com.longfor.longjian.measure.util.JsonUtil;
 import com.longfor.longjian.measure.domain.externalService.*;
 import com.longfor.longjian.measure.po.zhijian2.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
