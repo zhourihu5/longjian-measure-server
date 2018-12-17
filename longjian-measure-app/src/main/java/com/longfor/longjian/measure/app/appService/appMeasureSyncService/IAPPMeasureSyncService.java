@@ -32,14 +32,14 @@ public interface IAPPMeasureSyncService {
      * @param apiMeasureZoneReq
      * @return
      */
-    LjBaseResponse<MeasureZoneListVo> getMeasureZone(ApiMeasureZoneReq apiMeasureZoneReq) throws Exception;
+    LjBaseResponse<MeasureZoneResultVo> getMeasureZone(ApiMeasureZoneReq apiMeasureZoneReq) throws Exception;
 
     /**
      * 读取实测清单下的测区-分批
      * @param apiMeasureZoneReqV2
      * @return
      */
-    LjBaseResponse<MeasureZoneListVo> getMeasureZoneV2(ApiMeasureZoneReqV2 apiMeasureZoneReqV2) throws Exception;
+    LjBaseResponse<MeasureZoneResultVo> getMeasureZoneV2(ApiMeasureZoneReqV2 apiMeasureZoneReqV2) throws Exception;
 
     /**
      * 读取实测清单下的测区的总数
@@ -53,14 +53,14 @@ public interface IAPPMeasureSyncService {
      * @param apiMeasureIssueReq
      * @return
      */
-    LjBaseResponse<MeasureIssueListVo> issue(ApiMeasureIssueReq apiMeasureIssueReq) throws Exception;
+    LjBaseResponse<IssueVo> issue(ApiMeasureIssueReq apiMeasureIssueReq) throws Exception;
 
     /**
      * 读取Issue爆点整改数据日志
      * @param apiMeasureIssueLogReq
      * @return
      */
-    LjBaseResponse<MeasureIssueLogListVo> issueLog(ApiMeasureIssueLogReq apiMeasureIssueLogReq) throws Exception;
+    LjBaseResponse<IssueLogVo> issueLog(ApiMeasureIssueLogReq apiMeasureIssueLogReq) throws Exception;
 
     /**
      * 上报新增的描画区域

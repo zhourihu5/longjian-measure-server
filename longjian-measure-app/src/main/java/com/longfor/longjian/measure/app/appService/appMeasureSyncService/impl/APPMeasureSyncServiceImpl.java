@@ -106,10 +106,10 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
     }
 
     @Override
-    public LjBaseResponse<MeasureZoneListVo> getMeasureZone(ApiMeasureZoneReq apiMeasureZoneReq) throws Exception {
-        LjBaseResponse<MeasureZoneListVo> ljBaseResponse = new LjBaseResponse<>();
-        MeasureZoneListVo measureZoneListVo = new MeasureZoneListVo();
-        List<MeasureZoneZoneVo> measureZoneZoneVos = new ArrayList<>();
+    public LjBaseResponse<MeasureZoneResultVo> getMeasureZone(ApiMeasureZoneReq apiMeasureZoneReq) throws Exception {
+        LjBaseResponse<MeasureZoneResultVo> ljBaseResponse = new LjBaseResponse<>();
+        MeasureZoneResultVo measureZoneResultVo = new MeasureZoneResultVo();
+        List<ResultListVo> measureZones = new ArrayList<>();
         String[] listIds = apiMeasureZoneReq.getList_ids().split(",");
         if (listIds.length == 0) {
             throw new Exception("list is empty.");
@@ -120,52 +120,44 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         Long timestamp = null;
         for (String listId : listIds
                 ) {
-            List<MeasureList> measureLists = measureListService.getNoProjNoFoundErr(listId);
-            if (measureLists.size() > 0) {
-                lastId = measureLists.get(measureLists.size() - 1).getId();
-            }
-            //最后一次获取的id
-            measureZoneListVo.setLast_id(lastId);
-            for (MeasureList measureList : measureLists
-                    ) {
+            try {
+                MeasureList measureList = measureListService.getNoProjNoFoundErr(listId);
+                lastId = measureList.getId();
+                //最后一次获取的id
                 List<Map<String, Object>> measureZoneList = measureZoneService.searchZoneUnscopedByListIdLastIdUpdateAtGt(measureList.getProjectId(), listId, lastId, timestamp, limit, start);
                 //map转换vo
-                for (Map<String, Object> map : measureZoneList
-                        ) {
-                    MeasureZoneZoneVo measureZoneZoneVo = (MeasureZoneZoneVo) ConvertUtil.convertMap(MeasureZoneZoneVo.class, map);
-                    measureZoneZoneVos.add(measureZoneZoneVo);
-                }
+                ResultListVo resultListVo = (ResultListVo) ConvertUtil.convertMap(ResultListVo.class, measureZoneList.get(0));
+                measureZones.add(resultListVo);
+            } catch (Exception e) {
+                throw new Exception(e);
             }
         }
-        measureZoneListVo.setZone_list(measureZoneZoneVos);
-        measureZoneListVo.setLast_id(lastId);
-        ljBaseResponse.setData(measureZoneListVo);
+        measureZoneResultVo.setResult_list(measureZones);
+        measureZoneResultVo.setLast_id(lastId);
+        ljBaseResponse.setData(measureZoneResultVo);
         return ljBaseResponse;
     }
 
     @Override
-    public LjBaseResponse<MeasureZoneListVo> getMeasureZoneV2(ApiMeasureZoneReqV2 apiMeasureZoneReqV2) throws Exception {
-        LjBaseResponse<MeasureZoneListVo> ljBaseResponse = new LjBaseResponse<>();
-        MeasureZoneListVo measureZoneListVo = new MeasureZoneListVo();
-        List<MeasureZoneZoneVo> measureZoneZoneVos = new ArrayList<>();
-        List<MeasureList> measureLists = measureListService.getNoProjNoFoundErr(apiMeasureZoneReqV2.getList_id().toString());
+    public LjBaseResponse<MeasureZoneResultVo> getMeasureZoneV2(ApiMeasureZoneReqV2 apiMeasureZoneReqV2) throws Exception {
+        LjBaseResponse<MeasureZoneResultVo> ljBaseResponse = new LjBaseResponse<>();
+        MeasureZoneResultVo measureZoneResultVo = new MeasureZoneResultVo();
+        List<ResultListVo> measureZoneVos = new ArrayList<>();
+        MeasureList measureList = measureListService.getNoProjNoFoundErr(apiMeasureZoneReqV2.getList_id().toString());
         Integer lastId = 0;
-        if (measureLists.size() > 0) {
-            MeasureList measureList = measureLists.get(measureLists.size() - 1);
-            lastId = measureList.getId();
-            Integer start = 0;
-            Integer limit = MEASURE_API_GET_PER_TIME;
-            List<Map<String, Object>> measureZoneList = measureZoneService.searchZoneUnscopedByListIdLastIdUpdateAtGt2(measureList.getProjectId(), apiMeasureZoneReqV2.getList_id(), apiMeasureZoneReqV2.getLast_id(), apiMeasureZoneReqV2.getTimestamp(), start, limit);
-            for (Map<String, Object> map : measureZoneList
-                    ) {
-                MeasureZoneZoneVo measureZoneZoneVo = (MeasureZoneZoneVo) ConvertUtil.convertMap(MeasureZoneZoneVo.class, map);
-                measureZoneZoneVos.add(measureZoneZoneVo);
-            }
+        lastId = measureList.getId();
+        Integer start = 0;
+        Integer limit = MEASURE_API_GET_PER_TIME;
+        List<Map<String, Object>> measureZoneList = measureZoneService.searchZoneUnscopedByListIdLastIdUpdateAtGt2(measureList.getProjectId(), apiMeasureZoneReqV2.getList_id(), apiMeasureZoneReqV2.getLast_id(), apiMeasureZoneReqV2.getTimestamp(), start, limit);
+        for (Map<String, Object> map : measureZoneList
+                ) {
+            ResultListVo resultListVo = (ResultListVo) ConvertUtil.convertMap(ResultListVo.class, map);
+            measureZoneVos.add(resultListVo);
         }
         try {
-            measureZoneListVo.setZone_list(measureZoneZoneVos);
-            measureZoneListVo.setLast_id(lastId);
-            ljBaseResponse.setData(measureZoneListVo);
+            measureZoneResultVo.setResult_list(measureZoneVos);
+            measureZoneResultVo.setLast_id(lastId);
+            ljBaseResponse.setData(measureZoneResultVo);
         } catch (Exception e) {
             log.error("SearchZoneUnscopedByListIdLastIdUpdateAtGt" + "[" + apiMeasureZoneReqV2.getList_id() + "],error:" + e);
             throw new Exception("读取数据失败，code:zone");
@@ -176,79 +168,70 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
     @Override
     public LjBaseResponse<TotalVo> getMeasureZoneV2Total(ApiMeasureZoneTotalReqV2 apiMeasureZoneTotalReqV2) throws Exception {
         LjBaseResponse<TotalVo> ljBaseResponse = new LjBaseResponse<>();
-        List<MeasureList> measureLists = measureListService.getNoProjNoFoundErr(apiMeasureZoneTotalReqV2.getList_id().toString());
+        MeasureList measureList = measureListService.getNoProjNoFoundErr(apiMeasureZoneTotalReqV2.getList_id().toString());
         TotalVo totalVo = new TotalVo();
-        if (measureLists.size() > 0) {
-            MeasureList measureList = measureLists.get(measureLists.size() - 1);
-            Integer total = measureZoneService.getCountZoneUnscopedByListIdUpdateAtGt(measureList.getProjectId(), apiMeasureZoneTotalReqV2.getList_id(), apiMeasureZoneTotalReqV2.getTimestamp());
-            try {
-                totalVo.setTotal(total);
-                ljBaseResponse.setData(totalVo);
-            } catch (Exception e) {
-                log.error("GetCountUnscopedByProjIdUpdateAtGt" + "[" + apiMeasureZoneTotalReqV2.getList_id() + "],error:" + e);
-                throw new Exception("读取数据失败，code:zone_total");
-            }
+        Integer total = measureZoneService.getCountZoneUnscopedByListIdUpdateAtGt(measureList.getProjectId(), apiMeasureZoneTotalReqV2.getList_id(), apiMeasureZoneTotalReqV2.getTimestamp());
+        try {
+            totalVo.setTotal(total);
+            ljBaseResponse.setData(totalVo);
+        } catch (Exception e) {
+            log.error("GetCountUnscopedByProjIdUpdateAtGt" + "[" + apiMeasureZoneTotalReqV2.getList_id() + "],error:" + e);
+            throw new Exception("读取数据失败，code:zone_total");
         }
         return ljBaseResponse;
     }
 
     @Override
-    public LjBaseResponse<MeasureIssueListVo> issue(ApiMeasureIssueReq apiMeasureIssueReq) throws Exception {
-        LjBaseResponse<MeasureIssueListVo> ljBaseResponse = new LjBaseResponse<>();
-        MeasureIssueListVo measureIssueListVo = new MeasureIssueListVo();
-        List<MeasureIssueVo> issueListVos = new ArrayList<>();
-        List<MeasureList> measureLists = measureListService.getNoProjNoFoundErr(apiMeasureIssueReq.getList_id().toString());
+    public LjBaseResponse<IssueVo> issue(ApiMeasureIssueReq apiMeasureIssueReq) throws Exception {
+        LjBaseResponse<IssueVo> ljBaseResponse = new LjBaseResponse<>();
+        IssueVo issueVo = new IssueVo();
+        List<IssueListVo> issueListVos = new ArrayList<>();
+        MeasureList measureList = measureListService.getNoProjNoFoundErr(apiMeasureIssueReq.getList_id().toString());
         Integer start = 0;
         Integer limit = MEASURE_API_GET_PER_TIME;
-        if (measureLists.size() > 0) {
-            MeasureList measureList = measureLists.get(measureLists.size() - 1);
-            List<Map<String, Object>> measureListIssueList = measureListIssueService.searchIssueListByListIdLastIdTimestampGt(measureList.getId(), apiMeasureIssueReq.getLast_id(), apiMeasureIssueReq.getTimestamp(), start, limit);
-            for (Map<String, Object> map : measureListIssueList
-                    ) {
-                MeasureIssueVo measureIssueVo = (MeasureIssueVo) ConvertUtil.convertMap(MeasureIssueVo.class, map);
-                issueListVos.add(measureIssueVo);
-            }
-            try {
-                measureIssueListVo.setIssue_list(issueListVos);
-                MeasureIssueVo measureIssueVo = issueListVos.get(issueListVos.size() - 1);
-                measureIssueListVo.setLast_id(measureIssueVo.getId());
-                ljBaseResponse.setData(measureIssueListVo);
-            } catch (Exception e) {
-                log.error("SearchIssueListByListIdLastIdTimestampGt +[" + apiMeasureIssueReq.getList_id() + "],error:" + e);
-                throw new Exception("读取数据失败，code:issue_list");
-            }
+        List<Map<String, Object>> measureListIssueList = measureListIssueService.searchIssueListByListIdLastIdTimestampGt(measureList.getId(), apiMeasureIssueReq.getLast_id(), apiMeasureIssueReq.getTimestamp(), start, limit);
+        for (Map<String, Object> map : measureListIssueList
+                ) {
+            IssueListVo issueListVo = (IssueListVo) ConvertUtil.convertMap(IssueListVo.class, map);
+            issueListVos.add(issueListVo);
+        }
+        try {
+            issueVo.setIssue_list(issueListVos);
+            IssueListVo issueListVo = issueListVos.get(issueListVos.size() - 1);
+            issueVo.setLast_id(issueListVo.getId());
+            ljBaseResponse.setData(issueVo);
+        } catch (Exception e) {
+            log.error("SearchIssueListByListIdLastIdTimestampGt +[" + apiMeasureIssueReq.getList_id() + "],error:" + e);
+            throw new Exception("读取数据失败，code:issue_list");
         }
         return ljBaseResponse;
     }
 
     @Override
-    public LjBaseResponse<MeasureIssueLogListVo> issueLog(ApiMeasureIssueLogReq apiMeasureIssueLogReq) throws Exception {
-        LjBaseResponse<MeasureIssueLogListVo> ljBaseResponse = new LjBaseResponse<>();
-        MeasureIssueLogListVo measureIssueLogListVo = new MeasureIssueLogListVo();
-        List<MeasureIssueLogVo> measureIssueLogVos = new ArrayList<>();
-        List<MeasureList> measureLists = measureListService.getNoProjNoFoundErr(apiMeasureIssueLogReq.getList_id().toString());
+    public LjBaseResponse<IssueLogVo> issueLog(ApiMeasureIssueLogReq apiMeasureIssueLogReq) throws Exception {
+        LjBaseResponse<IssueLogVo> ljBaseResponse = new LjBaseResponse<>();
+        IssueLogVo issueLogVo = new IssueLogVo();
+        List<IssueLogListVo> measureIssueLogVos = new ArrayList<>();
+        MeasureList measureList = measureListService.getNoProjNoFoundErr(apiMeasureIssueLogReq.getList_id().toString());
         Integer start = 0;
         Integer pageSize = MEASURE_API_GET_PER_TIME;
-        if (measureLists.size() > 0) {
-            MeasureList measureList = measureLists.get(measureLists.size() - 1);
             List<Map<String, Object>> measureListIssueLogList = measureListIssueLogService.searchIssueLogListByListIdLastIdTimestampGt(measureList.getProjectId(), apiMeasureIssueLogReq.getList_id(), apiMeasureIssueLogReq.getLast_id(), apiMeasureIssueLogReq.getTimestamp(), start, pageSize);
             //map转换vo
             for (Map<String, Object> map : measureListIssueLogList
                     ) {
-                MeasureIssueLogVo measureIssueLogVo = (MeasureIssueLogVo) ConvertUtil.convertMap(MeasureIssueLogVo.class, map);
-                measureIssueLogVos.add(measureIssueLogVo);
+                IssueLogListVo issueLogListVo = (IssueLogListVo) ConvertUtil.convertMap(IssueLogListVo.class, map);
+                measureIssueLogVos.add(issueLogListVo);
             }
             try {
-                measureIssueLogListVo.setIssueLog_list(measureIssueLogVos);
-                MeasureIssueLogVo measureIssueLogVoEnt = measureIssueLogVos.get(measureIssueLogVos.size() - 1);
-                measureIssueLogListVo.setLast_id(measureIssueLogVoEnt.getId());
-                ljBaseResponse.setData(measureIssueLogListVo);
+                issueLogVo.setIssue_log_list(measureIssueLogVos);
+                IssueLogListVo measureIssueLogVoEnt = measureIssueLogVos.get(measureIssueLogVos.size() - 1);
+                issueLogVo.setLast_id(measureIssueLogVoEnt.getId());
+                ljBaseResponse.setData(issueLogVo);
             } catch (Exception e) {
                 log.error("SearchIssueListByListIdLastIdTimestampGt +[" + apiMeasureIssueLogReq.getList_id() + "],error:" + e);
                 throw new Exception("读取数据失败，code:issue_log_list");
             }
 
-        }
         return ljBaseResponse;
     }
 
