@@ -1,6 +1,7 @@
 package com.longfor.longjian.measure.domain.externalService;
 
 import com.longfor.longjian.measure.po.zhijian2.MeasureList;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -46,19 +47,18 @@ public interface IMeasureListService {
      * @return
      */
     MeasureList searchByProjectIdAndMeasureListId(Integer project_id, Integer measure_list_id);
-
-    /**
-     *
-     * @param project_id
-     * @param userId
-     * @return
-     */
-    List<Map<String, Object>> searchListByProjIdUserId(String project_id, Integer userId);
-
     /**
      *
      * @param listId
      * @return
      */
     MeasureList getNoProjNoFoundErr(String listId);
+
+    /**
+     *
+     * @param projectId
+     * @param userId
+     * @return
+     */
+    List<MeasureList> searchListByProjIdUserId( String projectId, Integer userId);
 }

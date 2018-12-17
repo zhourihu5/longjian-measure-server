@@ -42,7 +42,7 @@
         detail
     </sql>
     <!--List<Map<String,Object>> searchIssueLogListByListIdLastIdTimestampGt(@Param("projectId") Integer projectId, @Param("list_id")Integer list_id, @Param("last_id")Integer last_id, @Param("timestamp")Long timestamp, @Param("start")Integer start, @Param("pageSize")Integer pageSize);-->
-    <select id="searchIssueLogListByListIdLastIdTimestampGt" resultType="map">
+    <select id="searchIssueLogListByListIdLastIdTimestampGt" resultMap="BaseResultMap">
         select
         id, attachment_md5_list, category_key, `desc`, issue_uuid, list_id, project_id, sender_id,
         status, typ, uuid, client_create_at, create_at, update_at, delete_at

@@ -1,5 +1,7 @@
 package com.longfor.longjian.measure.domain.externalService;
 
+import com.longfor.longjian.measure.po.zhijian2.MeasureListIssueLog;
+
 import java.util.List;
 import java.util.Map;
 
@@ -14,5 +16,5 @@ public interface IMeasureListIssueLogService {
      * @param pageSize
      * @return
      */
-    List<Map<String,Object>> searchIssueLogListByListIdLastIdTimestampGt(Integer projectId, Integer list_id, Integer last_id, Long timestamp, Integer start, Integer pageSize);
+    List<MeasureListIssueLog> searchIssueLogListByListIdLastIdTimestampGt(Integer projectId, Integer list_id, Integer last_id, Long timestamp, Integer start, Integer pageSize);
 }

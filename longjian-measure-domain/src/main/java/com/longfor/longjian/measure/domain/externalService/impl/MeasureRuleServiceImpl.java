@@ -2,6 +2,7 @@ package com.longfor.longjian.measure.domain.externalService.impl;
 
 import com.longfor.longjian.measure.dao.zhijian2.MeasureRuleMapper;
 import com.longfor.longjian.measure.domain.externalService.IMeasureRuleService;
+import com.longfor.longjian.measure.po.zhijian2.MeasureRule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ public class MeasureRuleServiceImpl implements IMeasureRuleService {
 
 
     @Override
-    public List<Map<String, Object>> searchUnscopedByTeamIdUpdateAtGt(Integer teamId, Date updateAtDate) {
+    public List<MeasureRule> searchUnscopedByTeamIdUpdateAtGt(Integer teamId, Date updateAtDate) {
             return measureRuleMapper.searchUnscopedByTeamIdUpdateAtGt(teamId,updateAtDate);
     }
 

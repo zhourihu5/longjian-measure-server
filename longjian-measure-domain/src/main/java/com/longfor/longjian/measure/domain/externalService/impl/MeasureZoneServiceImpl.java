@@ -28,13 +28,13 @@ public class MeasureZoneServiceImpl implements IMeasureZoneService {
     }
 
     @Override
-    public List<Map<String, Object>> searchZoneUnscopedByListIdLastIdUpdateAtGt(Integer projectId, String listId, Integer lastId, Long timestamp, Integer limit, Integer start) {
+    public List<MeasureZone> searchZoneUnscopedByListIdLastIdUpdateAtGt(Integer projectId, String listId, Integer lastId, Long timestamp, Integer limit, Integer start) {
 
         return measureZoneMapper.searchZoneUnscopedByListIdLastIdUpdateAtGt(projectId, listId, lastId, timestamp, limit, start);
     }
 
     @Override
-    public List<Map<String, Object>> searchZoneUnscopedByListIdLastIdUpdateAtGt2(Integer projectId, Integer list_id, Integer last_id, Long timestamp, Integer start, Integer limit) {
+    public List<MeasureZone> searchZoneUnscopedByListIdLastIdUpdateAtGt2(Integer projectId, Integer list_id, Integer last_id, Long timestamp, Integer start, Integer limit) {
         return measureZoneMapper.searchZoneUnscopedByListIdLastIdUpdateAtGt2(projectId, list_id, last_id, timestamp, start, limit);
     }
 

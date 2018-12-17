@@ -158,7 +158,7 @@ WHERE
         `status`
     </select>
     <!--List<Map<String,Object>> searchIssueListByListIdLastIdTimestampGt(@Param("list_id") Integer list_id, @Param("last_id") Integer last_id, @Param("timestamp") Long timestamp, @Param("start") Integer start, @Param("pageSize") Integer pageSize);-->
-    <select id="searchIssueListByListIdLastIdTimestampGt" resultType="map">
+    <select id="searchIssueListByListIdLastIdTimestampGt" resultMap="BaseResultMap">
         select
         id, area_id, area_path_and_id, attachment_md5_list, category_key, category_path_and_key,
         repairer_id, sender_id, squad_id, close_status, close_time, close_user, `condition`,

@@ -115,7 +115,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     }
 
     @Override
-    public List<Map<String, Object>> searchIssueListByListIdLastIdTimestampGt(Integer list_id, Integer last_id, Long timestamp, Integer start, Integer pageSize) {
+    public List<MeasureListIssue> searchIssueListByListIdLastIdTimestampGt(Integer list_id, Integer last_id, Long timestamp, Integer start, Integer pageSize) {
         return measureListIssueMapper.searchIssueListByListIdLastIdTimestampGt(list_id,last_id,timestamp,start,pageSize);
     }
 }

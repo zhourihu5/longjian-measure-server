@@ -79,5 +79,5 @@ public interface IMeasureListIssueService {
      * @param limit
      * @return
      */
-    List<Map<String,Object>> searchIssueListByListIdLastIdTimestampGt(Integer list_id, Integer last_id, Long timestamp, Integer start, Integer limit);
+    List<MeasureListIssue> searchIssueListByListIdLastIdTimestampGt(Integer list_id, Integer last_id, Long timestamp, Integer start, Integer limit);
 }

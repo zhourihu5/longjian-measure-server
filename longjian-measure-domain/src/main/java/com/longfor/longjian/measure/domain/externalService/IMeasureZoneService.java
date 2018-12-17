@@ -1,6 +1,9 @@
 package com.longfor.longjian.measure.domain.externalService;
 
 import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
+import com.longfor.longjian.measure.po.zhijian2.MeasureZoneResult;
+
+import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
 
 import java.util.List;
 import java.util.Map;
@@ -34,7 +37,7 @@ public interface IMeasureZoneService {
      * @param start
      * @return
      */
-    List<Map<String,Object>> searchZoneUnscopedByListIdLastIdUpdateAtGt(Integer projectId, String listId, Integer lastId, Long timestamp, Integer limit, Integer start);
+    List<MeasureZone> searchZoneUnscopedByListIdLastIdUpdateAtGt(Integer projectId, String listId, Integer lastId, Long timestamp, Integer limit, Integer start);
 
     /**
      *
@@ -46,7 +49,7 @@ public interface IMeasureZoneService {
      * @param limit
      * @return
      */
-    List<Map<String,Object>> searchZoneUnscopedByListIdLastIdUpdateAtGt2(Integer projectId, Integer list_id, Integer last_id, Long timestamp, Integer start, Integer limit);
+    List<MeasureZone> searchZoneUnscopedByListIdLastIdUpdateAtGt2(Integer projectId, Integer list_id, Integer last_id, Long timestamp, Integer start, Integer limit);
 
     /**
      *

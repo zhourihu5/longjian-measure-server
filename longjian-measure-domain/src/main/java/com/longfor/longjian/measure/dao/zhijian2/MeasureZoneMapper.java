@@ -36,7 +36,7 @@ public interface MeasureZoneMapper extends LFMySQLMapper<MeasureZone> {
      * @param start
      * @return
      */
-    List<Map<String,Object>> searchZoneUnscopedByListIdLastIdUpdateAtGt(@Param("projectId")Integer projectId,@Param("listId") String listId, @Param("lastId")Integer lastId, @Param("timestamp")Long timestamp, @Param("limit")Integer limit, @Param("start")Integer start);
+    List<MeasureZone> searchZoneUnscopedByListIdLastIdUpdateAtGt(@Param("projectId")Integer projectId,@Param("listId") String listId, @Param("lastId")Integer lastId, @Param("timestamp")Long timestamp, @Param("limit")Integer limit, @Param("start")Integer start);
 
     /**
      *
@@ -48,7 +48,7 @@ public interface MeasureZoneMapper extends LFMySQLMapper<MeasureZone> {
      * @param limit
      * @return
      */
-    List<Map<String,Object>> searchZoneUnscopedByListIdLastIdUpdateAtGt2(@Param("projectId") Integer projectId, @Param("list_id")Integer list_id, @Param("last_id")Integer last_id, @Param("timestamp") Long timestamp, @Param("start") Integer start, @Param("limit") Integer limit);
+    List<MeasureZone> searchZoneUnscopedByListIdLastIdUpdateAtGt2(@Param("projectId") Integer projectId, @Param("list_id")Integer list_id, @Param("last_id")Integer last_id, @Param("timestamp") Long timestamp, @Param("start") Integer start, @Param("limit") Integer limit);
 
     /**
      *

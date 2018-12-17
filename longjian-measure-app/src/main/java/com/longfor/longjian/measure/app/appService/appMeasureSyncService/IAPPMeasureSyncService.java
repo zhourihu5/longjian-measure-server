@@ -18,28 +18,28 @@ public interface IAPPMeasureSyncService {
      * @param apiMeasureRuleReq
      * @return
      */
-    LjBaseResponse<MeasureRuleListVo> getMeasureRule(ApiMeasureRuleReq apiMeasureRuleReq) throws Exception;
+    LjBaseResponse<RuleListVo> getMeasureRule(ApiMeasureRuleReq apiMeasureRuleReq) throws Exception;
 
     /**
      * 获取与“我”相关的实测实量清单
      * @param apiMyTaskReq
      * @return
      */
-    LjBaseResponse<MeasureListListVo> getMyTask(ApiMyTaskReq apiMyTaskReq, HttpServletRequest request) throws Exception;
+    LjBaseResponse<MyTaskVo> getMyTask(ApiMyTaskReq apiMyTaskReq, HttpServletRequest request) throws Exception;
 
     /**
      * 读取实测清单下的测区。此为全量接口
      * @param apiMeasureZoneReq
      * @return
      */
-    LjBaseResponse<MeasureZoneResultVo> getMeasureZone(ApiMeasureZoneReq apiMeasureZoneReq) throws Exception;
+    LjBaseResponse<MeasureZoneVo> getMeasureZone(ApiMeasureZoneReq apiMeasureZoneReq) throws Exception;
 
     /**
      * 读取实测清单下的测区-分批
      * @param apiMeasureZoneReqV2
      * @return
      */
-    LjBaseResponse<MeasureZoneResultVo> getMeasureZoneV2(ApiMeasureZoneReqV2 apiMeasureZoneReqV2) throws Exception;
+    LjBaseResponse<MeasureZoneVo> getMeasureZoneV2(ApiMeasureZoneReqV2 apiMeasureZoneReqV2) throws Exception;
 
     /**
      * 读取实测清单下的测区的总数
