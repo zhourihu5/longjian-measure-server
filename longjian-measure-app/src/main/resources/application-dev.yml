@@ -6,7 +6,7 @@ spring:
     name: longjian-measure-app
   cloud:
     consul:
-      enabled: true
+      enabled: false
       host: 192.168.37.218
       port: 8500
       discovery:

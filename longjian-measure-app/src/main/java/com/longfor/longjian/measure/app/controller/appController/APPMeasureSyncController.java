@@ -4,17 +4,28 @@ import com.longfor.gaia.gfs.web.mock.MockOperation;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.appMeasureSyncService.IAPPMeasureSyncService;
 import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureService;
-import com.longfor.longjian.measure.app.req.apiMeasureRuleReq.*;
+import com.longfor.longjian.measure.app.req.apiMeasureRuleReq.ApiMeasureRuleReq;
 import com.longfor.longjian.measure.app.req.appReq.*;
+import com.longfor.longjian.measure.app.req.apiMeasureRuleReq.ApiMyTaskReq;
+import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionReq;
+import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionReqV2;
+import com.longfor.longjian.measure.app.req.appReq.ApiMeasureRegionTotalReqV2;
+import com.longfor.longjian.measure.app.req.appReq.ApiMeasureReportIssueReq;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 
 import javax.validation.Valid;
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
 
 /**
  *   app 端实测实量同步
@@ -86,13 +97,12 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/414
      * 项目同步v3/api/info/measure_region_rel_v2/
      * http://192.168.37.159:3000/project/8/interface/api/624
-     * @param requestParam
+     * @param apiMeasureRegionRelReqV2
      * @return
      */
-    @MockOperation
     @GetMapping(value = "info/measure_region_rel_v2/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureRegionV2Vo> getMeasureRegionRelV2(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<MeasureRegionRelV2Vo> getMeasureRegionRelV2(ApiMeasureRegionRelReqV2 apiMeasureRegionRelReqV2) throws Exception {
+        return appMeasureService.getMeasureRegionRelV2(apiMeasureRegionRelReqV2);
     }
 
     /**
@@ -111,13 +121,13 @@ public class APPMeasureSyncController {
     /**
      * 读取实测清单下的测区。此为全量接口
      * http://192.168.37.159:3000/project/8/interface/api/422
-     * @param apiMeasureZoneReq
+     * @param requestParam
      * @return
      */
+    @MockOperation
     @GetMapping(value = "measure/measure_zone/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureZoneListVo> getMeasureZone(ApiMeasureZoneReq apiMeasureZoneReq) throws Exception {
-
-        return appMeasureSyncService.getMeasureZone(apiMeasureZoneReq);
+    public LjBaseResponse<MeasureZoneVo> getMeasureZone(RequestParam requestParam){
+        return null;
     }
 
     /**
@@ -125,12 +135,13 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/424
      * 项目同步/v3/api/measure/measure_zone_v2
      * http://192.168.37.159:3000/project/8/interface/api/648
-     * @param apiMeasureZoneReqV2
+     * @param requestParam
      * @return
      */
+    @MockOperation
     @GetMapping(value = "measure/measure_zone_v2/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureZoneListVo> getMeasureZoneV2(ApiMeasureZoneReqV2 apiMeasureZoneReqV2) throws Exception {
-        return appMeasureSyncService.getMeasureZoneV2(apiMeasureZoneReqV2);
+    public LjBaseResponse<MeasureZoneVo> getMeasureZoneV2(RequestParam requestParam){
+        return null;
     }
 
 
@@ -139,12 +150,13 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/426
      * 项目同步实测区域/v3/api/measure/measure_zone_v2_total/
      * http://192.168.37.159:3000/project/8/interface/api/568
-     * @param apiMeasureZoneTotalReqV2
+     * @param requestParam
      * @return
      */
+    @MockOperation
     @GetMapping(value = "measure/measure_zone_v2_total/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<TotalVo> getMeasureZoneV2Total(ApiMeasureZoneTotalReqV2 apiMeasureZoneTotalReqV2) throws Exception {
-        return appMeasureSyncService.getMeasureZoneV2Total(apiMeasureZoneTotalReqV2);
+    public LjBaseResponse<TotalVo> getMeasureZoneV2Total(RequestParam requestParam){
+        return null;
     }
 
     /**
@@ -152,25 +164,23 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/428
      * 项目同步v3/api/measure/measure_squad_and_repairer
      * http://192.168.37.159:3000/project/8/interface/api/654
-     * @param requestParam
+     * @param apiMeasureSquadAndRepairerReq
      * @return
      */
-    @MockOperation
     @GetMapping(value = "measure/measure_squad_and_repairer/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureSquadAndRepairerVo> measureSquadAndRepairer(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<MeasureSquadAndRepairerVo> measureSquadAndRepairer(ApiMeasureSquadAndRepairerReq apiMeasureSquadAndRepairerReq) throws Exception {
+        return appMeasureService.measureSquadAndRepairer(apiMeasureSquadAndRepairerReq);
     }
 
     /**
      * 读取测量结果
      * http://192.168.37.159:3000/project/8/interface/api/430
-     * @param requestParam
+     * @param apiMeasureZoneResultReq
      * @return
      */
-    @MockOperation
     @GetMapping(value = "measure/measure_zone_result/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureZoneResultVo> measureZoneResult(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<MeasureZoneResultVo> measureZoneResult(ApiMeasureZoneResultReq apiMeasureZoneResultReq) throws Exception {
+        return appMeasureService.measureZoneResult(apiMeasureZoneResultReq);
     }
 
     /**
@@ -180,10 +190,9 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/644
      * @return
      */
-    @MockOperation
     @GetMapping(value = "measure/measure_zone_result_v2/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureZoneResultVo> measureZoneResultV2(){
-        return null;
+    public LjBaseResponse<MeasureZoneResultVo> measureZoneResultV2(ApiMeasureZoneResultReqV2 apiMeasureZoneResultReqV2) throws Exception {
+        return appMeasureService.measureZoneResultV2(apiMeasureZoneResultReqV2);
     }
 
     /**
@@ -193,10 +202,9 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/580
      * @return
      */
-    @MockOperation
     @GetMapping(value = "measure/measure_zone_result_v2_total/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<TotalVo> measureZoneResultV2Total(RequestParam requestParam){
-        return null;
+    public LjBaseResponse<TotalVo> measureZoneResultV2Total(ApiMeasureZoneResultTotalReqV2 apiMeasureZoneResultTotalReqV2) throws Exception {
+        return appMeasureService.measureZoneResultV2Total(apiMeasureZoneResultTotalReqV2);
     }
 
     /**
@@ -206,9 +214,10 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/652
      * @return
      */
+    @MockOperation
     @GetMapping(value = "measure/issue/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureIssueListVo> issue(ApiMeasureIssueReq apiMeasureIssueReq) throws Exception {
-        return appMeasureSyncService.issue(apiMeasureIssueReq);
+    public LjBaseResponse<IssueVo> issue(RequestParam requestParam){
+        return null;
     }
 
     /**
@@ -218,9 +227,10 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/650
      * @return
      */
+    @MockOperation
     @GetMapping(value = "measure/issue_log/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureIssueLogListVo> issueLog(ApiMeasureIssueLogReq apiMeasureIssueLogReq) throws Exception {
-        return appMeasureSyncService.issueLog(apiMeasureIssueLogReq);
+    public LjBaseResponse<IssueLogVo> issueLog(RequestParam requestParam){
+        return null;
     }
 
     /**
@@ -230,9 +240,10 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/1436
      * @return
      */
-    @PostMapping(value = "measure/report_region/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<DroppedInfoVo> reportRegion(ApiMeasureReportRegionReq apiMeasureReportRegionReq,HttpServletRequest request) throws Exception {
-        return appMeasureSyncService.reportRegion(apiMeasureReportRegionReq,request);
+    @MockOperation
+    @GetMapping(value = "measure/report_region/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public LjBaseResponse<DroppedInfoVo> reportRegion(RequestParam requestParam){
+        return null;
     }
 
     /**
@@ -244,8 +255,8 @@ public class APPMeasureSyncController {
      */
     @MockOperation
     @GetMapping(value = "measure/report_zone/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<DroppedInfoVo> reportZone(ApiMeasureReportZoneReq apiMeasureReportZoneReq){
-        return appMeasureSyncService.reportZone(apiMeasureReportZoneReq );
+    public LjBaseResponse<DroppedInfoVo> reportZone(RequestParam requestParam){
+        return null;
     }
 
     /**
