@@ -22,15 +22,4 @@ public interface MeasureRegionRelMapper extends LFMySQLMapper<MeasureRegionRel> 
      * @return
      */
     List<MeasureRegionRel> searchRelUnscopedByProjIdUpdateAtGt(@Param("projectId") String projectId, @Param("updateAtGte") String updateAtGte);
-
-    /**
-     *
-     * @param project_id
-     * @param last_id
-     * @param timestamp
-     * @param measureApiGetPerTime
-     * @param start
-     * @return
-     */
-    List<MeasureRegionRel> searchRelUnscopedByProjIdLastIdUpdateAtGt(@Param("projectId") Integer project_id, @Param("lastId") Integer last_id, @Param("timestamp") Long timestamp, @Param("measureApiGetPerTime") Integer measureApiGetPerTime, @Param("start") Integer start);
 }

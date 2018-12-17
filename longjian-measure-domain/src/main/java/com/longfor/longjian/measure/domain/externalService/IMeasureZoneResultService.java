@@ -76,25 +76,4 @@ public interface IMeasureZoneResultService {
      * @return
      */
     Integer countMeasureZoneByListIdsAndCategoryKeyAndAreaId(Integer project_id, String[] listIds, String key, String areaId);
-
-    /**
-     *
-     * @param projectId
-     * @param listId
-     * @param lastId
-     * @param timestamp
-     * @param limit
-     * @param start
-     * @return
-     */
-    List<MeasureZoneResult> searchResultUnscopedByListIdLastIdUpdateAtGt(Integer projectId, String listId, Integer lastId, Integer timestamp, Integer limit, Integer start);
-
-    /**
-     *
-     * @param projectId
-     * @param list_id
-     * @param timestamp
-     * @return
-     */
-    Integer getCountResultUnscopedByListIdLastIdUpdateAtGt(Integer projectId, Integer list_id, Integer timestamp);
 }

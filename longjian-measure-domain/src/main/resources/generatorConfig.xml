@@ -54,10 +54,10 @@
 
 
         <!-- 指定数据库表 -->
-        <table schema="" tableName="measure_zone_result" enableCountByExample="false" enableUpdateByExample="false"
+        <table schema="" tableName="aaa" enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
-            <columnOverride column = "data" javaType = "java.lang.String" jdbcType="VARCHAR" />
+            <!--<columnOverride column = "custom_extra" javaType = "java.lang.String" jdbcType="VARCHAR" />-->
             <!--<columnOverride column = "points" javaType = "java.lang.String" jdbcType="VARCHAR" />-->
         </table>
     </context>

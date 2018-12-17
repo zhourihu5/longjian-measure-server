@@ -69,4 +69,15 @@ public interface IMeasureListIssueService {
      * @return
      */
     List<Map<String, Object>> getMeasureListIssueStatusMapByListIdsAndCategoryKeyAndAreaId(String[] listIds, CategoryV3 categoryV3, Area area, String closedcode);
+
+    /**
+     *
+     * @param list_id
+     * @param last_id
+     * @param timestamp
+     * @param start
+     * @param limit
+     * @return
+     */
+    List<Map<String,Object>> searchIssueListByListIdLastIdTimestampGt(Integer list_id, Integer last_id, Long timestamp, Integer start, Integer limit);
 }

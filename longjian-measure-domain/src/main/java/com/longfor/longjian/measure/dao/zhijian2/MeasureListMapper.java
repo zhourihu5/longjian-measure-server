@@ -50,9 +50,8 @@ public interface MeasureListMapper extends LFMySQLMapper<MeasureList> {
 
     /**
      *
-     * @param projectId
-     * @param list_id
+     * @param listId
      * @return
      */
-    MeasureList getNoProjNoFoundErr(@Param("projectId") Integer projectId, @Param("listId") Integer list_id);
+    List<MeasureList> getNoProjNoFoundErr(@Param("listId")String listId);
 }

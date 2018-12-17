@@ -24,9 +24,4 @@ public class MeasureRegionRelServiceImpl implements IMeasureRegionRelService {
     public List<MeasureRegionRel> searchRelUnscopedByProjIdUpdateAtGt(String projectId, String updateAtGte) {
         return measureRegionRelMapper.searchRelUnscopedByProjIdUpdateAtGt(projectId,updateAtGte);
     }
-
-    @Override
-    public List<MeasureRegionRel> searchRelUnscopedByProjIdLastIdUpdateAtGt(Integer project_id, Integer last_id, Long timestamp, Integer measureApiGetPerTime, Integer start) {
-        return measureRegionRelMapper.searchRelUnscopedByProjIdLastIdUpdateAtGt(project_id,last_id,timestamp,measureApiGetPerTime,start);
-    }
 }

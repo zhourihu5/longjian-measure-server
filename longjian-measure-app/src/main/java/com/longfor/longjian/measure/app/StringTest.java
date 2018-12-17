@@ -2,8 +2,10 @@ package com.longfor.longjian.measure.app;
 
 
 
-import java.util.ArrayList;
-import java.util.Stack;
+import com.alibaba.druid.sql.visitor.functions.Char;
+
+import java.lang.reflect.Array;
+import java.util.*;
 
 /**
  * 给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。
@@ -36,7 +38,29 @@ public class StringTest {
      */
 
 
+    public static void main(String[] args) {
+        String  a = "sdfaefgcva";
 
+        char[] x = a.toCharArray();
+     /*   for (int i = 0; i <x.length; i++) {
+            System.out.print(x[i]);
+            boolean contains = a.contains(x[i]);
+            if(contains){
+
+            }
+        }*/
+        Map<Character,Object> map=new HashMap<>();
+        for (int i = 0; i <x.length ; i++) {
+            Object o = map.get(x[i]);
+            if(o==null){
+                System.out.print(x[i]);
+                map.put(x[i],x[i]+1);
+            }
+            if(o!=null){
+                return;
+            }
+        }
+    }
 
 
 

@@ -6,33 +6,44 @@
       WARNING - @mbg.generated
     -->
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="uuid" property="uuid" jdbcType="VARCHAR" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
-    <result column="list_id" property="listId" jdbcType="INTEGER" />
-    <result column="zone_uuid" property="zoneUuid" jdbcType="VARCHAR" />
-    <result column="region_uuid" property="regionUuid" jdbcType="VARCHAR" />
     <result column="area_id" property="areaId" jdbcType="INTEGER" />
     <result column="area_path_and_id" property="areaPathAndId" jdbcType="VARCHAR" />
     <result column="category_key" property="categoryKey" jdbcType="VARCHAR" />
     <result column="category_path_and_key" property="categoryPathAndKey" jdbcType="VARCHAR" />
-    <result column="squad_id" property="squadId" jdbcType="INTEGER" />
-    <result column="rule_id" property="ruleId" jdbcType="INTEGER" />
-    <result column="data" property="data" jdbcType="VARCHAR" />
-    <result column="ok_total" property="okTotal" jdbcType="INTEGER" />
-    <result column="total" property="total" jdbcType="INTEGER" />
-    <result column="score" property="score" jdbcType="DOUBLE" />
     <result column="close_status" property="closeStatus" jdbcType="INTEGER" />
+    <result column="list_id" property="listId" jdbcType="INTEGER" />
+    <result column="ok_total" property="okTotal" jdbcType="INTEGER" />
+    <result column="region_uuid" property="regionUuid" jdbcType="VARCHAR" />
+    <result column="rule_id" property="ruleId" jdbcType="INTEGER" />
+    <result column="score" property="score" jdbcType="REAL" />
+    <result column="squad_id" property="squadId" jdbcType="INTEGER" />
+    <result column="total" property="total" jdbcType="INTEGER" />
+    <result column="uuid" property="uuid" jdbcType="VARCHAR" />
+    <result column="zone_uuid" property="zoneUuid" jdbcType="VARCHAR" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="delete_at" property="deleteAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.longfor.longjian.measure.po.zhijian2.MeasureZoneResult" extends="BaseResultMap" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="data" property="data" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     <!--
       WARNING - @mbg.generated
     -->
-    id, uuid, project_id, list_id, zone_uuid, region_uuid, area_id, area_path_and_id,
-    category_key, category_path_and_key, squad_id, rule_id, `data`, ok_total, total, score,
-    close_status, create_at, update_at, delete_at
+    id, project_id, area_id, area_path_and_id, category_key, category_path_and_key, close_status, 
+    list_id, ok_total, region_uuid, rule_id, score, squad_id, total, uuid, zone_uuid, 
+    create_at, update_at, delete_at
+  </sql>
+  <sql id="Blob_Column_List" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    data
   </sql>
 
   <select id="statMeasureListZoneResultCountByListIdGroupBySquad" resultType="map">
@@ -220,36 +231,5 @@ WHERE
     AND category_path_and_key LIKE concat('%/',#{categoryKey},'/%')
     AND area_path_and_id LIKE concat('%/',#{areaId},'/%')
     AND project_id = #{projectId}
-  </select>
-
-  <select id="searchResultUnscopedByListIdLastIdUpdateAtGt" resultMap="BaseResultMap">
-    SELECT
-    <include refid = "Base_Column_List" />
-    FROM
-    measure_zone_result
-    WHERE
-    project_id = #{projectId}
-    AND list_id = #{listId}
-    AND id > #{lastId}
-    <if test = "timestamp != null and timestamp >= 0" >
-      AND update_at > FROM_UNIXTIME(#{timestamp} )
-    </if>
-    <if test = "limit != 0" >
-    ORDER BY
-    id ASC
-    LIMIT #{start},#{limit}
-  </if>
-  </select>
-
-  <select id="getCountResultUnscopedByListIdLastIdUpdateAtGt" resultType="int">
-SELECT
-	count( id )
-FROM
-	measure_zone_result
-WHERE
-	list_id = #{listId}
-    <if test = "timestamp != null and timestamp >= 0" >
-      AND update_at > FROM_UNIXTIME(#{timestamp} )
-    </if>
   </select>
 </mapper>

@@ -21,17 +21,4 @@
     -->
     id, list_id, project_id, name, plan_rate, rate, create_at, update_at, delete_at
   </sql>
-
-  <select id="searchMeasureSquadByListIdTimestampGt" resultMap="BaseResultMap">
-    SELECT
-	<include refid="Base_Column_List"/>
-FROM
-	measure_squad
-WHERE
-	project_id = #{projectId}
-	AND list_id = #{listId}
-	<if test="updateAtGt != null and updateAtGt!= ''">
-      AND AND update_at > #{updateAtGt}
-    </if>
-  </select>
 </mapper>

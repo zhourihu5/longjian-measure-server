@@ -1,50 +1,50 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.longfor.longjian.measure.dao.zhijian2.MeasureZoneMapper" >
-  <resultMap id="BaseResultMap" type="com.longfor.longjian.measure.po.zhijian2.MeasureZone" >
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="project_id" property="projectId" jdbcType="INTEGER" />
-    <result column="area_id" property="areaId" jdbcType="INTEGER" />
-    <result column="area_path_and_id" property="areaPathAndId" jdbcType="VARCHAR" />
-    <result column="uuid" property="uuid" jdbcType="VARCHAR" />
-    <result column="category_key" property="categoryKey" jdbcType="VARCHAR" />
-    <result column="category_path_and_key" property="categoryPathAndKey" jdbcType="VARCHAR" />
-    <result column="close_status" property="closeStatus" jdbcType="INTEGER" />
-    <result column="finish_status" property="finishStatus" jdbcType="INTEGER" />
-    <result column="list_id" property="listId" jdbcType="INTEGER" />
-    <result column="region_uuid" property="regionUuid" jdbcType="VARCHAR" />
-    <result column="src_type" property="srcType" jdbcType="INTEGER" />
-    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
-    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
-    <result column="delete_at" property="deleteAt" jdbcType="TIMESTAMP" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    <!--
-      WARNING - @mbg.generated
-    -->
-    id, project_id, area_id, area_path_and_id, uuid, category_key, category_path_and_key, 
-    close_status, finish_status, list_id, region_uuid, src_type, create_at, update_at, 
-    delete_at
-  </sql>
+<mapper namespace="com.longfor.longjian.measure.dao.zhijian2.MeasureZoneMapper">
+    <resultMap id="BaseResultMap" type="com.longfor.longjian.measure.po.zhijian2.MeasureZone">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="project_id" property="projectId" jdbcType="INTEGER"/>
+        <result column="area_id" property="areaId" jdbcType="INTEGER"/>
+        <result column="area_path_and_id" property="areaPathAndId" jdbcType="VARCHAR"/>
+        <result column="uuid" property="uuid" jdbcType="VARCHAR"/>
+        <result column="category_key" property="categoryKey" jdbcType="VARCHAR"/>
+        <result column="category_path_and_key" property="categoryPathAndKey" jdbcType="VARCHAR"/>
+        <result column="close_status" property="closeStatus" jdbcType="INTEGER"/>
+        <result column="finish_status" property="finishStatus" jdbcType="INTEGER"/>
+        <result column="list_id" property="listId" jdbcType="INTEGER"/>
+        <result column="region_uuid" property="regionUuid" jdbcType="VARCHAR"/>
+        <result column="src_type" property="srcType" jdbcType="INTEGER"/>
+        <result column="create_at" property="createAt" jdbcType="TIMESTAMP"/>
+        <result column="update_at" property="updateAt" jdbcType="TIMESTAMP"/>
+        <result column="delete_at" property="deleteAt" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        id, project_id, area_id, area_path_and_id, uuid, category_key, category_path_and_key,
+        close_status, finish_status, list_id, region_uuid, src_type, create_at, update_at,
+        delete_at
+    </sql>
 
-  <select id="searchTotalByProjectIdAndMeasureListId" resultType="int">
-    SELECT
-    count(id)
-    FROM
-    measure_zone
-    WHERE
-    project_id = #{projectId}
-    AND list_id IN
-    <foreach collection="measureListIds" index="index" item="item" open="(" separator="," close=")">
-      #{item}
-    </foreach>
-    AND delete_at IS NULL
-  </select>
+    <select id="searchTotalByProjectIdAndMeasureListId" resultType="int">
+        SELECT
+        count(id)
+        FROM
+        measure_zone
+        WHERE
+        project_id = #{projectId}
+        AND list_id IN
+        <foreach collection="measureListIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND delete_at IS NULL
+    </select>
 
-  <select id="getMeasureZoneCountByListIdCategoryKey" resultType="int">
+    <select id="getMeasureZoneCountByListIdCategoryKey" resultType="int">
     SELECT
     count(id)
     FROM
@@ -55,4 +55,47 @@
     AND category_path_and_key LIKE concat('%/',#{subKey},'/%')
     and delete_at is null
   </select>
+    <!--List<Map<String,Object>> searchZoneUnscopedByListIdLastIdUpdateAtGt(Integer projectId, String listId, Integer lastId, Integer timestamp, Integer limit, Integer start);-->
+    <select id="searchZoneUnscopedByListIdLastIdUpdateAtGt" resultType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from measure_zone
+        where
+        project_id = #{projectId}
+        and list_id=#{listId}
+        <if test="timestamp != null and timestamp >= 0">
+            AND update_at > FROM_UNIXTIME( #{timestamp} )
+        </if>
+        ORDER BY
+        id ASC
+        LIMIT #{start},#{limit}
+    </select>
+    <!--List<Map<String,Object>> searchZoneUnscopedByListIdLastIdUpdateAtGt2(Integer projectId, Integer list_id, Integer last_id, Integer timestamp, Integer start, Integer limit);-->
+    <select id="searchZoneUnscopedByListIdLastIdUpdateAtGt2" resultType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from measure_zone
+        where
+        project_id = #{projectId}
+        and list_id=#{list_id}
+        <if test="timestamp != null and timestamp >= 0">
+            AND update_at > FROM_UNIXTIME( #{timestamp} )
+        </if>
+        LIMIT #{start},#{limit}
+    </select>
+    <!--Integer getCountZoneUnscopedByListIdUpdateAtGt(@Param("projectId")Integer projectId, @Param("list_id")Integer list_id, @Param("timestamp") Long timestamp);-->
+    <select id="getCountZoneUnscopedByListIdUpdateAtGt" resultType="int">
+        SELECT
+        count(id)
+        FROM
+        measure_zone
+        WHERE
+        project_id = #{projectId}
+        AND list_id = #{list_id}
+        <if test="timestamp != null and timestamp >= 0">
+            AND update_at > FROM_UNIXTIME( #{timestamp} )
+        </if>
+        and delete_at is null
+
+    </select>
 </mapper>

@@ -1,57 +1,57 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.longfor.longjian.measure.dao.zhijian2.MeasureListIssueMapper" >
-  <resultMap id="BaseResultMap" type="com.longfor.longjian.measure.po.zhijian2.MeasureListIssue" >
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="area_id" property="areaId" jdbcType="INTEGER" />
-    <result column="area_path_and_id" property="areaPathAndId" jdbcType="VARCHAR" />
-    <result column="attachment_md5_list" property="attachmentMd5List" jdbcType="VARCHAR" />
-    <result column="category_key" property="categoryKey" jdbcType="VARCHAR" />
-    <result column="category_path_and_key" property="categoryPathAndKey" jdbcType="VARCHAR" />
-    <result column="repairer_id" property="repairerId" jdbcType="INTEGER" />
-    <result column="sender_id" property="senderId" jdbcType="INTEGER" />
-    <result column="squad_id" property="squadId" jdbcType="INTEGER" />
-    <result column="close_status" property="closeStatus" jdbcType="INTEGER" />
-    <result column="close_time" property="closeTime" jdbcType="INTEGER" />
-    <result column="close_user" property="closeUser" jdbcType="INTEGER" />
-    <result column="condition" property="condition" jdbcType="INTEGER" />
-    <result column="desc" property="desc" jdbcType="VARCHAR" />
-    <result column="drawing_md5" property="drawingMd5" jdbcType="VARCHAR" />
-    <result column="destroy_at" property="destroyAt" jdbcType="INTEGER" />
-    <result column="destroy_user" property="destroyUser" jdbcType="INTEGER" />
-    <result column="plan_end_on" property="planEndOn" jdbcType="INTEGER" />
-    <result column="end_on" property="endOn" jdbcType="INTEGER" />
-    <result column="last_assigner" property="lastAssigner" jdbcType="INTEGER" />
-    <result column="last_assigner_at" property="lastAssignerAt" jdbcType="INTEGER" />
-    <result column="list_id" property="listId" jdbcType="INTEGER" />
-    <result column="pos_x" property="posX" jdbcType="INTEGER" />
-    <result column="pos_y" property="posY" jdbcType="INTEGER" />
-    <result column="project_id" property="projectId" jdbcType="INTEGER" />
-    <result column="status" property="status" jdbcType="INTEGER" />
-    <result column="typ" property="typ" jdbcType="INTEGER" />
-    <result column="uuid" property="uuid" jdbcType="VARCHAR" />
-    <result column="region_uuid" property="regionUuid" jdbcType="VARCHAR" />
-    <result column="zone_uuid" property="zoneUuid" jdbcType="VARCHAR" />
-    <result column="client_create_at" property="clientCreateAt" jdbcType="TIMESTAMP" />
-    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
-    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
-    <result column="delete_at" property="deleteAt" jdbcType="TIMESTAMP" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    <!--
-      WARNING - @mbg.generated
-    -->
-    id, area_id, area_path_and_id, attachment_md5_list, category_key, category_path_and_key, 
-    repairer_id, sender_id, squad_id, close_status, close_time, close_user, condition, 
-    desc, drawing_md5, destroy_at, destroy_user, plan_end_on, end_on, last_assigner, 
-    last_assigner_at, list_id, pos_x, pos_y, project_id, status, typ, uuid, region_uuid, 
-    zone_uuid, client_create_at, create_at, update_at, delete_at
-  </sql>
+<mapper namespace="com.longfor.longjian.measure.dao.zhijian2.MeasureListIssueMapper">
+    <resultMap id="BaseResultMap" type="com.longfor.longjian.measure.po.zhijian2.MeasureListIssue">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="area_id" property="areaId" jdbcType="INTEGER"/>
+        <result column="area_path_and_id" property="areaPathAndId" jdbcType="VARCHAR"/>
+        <result column="attachment_md5_list" property="attachmentMd5List" jdbcType="VARCHAR"/>
+        <result column="category_key" property="categoryKey" jdbcType="VARCHAR"/>
+        <result column="category_path_and_key" property="categoryPathAndKey" jdbcType="VARCHAR"/>
+        <result column="repairer_id" property="repairerId" jdbcType="INTEGER"/>
+        <result column="sender_id" property="senderId" jdbcType="INTEGER"/>
+        <result column="squad_id" property="squadId" jdbcType="INTEGER"/>
+        <result column="close_status" property="closeStatus" jdbcType="INTEGER"/>
+        <result column="close_time" property="closeTime" jdbcType="INTEGER"/>
+        <result column="close_user" property="closeUser" jdbcType="INTEGER"/>
+        <result column="condition" property="condition" jdbcType="INTEGER"/>
+        <result column="desc" property="desc" jdbcType="VARCHAR"/>
+        <result column="drawing_md5" property="drawingMd5" jdbcType="VARCHAR"/>
+        <result column="destroy_at" property="destroyAt" jdbcType="INTEGER"/>
+        <result column="destroy_user" property="destroyUser" jdbcType="INTEGER"/>
+        <result column="plan_end_on" property="planEndOn" jdbcType="INTEGER"/>
+        <result column="end_on" property="endOn" jdbcType="INTEGER"/>
+        <result column="last_assigner" property="lastAssigner" jdbcType="INTEGER"/>
+        <result column="last_assigner_at" property="lastAssignerAt" jdbcType="INTEGER"/>
+        <result column="list_id" property="listId" jdbcType="INTEGER"/>
+        <result column="pos_x" property="posX" jdbcType="INTEGER"/>
+        <result column="pos_y" property="posY" jdbcType="INTEGER"/>
+        <result column="project_id" property="projectId" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="typ" property="typ" jdbcType="INTEGER"/>
+        <result column="uuid" property="uuid" jdbcType="VARCHAR"/>
+        <result column="region_uuid" property="regionUuid" jdbcType="VARCHAR"/>
+        <result column="zone_uuid" property="zoneUuid" jdbcType="VARCHAR"/>
+        <result column="client_create_at" property="clientCreateAt" jdbcType="TIMESTAMP"/>
+        <result column="create_at" property="createAt" jdbcType="TIMESTAMP"/>
+        <result column="update_at" property="updateAt" jdbcType="TIMESTAMP"/>
+        <result column="delete_at" property="deleteAt" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        id, area_id, area_path_and_id, attachment_md5_list, category_key, category_path_and_key,
+        repairer_id, sender_id, squad_id, close_status, close_time, close_user, condition,
+        desc, drawing_md5, destroy_at, destroy_user, plan_end_on, end_on, last_assigner,
+        last_assigner_at, list_id, pos_x, pos_y, project_id, status, typ, uuid, region_uuid,
+        zone_uuid, client_create_at, create_at, update_at, delete_at
+    </sql>
 
-  <select id="getZoneCount" resultType="int">
+    <select id="getZoneCount" resultType="int">
     SELECT
     COUNT(DISTINCT zone_uuid) AS count
     FROM
@@ -63,7 +63,7 @@
     AND close_status = #{unclosecode}
   </select>
 
-  <select id="getCountByTyp" resultType="int">
+    <select id="getCountByTyp" resultType="int">
     SELECT
     COUNT(id) AS count
     FROM
@@ -75,7 +75,7 @@
     AND typ = #{typ}
   </select>
 
-  <select id="getCountByStatus" resultType="int">
+    <select id="getCountByStatus" resultType="int">
     SELECT
     COUNT(id) AS count
     FROM
@@ -87,7 +87,7 @@
     AND `status` = #{status}
   </select>
 
-  <select id="searchMeasureListIssueTrendNewCountList" resultType="map">
+    <select id="searchMeasureListIssueTrendNewCountList" resultType="map">
     SELECT
     COUNT(`client_create_at`) AS new_count,
     DATE_FORMAT(
@@ -107,7 +107,7 @@
     days
   </select>
 
-  <select id="searchMeasureListIssueTrendReformList" resultType="map">
+    <select id="searchMeasureListIssueTrendReformList" resultType="map">
     SELECT
     COUNT(`end_on`) AS reform_count,
     DATE_FORMAT(
@@ -127,7 +127,7 @@
     days
   </select>
 
-  <select id="countMeasureListIssueDistributionCategory" resultType="int">
+    <select id="countMeasureListIssueDistributionCategory" resultType="int">
     SELECT
 	count( id )
 FROM
@@ -139,22 +139,38 @@ WHERE
 	AND close_status = #{unclosecode}
   </select>
 
-  <select id="getMeasureListIssueStatusMapByListIdsAndCategoryKeyAndAreaId" resultType="map">
-    SELECT
-    `status`,
-    COUNT( * ) AS count
-    FROM
-    measure_list_issue
-    WHERE
-    delete_at IS NULL
-    AND category_path_and_key LIKE concat(#{cateChildPath},'%')
-    AND area_path_and_id LIKE concat(#{areaChilePath},'%')
-    AND close_status &lt;&gt; #{closedcode}
-    AND list_id IN
-    <foreach collection="listIds" index="index" item="item" open="(" separator="," close=")">
-      #{item}
-    </foreach>
-    GROUP BY
-    `status`
-  </select>
+    <select id="getMeasureListIssueStatusMapByListIdsAndCategoryKeyAndAreaId" resultType="map">
+        SELECT
+        `status`,
+        COUNT( * ) AS count
+        FROM
+        measure_list_issue
+        WHERE
+        delete_at IS NULL
+        AND category_path_and_key LIKE concat(#{cateChildPath},'%')
+        AND area_path_and_id LIKE concat(#{areaChilePath},'%')
+        AND close_status &lt;&gt; #{closedcode}
+        AND list_id IN
+        <foreach collection="listIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY
+        `status`
+    </select>
+    <!--List<Map<String,Object>> searchIssueListByListIdLastIdTimestampGt(@Param("list_id") Integer list_id, @Param("last_id") Integer last_id, @Param("timestamp") Long timestamp, @Param("start") Integer start, @Param("pageSize") Integer pageSize);-->
+    <select id="searchIssueListByListIdLastIdTimestampGt" resultType="map">
+        select
+        id, area_id, area_path_and_id, attachment_md5_list, category_key, category_path_and_key,
+        repairer_id, sender_id, squad_id, close_status, close_time, close_user, `condition`,
+        `desc`, drawing_md5, destroy_at, destroy_user, plan_end_on, end_on, last_assigner,
+        last_assigner_at, list_id, pos_x, pos_y, project_id, `status`, typ, uuid, region_uuid,
+        zone_uuid, client_create_at, create_at, update_at, delete_at
+        from measure_list_issue
+        where list_id=#{list_id}
+        and delete_at is null
+        <if test="timestamp != null and timestamp >= 0">
+            AND update_at > FROM_UNIXTIME( #{timestamp} )
+        </if>
+        limit #{start},#{limit}
+    </select>
 </mapper>

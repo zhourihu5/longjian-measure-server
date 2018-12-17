@@ -23,9 +23,4 @@ public class MeasureSquadServiceImpl implements IMeasureSquadService {
         criteria.andIsNull("deleteAt");
         return measureSquadMapper.selectByExample(example);
     }
-
-    @Override
-    public List<MeasureSquad> searchMeasureSquadByListIdTimestampGt(Integer projectId, Integer list_id, String updateAtGt) {
-        return measureSquadMapper.searchMeasureSquadByListIdTimestampGt(projectId,list_id,updateAtGt);
-    }
 }
