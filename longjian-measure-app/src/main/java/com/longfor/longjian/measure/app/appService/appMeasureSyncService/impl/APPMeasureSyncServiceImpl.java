@@ -1,5 +1,7 @@
 package com.longfor.longjian.measure.app.appService.appMeasureSyncService.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.appMeasureSyncService.IAPPMeasureSyncService;
 import com.longfor.longjian.measure.app.appService.appService.IKeyProcedureTaskAppService;
@@ -7,9 +9,11 @@ import com.longfor.longjian.measure.app.req.apiMeasureRuleReq.*;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.*;
 import com.longfor.longjian.measure.consts.Enum.ReportStatusEnum;
 import com.longfor.longjian.measure.consts.util.ConvertUtil;
+import com.longfor.longjian.measure.consts.util.JsonUtil;
 import com.longfor.longjian.measure.domain.externalService.*;
 import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
 import com.longfor.longjian.measure.po.zhijian2.MeasureList;
+import com.longfor.longjian.measure.po.zhijian2.MeasureRegion;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
@@ -260,12 +264,36 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
             keyProcedureTaskAppService.startReport(apiMeasureReportRegionReq.getReport_uuid(), uid, request);
         } catch (Exception e) {
             throw new Exception(e);
-        }finally {
+        } finally {
             keyProcedureTaskAppService.updateReportStatus(apiMeasureReportRegionReq.getReport_uuid(), reportUuidStatus.getValue().toString());
         }
-        List<ReportRegionDataVo> reportRegionDataVos = new ArrayList<>();
         //解析json数据
-        //reportRegionDataVos.add(dataJson);
+        List<ReportRegionDataVo> reportRegionDataVos = JsonUtil.GsonToList(apiMeasureReportRegionReq.getData(), ReportRegionDataVo.class);
+        List<MeasureRegion> measureRegions = new ArrayList<>();
+        for (ReportRegionDataVo reportRegionDataVo : reportRegionDataVos
+                ) {
+            String polygon = reportRegionDataVo.getPolygon();
+            List<Float> polygons = new ArrayList<>();
+            if (polygon.length() > 0) {
+                String[] polygonStrings = polygon.split(",");
+                for (int i = 0; i < polygonStrings.length; i++) {
+                    String polygonStringtrim = polygonStrings[i].replaceAll("", "");//去掉所有空格
+                    try {
+                        float polygonFloat = Float.parseFloat(polygonStringtrim);//转换成单精度浮点格式
+                        polygons.add(polygonFloat);
+                    } catch (Exception e) {
+                        throw new Exception(e);
+                    }
+                }
+                if (polygonStrings.length != 2) {
+                    log.error("polygons is not validated. polygons:[" + reportRegionDataVo.getPolygon() + "],error:");
+                    throw new Exception("polygons is not validated.");
+                }
+            }
+            MeasureRegion measureRegion = new MeasureRegion();
+            measureRegion.setUuid(reportRegionDataVo.getUuid());
+            measureRegions.add(measureRegion);
+        }
         return null;
     }
 
