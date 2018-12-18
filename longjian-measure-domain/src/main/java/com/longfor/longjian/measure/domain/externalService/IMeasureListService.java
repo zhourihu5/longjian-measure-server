@@ -1,6 +1,7 @@
 package com.longfor.longjian.measure.domain.externalService;
 
 import com.longfor.longjian.measure.po.zhijian2.MeasureList;
+import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -61,4 +62,37 @@ public interface IMeasureListService {
      * @return
      */
     List<MeasureList> searchListByProjIdUserId( String projectId, Integer userId);
+
+    /**
+     *
+     * @param project_id
+     * @param list_id
+     * @param uuid
+     * @param category_key
+     * @return
+     */
+    List<MeasureZone> searchZoneByMeasureListIdRegionUuidCategoryKey(Integer project_id, Integer list_id, String uuid, String category_key);
+
+    /**
+     *
+     * @param project_id
+     * @param uuid
+     * @return
+     */
+    MeasureZone getZoneByUuid(Integer project_id, String uuid);
+
+    /**
+     *
+     * @param project_id
+     * @param list_id
+     * @param uuid
+     * @param uuid1
+     * @param areaId
+     * @param areaPathAndId
+     * @param category_key
+     * @param s
+     * @param id
+     * @param id1
+     */
+    void createZoneFromApp(Integer project_id, Integer list_id, String uuid, String uuid1, Integer areaId, String areaPathAndId, String category_key, String s, Integer id, Integer id1);
 }

@@ -56,4 +56,12 @@ public interface IMeasureRegionService {
      * @return
      */
     List<MeasureRegion> createRegionsFromRegionStructList(Integer projectId, List<MeasureRegion> measureRegions) throws Exception;
+
+    /**
+     *
+     * @param project_id
+     * @param uuid
+     * @return
+     */
+    MeasureRegion searchByUuid(Integer project_id, String uuid);
 }
