@@ -100,15 +100,41 @@
     </select>
 
     <select id="searchZoneByUuid" resultMap="BaseResultMap">
-SELECT
-	<include refid="Base_Column_List"/>
-FROM
-	measure_zone
-WHERE
-	project_id = #{projId}
-	AND uuid IN
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        measure_zone
+        WHERE
+        project_id = #{projId}
+        AND uuid IN
         <foreach collection="zoneUuids" index="index" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>
+    </select>
+    <!--MeasureZone searchByCondition(@Param("project_id") Integer project_id, @Param("list_id") Integer list_id, @Param("uuid") String uuid, @Param("category_key") String category_key); -->
+    <select id="searchByCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        measure_zone
+        where
+        project_id=#{project_id}
+        and
+        list_id = #{list_id}
+        and
+        uuid= #{uuid}
+        and
+        category_key = #{category_key}
+    </select>
+    <!--MeasureZone getZoneByUuid(@Param("project_id")Integer project_id, @Param("list_id")String uuid);-->
+    <select id="getZoneByUuid"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        measure_zone
+        where
+        project_id=#{project_id}
+        and
+        uuid= #{uuid}
     </select>
 </mapper>

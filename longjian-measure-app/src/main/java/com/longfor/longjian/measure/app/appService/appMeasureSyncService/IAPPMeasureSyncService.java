@@ -74,5 +74,5 @@ public interface IAPPMeasureSyncService {
      * @param apiMeasureReportZoneReq
      * @return
      */
-    LjBaseResponse<DroppedInfoVo>  reportZone(ApiMeasureReportZoneReq apiMeasureReportZoneReq);
+    LjBaseResponse<DroppedInfoVo>  reportZone(ApiMeasureReportZoneReq apiMeasureReportZoneReq,HttpServletRequest request) throws Exception;
 }

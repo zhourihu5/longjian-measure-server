@@ -1,8 +1,10 @@
 package com.longfor.longjian.measure.domain.externalService.impl;
 
 import com.longfor.longjian.measure.dao.zhijian2.MeasureListMapper;
+import com.longfor.longjian.measure.dao.zhijian2.MeasureZoneMapper;
 import com.longfor.longjian.measure.domain.externalService.IMeasureListService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureList;
+import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +16,8 @@ public class MeasureListServiceImpl implements IMeasureListService {
 
     @Autowired
     private MeasureListMapper measureListMapper;
-
+    @Autowired
+    private MeasureZoneMapper measureZoneMapper;
     @Override
     public List<Map<String, Object>> getMeasureList(Integer finish_status, String q, Integer project_id, String categoryPathAndKey, String areaPathAndId, String[] userIds, Integer page, Integer page_size) {
         page = page - 1;
@@ -47,5 +50,31 @@ public class MeasureListServiceImpl implements IMeasureListService {
     @Override
     public List<MeasureList> searchListByProjIdUserId(String projectId, Integer userId) {
         return measureListMapper.searchListByProjIdUserId(projectId,userId);
+    }
+
+    @Override
+    public List<MeasureZone> searchZoneByMeasureListIdRegionUuidCategoryKey(Integer project_id, Integer list_id, String uuid, String category_key) {
+        return measureZoneMapper.searchByCondition(project_id,list_id,uuid,category_key);
+    }
+
+    @Override
+    public MeasureZone getZoneByUuid(Integer project_id, String uuid) {
+        return measureZoneMapper.getZoneByUuid(project_id,uuid);
+    }
+
+    @Override
+    public void createZoneFromApp(Integer project_id, Integer list_id, String uuid, String regionUuid, Integer areaId, String areaPathAndId, String category_key, String categoryPathAndKey, Integer finishId, Integer closeId) {
+        MeasureZone measureZone = new MeasureZone();
+        measureZone.setProjectId(project_id);
+        measureZone.setListId(list_id);
+        measureZone.setUuid(uuid);
+        measureZone.setRegionUuid(regionUuid);
+        measureZone.setAreaId(areaId);
+        measureZone.setAreaPathAndId(areaPathAndId);
+        measureZone.setCategoryKey(category_key);
+        measureZone.setCategoryPathAndKey(categoryPathAndKey);
+        measureZone.setFinishStatus(finishId);
+        measureZone.setCloseStatus(closeId);
+        measureZoneMapper.insert(measureZone);
     }
 }

@@ -65,4 +65,11 @@ public interface MeasureRegionMapper extends LFMySQLMapper<MeasureRegion> {
      * @param measureRegionLists
      */
     void InsertObjectsNoAffectedErr(List<MeasureRegion> measureRegionLists);
+    /**
+     *
+     * @param project_id
+     * @param uuid
+     * @return
+     */
+    MeasureRegion getByConditionNoFoundErr(@Param("project_id") Integer project_id, @Param("uuid") String uuid);
 }

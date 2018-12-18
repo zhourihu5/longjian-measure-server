@@ -144,4 +144,11 @@ WHERE
       )
     </foreach >
   </insert>
+  <!--MeasureRegion getByConditionNoFoundErr(@Param("project_id") Integer project_id, @Param("uuid") String uuid);-->
+  <select id="getByConditionNoFoundErr" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from measure_region where project_id = #{project_id}
+    and uuid = #{uuid}
+  </select>
 </mapper>

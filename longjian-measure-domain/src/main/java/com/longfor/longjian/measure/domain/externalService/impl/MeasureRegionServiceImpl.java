@@ -80,4 +80,9 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
         }
         return measureRegionLists;
     }
+
+    @Override
+    public MeasureRegion searchByUuid(Integer project_id, String uuid) {
+        return measureRegionMapper.getByConditionNoFoundErr(project_id,uuid);
+    }
 }
