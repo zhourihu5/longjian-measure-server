@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureService;
 import com.longfor.longjian.measure.app.appService.appService.IKeyProcedureTaskAppService;
+import com.longfor.longjian.measure.app.commonEntity.MeasureZoneResultCreateMsg;
 import com.longfor.longjian.measure.app.kafka.KafkaProducer;
 import com.longfor.longjian.measure.app.req.appReq.*;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.*;
@@ -14,7 +15,6 @@ import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.RegionListVo;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.RelVo;
 import com.longfor.longjian.measure.consts.Enum.ApiDropDataReasonEnum;
 import com.longfor.longjian.measure.consts.Enum.EventQueueEnum;
-import com.longfor.longjian.measure.consts.constant.ApiDropDataReasonConstant;
 import com.longfor.longjian.measure.consts.constant.KeyProcedureTaskConstant;
 import com.longfor.longjian.measure.consts.constant.MeasureListConstant;
 import com.longfor.longjian.measure.domain.externalService.*;
@@ -27,7 +27,10 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -85,9 +88,9 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         String reportUuidStatus = KeyProcedureTaskConstant.ERROR;
         // TODO session获取uid
         Integer uid = 8;
-        try{
+        try {
             keyProcedureTaskAppService.startReport(apiMeasureReportZoneResultReq.getReport_uuid(), uid, request);
-        }catch (Exception e){
+        } catch (Exception e) {
             keyProcedureTaskAppService.updateReportStatus(apiMeasureReportZoneResultReq.getReport_uuid(), reportUuidStatus);
             throw e;
         }
@@ -100,57 +103,56 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     }
 
     /**
-     *
      * @param zoneResults
      * @return
      */
     private List<DroppedVo> createZoneResultsNoProj(List<ResultListVo> zoneResults) throws ParseException {
-        Map<Integer,List<ResultListVo>> projData = new HashMap<>();
+        Map<Integer, List<ResultListVo>> projData = new HashMap<>();
         List<DroppedVo> dropData = new ArrayList<>();
         zoneResults.forEach(resultListVo -> {
             List<ResultListVo> projD = projData.get(resultListVo.getProject_id());
-            if (projD == null){
+            if (projD == null) {
                 projD = new ArrayList<>();
             }
             projD.add(resultListVo);
-            projData.put(resultListVo.getProject_id(),projD);
+            projData.put(resultListVo.getProject_id(), projD);
         });
         for (Map.Entry<Integer, List<ResultListVo>> entry : projData.entrySet()) {
-            List<DroppedVo> droppedVo = createZoneResults(entry.getKey(),entry.getValue());
+            List<DroppedVo> droppedVo = createZoneResults(entry.getKey(), entry.getValue());
             dropData.addAll(droppedVo);
         }
         return dropData;
     }
 
     private List<DroppedVo> createZoneResults(Integer projId, List<ResultListVo> data) throws ParseException {
-        Map<String,MeasureZone> zoneUuidMap = new HashMap<>();
-        Map<String,MeasureRule> ruleMap = new HashMap<>();
-        Map<String,CategoryV3> categoryMap = new HashMap<>();
+        Map<String, MeasureZone> zoneUuidMap = new HashMap<>();
+        Map<String, MeasureRule> ruleMap = new HashMap<>();
+        Map<String, CategoryV3> categoryMap = new HashMap<>();
         zoneUuidMap = data.stream().collect(Collectors.toMap(ResultListVo::getZone_uuid, vo -> new MeasureZone()));
-        List<MeasureZone> measureZones = measureZoneService.searchZoneByUuid(projId,zoneUuidMap.keySet());
-        Map<String,Boolean> regionUuidMap = new HashMap<>();
-        for (MeasureZone measureZone:measureZones
-             ) {
-            zoneUuidMap.put(measureZone.getUuid(),measureZone);
-            regionUuidMap.put(measureZone.getRegionUuid(),true);
+        List<MeasureZone> measureZones = measureZoneService.searchZoneByUuid(projId, zoneUuidMap.keySet());
+        Map<String, Boolean> regionUuidMap = new HashMap<>();
+        for (MeasureZone measureZone : measureZones
+        ) {
+            zoneUuidMap.put(measureZone.getUuid(), measureZone);
+            regionUuidMap.put(measureZone.getRegionUuid(), true);
         }
-        List<MeasureRegion> regions = measureRegionService.searchByUuids(projId,regionUuidMap.keySet());
-        Map<String,MeasureRegion> regionMap = regions.stream().collect(Collectors.toMap(MeasureRegion::getUuid,measureRegion -> measureRegion));
+        List<MeasureRegion> regions = measureRegionService.searchByUuids(projId, regionUuidMap.keySet());
+        Map<String, MeasureRegion> regionMap = regions.stream().collect(Collectors.toMap(MeasureRegion::getUuid, measureRegion -> measureRegion));
         List<DroppedVo> droppedVos = new ArrayList<>();
-        List<MeasureZoneResult> msgPkg = new ArrayList<>();
-        for (ResultListVo resultListVo:data
-             ) {
+        MeasureZoneResultCreateMsg msgPkg = new MeasureZoneResultCreateMsg();
+        for (ResultListVo resultListVo : data
+        ) {
             //0、根据zone_uuid看是否有上传过
             //如果有上传过就不让写入（在未有开关之前统一拒收）
-            try{
-                List<MeasureZoneResult> measureZoneResults = measureZoneResultService.getByProjIdListIdZoneUuidSquadId(resultListVo.getProject_id(),resultListVo.getList_id(),resultListVo.getZone_uuid(),resultListVo.getSquad_id());
-                boolean has = measureZoneResults == null || measureZoneResults.size() <= 0 ? false : true;
-                if (has){
+            try {
+                List<MeasureZoneResult> measureZoneResults = measureZoneResultService.getByProjIdListIdZoneUuidSquadId(resultListVo.getProject_id(), resultListVo.getList_id(), resultListVo.getZone_uuid(), resultListVo.getSquad_id());
+                boolean has = measureZoneResults != null && measureZoneResults.size() > 0;
+                if (has) {
                     log.warn("zone result already uploaded, zone_uuid:" + resultListVo.getZone_uuid());
                     ApiDropDataReasonEnum reason = ApiDropDataReasonEnum.MEASUREZONERESULTEXISTS;
-                    try{
-                        MeasureZoneResult measureZoneResult =  measureZoneResultService.getByUuid(projId,resultListVo.getUuid());
-                        has = measureZoneResult == null ? false : true;
+                    try {
+                        MeasureZoneResult measureZoneResult = measureZoneResultService.getByUuid(projId, resultListVo.getUuid());
+                        has = measureZoneResult != null;
                         if (has) {
                             reason = ApiDropDataReasonEnum.MEASUREZONERESULTUUIDEXISTS;
                         }
@@ -161,15 +163,15 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                         droppedVo.setReason(reason.getName());
                         droppedVos.add(droppedVo);
                         continue;
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         log.warn("zoneResultDao.GetByUuid:" + resultListVo.getUuid());
                     }
                 }
                 //1、根据zone_uuid获取对应测区的数据，包括检查项，计算公式等
                 //zone info
                 MeasureZone zoneInfo = zoneUuidMap.get(resultListVo.getZone_uuid());
-                has = zoneInfo == null ? false:true;
-                if (!has){
+                has = zoneInfo != null;
+                if (!has) {
                     log.warn("zone info not found, zone_uuid:" + resultListVo.getZone_uuid());
                     //找不到测区就舍弃此条记录
                     DroppedVo droppedVo = new DroppedVo();
@@ -178,7 +180,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                     droppedVo.setReason(ApiDropDataReasonEnum.MEASYREZONENOTFOUND.getName());
                     droppedVos.add(droppedVo);
                     continue;
-                }else if (zoneInfo.getCloseStatus() == Integer.parseInt(MeasureListConstant.CLOSEDCODE)){
+                } else if (zoneInfo.getCloseStatus() == Integer.parseInt(MeasureListConstant.CLOSEDCODE)) {
                     //判断测区是否打开，如果没打开，就要舍弃数据
                     log.warn("zone is close, zone_uuid:" + resultListVo.getZone_uuid());
                     //找不到测区就舍弃此条记录
@@ -191,18 +193,18 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                 }
                 String currentCategoryKey = zoneInfo.getCategoryKey();
                 CategoryV3 category = categoryMap.get(currentCategoryKey);
-                if (category == null){
+                if (category == null) {
                     category = categoryV3Service.getCategoryByKeyNoFoundErr(currentCategoryKey);
-                    categoryMap.put(currentCategoryKey,category);
+                    categoryMap.put(currentCategoryKey, category);
                 }
                 Integer currentRuleId = 0;
                 //rule info
                 MeasureRule ruleInfo = ruleMap.get(currentCategoryKey);
-                has = ruleInfo == null ? false : true;
-                if (!has){
+                has = ruleInfo != null;
+                if (!has) {
                     ruleInfo = measureRuleService.getByCategoryKey(currentCategoryKey);
-                    has = ruleInfo == null ? false : true;
-                    if (!has){
+                    has = ruleInfo != null;
+                    if (!has) {
                         log.warn("ruleInfo not found, zone_uuid:" + resultListVo.getZone_uuid());
                         DroppedVo droppedVo = new DroppedVo();
                         droppedVo.setUuid(resultListVo.getUuid());
@@ -210,11 +212,11 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                         droppedVo.setReason(ApiDropDataReasonEnum.MeasureRuleNoFound.getName());
                         droppedVos.add(droppedVo);
                         continue;
-                    }else {
-                        ruleMap.put(currentCategoryKey,ruleInfo);
+                    } else {
+                        ruleMap.put(currentCategoryKey, ruleInfo);
                         currentRuleId = ruleInfo.getId();
                     }
-                }else {
+                } else {
                     currentRuleId = ruleInfo.getId();
                 }
                 //2、根据计算公式，得出结果
@@ -228,11 +230,11 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                 zoneResult.setRuleId(currentRuleId);
                 zoneResult.setRegionUuid(zoneInfo.getRegionUuid());
                 zoneResult.setCategoryKey(currentCategoryKey);
-                if (category != null){
+                if (category != null) {
                     zoneResult.setCategoryPathAndKey(category.getPath() + category.getKey() + "/");
                 }
                 MeasureRegion region = regionMap.get(zoneInfo.getRegionUuid());
-                if (region != null){
+                if (region != null) {
                     zoneResult.setAreaId(region.getAreaId());
                     zoneResult.setAreaPathAndId(region.getAreaPathAndId());
                 }
@@ -257,9 +259,9 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                 });
                 zoneResult.setData(JSON.toJSONString(zoneResultData));
                 //计算结果是否合格
-                try{
-                    calcResult(ruleInfo.getFormula(),zoneResult);
-                }catch (Exception e){
+                try {
+                    calcResult(ruleInfo.getFormula(), zoneResult);
+                } catch (Exception e) {
                     log.warn("calc result error:" + e.getMessage());
                     DroppedVo droppedVo = new DroppedVo();
                     droppedVo.setUuid(resultListVo.getUuid());
@@ -271,8 +273,8 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
 //                zoneResult = measureZoneResultService.insertObjectNoAffectedErr(zoneResult);
                 try {
                     measureZoneResultService.insertObjectNoAffectedErr(zoneResult);
-                }catch (Exception e) {
-                    log.warn("insert zone result error:%s",e.getMessage());
+                } catch (Exception e) {
+                    log.warn("insert zone result error:%s", e.getMessage());
                     DroppedVo droppedVo = new DroppedVo();
                     droppedVo.setUuid(resultListVo.getUuid());
                     droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonEnum.OTHER.getValue()));
@@ -283,28 +285,35 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                 Integer senderId = 0;
                 String clientCreateAt = "0001-01-01 00:00:00";
                 int i = 0;
-                for (TextResultVo t:resultListVo.getData()
-                     ) {
-                    if (i == 0){
+                for (TextResultVo t : resultListVo.getData()
+                ) {
+                    if (i == 0) {
                         senderId = t.getRecorder_id();
                     }
-                    if (t.getUpdate_at() != null && t.getUpdate_at() >  DateUtil.getLongFromString(clientCreateAt)) {
+                    if (t.getUpdate_at() != null && t.getUpdate_at() > DateUtil.getLongFromString(clientCreateAt)) {
                         clientCreateAt = t.getUpdate_at().toString();
                     }
-                    i ++ ;
+                    i++;
                 }
-                msgPkg.add(zoneResult);
-            }catch (Exception e){
+                msgPkg.append(zoneResult.getUuid(), zoneResult.getZoneUuid(), zoneResult.getProjectId(), zoneResult.getListId(),
+                        senderId, zoneResult.getAreaId(), zoneResult.getAreaPathAndId(), zoneResult.getCategoryKey(),
+                        zoneResult.getCategoryPathAndKey(), zoneResult.getOkTotal(), zoneResult.getTotal(),
+                        DateUtil.getLongFromString(clientCreateAt));
+            } catch (Exception e) {
                 log.warn("zoneResultDao.GetByZoneUuid:" + resultListVo.getZone_uuid());
                 throw e;
+            } finally {
+                //执行推送
+                kafkaProducer.produce(EventQueueEnum.PKG_MEASURE_RESULT_CREATED.getValue(), msgPkg);
             }
         }
-        kafkaProducer.produce(EventQueueEnum.PKG_MEASURE_RESULT_CREATED.getValue(), msgPkg);
+
         return droppedVos;
     }
 
     /**
      * 计算结果是否合格
+     *
      * @param formula
      * @param zoneResult
      */
@@ -325,15 +334,15 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         MeasureRegionVo measureRegionVo = new MeasureRegionVo();
         List<RegionListVo> region_list = new ArrayList<>();
         List<RelVo> rel_list = new ArrayList<>();
-        String [] projectIds = apiMeasureRegionReq.getProject_ids().split(",");
+        String[] projectIds = apiMeasureRegionReq.getProject_ids().split(",");
         if (projectIds.length == 0) {
             throw new Exception("project ids is empty.");
         }
         String updateAtGte = "0001-01-01 00:00:00";
         List<MeasureRegion> regionList = new ArrayList<>();
-        for (String projectId:projectIds
+        for (String projectId : projectIds
         ) {
-            List<MeasureRegion> regions = measureRegionService.searchUnscopedByProjIdUpdateAtGt(projectId,updateAtGte);
+            List<MeasureRegion> regions = measureRegionService.searchUnscopedByProjIdUpdateAtGt(projectId, updateAtGte);
             regionList.addAll(regions);
         }
         //类转换,手动
@@ -342,9 +351,9 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             region_list.add(regionListVo);
         });
         List<MeasureRegionRel> regionRelList = new ArrayList<>();
-        for (String projectId:projectIds
+        for (String projectId : projectIds
         ) {
-            List<MeasureRegionRel> regionRels = measureRegionRelService.searchRelUnscopedByProjIdUpdateAtGt(projectId,updateAtGte);
+            List<MeasureRegionRel> regionRels = measureRegionRelService.searchRelUnscopedByProjIdUpdateAtGt(projectId, updateAtGte);
             regionRelList.addAll(regionRels);
         }
         //类转换,手动
@@ -365,9 +374,9 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         List<RegionListVo> region_list = new ArrayList<>();
         Integer start = 0;
         try {
-            List<MeasureRegion> items = measureRegionService.searchUnscopedByProjIdLastIdUpdateAtGt(apiMeasureRegionReqV2.getProject_id(),apiMeasureRegionReqV2.getLast_id(),apiMeasureRegionReqV2.getTimestamp(),MEASURE_API_GET_PER_TIME,start);
+            List<MeasureRegion> items = measureRegionService.searchUnscopedByProjIdLastIdUpdateAtGt(apiMeasureRegionReqV2.getProject_id(), apiMeasureRegionReqV2.getLast_id(), apiMeasureRegionReqV2.getTimestamp(), MEASURE_API_GET_PER_TIME, start);
             Integer newLastId = 0;
-            if (items.size() > 0){
+            if (items.size() > 0) {
                 newLastId = items.get(items.size() - 1).getId();
             }
             measureRegionV2Vo.setLast_id(newLastId);
@@ -377,7 +386,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             });
             measureRegionV2Vo.setRegion_list(region_list);
             ljBaseResponse.setData(measureRegionV2Vo);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("SearchUnscopedByProjIdLastIdUpdateAtGt" + "[" + apiMeasureRegionReqV2.getProject_id() + "],error:" + e);
             throw new Exception("读取数据失败，code:region");
         }
@@ -389,10 +398,10 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         LjBaseResponse<TotalVo> ljBaseResponse = new LjBaseResponse<>();
         TotalVo totalVo = new TotalVo();
         try {
-            Integer total = measureRegionService.getCountUnscopedByProjIdUpdateAtGt(apiMeasureRegionTotalReqV2.getProject_id(),apiMeasureRegionTotalReqV2.getTimestamp());
+            Integer total = measureRegionService.getCountUnscopedByProjIdUpdateAtGt(apiMeasureRegionTotalReqV2.getProject_id(), apiMeasureRegionTotalReqV2.getTimestamp());
             totalVo.setTotal(total);
             ljBaseResponse.setData(totalVo);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("GetCountUnscopedByProjIdUpdateAtGt" + "[" + apiMeasureRegionTotalReqV2.getProject_id() + "],error:" + e);
             throw new Exception("读取数据失败，code:region_total");
         }
@@ -401,14 +410,14 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
 
     @Override
     public LjBaseResponse<MeasureRegionRelV2Vo> getMeasureRegionRelV2(ApiMeasureRegionRelReqV2 apiMeasureRegionRelReqV2) throws Exception {
-        LjBaseResponse<MeasureRegionRelV2Vo>ljBaseResponse = new LjBaseResponse<>();
+        LjBaseResponse<MeasureRegionRelV2Vo> ljBaseResponse = new LjBaseResponse<>();
         MeasureRegionRelV2Vo measureRegionRelV2Vo = new MeasureRegionRelV2Vo();
         List<RelVo> rel_list = new ArrayList<>();
         Integer start = 0;
         try {
             List<MeasureRegionRel> items = measureRegionRelService.searchRelUnscopedByProjIdLastIdUpdateAtGt(apiMeasureRegionRelReqV2.getProject_id(), apiMeasureRegionRelReqV2.getLast_id(), apiMeasureRegionRelReqV2.getTimestamp(), MEASURE_API_GET_PER_TIME, start);
             Integer newLastId = 0;
-            if (items.size() > 0){
+            if (items.size() > 0) {
                 newLastId = items.get(items.size() - 1).getId();
             }
             measureRegionRelV2Vo.setLast_id(newLastId);
@@ -418,7 +427,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             });
             measureRegionRelV2Vo.setRel_list(rel_list);
             ljBaseResponse.setData(measureRegionRelV2Vo);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("SearchRelUnscopedByProjIdLastIdUpdateAtGt" + "[" + apiMeasureRegionRelReqV2.getProject_id() + "],error:" + e);
             throw new Exception("读取数据失败，code:region_rel");
         }
@@ -433,31 +442,31 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         List<SquadUserListVo> squad_user_list = new ArrayList<>();
         List<RepairerListVo> repairer_list = new ArrayList<>();
         MeasureList measureList = null;
-        try{
+        try {
             measureList = measureListService.getNoProjNoFoundErr(apiMeasureSquadAndRepairerReq.getList_id().toString());
             String updateAtGt = "";
-            if (apiMeasureSquadAndRepairerReq.getTimestamp() != null && apiMeasureSquadAndRepairerReq.getTimestamp() > 0){
+            if (apiMeasureSquadAndRepairerReq.getTimestamp() != null && apiMeasureSquadAndRepairerReq.getTimestamp() > 0) {
                 updateAtGt = DateUtil.getDateStringByLong(apiMeasureSquadAndRepairerReq.getTimestamp());
             }
-            List<MeasureSquad> squads = measureSquadService.searchMeasureSquadByListIdTimestampGt(measureList.getProjectId(),apiMeasureSquadAndRepairerReq.getList_id(),updateAtGt);
+            List<MeasureSquad> squads = measureSquadService.searchMeasureSquadByListIdTimestampGt(measureList.getProjectId(), apiMeasureSquadAndRepairerReq.getList_id(), updateAtGt);
             squads.forEach(measureSquad -> {
                 SquadListVo squadListVo = converMeasureSquadToSquadListVo(measureSquad);
                 squad_list.add(squadListVo);
             });
             measureSquadAndRepairerVo.setSquad_list(squad_list);
-            List<MeasureSquadUser> squadsUsers = measureSquadUserService.searchMeasureSquadUserByListIdTimestampGt(measureList.getProjectId(),apiMeasureSquadAndRepairerReq.getList_id(),updateAtGt);
+            List<MeasureSquadUser> squadsUsers = measureSquadUserService.searchMeasureSquadUserByListIdTimestampGt(measureList.getProjectId(), apiMeasureSquadAndRepairerReq.getList_id(), updateAtGt);
             squadsUsers.forEach(measureSquadUser -> {
                 SquadUserListVo squadUserListVo = converMeasureSquadUserToSquadUserListVo(measureSquadUser);
                 squad_user_list.add(squadUserListVo);
             });
             measureSquadAndRepairerVo.setSquad_user_list(squad_user_list);
-            List<MeasureRepairerUser> repairerUsers = measureRepairerUserService.searchMeasureReparierUserByListIdTimestampGt(measureList.getProjectId(),apiMeasureSquadAndRepairerReq.getList_id(),updateAtGt);
+            List<MeasureRepairerUser> repairerUsers = measureRepairerUserService.searchMeasureReparierUserByListIdTimestampGt(measureList.getProjectId(), apiMeasureSquadAndRepairerReq.getList_id(), updateAtGt);
             repairerUsers.forEach(measureRepairerUser -> {
                 RepairerListVo repairerListVo = converMeasureRepairerUserToRepairerListVo(measureRepairerUser);
                 repairer_list.add(repairerListVo);
             });
             measureSquadAndRepairerVo.setRepairer_list(repairer_list);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             throw e;
         }
@@ -507,7 +516,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             Integer start = 0;
             List<MeasureZoneResult> items = measureZoneResultService.searchResultUnscopedByListIdLastIdUpdateAtGt(measureList.getProjectId(), apiMeasureZoneResultReqV2.getList_id().toString(), apiMeasureZoneResultReqV2.getLast_id(), apiMeasureZoneResultReqV2.getTimestamp(), MEASURE_API_GET_PER_TIME, start);
             Integer newLastId = 0;
-            if (items.size() > 0){
+            if (items.size() > 0) {
                 newLastId = items.get(items.size() - 1).getId();
             }
             measureZoneResultVo.setLast_id(newLastId);
@@ -516,7 +525,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                 result_list.add(resultListVo);
             });
             measureZoneResultVo.setResult_list(result_list);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("SearchUnscopedByProjIdLastIdUpdateAtGt" + "[" + apiMeasureZoneResultReqV2.getList_id() + "],error:" + e.getMessage());
             throw new Exception("读取数据失败，code:zone");
         }
@@ -530,9 +539,9 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         TotalVo totalVo = new TotalVo();
         try {
             MeasureList measureList = measureListService.getNoProjNoFoundErr(apiMeasureZoneResultTotalReqV2.getList_id().toString());
-            Integer total = measureZoneResultService.getCountResultUnscopedByListIdLastIdUpdateAtGt(measureList.getProjectId(),apiMeasureZoneResultTotalReqV2.getList_id(),apiMeasureZoneResultTotalReqV2.getTimestamp());
+            Integer total = measureZoneResultService.getCountResultUnscopedByListIdLastIdUpdateAtGt(measureList.getProjectId(), apiMeasureZoneResultTotalReqV2.getList_id(), apiMeasureZoneResultTotalReqV2.getTimestamp());
             totalVo.setTotal(total);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("SearchUnscopedByProjIdLastIdUpdateAtGt" + "[" + apiMeasureZoneResultTotalReqV2.getList_id() + "],error:" + e.getMessage());
             throw new Exception("读取数据失败，code:zone_total");
         }
@@ -541,7 +550,6 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     }
 
     /**
-     *
      * @param measureZoneResult
      * @return
      */
@@ -550,7 +558,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         resultListVo.setArea_id(measureZoneResult.getAreaId());
         resultListVo.setArea_path_and_id(measureZoneResult.getAreaPathAndId());
         resultListVo.setCategory_key(measureZoneResult.getCategoryKey());
-        resultListVo.setDelete_at(measureZoneResult.getDeleteAt() ==  null ? 0 : measureZoneResult.getDeleteAt().getTime());
+        resultListVo.setDelete_at(measureZoneResult.getDeleteAt() == null ? 0 : measureZoneResult.getDeleteAt().getTime());
         resultListVo.setId(measureZoneResult.getId());
         resultListVo.setList_id(measureZoneResult.getListId());
         resultListVo.setCategory_path_and_key(measureZoneResult.getCategoryPathAndKey());
@@ -580,7 +588,6 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     }
 
     /**
-     *
      * @param textResult
      * @return
      */
@@ -589,7 +596,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         textResultVo.setRecorder_id(textResult.getInteger("RecorderId"));
         textResultVo.setScore(textResult.getDouble("Score"));
         textResultVo.setTexture(textResult.getString("Texture"));
-        textResultVo.setUpdate_at(textResult.getDate("UpdateAt") == null ? 0 :textResult.getDate("UpdateAt").getTime());
+        textResultVo.setUpdate_at(textResult.getDate("UpdateAt") == null ? 0 : textResult.getDate("UpdateAt").getTime());
         List<SinglePointTestVo> d = new ArrayList<>();
         String data = textResult.getString("Data");
         if (StringUtils.isNotBlank(data)) {
@@ -605,7 +612,6 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     }
 
     /**
-     *
      * @param singlePointTest
      * @return
      */
@@ -618,7 +624,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         singlePointTestVo.setSeq(singlePointTest.getString("Seq"));
         singlePointTestVo.setOk_total(singlePointTest.getInteger("OkTotal"));
         singlePointTestVo.setTotal(singlePointTest.getInteger("Total"));
-        List<Object> data = (List<Object>)singlePointTest.get("Data");
+        List<Object> data = (List<Object>) singlePointTest.get("Data");
         if (data != null) {
             data.forEach(d -> {
                 singlePointTestVo.setData(singlePointTestVo.getData() == null ? "" + "," + d : singlePointTestVo.getData() + "," + d);
@@ -626,11 +632,11 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         }
         if (!",".equals(singlePointTestVo.getData()) && StringUtils.isNotBlank(singlePointTestVo.getData())) {
             singlePointTestVo.setData(singlePointTestVo.getData().substring(1));
-        }else {
+        } else {
             singlePointTestVo.setData("");
         }
         singlePointTestVo.setData(singlePointTestVo.getData().substring(1));
-        List<Object> deviation = (List<Object>)singlePointTest.get("Deviation");
+        List<Object> deviation = (List<Object>) singlePointTest.get("Deviation");
         if (deviation != null) {
             deviation.forEach(d -> {
                 singlePointTestVo.setDeviation(singlePointTestVo.getDeviation() == null ? "" + "," + d : singlePointTestVo.getDeviation() + "," + d);
@@ -638,66 +644,62 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         }
         if (!",".equals(singlePointTestVo.getDeviation()) && StringUtils.isNotBlank(singlePointTestVo.getDeviation())) {
             singlePointTestVo.setDeviation(singlePointTestVo.getDeviation().substring(1));
-        }else {
+        } else {
             singlePointTestVo.setDeviation("");
         }
         return singlePointTestVo;
     }
 
     /**
-     *
      * @param measureRepairerUser
      * @return
      */
     private RepairerListVo converMeasureRepairerUserToRepairerListVo(MeasureRepairerUser measureRepairerUser) {
         RepairerListVo repairerListVo = new RepairerListVo();
-        repairerListVo.setDelete_at(measureRepairerUser.getDeleteAt() ==  null ? 0 : measureRepairerUser.getDeleteAt().getTime());
+        repairerListVo.setDelete_at(measureRepairerUser.getDeleteAt() == null ? 0 : measureRepairerUser.getDeleteAt().getTime());
         repairerListVo.setId(measureRepairerUser.getId());
         repairerListVo.setList_id(measureRepairerUser.getListId());
         repairerListVo.setProject_id(measureRepairerUser.getProjectId());
         repairerListVo.setRole_type(measureRepairerUser.getRoleType());
-        repairerListVo.setUpdate_at(measureRepairerUser.getUpdateAt() == null ? 0 :measureRepairerUser.getUpdateAt().getTime());
+        repairerListVo.setUpdate_at(measureRepairerUser.getUpdateAt() == null ? 0 : measureRepairerUser.getUpdateAt().getTime());
         repairerListVo.setUser_id(measureRepairerUser.getUserId());
         return repairerListVo;
     }
 
     /**
-     *
      * @param measureSquadUser
      * @return
      */
     private SquadUserListVo converMeasureSquadUserToSquadUserListVo(MeasureSquadUser measureSquadUser) {
         SquadUserListVo squadUserListVo = new SquadUserListVo();
-        squadUserListVo.setDelete_at(measureSquadUser.getDeleteAt() ==  null ? 0 : measureSquadUser.getDeleteAt().getTime());
+        squadUserListVo.setDelete_at(measureSquadUser.getDeleteAt() == null ? 0 : measureSquadUser.getDeleteAt().getTime());
         squadUserListVo.setId(measureSquadUser.getId());
         squadUserListVo.setList_id(measureSquadUser.getListId());
         squadUserListVo.setProject_id(measureSquadUser.getProjectId());
         squadUserListVo.setSquad_id(measureSquadUser.getSquadId());
-        squadUserListVo.setUpdate_at(measureSquadUser.getUpdateAt() ==  null ? 0 : measureSquadUser.getUpdateAt().getTime());
+        squadUserListVo.setUpdate_at(measureSquadUser.getUpdateAt() == null ? 0 : measureSquadUser.getUpdateAt().getTime());
         squadUserListVo.setUser_id(measureSquadUser.getUserId());
         return squadUserListVo;
     }
 
     /**
-     *
      * @param measureSquad
      * @return
      */
     private SquadListVo converMeasureSquadToSquadListVo(MeasureSquad measureSquad) {
         SquadListVo squadListVo = new SquadListVo();
-        squadListVo.setDelete_at(measureSquad.getDeleteAt() ==  null ? 0 : measureSquad.getDeleteAt().getTime());
+        squadListVo.setDelete_at(measureSquad.getDeleteAt() == null ? 0 : measureSquad.getDeleteAt().getTime());
         squadListVo.setId(measureSquad.getId());
         squadListVo.setList_id(measureSquad.getListId());
         squadListVo.setName(measureSquad.getName());
         squadListVo.setPlan_rate(measureSquad.getPlanRate());
         squadListVo.setProject_id(measureSquad.getProjectId());
         squadListVo.setRate(measureSquad.getRate());
-        squadListVo.setUpdate_at(measureSquad.getUpdateAt() ==  null ? 0 : measureSquad.getUpdateAt().getTime());
+        squadListVo.setUpdate_at(measureSquad.getUpdateAt() == null ? 0 : measureSquad.getUpdateAt().getTime());
         return squadListVo;
     }
 
     /**
-     *
      * @param regionRel
      * @return
      */
@@ -714,6 +716,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
 
     /**
      * 手动转换
+     *
      * @param region
      * @return
      */
@@ -721,7 +724,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         RegionListVo regionListVo = new RegionListVo();
         regionListVo.setArea_id(region.getAreaId());
         regionListVo.setArea_path_and_id(region.getAreaPathAndId());
-        regionListVo.setDelete_at(region.getDeleteAt() ==  null ? 0 : region.getDeleteAt().getTime());
+        regionListVo.setDelete_at(region.getDeleteAt() == null ? 0 : region.getDeleteAt().getTime());
         regionListVo.setDrawing_md5(region.getDrawingMd5());
         regionListVo.setId(region.getId());
         regionListVo.setProject_id(region.getProjectId());
@@ -729,7 +732,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         regionListVo.setRel_id(region.getRelId());
         regionListVo.setSrc_type(region.getSrcType());
         regionListVo.setTag_id_list(region.getTagIdList());
-        regionListVo.setUpdate_at(region.getUpdateAt() ==  null ? 0 : region.getUpdateAt().getTime());
+        regionListVo.setUpdate_at(region.getUpdateAt() == null ? 0 : region.getUpdateAt().getTime());
         regionListVo.setUuid(region.getUuid());
         JSONObject polygon = JSON.parseObject(region.getPolygon());
         PolygonVo polygonVo = new PolygonVo();
