@@ -47,4 +47,37 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
         }
         return measureRegionMapper.searchByUuids(projId,uuids);
     }
+
+    @Override
+    public List<MeasureRegion> createRegionsFromRegionStructList(Integer projectId,List<MeasureRegion> measureRegions) throws Exception {
+        Set<Integer> areaIds = new HashSet<>();
+        measureRegions.forEach(measureRegion -> {
+            areaIds.add(measureRegion.getAreaId());
+        });
+        List<MeasureRegion> measureRegionLists = new ArrayList<>();
+        try{
+            Map<Integer,Integer> indexMap= measureRegionMapper.searchMeasureRegionAreaMaxIndexByAreaIdList(projectId,areaIds);
+            measureRegions.forEach(measureRegion -> {
+                if(indexMap.get(measureRegion.getAreaId())==null){
+                    Integer maxIndex = indexMap.get(measureRegion.getAreaId());
+                    maxIndex = 0;
+                }
+            });
+            measureRegions.forEach(measureRegion -> {
+                MeasureRegion newMeasureRegion = new MeasureRegion();
+                newMeasureRegion.setUuid(measureRegion.getUuid());
+                newMeasureRegion.setRegionIndex(indexMap.get(measureRegion.getAreaId()));
+                newMeasureRegion.setAreaId(measureRegion.getAreaId());
+                newMeasureRegion.setSrcType(measureRegion.getSrcType());
+                newMeasureRegion.setAreaPathAndId(measureRegion.getAreaPathAndId());
+                newMeasureRegion.setDrawingMd5(measureRegion.getDrawingMd5());
+                newMeasureRegion.setPolygon(measureRegion.getPolygon());
+                measureRegionLists.add(newMeasureRegion);
+            });
+            measureRegionMapper.InsertObjectsNoAffectedErr(measureRegionLists);
+        }catch (Exception e){
+            throw new Exception(e);
+        }
+        return measureRegionLists;
+    }
 }

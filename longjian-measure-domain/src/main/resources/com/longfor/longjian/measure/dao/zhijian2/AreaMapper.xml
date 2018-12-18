@@ -63,4 +63,13 @@
     AND father_id = #{areaId}
     AND delete_at IS NULL
   </select>
+  <select id="getAreaByIds" resultMap="BaseResultMap">
+    select
+    id, project_id, `name`, custom_code, path, type, area_class_id, is_lock, order_by,
+    drawing_md5, father_id, create_at, update_at, delete_at
+    from area where id in
+    <foreach collection="areaIds" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
 </mapper>

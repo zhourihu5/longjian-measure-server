@@ -16,4 +16,10 @@ public interface AreaMapper extends LFMySQLMapper<Area> {
      */
     List<Map<String,Object>> selectByFatherId(@Param("projectId") String project_id, @Param("areaId") String area_id);
 
+    /**
+     *
+     * @param areaIds
+     * @return
+     */
+    List<Area> getAreaByIds(@Param("areaIds") List<Integer> areaIds);
 }

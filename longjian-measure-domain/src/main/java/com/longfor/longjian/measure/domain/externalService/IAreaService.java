@@ -28,4 +28,11 @@ public interface IAreaService {
      * @return
      */
     Area getAreaById(String areaId);
+
+    /**
+     *
+     * @param areaIds
+     * @return
+     */
+    List<Area> getAreaByIds(List<Integer> areaIds);
 }

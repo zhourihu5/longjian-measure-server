@@ -38,4 +38,9 @@ public class AreaServiceImpl implements IAreaService {
         criteria.andIsNull("deleteAt");
         return areaMapper.selectOneByExample(example);
     }
+
+    @Override
+    public List<Area> getAreaByIds(List<Integer> areaIds) {
+        return areaMapper.getAreaByIds(areaIds);
+    }
 }

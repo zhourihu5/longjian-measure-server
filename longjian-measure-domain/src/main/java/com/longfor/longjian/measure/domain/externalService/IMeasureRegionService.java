@@ -49,4 +49,11 @@ public interface IMeasureRegionService {
      * @return
      */
     List<MeasureRegion> searchByUuids(Integer projId, Set<String> keySet);
+    /**
+     *
+     * @param projectId
+     * @param measureRegions
+     * @return
+     */
+    List<MeasureRegion> createRegionsFromRegionStructList(Integer projectId, List<MeasureRegion> measureRegions) throws Exception;
 }

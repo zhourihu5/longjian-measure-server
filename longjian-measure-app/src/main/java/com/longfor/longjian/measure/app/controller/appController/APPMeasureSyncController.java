@@ -237,8 +237,7 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/1460
      * @return
      */
-    @MockOperation
-    @GetMapping(value = "measure/report_zone/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "measure/report_zone/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<DroppedInfoVo> reportZone(ApiMeasureReportZoneReq apiMeasureReportZoneReq){
         return appMeasureSyncService.reportZone(apiMeasureReportZoneReq );
     }

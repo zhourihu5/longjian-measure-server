@@ -119,4 +119,29 @@ WHERE
       #{item}
     </foreach>
   </select>
+  <!--List<MeasureRegion> searchMeasureRegionAreaMaxIndexByAreaIdList(@Param("projectId")Integer projectId, @Param("areaIds")Set<Integer> areaIds);-->
+  <select id="searchMeasureRegionAreaMaxIndexByAreaIdList" resultType="map">
+    select max(region_index) AS max_index
+    from  measure_region where region_index
+    in
+        <foreach collection="areaIds" index="index" item="item" open="(" separator="," close=")">
+           #{item}
+        </foreach>
+    and delete_at is null
+    group by area_id
+
+  </select>
+  <insert id="insertMeasureRegion" parameterType="java.util.List">
+    insert into  measure_region(id, project_id, area_id, area_path_and_id, drawing_md5, polygon, region_index, rel_id,
+    src_type, uuid, tag_id_list, create_at, update_at, delete_at)
+    values
+    <foreach collection ="list" item="measureRegion" index= "index" separator =",">
+      (
+      #{measureRegion.id}, #{measureRegion.projectId},#{measureRegion.areaId},#{measureRegion.areaPathAndId},
+      #{measureRegion.drawingMd5},#{measureRegion.polygon},#{measureRegion.regionIndex},#{measureRegion.relId},
+      #{measureRegion.srcType},#{measureRegion.uuid},#{measureRegion.tagIdList},#{measureRegion.createAt},#{measureRegion.updateAt},
+      #{measureRegion.deleteAt}
+      )
+    </foreach >
+  </insert>
 </mapper>
