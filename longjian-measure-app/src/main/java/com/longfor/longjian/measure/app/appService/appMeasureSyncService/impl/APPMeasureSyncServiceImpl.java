@@ -332,7 +332,6 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         ljBaseResponse.setData(droppedInfoVo);
         return ljBaseResponse;
     }
-
     @Override
     public LjBaseResponse<DroppedInfoVo> reportZone(ApiMeasureReportZoneReq req, HttpServletRequest request) throws Exception {
         ReportStatusEnum reportUuidStatus = ReportStatusEnum.ERROR;
