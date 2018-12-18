@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.app.vo.appMeasureSyncVo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 /**
@@ -7,6 +8,7 @@ import lombok.Data;
  * 2018-11-20
  */
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ReportIssueVo {
     /**
      * ID

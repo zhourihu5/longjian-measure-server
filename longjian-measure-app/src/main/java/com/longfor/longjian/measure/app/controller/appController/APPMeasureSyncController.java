@@ -260,7 +260,7 @@ public class APPMeasureSyncController {
      * @return
      */
     @PostMapping(value = "measure/report_issue/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<ReportIssueVo> reportIssue(ApiMeasureReportIssueReq apiMeasureReportIssueReq, HttpServletRequest request) throws Exception {
+    public LjBaseResponse<DroppedInfoVo> reportIssue(ApiMeasureReportIssueReq apiMeasureReportIssueReq, HttpServletRequest request) throws Exception {
         return appMeasureService.reportIssue(apiMeasureReportIssueReq,request);
     }
 

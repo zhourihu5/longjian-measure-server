@@ -66,7 +66,9 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
 
 
     @Override
-    public LjBaseResponse<ReportIssueVo> reportIssue(ApiMeasureReportIssueReq apiMeasureReportIssueReq, HttpServletRequest request) throws Exception {
+    public LjBaseResponse<DroppedInfoVo> reportIssue(ApiMeasureReportIssueReq apiMeasureReportIssueReq, HttpServletRequest request) throws Exception {
+        LjBaseResponse<DroppedInfoVo> ljBaseResponse = new LjBaseResponse<>();
+        DroppedInfoVo droppedInfoVo = new DroppedInfoVo();
         // 检查uuid，没有uuid也可以执行以下代码以保存请求内容
         String reportUuidStatus = KeyProcedureTaskConstant.ERROR;
         // TODO session获取uid
@@ -77,7 +79,9 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             keyProcedureTaskAppService.updateReportStatus(apiMeasureReportIssueReq.getReport_uuid(), reportUuidStatus);
             throw e;
         }
-        return null;
+
+        ljBaseResponse.setData(droppedInfoVo);
+        return ljBaseResponse;
     }
 
     @Override
