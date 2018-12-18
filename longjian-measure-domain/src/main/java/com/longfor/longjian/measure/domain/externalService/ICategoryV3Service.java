@@ -62,4 +62,11 @@ public interface ICategoryV3Service {
      * @return
      */
     Integer countCategoryByFatherKey(String key);
+
+    /**
+     *
+     * @param currentCategoryKey
+     * @return
+     */
+    CategoryV3 getCategoryByKeyNoFoundErr(String currentCategoryKey);
 }

@@ -1,4 +1,4 @@
-package com.longfor.longjian.measure.consts.util;
+package com.longfor.longjian.measure.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

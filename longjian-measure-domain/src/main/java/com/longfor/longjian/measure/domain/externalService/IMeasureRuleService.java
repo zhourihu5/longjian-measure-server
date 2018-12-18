@@ -14,4 +14,11 @@ public interface IMeasureRuleService {
      * @param updateAtDate
      */
     List<MeasureRule> searchUnscopedByTeamIdUpdateAtGt(Integer teamId, Date updateAtDate);
+
+    /**
+     *
+     * @param currentCategoryKey
+     * @return
+     */
+    MeasureRule getByCategoryKey(String currentCategoryKey);
 }

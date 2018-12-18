@@ -275,5 +275,17 @@ WHERE
 	AND zone_uuid = #{zoneUuid}
 	AND squad_id = #{squadId}
 	AND project_id = #{projectId}
+	AND delete_at is null;
+  </select>
+
+  <select id="getByUuid" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM
+    measure_zone_result
+    WHERE
+    uuid = #{uuid}
+    AND project_id = #{projId}
+    AND delete_at is null;
   </select>
 </mapper>

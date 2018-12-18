@@ -9,7 +9,7 @@ import com.longfor.longjian.measure.app.req.paintAreaReq.GetGroupMeasureRegionTa
 import com.longfor.longjian.measure.app.req.paintAreaReq.GetProjMeasureRegionTagReq;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.*;
 import com.longfor.longjian.measure.consts.constant.MeasureTagConstant;
-import com.longfor.longjian.measure.consts.util.ConvertUtil;
+import com.longfor.longjian.measure.util.ConvertUtil;
 import com.longfor.longjian.measure.domain.externalService.IMeasureRegionRelService;
 import com.longfor.longjian.measure.domain.externalService.IMeasureRegionService;
 import com.longfor.longjian.measure.domain.externalService.IMeasureTagService;

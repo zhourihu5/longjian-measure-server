@@ -1,4 +1,4 @@
-package com.longfor.longjian.measure.consts.util;
+package com.longfor.longjian.measure.util;
 
 public class CommonException extends Exception {
 

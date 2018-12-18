@@ -72,4 +72,14 @@ public class MeasureZoneResultServiceImpl implements IMeasureZoneResultService {
     public List<MeasureZoneResult> getByProjIdListIdZoneUuidSquadId(Integer project_id, Integer list_id, String zone_uuid, Integer squad_id) {
         return measureZoneResultMapper.getByProjIdListIdZoneUuidSquadId(project_id, list_id, zone_uuid, squad_id);
     }
+
+    @Override
+    public MeasureZoneResult getByUuid(Integer projId, String uuid) {
+        return measureZoneResultMapper.getByUuid(projId,uuid);
+    }
+
+    @Override
+    public int insertObjectNoAffectedErr(MeasureZoneResult zoneResult) {
+        return measureZoneResultMapper.insertSelective(zoneResult);
+    }
 }

@@ -27,8 +27,8 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, father_key, key, path, cls, name, root_category_id, team_id, order, zj_std_key, 
-    custom_key, desc, node_status, file_md5, create_at, update_at, delete_at
+    id, father_key, `key`, path, cls, `name`, root_category_id, team_id, `order`, zj_std_key,
+    custom_key, `desc`, node_status, file_md5, create_at, update_at, delete_at
   </sql>
 
   <select id="getCategoryByFatherKey" resultType="map">
@@ -88,5 +88,14 @@ FROM
 WHERE
 	delete_at IS NULL
 	AND father_key = #{fatherKey}
+  </select>
+  <select id="getCategoryByKeyNoFoundErr" resultMap="BaseResultMap">
+    SELECT
+	<include refid="Base_Column_List"/>
+FROM
+	category_v3
+WHERE
+	delete_at IS NULL
+	AND `key` = #{key}
   </select>
 </mapper>

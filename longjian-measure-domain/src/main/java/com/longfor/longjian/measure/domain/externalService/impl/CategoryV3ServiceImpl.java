@@ -66,6 +66,11 @@ public class CategoryV3ServiceImpl implements ICategoryV3Service {
         return categoryV3Mapper.countCategoryByFatherKey(key);
     }
 
+    @Override
+    public CategoryV3 getCategoryByKeyNoFoundErr(String currentCategoryKey) {
+        return categoryV3Mapper.getCategoryByKeyNoFoundErr(currentCategoryKey);
+    }
+
     private Map<String, Object> getPathTree(CategoryV3 rootCategory, CategoryV3 rootCategory1, List<CategoryV3> categoryV3s) {
         Map<String, Object> tree = new HashMap<>();
         tree.put("RootCategory",rootCategory);

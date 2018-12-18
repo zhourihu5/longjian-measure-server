@@ -1,4 +1,4 @@
-package com.longfor.longjian.measure.consts.util;
+package com.longfor.longjian.measure.util;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
