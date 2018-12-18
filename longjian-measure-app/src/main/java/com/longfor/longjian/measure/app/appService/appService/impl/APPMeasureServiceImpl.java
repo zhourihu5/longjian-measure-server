@@ -6,12 +6,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureService;
 import com.longfor.longjian.measure.app.appService.appService.IKeyProcedureTaskAppService;
+import com.longfor.longjian.measure.app.kafka.KafkaProducer;
 import com.longfor.longjian.measure.app.req.appReq.*;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.*;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.PolygonVo;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.RegionListVo;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.RelVo;
 import com.longfor.longjian.measure.consts.Enum.ApiDropDataReasonEnum;
+import com.longfor.longjian.measure.consts.Enum.EventQueueEnum;
 import com.longfor.longjian.measure.consts.constant.ApiDropDataReasonConstant;
 import com.longfor.longjian.measure.consts.constant.KeyProcedureTaskConstant;
 import com.longfor.longjian.measure.consts.constant.MeasureListConstant;
@@ -56,6 +58,8 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     private IMeasureZoneService measureZoneService;
     @Autowired
     private ICategoryV3Service categoryV3Service;
+    @Autowired
+    private KafkaProducer kafkaProducer;
 
 
     @Override
@@ -289,12 +293,13 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                     }
                     i ++ ;
                 }
+                msgPkg.add(zoneResult);
             }catch (Exception e){
                 log.warn("zoneResultDao.GetByZoneUuid:" + resultListVo.getZone_uuid());
                 throw e;
             }
         }
-        //todo 消息推送
+        kafkaProducer.produce(EventQueueEnum.PKG_MEASURE_RESULT_CREATED.getValue(), msgPkg);
         return droppedVos;
     }
 

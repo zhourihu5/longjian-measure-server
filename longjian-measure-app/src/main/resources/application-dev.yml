@@ -121,3 +121,84 @@ longfor:
           pool:
             minIdle: 50
             maxActive: 50
+
+kafka:
+#  topic: projectprogress
+  kafka_prefix: '32_lhone'
+  producer:
+    servers: 192.168.96.137:9092,192.168.96.137:9093,192.168.96.137:9094
+    retries: 0
+    batch:
+      size: 4096
+    linger: 1
+    buffer:
+      memory: 40960
+  consumer:
+#    zookeeper:
+#      connect: 192.68.96.137:2181
+    servers:  192.168.96.137:9092,192.168.96.137:9093,192.168.96.137:9094
+    enable:
+      auto:
+        commit: false
+    session:
+      timeout: 6000
+    auto:
+      commit:
+        interval: 100
+      offset:
+        reset: latest
+#    topic: projectprogress
+    group:
+      id: projectprogress
+    concurrency: 10
+
+# 个性化配置
+# 第三方配置
+esi:
+  push_config:
+    ydyf:
+      app_key_android: "58fda806f5ade478aa000973"
+      app_master_secrect_android: "wgi95oajkiuoygw3xuoxkfstmshkubu5"
+      app_key_ios: "59151453677baa73ba0022ef"
+      app_master_secrect_ios: "lw2dyruwghscsdqjkwxs3mnef7bhc4kg"
+      app_secret_xiao_mi: "wYBuYU7pBci+B7WdIOEHCA=="
+      package_name_xiao_mi: "cn.smartinspection.houseqm3"
+    gcgl:
+      app_key_android: "58fdaad39f06fd31f7000b05"
+      app_master_secrect_android: "b9xmdal2wbqlledcpsqhnsu2zvznayrg"
+      app_key_ios: "591514d48f4a9d1942000494"
+      app_master_secrect_ios: "wglml5rrrpkhhsmiudlqobfl1vhacjri"
+      app_secret_xiao_mi: "lL0grnNDGdoRIeTqa4EUXA=="
+      package_name_xiao_mi:  "cn.smartinspection.buildingqm3"
+    gxgl:
+      app_key_android: "57ecce9de0f55acbe6001f68"
+      app_master_secrect_android: "2iaweb5ssaceme9yol7hrtbwbyq0ngix"
+      app_key_ios: "580712d6e0f55a4d61002de8"
+      app_master_secrect_ios: "xvxrx1rqaaulmfw5yfuei9cppptkery2"
+      app_secret_xiao_mi: "vdvG+lOHl8yY7bZR8VRXug=="
+      package_name_xiao_mi:  "cn.smartinspection.keyprocedure.keyprocedure"
+
+    notify_report_addr: https://zj.buildingqm.com/core_srv_notify/data/report/
+  enterprise_id: longhu
+
+# 导出项配置
+export:
+  base_dir: /Users/crazy/py-work/zhijian_scripts/writable
+  #base_dir: C:/tmp
+  base_uri: writable
+  # APP下载地址
+upload_server_addr: https://zj.buildingqm.com
+# 远端服务接口
+api_svcs:
+  USER:
+    addr: http://127.0.0.1:9201/v3/
+  CHECK_ITEM:
+    addr: http://127.0.0.1:9202/v3/
+  AREA:
+    addr: http://127.0.0.1:9202/v3/
+  FILE:
+    addr: http://127.0.0.1:9202/v3/
+  KEY_PROCEDURE_BIG_TASK:
+    addr: http://127.0.0.1:9202/v3/
+  PROJECT:
+    addr: http://127.0.0.1:9202/v3/
