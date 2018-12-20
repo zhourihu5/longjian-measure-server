@@ -12,4 +12,13 @@ public class MeasureListConstant {
     public static String UNCLOSECODE = "1";
     public static String CLOSEDCODE = "2";
 
+    //实测清单爆点问题审核状态
+    /**
+     * 通過
+     */
+    public static final int CheckYes = 1;
+    /**
+     * 不通过
+     */
+    public static final int CheckNo = 1;
 }

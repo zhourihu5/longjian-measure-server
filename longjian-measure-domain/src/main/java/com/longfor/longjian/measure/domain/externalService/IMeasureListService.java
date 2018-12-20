@@ -1,11 +1,13 @@
 package com.longfor.longjian.measure.domain.externalService;
 
 import com.longfor.longjian.measure.po.zhijian2.MeasureList;
+import com.longfor.longjian.measure.po.zhijian2.MeasureSquadUser;
 import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface IMeasureListService {
     /**
@@ -95,4 +97,12 @@ public interface IMeasureListService {
      * @param id1
      */
     void createZoneFromApp(Integer project_id, Integer list_id, String uuid, String uuid1, Integer areaId, String areaPathAndId, String category_key, String s, Integer id, Integer id1);
+
+    /**
+     *
+     * @param currentProjectId
+     * @param listIds
+     * @return
+     */
+    List<MeasureSquadUser> searchMeasureSquadUserByListIds(Integer currentProjectId, Set<Integer> listIds);
 }

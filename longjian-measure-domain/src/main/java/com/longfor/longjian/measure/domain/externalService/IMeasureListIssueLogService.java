@@ -1,9 +1,9 @@
 package com.longfor.longjian.measure.domain.externalService;
 
+import com.longfor.longjian.measure.po.zhijian2.MeasureListIssue;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListIssueLog;
 
 import java.util.List;
-import java.util.Map;
 
 public interface IMeasureListIssueLogService {
     /**
@@ -17,4 +17,18 @@ public interface IMeasureListIssueLogService {
      * @return
      */
     List<MeasureListIssueLog> searchIssueLogListByListIdLastIdTimestampGt(Integer projectId, Integer list_id, Integer last_id, Long timestamp, Integer start, Integer pageSize);
+
+    /**
+     *
+     * @param issueUuid
+     * @return
+     */
+    MeasureListIssue getByUuidUnscoped(String issueUuid);
+
+    /**
+     *
+     * @param needInsertIssueMap
+     * @return
+     */
+    int insertObjects(List<MeasureListIssueLog> needInsertIssueMap);
 }

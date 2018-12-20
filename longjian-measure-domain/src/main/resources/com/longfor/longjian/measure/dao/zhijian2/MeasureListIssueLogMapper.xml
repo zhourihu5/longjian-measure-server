@@ -20,26 +20,14 @@
         <result column="create_at" property="createAt" jdbcType="TIMESTAMP"/>
         <result column="update_at" property="updateAt" jdbcType="TIMESTAMP"/>
         <result column="delete_at" property="deleteAt" jdbcType="TIMESTAMP"/>
-    </resultMap>
-    <resultMap id="ResultMapWithBLOBs" type="com.longfor.longjian.measure.po.zhijian2.MeasureListIssueLog"
-               extends="BaseResultMap">
-        <!--
-          WARNING - @mbg.generated
-        -->
-        <result column="detail" property="detail" jdbcType="LONGVARCHAR"/>
+        <result column="detail" property="detail" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--
           WARNING - @mbg.generated
         -->
         id, attachment_md5_list, category_key, desc, issue_uuid, list_id, project_id, sender_id,
-        status, typ, uuid, client_create_at, create_at, update_at, delete_at
-    </sql>
-    <sql id="Blob_Column_List">
-        <!--
-          WARNING - @mbg.generated
-        -->
-        detail
+        status, typ, uuid, client_create_at, create_at, update_at, delete_at,detail
     </sql>
     <!--List<Map<String,Object>> searchIssueLogListByListIdLastIdTimestampGt(@Param("projectId") Integer projectId, @Param("list_id")Integer list_id, @Param("last_id")Integer last_id, @Param("timestamp")Long timestamp, @Param("start")Integer start, @Param("pageSize")Integer pageSize);-->
     <select id="searchIssueLogListByListIdLastIdTimestampGt" resultMap="BaseResultMap">
@@ -54,5 +42,13 @@
             AND update_at > FROM_UNIXTIME( #{timestamp} )
         </if>
         limit #{start},#{pageSize}
+    </select>
+    <select id="getByUuidUnscoped" resultMap="BaseResultMap">
+      SELECT
+	     <include refid="Base_Column_List"/>
+      FROM
+	     measure_list_issue_log
+      WHERE
+	     uuid = #{uuid}
     </select>
 </mapper>

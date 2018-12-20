@@ -8,6 +8,7 @@ import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
 import com.longfor.longjian.measure.po.zhijian2.MeasureList;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListIssue;
 import com.longfor.longjian.measure.util.DateUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -16,6 +17,7 @@ import java.text.ParseException;
 import java.util.*;
 
 @Service
+@Slf4j
 public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     @Autowired
     private MeasureListIssueMapper measureListIssueMapper;
@@ -117,5 +119,33 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     @Override
     public List<MeasureListIssue> searchIssueListByListIdLastIdTimestampGt(Integer list_id, Integer last_id, Long timestamp, Integer start, Integer pageSize) {
         return measureListIssueMapper.searchIssueListByListIdLastIdTimestampGt(list_id,last_id,timestamp,start,pageSize);
+    }
+
+    @Override
+    public List<MeasureListIssue> searchMeasueListIssueInZoneUuids(Set<String> zoneUuids) {
+        return measureListIssueMapper.searchMeasueListIssueInZoneUuids(zoneUuids);
+    }
+
+    @Override
+    public void insertMeasureListIssueObject(MeasureListIssue issue) {
+        try{
+            boolean has = measureListIssueMapper.getByUuidUnscoped(issue.getUuid()) == null ? false:true;
+            if (has) {
+                //如果存在
+                //如果是已被删除的，应该舍弃掉
+                //如果是未被删除的，应该快速失败，而不执行update
+                Exception err =  new Exception("测区已存在爆点整改信息");
+                log.warn(err.getMessage());
+                throw err;
+            }
+            measureListIssueMapper.insert(issue);
+        }catch (Exception e){
+            log.warn(e.getMessage());
+        }
+    }
+
+    @Override
+    public void updateFullNoAffectedErr(MeasureListIssue issue) {
+        measureListIssueMapper.updateByPrimaryKey(issue);
     }
 }

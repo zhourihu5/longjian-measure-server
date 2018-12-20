@@ -173,4 +173,27 @@ WHERE
         </if>
         limit #{start},#{limit}
     </select>
+
+    <select id="searchMeasueListIssueInZoneUuids" resultMap="BaseResultMap">
+SELECT
+	<include refid="Base_Column_List"/>
+FROM
+	measure_list_issue
+WHERE
+	zone_uuid IN
+        <foreach collection="zoneUuids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+	AND delete_at IS NULL
+    </select>
+
+    <select id="getByUuidUnscoped" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        measure_list_issue
+        WHERE
+        uuid = #{uuid}
+        AND delete_at IS NULL
+    </select>
 </mapper>

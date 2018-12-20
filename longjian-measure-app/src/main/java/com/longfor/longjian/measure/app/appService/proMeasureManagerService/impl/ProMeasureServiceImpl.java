@@ -243,7 +243,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     public LjBaseResponse<BlisterRateInfoVo> getBlisterRateInfo(GetBlisterRateInfoReq getBlisterRateInfoReq) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
         LjBaseResponse<BlisterRateInfoVo> ljBaseResponse = new LjBaseResponse<>();
         Map<String,Object> issue = measureListIssueService.getMeasureListIssueBrief(getBlisterRateInfoReq.getProject_id(),getBlisterRateInfoReq.getMeasure_list_id()
-                ,MeasureListConstant.UNCLOSECODE, MeasureListIssueType.REPAIRABLE,MeasureListIssueType.NOREPAIRABLE,MeasureListIssueType.NOTENOASSIGN,MeasureListIssueType.ASSIGNNOREFORM,MeasureListIssueType.REFORMNOCHECK,MeasureListIssueType.CHECKYES);
+                ,MeasureListConstant.UNCLOSECODE, MeasureListIssueType.REPAIRABLE + "",MeasureListIssueType.NOREPAIRABLE + "",MeasureListIssueType.NOTENOASSIGN + "",MeasureListIssueType.ASSIGNNOREFORM + "",MeasureListIssueType.REFORMNOCHECK + "",MeasureListIssueType.CHECKYES + "");
         BlisterRateInfoVo blisterRateInfoVo = (BlisterRateInfoVo)ConvertUtil.convertMap(BlisterRateInfoVo.class,issue);
         ljBaseResponse.setData(blisterRateInfoVo);
         return ljBaseResponse;
@@ -376,7 +376,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             return null;
         }
         for (Map.Entry<Integer, Integer> entry : statusMap.entrySet()){
-            if (entry.getKey() == Integer.parseInt(MeasureListIssueType.CHECKYES)){
+            if (entry.getKey() == MeasureListIssueType.CHECKYES){
                 areaDist.put("checked_issue_count",entry.getValue());
             }
             Integer issueCount = Integer.parseInt(areaDist.get("issue_count").toString());

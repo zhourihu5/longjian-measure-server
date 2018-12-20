@@ -1,15 +1,19 @@
 package com.longfor.longjian.measure.domain.externalService.impl;
 
 import com.longfor.longjian.measure.dao.zhijian2.MeasureListMapper;
+import com.longfor.longjian.measure.dao.zhijian2.MeasureSquadUserMapper;
 import com.longfor.longjian.measure.dao.zhijian2.MeasureZoneMapper;
 import com.longfor.longjian.measure.domain.externalService.IMeasureListService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureList;
+import com.longfor.longjian.measure.po.zhijian2.MeasureSquadUser;
 import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
+import org.bouncycastle.cms.PasswordRecipientId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class MeasureListServiceImpl implements IMeasureListService {
@@ -18,6 +22,8 @@ public class MeasureListServiceImpl implements IMeasureListService {
     private MeasureListMapper measureListMapper;
     @Autowired
     private MeasureZoneMapper measureZoneMapper;
+    @Autowired
+    private  MeasureSquadUserMapper measureSquadUserMapper;
     @Override
     public List<Map<String, Object>> getMeasureList(Integer finish_status, String q, Integer project_id, String categoryPathAndKey, String areaPathAndId, String[] userIds, Integer page, Integer page_size) {
         page = page - 1;
@@ -76,5 +82,10 @@ public class MeasureListServiceImpl implements IMeasureListService {
         measureZone.setFinishStatus(finishId);
         measureZone.setCloseStatus(closeId);
         measureZoneMapper.insert(measureZone);
+    }
+
+    @Override
+    public List<MeasureSquadUser> searchMeasureSquadUserByListIds(Integer currentProjectId, Set<Integer> listIds) {
+        return measureSquadUserMapper.searchMeasureSquadUserByListIds(currentProjectId,listIds);
     }
 }

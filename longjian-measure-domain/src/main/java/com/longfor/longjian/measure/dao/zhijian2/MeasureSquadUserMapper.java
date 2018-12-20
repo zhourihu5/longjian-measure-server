@@ -5,6 +5,7 @@ import com.longfor.longjian.measure.po.zhijian2.MeasureSquadUser;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Set;
 
 public interface MeasureSquadUserMapper extends LFMySQLMapper<MeasureSquadUser> {
     /**
@@ -15,4 +16,12 @@ public interface MeasureSquadUserMapper extends LFMySQLMapper<MeasureSquadUser> 
      * @return
      */
     List<MeasureSquadUser> searchMeasureSquadUserByListIdTimestampGt(@Param("projectId") Integer projectId, @Param("listId") Integer list_id, @Param("updateAtGt") String updateAtGt);
+
+    /**
+     *
+     * @param currentProjectId
+     * @param listIds
+     * @return
+     */
+    List<MeasureSquadUser> searchMeasureSquadUserByListIds(@Param("currentProjectId") Integer currentProjectId, @Param("listIds") Set<Integer> listIds);
 }

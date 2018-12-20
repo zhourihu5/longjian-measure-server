@@ -2,10 +2,12 @@ package com.longfor.longjian.measure.dao.zhijian2;
 
 import com.longfor.gaia.gfs.data.mybatis.LFMySQLMapper;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListIssue;
+import com.longfor.longjian.measure.po.zhijian2.MeasureSquadUser;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface MeasureListIssueMapper extends LFMySQLMapper<MeasureListIssue> {
 
@@ -87,4 +89,13 @@ public interface MeasureListIssueMapper extends LFMySQLMapper<MeasureListIssue> 
      * @return
      */
     List<MeasureListIssue> searchIssueListByListIdLastIdTimestampGt(@Param("list_id") Integer list_id, @Param("last_id") Integer last_id, @Param("timestamp") Long timestamp, @Param("start") Integer start, @Param("limit") Integer limit);
+
+    /**
+     *
+     * @param zoneUuids
+     * @return
+     */
+    List<MeasureListIssue> searchMeasueListIssueInZoneUuids(@Param("zoneUuids") Set<String> zoneUuids);
+
+    MeasureSquadUser getByUuidUnscoped(@Param("uuid") String uuid);
 }

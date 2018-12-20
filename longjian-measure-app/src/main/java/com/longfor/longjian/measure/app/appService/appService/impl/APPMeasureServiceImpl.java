@@ -6,6 +6,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureService;
 import com.longfor.longjian.measure.app.appService.appService.IKeyProcedureTaskAppService;
+import com.longfor.longjian.measure.app.commonEntity.MeasureListIssueHelper;
+import com.longfor.longjian.measure.app.commonEntity.MeasureListIssueStruct;
 import com.longfor.longjian.measure.app.commonEntity.MeasureZoneResultCreateMsg;
 import com.longfor.longjian.measure.app.kafka.KafkaProducer;
 import com.longfor.longjian.measure.app.req.appReq.*;
@@ -79,7 +81,27 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             keyProcedureTaskAppService.updateReportStatus(apiMeasureReportIssueReq.getReport_uuid(), reportUuidStatus);
             throw e;
         }
-
+        List<MeasureListIssueStruct> datas = new ArrayList<>();
+        log.debug(apiMeasureReportIssueReq.getData());
+        datas = JSONArray.parseArray(apiMeasureReportIssueReq.getData(), MeasureListIssueStruct.class);
+        MeasureListIssueHelper helper = new MeasureListIssueHelper();
+        for (MeasureListIssueStruct v:datas
+             ) {
+            helper.start().
+                    setNormalField(v.getUuid(),v.getList_id(),v.getIssue_uuid(),v.getSender_id(),v.getDesc(),
+                            v.getTyp(),v.getStatus(),v.getAttachment_md5_list(),v.getCategory_key(),Long.parseLong(v.getClient_create_at().toString())).
+                    setDatailField(v.getZone_uuid(),Long.parseLong(v.getPlan_end_on().toString()),Long.parseLong(v.getEnd_on().toString()),v.getRepairer_id(),
+                            v.getCondition(),v.getArea_id(),v.getDrawing_md5(),v.getPos_x(),v.getPos_y(),
+                            v.getClose_status(),v.getClose_user(),Long.parseLong(v.getClose_time().toString()),v.getCheck_status())
+                    .done();
+        }
+        try{
+            helper.execute();
+        }catch (Exception e){
+            throw e;
+        }
+        droppedInfoVo.setDropped(helper.getDroppedIssueLog());
+        reportUuidStatus = KeyProcedureTaskConstant.SUCCEED;
         ljBaseResponse.setData(droppedInfoVo);
         return ljBaseResponse;
     }

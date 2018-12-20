@@ -7,6 +7,7 @@ import com.longfor.longjian.measure.po.zhijian2.MeasureListIssue;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface IMeasureListIssueService {
     /**
@@ -80,4 +81,22 @@ public interface IMeasureListIssueService {
      * @return
      */
     List<MeasureListIssue> searchIssueListByListIdLastIdTimestampGt(Integer list_id, Integer last_id, Long timestamp, Integer start, Integer limit);
+
+    /**
+     *
+     * @param zoneUuids
+     */
+    List<MeasureListIssue> searchMeasueListIssueInZoneUuids(Set<String> zoneUuids);
+
+    /**
+     *
+     * @param value
+     */
+    void insertMeasureListIssueObject(MeasureListIssue value);
+
+    /**
+     *
+     * @param issue
+     */
+    void updateFullNoAffectedErr(MeasureListIssue issue);
 }

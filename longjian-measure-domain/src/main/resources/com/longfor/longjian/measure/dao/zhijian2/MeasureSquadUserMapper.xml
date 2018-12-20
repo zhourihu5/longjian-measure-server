@@ -32,4 +32,17 @@
       AND update_at > #{updateAtGt}
     </if>
   </select>
+
+  <select id="searchMeasureSquadUserByListIds" resultMap="BaseResultMap">
+    SELECT
+	<include refid="Base_Column_List"/>
+    FROM
+	measure_squad_user
+    WHERE
+	project_id = #{currentProjectId}
+	AND list_id IN
+    <foreach collection="listIds" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
 </mapper>
