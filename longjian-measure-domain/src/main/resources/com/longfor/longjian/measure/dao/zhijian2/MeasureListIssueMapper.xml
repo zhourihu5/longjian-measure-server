@@ -45,9 +45,9 @@
           WARNING - @mbg.generated
         -->
         id, area_id, area_path_and_id, attachment_md5_list, category_key, category_path_and_key,
-        repairer_id, sender_id, squad_id, close_status, close_time, close_user, condition,
-        desc, drawing_md5, destroy_at, destroy_user, plan_end_on, end_on, last_assigner,
-        last_assigner_at, list_id, pos_x, pos_y, project_id, status, typ, uuid, region_uuid,
+        repairer_id, sender_id, squad_id, close_status, close_time, close_user, `condition`,
+        `desc`, drawing_md5, destroy_at, destroy_user, plan_end_on, end_on, last_assigner,
+        last_assigner_at, list_id, pos_x, pos_y, project_id, `status`, typ, uuid, region_uuid,
         zone_uuid, client_create_at, create_at, update_at, delete_at
     </sql>
 
@@ -211,5 +211,17 @@ WHERE
 	<if test="status != null">
         AND `status` = #{status}
     </if>
+    </select>
+
+    <select id="searchMeasureListIssueDistributionCategory" resultMap="BaseResultMap">
+SELECT
+	<include refid="Base_Column_List"/>
+FROM
+	measure_list_issue
+WHERE
+	project_id = #{projId}
+	AND list_id = #{listId}
+	AND close_status = #{unclosecode}
+	AND delete_at IS NULL
     </select>
 </mapper>

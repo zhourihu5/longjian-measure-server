@@ -99,13 +99,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
 
     @Override
     public List<MeasureListIssue> searchMeasureListIssueDistributionCategory(Integer project_id, Integer measure_list_id, String unclosecode) {
-        Example example = new Example(MeasureListIssue.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("projectId",project_id);
-        criteria.andEqualTo("listId",measure_list_id);
-        criteria.andEqualTo("closeStatus",unclosecode);
-        criteria.andIsNull("deleteAt");
-        return measureListIssueMapper.selectByExample(example);
+        return measureListIssueMapper.searchMeasureListIssueDistributionCategory(project_id, measure_list_id, unclosecode);
     }
 
     @Override
