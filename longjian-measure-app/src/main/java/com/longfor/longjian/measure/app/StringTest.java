@@ -29,58 +29,14 @@ import java.util.*;
  */
 public class StringTest {
 
-    /**
-     * 1.将字符串转换为char字符数组/
-     * 2.定义一个2维数组.对char字符数组第一层遍历，第二层遍历相邻元素进行比较，如果不相等，则把下标i记录2维数组x，如果相等，则将这时的j记录2维数组y中
-     * 3.继续遍历 得到2维数组
-     * 4。遍历2维数组，找到j-i最大的
-     * 5.截取字符串，参数维i，j
-     */
-
-
-    public static void main(String[] args) {
-        String  a = "sdfaefgcva";
-
-        char[] x = a.toCharArray();
-     /*   for (int i = 0; i <x.length; i++) {
-            System.out.print(x[i]);
-            boolean contains = a.contains(x[i]);
-            if(contains){
-
-            }
-        }*/
-        Map<Character,Object> map=new HashMap<>();
-        for (int i = 0; i <x.length ; i++) {
-            Object o = map.get(x[i]);
-            if(o==null){
-                System.out.print(x[i]);
-                map.put(x[i],x[i]+1);
-            }
-            if(o!=null){
-                return;
-            }
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
+
+
+
+
+
+
+
+
+

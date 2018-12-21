@@ -2,7 +2,9 @@ package com.longfor.longjian.measure.domain.externalService.impl;
 
 import com.longfor.longjian.measure.dao.zhijian2.CategoryV3Mapper;
 import com.longfor.longjian.measure.domain.externalService.ICategoryV3Service;
+import com.longfor.longjian.measure.model.tree.CategoryPathTree;
 import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class CategoryV3ServiceImpl implements ICategoryV3Service {
 
     @Autowired
@@ -46,10 +49,15 @@ public class CategoryV3ServiceImpl implements ICategoryV3Service {
     }
 
     @Override
-    public Map<String, Object> getPathTreeByRootCategory(CategoryV3 rootCategory) {
-        List<CategoryV3> categoryV3s = searchByRootCategoryId(rootCategory.getId());
-        Map<String, Object> tree = getPathTree(rootCategory,rootCategory,categoryV3s);
-        return null;
+    public CategoryPathTree getPathTreeByRootCategory(CategoryV3 rootCategory) {
+        CategoryPathTree tree = null;
+        try {
+            List<CategoryV3> categoryV3s = searchByRootCategoryId(rootCategory.getId());
+            tree = getPathTree(rootCategory, rootCategory, categoryV3s);
+        }catch (Exception e){
+            log.warn(e.getMessage());
+        }
+        return tree;
     }
 
     @Override
@@ -71,10 +79,12 @@ public class CategoryV3ServiceImpl implements ICategoryV3Service {
         return categoryV3Mapper.getCategoryByKeyNoFoundErr(currentCategoryKey);
     }
 
-    private Map<String, Object> getPathTree(CategoryV3 rootCategory, CategoryV3 rootCategory1, List<CategoryV3> categoryV3s) {
-        Map<String, Object> tree = new HashMap<>();
-        tree.put("RootCategory",rootCategory);
-//        tree.put("Root",)
-        return null;
+    private CategoryPathTree getPathTree(CategoryV3 rootCategory, CategoryV3 root, List<CategoryV3> items) {
+
+        CategoryPathTree tree = new CategoryPathTree(rootCategory,root);
+        items.forEach(item -> {
+            tree.addNode(item);
+        });
+        return tree;
     }
 }

@@ -97,5 +97,21 @@ public interface MeasureListIssueMapper extends LFMySQLMapper<MeasureListIssue> 
      */
     List<MeasureListIssue> searchMeasueListIssueInZoneUuids(@Param("zoneUuids") Set<String> zoneUuids);
 
+    /**
+     *
+     * @param uuid
+     * @return
+     */
     MeasureSquadUser getByUuidUnscoped(@Param("uuid") String uuid);
+
+    /**
+     *
+     * @param project_id
+     * @param measure_list_id
+     * @param unclosecode
+     * @param categoryPathAndKey
+     * @param status
+     * @return
+     */
+    Integer searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(@Param("projectId") Integer project_id, @Param("listId") Integer measure_list_id, @Param("unclosecode") String unclosecode, @Param("categoryPathAndKey") String categoryPathAndKey, @Param("status") Integer status);
 }

@@ -99,4 +99,15 @@ public interface IMeasureListIssueService {
      * @param issue
      */
     void updateFullNoAffectedErr(MeasureListIssue issue);
+
+    /**
+     *
+     * @param project_id
+     * @param measure_list_id
+     * @param unclosecode
+     * @param categoryPathAndKey
+     * @param status
+     * @return
+     */
+    Integer searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(Integer project_id, Integer measure_list_id, String unclosecode, String categoryPathAndKey, Integer status);
 }

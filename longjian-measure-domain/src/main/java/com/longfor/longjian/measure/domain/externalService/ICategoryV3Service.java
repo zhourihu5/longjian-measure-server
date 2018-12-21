@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.domain.externalService;
 
+import com.longfor.longjian.measure.model.tree.CategoryPathTree;
 import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
 
 import java.util.List;
@@ -47,7 +48,7 @@ public interface ICategoryV3Service {
      * @param rootCategory
      * @return
      */
-    Map<String, Object> getPathTreeByRootCategory(CategoryV3 rootCategory);
+    CategoryPathTree getPathTreeByRootCategory(CategoryV3 rootCategory);
 
     /**
      * 取出所有的category子项

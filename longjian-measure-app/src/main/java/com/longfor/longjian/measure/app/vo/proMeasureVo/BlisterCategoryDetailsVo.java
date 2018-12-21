@@ -19,7 +19,7 @@ public class BlisterCategoryDetailsVo {
     /**
      * 是否叶子节点，是表示没有下级菜单
      */
-    private boolean is_leaf;
+    private Boolean is_leaf;
     /**
      * 问题数量
      */

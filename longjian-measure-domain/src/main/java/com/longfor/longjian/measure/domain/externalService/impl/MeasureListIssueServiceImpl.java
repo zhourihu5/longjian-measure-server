@@ -5,7 +5,6 @@ import com.longfor.longjian.measure.dao.zhijian2.MeasureZoneMapper;
 import com.longfor.longjian.measure.domain.externalService.IMeasureListIssueService;
 import com.longfor.longjian.measure.po.zhijian2.Area;
 import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
-import com.longfor.longjian.measure.po.zhijian2.MeasureList;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListIssue;
 import com.longfor.longjian.measure.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -147,5 +146,10 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     @Override
     public void updateFullNoAffectedErr(MeasureListIssue issue) {
         measureListIssueMapper.updateByPrimaryKey(issue);
+    }
+
+    @Override
+    public Integer searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(Integer project_id, Integer measure_list_id, String unclosecode, String categoryPathAndKey, Integer status) {
+        return measureListIssueMapper.searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(project_id, measure_list_id, unclosecode, categoryPathAndKey,status);
     }
 }

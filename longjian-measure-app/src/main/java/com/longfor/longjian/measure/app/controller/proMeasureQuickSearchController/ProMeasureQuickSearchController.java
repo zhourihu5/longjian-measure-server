@@ -165,7 +165,6 @@ public class ProMeasureQuickSearchController {
     /**
      * go项目实测快速查询爆点情况检查项
      * http://192.168.37.159:3000/project/8/interface/api/260
-     * todo
      * @param getBlisterRateCheckItemsReq
      * @return
      */

@@ -12,6 +12,8 @@ import com.longfor.longjian.measure.app.vo.ItemsVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.*;
 import com.longfor.longjian.measure.consts.constant.CategoryClsTypeConstant;
 import com.longfor.longjian.measure.consts.constant.MeasureListIssueType;
+import com.longfor.longjian.measure.model.tree.CategoryPathTree;
+import com.longfor.longjian.measure.model.tree.CategoryPathTreeNode;
 import com.longfor.longjian.measure.util.ConvertUtil;
 import com.longfor.longjian.measure.util.DateUtil;
 import com.longfor.longjian.measure.util.LambdaExceptionUtil;
@@ -278,15 +280,13 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     public LjBaseResponse<BlisterCheckItemsVo> getBlisterRateCheckItems(GetBlisterRateCheckItemsReq getBlisterRateCheckItemsReq) {
         LjBaseResponse<BlisterCheckItemsVo> ljBaseResponse = new LjBaseResponse<>();
         BlisterCheckItemsVo blisterCheckItemsVo = new BlisterCheckItemsVo();
-        List<BlisterCategoryDetailsVo> items = new ArrayList<>();
         if (StringUtils.isBlank(getBlisterRateCheckItemsReq.getCategory_key())){
             //如果没传父集..取root
             Integer count = measureListIssueService.countMeasureListIssueDistributionCategory(getBlisterRateCheckItemsReq.getProject_id(),getBlisterRateCheckItemsReq.getMeasure_list_id(),MeasureListConstant.UNCLOSECODE);
             blisterCheckItemsVo.setTotal(count);
         }
-        //TODO 不会做了
-        List<Map<String,Object>> blisterCategoryDetailss = searchMeasureListIssueDistributionCategory(getBlisterRateCheckItemsReq);
-        blisterCheckItemsVo.setItems(items);
+        List<BlisterCategoryDetailsVo> blisterCategoryDetailss = searchMeasureListIssueDistributionCategory(getBlisterRateCheckItemsReq);
+        blisterCheckItemsVo.setItems(blisterCategoryDetailss);
         ljBaseResponse.setData(blisterCheckItemsVo);
         return ljBaseResponse;
     }
@@ -434,7 +434,8 @@ public class ProMeasureServiceImpl implements IProMeasureService {
      * @param getBlisterRateCheckItemsReq
      * @return
      */
-    private List<Map<String, Object>> searchMeasureListIssueDistributionCategory(GetBlisterRateCheckItemsReq getBlisterRateCheckItemsReq) {
+    private List<BlisterCategoryDetailsVo> searchMeasureListIssueDistributionCategory(GetBlisterRateCheckItemsReq getBlisterRateCheckItemsReq) {
+        List<BlisterCategoryDetailsVo> r = new ArrayList<>();
         List<MeasureListIssue> issues = measureListIssueService.searchMeasureListIssueDistributionCategory(getBlisterRateCheckItemsReq.getProject_id(),getBlisterRateCheckItemsReq.getMeasure_list_id(),MeasureListConstant.UNCLOSECODE);
         if (issues == null || issues.size() <= 0){
             return null;
@@ -449,10 +450,65 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             categoryKeys.add(entry.getValue());
         }
         if (StringUtils.isBlank(getBlisterRateCheckItemsReq.getCategory_key())){
-            //获取顶级检查项
-            List<CategoryV3> categoryV3s = SearchCategoryTopByCategoryKeyIn(categoryKeys);
+            try {
+                //获取顶级检查项
+                List<CategoryV3> categoryV3s = searchCategoryTopByCategoryKeyIn(categoryKeys);
+                int count = categoryV3s.size();
+                if (count <= 0){
+                    return null;
+                }
+
+                categoryV3s.forEach(category -> {
+                    String categoryPathAndKey = category.childPath();
+                    BlisterCategoryDetailsVo res = searchMeasureListIssueDistributionCategorys(getBlisterRateCheckItemsReq.getProject_id(),getBlisterRateCheckItemsReq.getMeasure_list_id(),categoryPathAndKey);
+                    res.setCategory_key(category.getKey());
+                    res.setCategory_name(category.getName());
+                    r.add(res);
+                });
+            }catch (Exception e){
+                log.warn(e + "");
+                throw e;
+            }
+        }else {
+            try {
+                List<CategoryV3> categorys = categoryV3Service.searchSubCategoryByFatherKey(getBlisterRateCheckItemsReq.getCategory_key());
+                categorys.forEach(category -> {
+                    String categoryPathAndKey = category.childPath();
+                    BlisterCategoryDetailsVo res = searchMeasureListIssueDistributionCategorys(getBlisterRateCheckItemsReq.getProject_id(),getBlisterRateCheckItemsReq.getMeasure_list_id(),categoryPathAndKey);
+                    res.setCategory_key(category.getKey());
+                    res.setCategory_name(category.getName());
+                    Integer count = categoryV3Service.countCategoryByFatherKey(category.getKey());
+                    if (count <= 0){
+                        res.setIs_leaf(true);
+                    }
+                    r.add(res);
+                });
+            }catch (Exception e){
+                log.warn(e + "");
+                throw e;
+            }
         }
-        return null;
+        return r;
+    }
+
+    private BlisterCategoryDetailsVo searchMeasureListIssueDistributionCategorys(Integer project_id, Integer measure_list_id, String categoryPathAndKey) {
+        BlisterCategoryDetailsVo r = new BlisterCategoryDetailsVo();
+        //查找问题数
+        try {
+            Integer count = measureListIssueService.searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(project_id, measure_list_id, MeasureListConstant.UNCLOSECODE, categoryPathAndKey, null);
+            r.setIssue_count(count);
+            count = measureListIssueService.searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(project_id, measure_list_id, MeasureListConstant.UNCLOSECODE, categoryPathAndKey, MeasureListIssueType.NOTENOASSIGN);
+            r.setNote_no_assign(count);
+            count = measureListIssueService.searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(project_id, measure_list_id, MeasureListConstant.UNCLOSECODE, categoryPathAndKey, MeasureListIssueType.ASSIGNNOREFORM);
+            r.setAssign_no_reform(count);
+            count = measureListIssueService.searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(project_id, measure_list_id, MeasureListConstant.UNCLOSECODE, categoryPathAndKey, MeasureListIssueType.REFORMNOCHECK);
+            r.setReform_no_check(count);
+            count = measureListIssueService.searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(project_id, measure_list_id, MeasureListConstant.UNCLOSECODE, categoryPathAndKey, MeasureListIssueType.CHECKYES);
+            r.setCheck_yes(count);
+        }catch (Exception e){
+            throw e;
+        }
+        return r;
     }
 
     /**
@@ -460,34 +516,63 @@ public class ProMeasureServiceImpl implements IProMeasureService {
      * @param categoryKeys
      * @return
      */
-    private List<CategoryV3> SearchCategoryTopByCategoryKeyIn(List<String> categoryKeys) {
+    private List<CategoryV3> searchCategoryTopByCategoryKeyIn(List<String> categoryKeys) {
         List<CategoryV3> categoryV3s = categoryV3Service.getCategoryByKeys(categoryKeys);
         List<String> rootCategoryIds = new ArrayList<>();
         categoryV3s.forEach(categoryV3 -> {
             rootCategoryIds.add(categoryV3.getRootCategoryId().toString());
         });
         List<CategoryV3> rootCategorys = categoryV3Service.getCategoryByKeys(rootCategoryIds);
-        Map<Integer,Map<String,Object>> trees = new HashMap<>();
+        Map<Integer, CategoryPathTree> trees = new HashMap<>();
         rootCategorys.forEach(rootCategory -> {
-            trees.put(rootCategory.getId(),getPathTreeByRootCategory(rootCategory));
+            try {
+                trees.put(rootCategory.getId(), getPathTreeByRootCategory(rootCategory));
+            }catch (Exception e){
+                log.warn(e.getMessage());
+                throw e;
+            }
         });
-        return null;
+        Map<Integer,CategoryV3> tops = new HashMap<>();
+        for (CategoryV3 category:categoryV3s
+             ) {
+            CategoryPathTree tree = trees.get(category.getRootCategoryId());
+            if (tree == null){
+                continue;
+            }
+            try {
+                CategoryPathTreeNode top = tree.findTop(category.childPath());
+                if (top == null){
+                    continue;
+                }
+                tops.put(top.getItem().getId(),top.getItem());
+            }catch (Exception e){
+                log.warn(e + "");
+                throw e;
+            }
+        }
+        return new ArrayList<>(tops.values());
     }
 
-    /**
-     *
-     * @param rootCategory
-     * @return
-     */
-    private Map<String, Object> getPathTreeByRootCategory(CategoryV3 rootCategory) {
-        List<CategoryV3> categoryV3s = categoryV3Service.searchByRootCategoryId(rootCategory.getId());
-        categoryV3s.add(rootCategory);
-        Map<String,String> categoryPathMap = new HashMap<>();
-        categoryV3s.forEach(categoryV3 -> {
-            categoryPathMap.put(categoryV3.getKey(),categoryV3.getPath()+categoryV3.getKey() + "/");
-        });
-        Map<String, Object> tree = categoryV3Service.getPathTreeByRootCategory(rootCategory);
-        return null;
+//    /**
+//     *
+//     * @param rootCategory
+//     * @return
+//     */
+    private CategoryPathTree getPathTreeByRootCategory(CategoryV3 rootCategory) {
+        CategoryPathTree tree = null;
+        try {
+            List<CategoryV3> categoryV3s = categoryV3Service.searchByRootCategoryId(rootCategory.getId());
+            categoryV3s.add(rootCategory);
+            Map<String,String> categoryPathMap = new HashMap<>();
+            categoryV3s.forEach(categoryV3 -> {
+                 categoryPathMap.put(categoryV3.getKey(),categoryV3.getPath()+categoryV3.getKey() + "/");
+            });
+            tree = categoryV3Service.getPathTreeByRootCategory(rootCategory);
+        }catch (Exception e){
+            log.warn(e.getMessage());
+            throw e;
+        }
+        return tree;
     }
 
     /**

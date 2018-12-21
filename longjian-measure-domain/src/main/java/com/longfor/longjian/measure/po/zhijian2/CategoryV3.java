@@ -5,6 +5,14 @@ import javax.persistence.*;
 
 @Table(name = "category_v3")
 public class CategoryV3 {
+    public CategoryV3(){
+
+    }
+
+    public CategoryV3(String path){
+        this.path = path;
+    }
+
     /**
      * 检查项ID
      */
@@ -409,5 +417,9 @@ public class CategoryV3 {
      */
     public void setDeleteAt(Date deleteAt) {
         this.deleteAt = deleteAt;
+    }
+
+    public String childPath(){
+        return this.getPath() + this.getKey() + "/";
     }
 }

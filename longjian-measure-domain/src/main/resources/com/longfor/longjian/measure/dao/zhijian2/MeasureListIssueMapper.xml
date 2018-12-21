@@ -196,4 +196,20 @@ WHERE
         uuid = #{uuid}
         AND delete_at IS NULL
     </select>
+
+    <select id="searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike" resultType="int">
+SELECT
+	count( id )
+FROM
+	measure_list_issue
+WHERE
+	project_id = #{projectId}
+	AND list_id = #{listId}
+	AND close_status = #{unclosecode}
+	AND category_path_and_key LIKE CONCAT( #{categoryPathAndKey}, '%' )
+	AND delete_at IS NULL
+	<if test="status != null">
+        AND `status` = #{status}
+    </if>
+    </select>
 </mapper>
