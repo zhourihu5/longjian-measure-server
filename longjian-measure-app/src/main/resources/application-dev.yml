@@ -42,6 +42,16 @@ longfor:
       logs:
         enabled: true # default false
         reportFrequency: 60 # default 60
+    feign:
+      clients:
+        longjian-basic-server:
+          permission:
+            url: http://10.238.63.167:8083/uc/inner/
+        config:
+          permission:
+            connectTimeout: 5000
+            readTimeout: 5000
+
   data:
     pagehelper:
       helperDialect: mysql
@@ -202,3 +212,4 @@ api_svcs:
     addr: http://127.0.0.1:9202/v3/
   PROJECT:
     addr: http://127.0.0.1:9202/v3/
+

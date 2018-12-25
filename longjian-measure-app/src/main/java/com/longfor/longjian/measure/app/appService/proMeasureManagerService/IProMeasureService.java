@@ -9,6 +9,7 @@ import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.*;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
@@ -18,9 +19,10 @@ public interface IProMeasureService  {
     /**
      * 项目.实测实量.任务管理.查看
      * @param getProMeasurePlanListReq
+     * @param request
      * @return
      */
-    LjBaseResponse<ProMeasurePlanListVo> getProMeasurePlanList(GetProMeasurePlanListReq getProMeasurePlanListReq) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException, ParseException;
+    LjBaseResponse<ProMeasurePlanListVo> getProMeasurePlanList(GetProMeasurePlanListReq getProMeasurePlanListReq, HttpServletRequest request) throws Exception;
 
     /**
      * go项目实测任务列表请求检查项
