@@ -63,7 +63,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     public LjBaseResponse<ProMeasurePlanListVo> getProMeasurePlanList(GetProMeasurePlanListReq getProMeasurePlanListReq, HttpServletRequest request) throws Exception {
         LjBaseResponse<ProMeasurePlanListVo> ljBaseResponse = new LjBaseResponse<>();
         ProMeasurePlanListVo proMeasurePlanListVo = new ProMeasurePlanListVo();
-        ctrlTool.ProjPerm(request,"项目.实测实量.任务管理.查看");
+        ctrlTool.projPerm(request,"项目.实测实量.任务管理.查看");
         String [] userIds = null;
         if (StringUtils.isNotBlank(getProMeasurePlanListReq.getUser_ids())){
             userIds = getProMeasurePlanListReq.getUser_ids().split(",");
