@@ -3,7 +3,7 @@ package com.longfor.longjian.measure.app.commonEntity;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.longfor.gaia.gfs.data.mybatis.toolkit.LFDataSourceContextHolder;
-import com.longfor.longjian.measure.app.kafka.KafkaProducer;
+import com.longfor.longjian.common.kafka.KafkaProducer;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.DroppedVo;
 import com.longfor.longjian.measure.consts.Enum.ApiDropDataReasonEnum;
 import com.longfor.longjian.measure.consts.Enum.EventQueueEnum;

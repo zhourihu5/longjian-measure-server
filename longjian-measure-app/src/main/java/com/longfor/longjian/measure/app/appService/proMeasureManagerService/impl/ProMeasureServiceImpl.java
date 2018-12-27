@@ -8,7 +8,7 @@ import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureAr
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureCheckItemsReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasurePlanListReq;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.*;
-import com.longfor.longjian.measure.app.tool.CtrlTool;
+import com.longfor.longjian.common.util.CtrlTool;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.*;
 import com.longfor.longjian.measure.consts.constant.CategoryClsTypeConstant;
@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.longfor.longjian.measure.consts.constant.MeasureListConstant;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
@@ -55,12 +56,14 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     private IMeasureZoneResultService measureZoneResultService;
     @Autowired
     private IMeasureSquadService measureSquadService;
+    @Autowired
+    private CtrlTool ctrlTool;
 
     @Override
     public LjBaseResponse<ProMeasurePlanListVo> getProMeasurePlanList(GetProMeasurePlanListReq getProMeasurePlanListReq, HttpServletRequest request) throws Exception {
         LjBaseResponse<ProMeasurePlanListVo> ljBaseResponse = new LjBaseResponse<>();
         ProMeasurePlanListVo proMeasurePlanListVo = new ProMeasurePlanListVo();
-        CtrlTool.ProjPerm(request,"项目.实测实量.任务管理.查看");
+        ctrlTool.ProjPerm(request,"项目.实测实量.任务管理.查看");
         String [] userIds = null;
         if (StringUtils.isNotBlank(getProMeasurePlanListReq.getUser_ids())){
             userIds = getProMeasurePlanListReq.getUser_ids().split(",");
