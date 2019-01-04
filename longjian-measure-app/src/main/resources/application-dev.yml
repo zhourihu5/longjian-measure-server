@@ -51,6 +51,14 @@ longfor:
           permission:
             connectTimeout: 5000
             readTimeout: 5000
+        cas-server:
+          cas:
+            url: http://api.longfor.uat/cas-server-uat
+            apikey: ddd
+          config:
+            cas:
+              connectTimeout: 5000
+              readTimeout: 5000
 
   data:
     pagehelper:
