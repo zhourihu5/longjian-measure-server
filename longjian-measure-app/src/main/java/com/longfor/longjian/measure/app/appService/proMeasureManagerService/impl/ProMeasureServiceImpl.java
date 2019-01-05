@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.app.appService.proMeasureManagerService.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.proMeasureManagerService.IProMeasureService;
@@ -672,8 +673,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
                 measureStatisticSquadsSmallestPassPercentInfoVo.setCategory_name(categoryV3.getName());
                 List<String> squads = new ArrayList<>();
                 sInfos.forEach(squadsInfo -> {
-                    JSONObject squadsInfoJson = (JSONObject) squadsInfo;
-                    squads.add(Float.parseFloat(squadsInfoJson.get("pass_percent").toString()) * 100.0 + "");
+                    squads.add(Float.parseFloat(squadsInfo.get("pass_percent").toString()) * 100.0 + "");
                 });
                 measureStatisticSquadsSmallestPassPercentInfoVo.setSquads(squads);
                 measureStatisticSquadsSmallestPassPercentInfoVos.add(measureStatisticSquadsSmallestPassPercentInfoVo);
@@ -699,8 +699,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
                 measureStatisticSquadsPassDiffLargestInfoVo.setCategory_name(categoryV3.getName());
                 List<String> squads = new ArrayList<>();
                 sInfos.forEach(squadsInfo -> {
-                    JSONObject squadsInfoJson = (JSONObject) squadsInfo;
-                    squads.add(Float.parseFloat(squadsInfoJson.get("pass_percent").toString()) * 100.0 + "");
+                    squads.add(Float.parseFloat(squadsInfo.get("pass_percent").toString()) * 100.0 + "");
                 });
                 measureStatisticSquadsPassDiffLargestInfoVo.setSquads(squads);
                 measureStatisticSquadsPassDiffLargestInfoVos.add(measureStatisticSquadsPassDiffLargestInfoVo);
@@ -767,7 +766,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             squadsVo.setComplete_percent("0");
             squadCounts.forEach(squadCount -> {
                 if (total > 0 && measureSquad.getId().toString().equals(squadCount.get("squadId").toString())){
-                    squadsVo.setComplete_percent(Float.parseFloat(squadCount.get("count").toString()) / Float.parseFloat(total.toString()) * 100.0*100.0 / Float.parseFloat(measureSquad.getPlanRate().toString()) + "");
+                    squadsVo.setComplete_percent((squadCount.get("count") == null ? 0.00 : Float.parseFloat(squadCount.get("count").toString())) / Float.parseFloat(total.toString()) * 100.0*100.0 / Float.parseFloat(measureSquad.getPlanRate().toString()) + "");
                 }
             });
             squadsVos.add(squadsVo);

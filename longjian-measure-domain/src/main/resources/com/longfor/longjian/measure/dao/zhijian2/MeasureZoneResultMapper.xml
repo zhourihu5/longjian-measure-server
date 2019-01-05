@@ -72,7 +72,7 @@
     delete_at IS NULL
     AND list_id = #{listId}
     <if test="categoryKey != null and categoryKey != ''">
-      AND category_key like concat('%',#{category_key},'%')
+      AND category_key like concat('%',#{categoryKey},'%')
     </if>
     GROUP BY squad_id
   </select>
