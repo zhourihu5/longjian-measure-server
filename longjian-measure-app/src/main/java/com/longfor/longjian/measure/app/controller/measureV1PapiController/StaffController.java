@@ -1,4 +1,4 @@
-package com.longfor.longjian.measure.app.controller.papi;
+package com.longfor.longjian.measure.app.controller.measureV1PapiController;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.appService.IStaffService;
