@@ -2,11 +2,11 @@ package com.longfor.longjian.measure.app.appService.paintAreaService.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.longfor.longjian.measure.app.appService.areaService.IAreaService;
+import com.longfor.longjian.measure.app.appService.areaService.ICoreAreaService;
 import com.longfor.longjian.measure.app.appService.paintAreaService.IRegionService;
 import com.longfor.longjian.measure.po.zhijian2.Area;
-import com.longfor.longjian.measure.po.zhijian2.MeasureList;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +18,7 @@ import java.util.*;
 public class RegionServiceImpl implements IRegionService {
 
     @Resource
-    private IAreaService areaService;
+    private ICoreAreaService coreAreaService;
 
     @Override
     @Transactional
@@ -36,7 +36,7 @@ public class RegionServiceImpl implements IRegionService {
         //area_id_list = area_id_set 不理解为啥set转换list
         List area_id_list = new ArrayList(area_id_set);
         //查询area信息, 用id建立map关系
-        List<Area> area_list = areaService.searchByIdList(project_id,area_id_list);
+        List<Area> area_list = coreAreaService.searchByIdList(project_id,area_id_list);
 
     }
 }

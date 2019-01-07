@@ -1,6 +1,6 @@
 package com.longfor.longjian.measure.app.appService.appService.impl;
 
-import com.longfor.longjian.measure.app.appService.appService.MeasureListService;
+import com.longfor.longjian.measure.app.appService.appService.IMeasureListService;
 import com.longfor.longjian.measure.app.req.MeasureList.*;
 import com.longfor.longjian.measure.app.vo.measureListVo.SetStatusVo;
 import com.longfor.longjian.measure.domain.externalService.*;
@@ -18,10 +18,10 @@ import java.util.Map;
  */
 @Service
 @Slf4j
-public class MeasureListServiceImpl implements MeasureListService {
+public class IMeasureListServiceImpl implements IMeasureListService {
 
     @Resource
-    private IMeasureListService iMeasureListService;
+    private com.longfor.longjian.measure.domain.externalService.IMeasureListService iMeasureListService;
 
     @Resource
     private IMeasureListAreaService IMeasureListAreaService;

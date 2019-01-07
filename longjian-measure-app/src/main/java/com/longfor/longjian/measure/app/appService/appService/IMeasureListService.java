@@ -6,7 +6,7 @@ import com.longfor.longjian.measure.app.vo.measureListVo.SetStatusVo;
 /**
  * Created by Wang on 2019/1/7.
  */
-public interface MeasureListService {
+public interface IMeasureListService {
 
     SetStatusVo setStatus(SetStatusReq setStatusReq);
 
