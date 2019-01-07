@@ -105,4 +105,7 @@ public interface IMeasureListService {
      * @return
      */
     List<MeasureSquadUser> searchMeasureSquadUserByListIds(Integer currentProjectId, Set<Integer> listIds);
+
+    int setStatus(MeasureList  measureList);
+
 }

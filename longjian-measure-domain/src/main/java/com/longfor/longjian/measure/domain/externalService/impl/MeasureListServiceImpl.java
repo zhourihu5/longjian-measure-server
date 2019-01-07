@@ -88,4 +88,9 @@ public class MeasureListServiceImpl implements IMeasureListService {
     public List<MeasureSquadUser> searchMeasureSquadUserByListIds(Integer currentProjectId, Set<Integer> listIds) {
         return measureSquadUserMapper.searchMeasureSquadUserByListIds(currentProjectId,listIds);
     }
+
+    @Override
+    public int setStatus(MeasureList measureList) {
+        return  measureListMapper.updateByPrimaryKey(measureList);
+    }
 }
