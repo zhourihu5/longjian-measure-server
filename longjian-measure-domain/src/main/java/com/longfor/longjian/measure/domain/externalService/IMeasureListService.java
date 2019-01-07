@@ -106,6 +106,13 @@ public interface IMeasureListService {
      */
     List<MeasureSquadUser> searchMeasureSquadUserByListIds(Integer currentProjectId, Set<Integer> listIds);
 
-    int setStatus(MeasureList  measureList);
+    int updateMeasureList(MeasureList  measureList);
+
+    void delete(Integer id);
+
+    void updateFinishStatus(Map<String,Object>map);
+
+    void updateCloseStatus(Map<String,Object>map);
+
 
 }

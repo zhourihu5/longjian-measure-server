@@ -146,4 +146,30 @@
      where project_id
      in(SELECT project_id FROM measure_squad_user WHERE project_id=1 AND delete_at IS NULL)
     </select>
+
+    <!--void updateFinishStatus(Map<String,Object>map);-->
+    <update id="updateFinishStatus">
+
+        update measure_list  set finish_status=#{finish_status}
+
+        where
+
+        <foreach collection="list_ids" separator="," item="item" index="index" open=" id in (" close=")">
+            #{item}
+        </foreach>
+
+    </update>
+
+    <!--void updateCloseStatus(Map<String,Object>map);-->
+    <update id="updateCloseStatus">
+
+        update measure_list  set close_status=#{close_status}
+
+        where
+
+        <foreach collection="list_ids" separator="," item="item" index="index" open=" id in (" close=")">
+            #{item}
+        </foreach>
+
+    </update>
 </mapper>

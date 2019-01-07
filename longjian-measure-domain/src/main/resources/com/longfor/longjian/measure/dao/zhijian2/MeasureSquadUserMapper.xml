@@ -45,4 +45,22 @@
       #{item}
     </foreach>
   </select>
+
+  <update id="deleteOld">
+
+    update  measure_squad_user set delete_at=#{delete_at} where list_id=#{list_id} and squad_id=#{squad_id}
+
+    and project_id = #{projectId}
+
+    <if test="deleteUserIds!=null">
+
+    and user_id in
+
+    <foreach collection="deleteUserIds" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+
+    </if>
+
+  </update>
 </mapper>

@@ -69,4 +69,10 @@ public interface IMeasureZoneService {
      */
     List<MeasureZone> searchZoneByUuid(Integer projId, Set<String> zoneUuids);
 
+    /**
+     *
+     * @param id
+     */
+    void delete (Integer id);
+
 }

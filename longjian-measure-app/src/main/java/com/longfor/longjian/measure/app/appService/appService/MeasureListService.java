@@ -1,6 +1,6 @@
 package com.longfor.longjian.measure.app.appService.appService;
 
-import com.longfor.longjian.measure.app.req.MeasureList.SetStatusReq;
+import com.longfor.longjian.measure.app.req.MeasureList.*;
 import com.longfor.longjian.measure.app.vo.measureListVo.SetStatusVo;
 
 /**
@@ -9,5 +9,13 @@ import com.longfor.longjian.measure.app.vo.measureListVo.SetStatusVo;
 public interface MeasureListService {
 
     SetStatusVo setStatus(SetStatusReq setStatusReq);
+
+    String updateName(UpdateNameReq updateNameReq);
+
+    void delete(DeleteReq deleteReq);
+
+    void updateFinishStatus(UpdateFinishStatusReq updateFinishStatusReq);
+
+    void updateCloseStatus(UpdateCloseStatusReq updateCloseStatusReq);
 
 }

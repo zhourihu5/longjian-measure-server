@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MeasureRepairerUserServiceImpl implements IMeasureRepairerUserService {
@@ -17,5 +18,20 @@ public class MeasureRepairerUserServiceImpl implements IMeasureRepairerUserServi
     @Override
     public List<MeasureRepairerUser> searchMeasureReparierUserByListIdTimestampGt(Integer projectId, Integer list_id, String updateAtGt) {
         return measureRepairerUserMapper.searchMeasureReparierUserByListIdTimestampGt(projectId,list_id,updateAtGt);
+    }
+
+    @Override
+    public List<MeasureRepairerUser> select(MeasureRepairerUser measureRepairerUser) {
+        return measureRepairerUserMapper.select(measureRepairerUser);
+    }
+
+    @Override
+    public void delOld(Map<String, Object> map) {
+        measureRepairerUserMapper.delOld(map);
+    }
+
+    @Override
+    public void insertList(List<MeasureRepairerUser> measureRepairerUsers) {
+        measureRepairerUserMapper.insertList(measureRepairerUsers);
     }
 }
