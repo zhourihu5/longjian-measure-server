@@ -24,6 +24,8 @@ public class MeasureListServiceImpl implements IMeasureListService {
     private MeasureZoneMapper measureZoneMapper;
     @Autowired
     private  MeasureSquadUserMapper measureSquadUserMapper;
+
+
     @Override
     public List<Map<String, Object>> getMeasureList(Integer finish_status, String q, Integer project_id, String categoryPathAndKey, String areaPathAndId, String[] userIds, Integer page, Integer page_size) {
         page = page - 1;
@@ -90,7 +92,24 @@ public class MeasureListServiceImpl implements IMeasureListService {
     }
 
     @Override
-    public int setStatus(MeasureList measureList) {
+    public int updateMeasureList(MeasureList measureList) {
         return  measureListMapper.updateByPrimaryKey(measureList);
     }
+
+    @Override
+    public void delete(Integer id) {
+        measureListMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public void updateFinishStatus(Map<String, Object> map) {
+        measureListMapper.updateFinishStatus(map);
+    }
+
+    @Override
+    public void updateCloseStatus(Map<String, Object> map) {
+        measureListMapper.updateCloseStatus(map);
+    }
+
+
 }

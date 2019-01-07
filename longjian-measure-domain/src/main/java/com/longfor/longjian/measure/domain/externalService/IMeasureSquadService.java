@@ -23,4 +23,14 @@ public interface IMeasureSquadService {
      * @return
      */
     List<MeasureSquad> searchMeasureSquadByListIdTimestampGt(Integer projectId, Integer list_id, String updateAtGt);
+
+    /**
+     *
+     * @param id
+     */
+    void delete (Integer id);
+
+    int create(MeasureSquad measureSquad);
+
+    int update (MeasureSquad measureSquad);
 }

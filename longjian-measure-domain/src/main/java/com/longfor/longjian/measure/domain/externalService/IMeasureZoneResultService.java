@@ -122,4 +122,7 @@ public interface IMeasureZoneResultService {
      * @return
      */
     int insertObjectNoAffectedErr(MeasureZoneResult zoneResult);
+
+
+    void delete (Integer id);
 }

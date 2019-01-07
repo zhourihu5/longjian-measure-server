@@ -5,6 +5,7 @@ import com.longfor.longjian.measure.po.zhijian2.MeasureRepairerUser;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface MeasureRepairerUserMapper extends LFMySQLMapper<MeasureRepairerUser> {
     /**
@@ -15,4 +16,6 @@ public interface MeasureRepairerUserMapper extends LFMySQLMapper<MeasureRepairer
      * @return
      */
     List<MeasureRepairerUser> searchMeasureReparierUserByListIdTimestampGt(@Param("projectId") Integer projectId, @Param("listId") Integer list_id, @Param("updateAtGt") String updateAtGt);
+
+    void delOld(Map<String,Object> map);
 }

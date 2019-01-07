@@ -48,4 +48,9 @@ public class MeasureZoneServiceImpl implements IMeasureZoneService {
         return measureZoneMapper.searchZoneByUuid(projId,zoneUuids);
     }
 
+    @Override
+    public void delete(Integer id) {
+        measureZoneMapper.deleteByPrimaryKey(id);
+    }
+
 }

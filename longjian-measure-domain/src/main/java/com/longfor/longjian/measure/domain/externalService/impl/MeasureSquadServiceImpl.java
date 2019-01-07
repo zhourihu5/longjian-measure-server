@@ -28,4 +28,19 @@ public class MeasureSquadServiceImpl implements IMeasureSquadService {
     public List<MeasureSquad> searchMeasureSquadByListIdTimestampGt(Integer projectId, Integer list_id, String updateAtGt) {
         return measureSquadMapper.searchMeasureSquadByListIdTimestampGt(projectId,list_id,updateAtGt);
     }
+
+    @Override
+    public void delete(Integer id) {
+        measureSquadMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public int create(MeasureSquad measureSquad) {
+        return measureSquadMapper.insert(measureSquad);
+    }
+
+    @Override
+    public int update(MeasureSquad measureSquad) {
+        return measureSquadMapper.updateByPrimaryKey(measureSquad);
+    }
 }
