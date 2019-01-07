@@ -1,4 +1,4 @@
-package com.longfor.longjian.measure.app.controller.paintAreaController;
+package com.longfor.longjian.measure.app.controller.measureV1Papi;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.paintAreaService.IProPaintAreaManageService;
