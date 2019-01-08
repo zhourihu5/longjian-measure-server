@@ -3,10 +3,12 @@ package com.longfor.longjian.measure.domain.externalService.impl;
 import com.longfor.longjian.measure.dao.zhijian2.MeasureSquadMapper;
 import com.longfor.longjian.measure.domain.externalService.IMeasureSquadService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureSquad;
+import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -31,16 +33,32 @@ public class MeasureSquadServiceImpl implements IMeasureSquadService {
 
     @Override
     public void delete(Integer id) {
-        measureSquadMapper.deleteByPrimaryKey(id);
+
+        Example example = new Example(MeasureSquad.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("listId",id);
+
+        MeasureSquad measureSquad=new MeasureSquad();
+        measureSquad.setListId(id);
+        measureSquad.setDeleteAt(new Date());
+
+        measureSquadMapper.updateByExampleSelective(measureSquad,example);
     }
 
     @Override
     public int create(MeasureSquad measureSquad) {
-        return measureSquadMapper.insert(measureSquad);
+
+        measureSquadMapper.insertMeasureSquad(measureSquad);
+
+        return measureSquad.getId();
     }
 
     @Override
     public int update(MeasureSquad measureSquad) {
-        return measureSquadMapper.updateByPrimaryKey(measureSquad);
+        Example example = new Example(MeasureSquad.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("id",measureSquad.getId());
+
+        return measureSquadMapper.updateByExampleSelective(measureSquad,example);
     }
 }

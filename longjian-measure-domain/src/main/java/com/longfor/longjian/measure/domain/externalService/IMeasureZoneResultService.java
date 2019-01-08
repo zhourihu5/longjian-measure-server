@@ -123,6 +123,28 @@ public interface IMeasureZoneResultService {
      */
     int insertObjectNoAffectedErr(MeasureZoneResult zoneResult);
 
-
+    /**
+     *
+     * @param id
+     */
     void delete (Integer id);
+
+    /**
+     *
+     * @param measureZoneResult
+     * @return
+     */
+    List<MeasureZoneResult>getMeasureZoneResult(MeasureZoneResult measureZoneResult);
+
+    /**
+     * \
+     * @param map
+     */
+    void delByUuidList(Map<String,Object>map);
+
+    /**
+     *
+     * @param map
+     */
+    void delBySquadIdUuid(Map<String,Object>map);
 }

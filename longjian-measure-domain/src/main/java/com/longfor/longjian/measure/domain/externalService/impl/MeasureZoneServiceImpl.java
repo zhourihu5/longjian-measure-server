@@ -2,10 +2,14 @@ package com.longfor.longjian.measure.domain.externalService.impl;
 
 import com.longfor.longjian.measure.dao.zhijian2.MeasureZoneMapper;
 import com.longfor.longjian.measure.domain.externalService.IMeasureZoneService;
+import com.longfor.longjian.measure.po.zhijian2.MeasureList;
+import com.longfor.longjian.measure.po.zhijian2.MeasureListArea;
 import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -50,7 +54,24 @@ public class MeasureZoneServiceImpl implements IMeasureZoneService {
 
     @Override
     public void delete(Integer id) {
-        measureZoneMapper.deleteByPrimaryKey(id);
+        Example example = new Example(MeasureZone.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("listId",id);
+
+        MeasureZone measureZone=new MeasureZone();
+        measureZone.setListId(id);
+        measureZone.setDeleteAt(new Date());
+        measureZoneMapper.updateByExampleSelective(measureZone,example);
+    }
+
+    @Override
+    public void updateStatus(Map<String, Object> map) {
+        measureZoneMapper.updateStatus(map);
+    }
+
+    @Override
+    public void delByUuidList(Map<String, Object> map) {
+        measureZoneMapper.delByUuidList(map);
     }
 
 }

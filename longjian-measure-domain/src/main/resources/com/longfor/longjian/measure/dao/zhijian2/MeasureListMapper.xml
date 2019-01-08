@@ -150,7 +150,7 @@
     <!--void updateFinishStatus(Map<String,Object>map);-->
     <update id="updateFinishStatus">
 
-        update measure_list  set finish_status=#{finish_status}
+        update measure_list  set finish_status=#{finish_status},update_at=#{update_at}
 
         where
 
@@ -163,7 +163,7 @@
     <!--void updateCloseStatus(Map<String,Object>map);-->
     <update id="updateCloseStatus">
 
-        update measure_list  set close_status=#{close_status}
+        update measure_list  set close_status=#{close_status},update_at=#{update_at}
 
         where
 

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,14 +61,17 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
     }
 
     @Override
-    public String updateName(UpdateNameReq updateNameReq) {
+    public Map<String,Object> updateName(UpdateNameReq updateNameReq) {
 
         MeasureList measureList=new MeasureList();
         measureList.setId(updateNameReq.getList_id());
         measureList.setProjectId(updateNameReq.getProject_id());
         measureList.setName(updateNameReq.getName());
         iMeasureListService.updateMeasureList(measureList);
-        return updateNameReq.getName();
+
+        Map<String,Object>map=new HashMap<>();
+        map.put("name",updateNameReq.getName());
+        return map;
     }
 
     @Override
@@ -94,6 +98,7 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
         map.put("project_id",updateFinishStatusReq.getProject_id());
         map.put("finish_status",updateFinishStatusReq.getFinish_status());
         map.put("list_ids",updateFinishStatusReq.getList_ids().split(","));
+        map.put("update_at",new Date());
 
         iMeasureListService.updateFinishStatus(map);
 
@@ -104,8 +109,9 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
         Map<String,Object> map=new HashMap<>();
 
         map.put("project_id",updateCloseStatusReq.getProject_id());
-        map.put("finish_status",updateCloseStatusReq.getClose_status());
+        map.put("close_status",updateCloseStatusReq.getClose_status());
         map.put("list_ids",updateCloseStatusReq.getList_ids().split(","));
+        map.put("update_at",new Date());
 
         iMeasureListService.updateCloseStatus(map);
     }
