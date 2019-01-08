@@ -1,7 +1,7 @@
 package com.longfor.longjian.measure.app.controller.measureV1PapiController;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
-import com.longfor.longjian.measure.app.appService.appService.IMeasureListService;
+import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureListService;
 import com.longfor.longjian.measure.app.req.MeasureList.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class MeasureListController {
 
 
     @Autowired
-    private IMeasureListService measureListService;
+    private IAPPMeasureListService measureListService;
 
     /**
      *修改 任务状态
