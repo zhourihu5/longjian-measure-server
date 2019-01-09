@@ -137,4 +137,27 @@
         and
         uuid= #{uuid}
     </select>
+
+
+    <update id="updateStatus">
+        update measure_zone set close_status=#{close_status} where project_id=#{project_id}
+
+        and  id IN
+        <foreach collection="zoneId" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="delByUuidList">
+
+        UPDATE measure_zone set delete_at=#{delete_at}
+
+        where  project_id = #{projId}
+
+        and  uuid IN
+        <foreach collection="zoneId" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+
+    </update>
 </mapper>

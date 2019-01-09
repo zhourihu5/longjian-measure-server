@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Table(name = "measure_squad")
 public class MeasureSquad {
     @Id
-    @KeySql(useGeneratedKeys = true)
     private Integer id;
 
     /**

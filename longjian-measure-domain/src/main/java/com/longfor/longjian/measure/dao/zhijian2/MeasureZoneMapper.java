@@ -85,4 +85,16 @@ public interface MeasureZoneMapper extends LFMySQLMapper<MeasureZone> {
      * @return
      */
     MeasureZone getZoneByUuid(@Param("project_id")Integer project_id, @Param("list_id")String uuid);
+
+    /**
+     *
+     * @param map
+     */
+    void updateStatus(Map<String,Object>map);
+
+    /**
+     *
+     * @param map
+     */
+    void delByUuidList(Map<String,Object>map);
 }

@@ -10,7 +10,9 @@ import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
 import org.bouncycastle.cms.PasswordRecipientId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -93,12 +95,24 @@ public class MeasureListServiceImpl implements IMeasureListService {
 
     @Override
     public int updateMeasureList(MeasureList measureList) {
-        return  measureListMapper.updateByPrimaryKey(measureList);
+        Example example = new Example(MeasureList.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("id",measureList.getId());
+        criteria.andIsNull("deleteAt");
+        return  measureListMapper.updateByExampleSelective(measureList,example);
     }
 
     @Override
     public void delete(Integer id) {
-        measureListMapper.deleteByPrimaryKey(id);
+        Example example = new Example(MeasureList.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("id",id);
+
+        MeasureList measureList=new MeasureList();
+        measureList.setId(id);
+        measureList.setDeleteAt(new Date());
+
+        measureListMapper.updateByExampleSelective(measureList,example);
     }
 
     @Override

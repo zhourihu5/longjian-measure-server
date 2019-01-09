@@ -17,6 +17,7 @@ import org.apache.commons.beanutils.ConvertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.*;
 
@@ -69,7 +70,9 @@ public class IStaffServiceImpl implements IStaffService {
     }
 
     @Override
+    @Transactional
     public void squadUpdate(SquadUpdateReq squadUpdateReq) {
+
         String[] newUserIds=squadUpdateReq.getUser_id_list().split(",");
         MeasureSquad measureSquad=new MeasureSquad();
 
@@ -91,7 +94,7 @@ public class IStaffServiceImpl implements IStaffService {
 
         List<MeasureSquadUser> measureSquadUserList=iMeasureSquadUserService.select(measureSquadUser);//找出原有的组员
 
-        Integer [] oldUserIds={};
+        Integer [] oldUserIds=new Integer[measureSquadUserList.size()];
 
         for(int i=0;i<measureSquadUserList.size();i++){
             oldUserIds[i]=measureSquadUserList.get(i).getUserId();
@@ -123,13 +126,18 @@ public class IStaffServiceImpl implements IStaffService {
             newMUser.setProjectId(squadUpdateReq.getProject_id());
             newMUser.setListId(squadUpdateReq.getList_id());
             newMUser.setUserId(addUserIds.get(j));
+            newMUser.setCreateAt(new Date());
+            newMUser.setUpdateAt(new Date());
             measureSquadUsers.add(newMUser);
         }
-        iMeasureSquadUserService.insertList(measureSquadUserList);
+        if(measureSquadUsers.size()>0) {
+            iMeasureSquadUserService.insertList(measureSquadUsers);
+        }
 
     }
 
     @Override
+    @Transactional
     public void squadDelete(SquadDeleteReq squadDeleteReq) {
 
         MeasureSquadUser measureSquadUser=new MeasureSquadUser();
@@ -150,6 +158,7 @@ public class IStaffServiceImpl implements IStaffService {
     }
 
     @Override
+    @Transactional
     public void repairerListUpdate(RepairerListUpdateReq repairerListUpdateReq) {
 
         String[] userIds=repairerListUpdateReq.getUser_id_list().split(",");
@@ -164,7 +173,7 @@ public class IStaffServiceImpl implements IStaffService {
 
        Integer[] newUseridsArr = (Integer[]) ConvertUtils.convert(userIds, Integer.class);
 
-       Integer [] prevUserId={};
+       Integer [] prevUserId=new Integer[measureRepairerUserList.size()];
 
        for(int i=0;i<measureRepairerUserList.size();i++){
            prevUserId[i]=measureRepairerUserList.get(i).getUserId();
@@ -175,7 +184,9 @@ public class IStaffServiceImpl implements IStaffService {
         Map<String,Object>map=new HashMap<>();
         map.put("list_id",repairerListUpdateReq.getList_id());
         map.put("role_type",repairerListUpdateReq.getRole_type());
-        map.put("delUserId",delUserId);
+        map.put("deleteUserIds",delUserId);
+        map.put("delete_at",new Date());
+        map.put("project_id",repairerListUpdateReq.getProject_id());
 
         iMeasureRepairerUserService.delOld(map);//删除旧数据
 
@@ -190,9 +201,12 @@ public class IStaffServiceImpl implements IStaffService {
             newMUser.setListId(repairerListUpdateReq.getList_id());
             newMUser.setProjectId(repairerListUpdateReq.getProject_id());
             newMUser.setUserId(addUserId.get(j));
+            newMUser.setCreateAt(new Date());
+            newMUser.setUpdateAt(new Date());
             newMeaRep.add(newMUser);
         }
-
-        iMeasureRepairerUserService.insertList(newMeaRep);//新增人员
+        if(newMeaRep.size()>0) {
+            iMeasureRepairerUserService.insertList(newMeaRep);//新增人员
+        }
     }
 }

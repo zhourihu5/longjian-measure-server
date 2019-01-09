@@ -75,4 +75,12 @@ public interface IMeasureZoneService {
      */
     void delete (Integer id);
 
+    /**
+     *
+     * @param map
+     */
+    void updateStatus(Map<String,Object>map);
+
+    void delByUuidList(Map<String,Object>map);
+
 }

@@ -2,10 +2,13 @@ package com.longfor.longjian.measure.domain.externalService.impl;
 
 import com.longfor.longjian.measure.dao.zhijian2.MeasureSquadUserMapper;
 import com.longfor.longjian.measure.domain.externalService.IMeasureSquadUserService;
+import com.longfor.longjian.measure.po.zhijian2.MeasureSquad;
 import com.longfor.longjian.measure.po.zhijian2.MeasureSquadUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +25,14 @@ public class MeasureSquadUserServiceImpl implements IMeasureSquadUserService{
 
     @Override
     public void delete(Integer id) {
-        measureSquadUserMapper.deleteByPrimaryKey(id);
+        Example example = new Example(MeasureSquadUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("listId",id);
+
+        MeasureSquadUser measureSquadUser=new MeasureSquadUser();
+        measureSquadUser.setListId(id);
+        measureSquadUser.setDeleteAt(new Date());
+        measureSquadUserMapper.updateByExampleSelective(measureSquadUser,example);
     }
 
     @Override
@@ -47,6 +57,14 @@ public class MeasureSquadUserServiceImpl implements IMeasureSquadUserService{
 
     @Override
     public void deleteMeasureSquadUser(MeasureSquadUser measureSquadUser) {
-        measureSquadUserMapper.updateByPrimaryKey(measureSquadUser);
+
+        Example example = new Example(MeasureSquadUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("listId",measureSquadUser.getListId());
+        criteria.andEqualTo("squadId",measureSquadUser.getSquadId());
+        criteria.andEqualTo("projectId",measureSquadUser.getProjectId());
+
+
+        measureSquadUserMapper.updateByExampleSelective(measureSquadUser,example);
     }
 }

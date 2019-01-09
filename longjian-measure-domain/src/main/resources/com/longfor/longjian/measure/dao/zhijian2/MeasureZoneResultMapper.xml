@@ -288,4 +288,36 @@ WHERE
     AND project_id = #{projId}
     AND delete_at is null;
   </select>
+
+  <update id="delByUuidList">
+
+    UPDATE measure_zone_result set delete_at=#{delete_at}
+
+    where  project_id = #{projId}
+
+    and  zone_uuid IN
+    <foreach collection="zoneId" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+
+  </update>
+
+
+  <update id="delBySquadIdUuid">
+
+    UPDATE measure_zone_result set delete_at=#{delete_at}
+
+    where  project_id = #{projId}
+
+    <if test="squadId!=null and squadId!=''">
+       and squad_id = #{squadId}
+    </if>
+
+    and  zone_uuid IN
+    <foreach collection="zoneId" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+
+  </update>
+
 </mapper>

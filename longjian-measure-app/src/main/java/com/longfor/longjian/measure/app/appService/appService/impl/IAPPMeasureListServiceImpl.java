@@ -1,6 +1,6 @@
 package com.longfor.longjian.measure.app.appService.appService.impl;
 
-import com.longfor.longjian.measure.app.appService.appService.IMeasureListService;
+import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureListService;
 import com.longfor.longjian.measure.app.req.MeasureList.*;
 import com.longfor.longjian.measure.app.vo.measureListVo.SetStatusVo;
 import com.longfor.longjian.measure.domain.externalService.*;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,10 +19,10 @@ import java.util.Map;
  */
 @Service
 @Slf4j
-public class IMeasureListServiceImpl implements IMeasureListService {
+public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
 
     @Resource
-    private com.longfor.longjian.measure.domain.externalService.IMeasureListService iMeasureListService;
+    private IMeasureListService iMeasureListService;
 
     @Resource
     private IMeasureListAreaService IMeasureListAreaService;
@@ -60,14 +61,17 @@ public class IMeasureListServiceImpl implements IMeasureListService {
     }
 
     @Override
-    public String updateName(UpdateNameReq updateNameReq) {
+    public Map<String,Object> updateName(UpdateNameReq updateNameReq) {
 
         MeasureList measureList=new MeasureList();
         measureList.setId(updateNameReq.getList_id());
         measureList.setProjectId(updateNameReq.getProject_id());
         measureList.setName(updateNameReq.getName());
         iMeasureListService.updateMeasureList(measureList);
-        return updateNameReq.getName();
+
+        Map<String,Object>map=new HashMap<>();
+        map.put("name",updateNameReq.getName());
+        return map;
     }
 
     @Override
@@ -94,6 +98,7 @@ public class IMeasureListServiceImpl implements IMeasureListService {
         map.put("project_id",updateFinishStatusReq.getProject_id());
         map.put("finish_status",updateFinishStatusReq.getFinish_status());
         map.put("list_ids",updateFinishStatusReq.getList_ids().split(","));
+        map.put("update_at",new Date());
 
         iMeasureListService.updateFinishStatus(map);
 
@@ -104,8 +109,9 @@ public class IMeasureListServiceImpl implements IMeasureListService {
         Map<String,Object> map=new HashMap<>();
 
         map.put("project_id",updateCloseStatusReq.getProject_id());
-        map.put("finish_status",updateCloseStatusReq.getClose_status());
+        map.put("close_status",updateCloseStatusReq.getClose_status());
         map.put("list_ids",updateCloseStatusReq.getList_ids().split(","));
+        map.put("update_at",new Date());
 
         iMeasureListService.updateCloseStatus(map);
     }
