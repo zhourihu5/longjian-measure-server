@@ -47,8 +47,13 @@ longfor:
         longjian-basic-server:
           permission:
             url: http://172.17.96.88:8082/uc/inner/
+          coreArea:
+            url: http://localhost:8082/core_srv_area/
         config:
           permission:
+            connectTimeout: 5000
+            readTimeout: 5000
+          coreArea:
             connectTimeout: 5000
             readTimeout: 5000
         cas-server:
