@@ -1,10 +1,13 @@
 package com.longfor.longjian.measure.app.req.measureRegionReq;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
 
-@Data
+@Setter
+@Getter
 public class AddReq {
     /**
      * 集团id

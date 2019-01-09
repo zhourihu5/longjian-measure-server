@@ -51,8 +51,8 @@ public class ProPaintAreaManageController {
      *添加描画区域
      * @return
      */
-    @PostMapping(value = "add/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse add(@RequestBody AddReq addReq) {
+    @PostMapping(value = "add" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public LjBaseResponse add(@RequestBody @Valid AddReq addReq) {
         regionService.add(addReq.getProject_id(),addReq.getRegion_list(), RegionSrcTypeEnum.BackEnd.getId());
         return new LjBaseResponse();
     }
