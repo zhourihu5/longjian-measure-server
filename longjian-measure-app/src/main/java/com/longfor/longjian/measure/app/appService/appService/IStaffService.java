@@ -1,14 +1,15 @@
 package com.longfor.longjian.measure.app.appService.appService;
 
-import com.longfor.longjian.measure.app.req.staff.RepairerListUpdateReq;
-import com.longfor.longjian.measure.app.req.staff.SquadAddReq;
-import com.longfor.longjian.measure.app.req.staff.SquadDeleteReq;
-import com.longfor.longjian.measure.app.req.staff.SquadUpdateReq;
+import com.github.pagehelper.Page;
+import com.longfor.longjian.common.exception.CommonException;
+import com.longfor.longjian.measure.app.req.staff.*;
 
 /**
  * Created by Wang on 2019/1/7.
  */
 public interface IStaffService {
+
+    Page squadSearch(SquadSearchReq squadSearchReq) throws CommonException;
 
     void squadAdd(SquadAddReq squadAddReq);
 

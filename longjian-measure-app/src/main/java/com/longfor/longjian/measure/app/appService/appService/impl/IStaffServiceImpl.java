@@ -1,10 +1,10 @@
 package com.longfor.longjian.measure.app.appService.appService.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.longfor.longjian.common.exception.CommonException;
 import com.longfor.longjian.measure.app.appService.appService.IStaffService;
-import com.longfor.longjian.measure.app.req.staff.RepairerListUpdateReq;
-import com.longfor.longjian.measure.app.req.staff.SquadAddReq;
-import com.longfor.longjian.measure.app.req.staff.SquadDeleteReq;
-import com.longfor.longjian.measure.app.req.staff.SquadUpdateReq;
+import com.longfor.longjian.measure.app.req.staff.*;
 import com.longfor.longjian.measure.domain.externalService.IMeasureRepairerUserService;
 import com.longfor.longjian.measure.domain.externalService.IMeasureSquadService;
 import com.longfor.longjian.measure.domain.externalService.IMeasureSquadUserService;
@@ -38,6 +38,50 @@ public class IStaffServiceImpl implements IStaffService {
     @Autowired
     private IMeasureRepairerUserService iMeasureRepairerUserService;
 
+
+    @Override
+    public Page squadSearch(SquadSearchReq squadSearchReq) throws CommonException {
+
+        List<MeasureSquad>squadSearchReqList=new ArrayList<>();
+        Example example = new Example(MeasureSquad.class);
+        Example.Criteria criteria = example.createCriteria().
+                andEqualTo("listId", squadSearchReq.getList_id());
+        if(squadSearchReq.getPage()!=null&&squadSearchReq.getPage_size()!=null) {
+            Page result = PageHelper.startPage(squadSearchReq.getPage(), squadSearchReq.getPage_size());
+            iMeasureSquadService.selectByExample(example);
+            squadSearchReqList=result.getResult();
+        }else if(squadSearchReq.getPage()==null&&squadSearchReq.getPage_size()==null) {
+
+            squadSearchReqList = iMeasureSquadService.selectByExample(example);
+        }else{
+            throw new CommonException("参数错误");
+        }
+
+        List<MeasureSquadUser> measureSquadUserList=new ArrayList<>();
+
+        for(int i=0;i<squadSearchReqList.size();i++){
+            Example uexample = new Example(MeasureSquadUser.class);
+            Example.Criteria ucriteria = example.createCriteria();
+            ucriteria.andEqualTo("squadId", squadSearchReqList.get(i).getId());
+            ucriteria.andIsNotNull("deleteAt");
+            measureSquadUserList=iMeasureSquadUserService.selectByExample(uexample);
+        }
+
+        Integer [] userIdList=new Integer[measureSquadUserList.size()];
+
+        for(int j=0;j<measureSquadUserList.size();j++){
+            userIdList[j]=measureSquadUserList.get(j).getUserId();
+        }
+
+
+
+
+
+
+
+
+        return null;
+    }
 
     @Override
     @Transactional

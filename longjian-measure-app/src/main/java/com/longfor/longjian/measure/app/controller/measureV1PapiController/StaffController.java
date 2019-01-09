@@ -2,17 +2,11 @@ package com.longfor.longjian.measure.app.controller.measureV1PapiController;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.appService.IStaffService;
-import com.longfor.longjian.measure.app.req.staff.RepairerListUpdateReq;
-import com.longfor.longjian.measure.app.req.staff.SquadAddReq;
-import com.longfor.longjian.measure.app.req.staff.SquadDeleteReq;
-import com.longfor.longjian.measure.app.req.staff.SquadUpdateReq;
+import com.longfor.longjian.measure.app.req.staff.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -26,6 +20,15 @@ public class StaffController {
 
     @Autowired
     private IStaffService iStaffService;
+
+
+    @GetMapping(value = "squad_search" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public LjBaseResponse squadSearch(@Valid @RequestBody SquadSearchReq squadSearchReq) {
+        iStaffService.squadSearch(squadSearchReq);
+        return new LjBaseResponse();
+    }
+
+
 
     /**
      * 添加检查小组

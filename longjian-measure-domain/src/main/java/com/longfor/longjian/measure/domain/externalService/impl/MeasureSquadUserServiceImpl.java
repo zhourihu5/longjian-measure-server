@@ -67,4 +67,9 @@ public class MeasureSquadUserServiceImpl implements IMeasureSquadUserService{
 
         measureSquadUserMapper.updateByExampleSelective(measureSquadUser,example);
     }
+
+    @Override
+    public List<MeasureSquadUser> selectByExample(Example example) {
+        return measureSquadUserMapper.selectByExample(example);
+    }
 }

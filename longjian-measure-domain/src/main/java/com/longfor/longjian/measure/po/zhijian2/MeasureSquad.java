@@ -1,6 +1,5 @@
 package com.longfor.longjian.measure.po.zhijian2;
 
-import tk.mybatis.mapper.annotation.KeySql;
 
 import java.util.Date;
 import javax.persistence.*;
