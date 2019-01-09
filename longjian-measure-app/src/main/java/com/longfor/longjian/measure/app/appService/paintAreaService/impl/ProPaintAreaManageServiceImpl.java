@@ -1,24 +1,33 @@
 package com.longfor.longjian.measure.app.appService.paintAreaService.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.paintAreaService.IProPaintAreaManageService;
+import com.longfor.longjian.measure.app.req.measureRegionReq.AddOnGroupReq;
+import com.longfor.longjian.measure.app.req.measureRegionReq.EditOnGroupReq;
 import com.longfor.longjian.measure.app.req.paintAreaReq.GetProjMeasureRegionReq;
 import com.longfor.longjian.measure.app.req.paintAreaReq.GetGroupMeasureRegionTagReq;
 import com.longfor.longjian.measure.app.req.paintAreaReq.GetProjMeasureRegionTagReq;
+import com.longfor.longjian.measure.vo.EditTagProtoVo;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.*;
 import com.longfor.longjian.measure.consts.constant.MeasureTagConstant;
 import com.longfor.longjian.measure.util.ConvertUtil;
 import com.longfor.longjian.measure.domain.externalService.IMeasureRegionRelService;
 import com.longfor.longjian.measure.domain.externalService.IMeasureRegionService;
 import com.longfor.longjian.measure.domain.externalService.IMeasureTagService;
+import com.longfor.longjian.measure.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import springfox.documentation.spring.web.json.Json;
 
 import java.beans.IntrospectionException;
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -36,18 +45,17 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
     @Autowired
     private IMeasureRegionRelService measureRegionRelService;
 
-
     @Override
     public LjBaseResponse<GroupRegionTagVo> getGroupMeasureRegionTag(GetGroupMeasureRegionTagReq getGroupMeasureRegionTagReq) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
         LjBaseResponse<GroupRegionTagVo> ljBaseResponse = new LjBaseResponse<>();
         GroupRegionTagVo groupRegionTagVo = new GroupRegionTagVo();
         List<TagListVo> listVos = new ArrayList<>();
         //查询tag
-        List<Map<String,Object>> tagList = measureTagService.searchByGroupId(getGroupMeasureRegionTagReq.getGroup_id(),MeasureTagConstant.GROUP);
-        for (Map<String,Object> map: tagList
-             ) {
+        List<Map<String, Object>> tagList = measureTagService.searchByGroupId(getGroupMeasureRegionTagReq.getGroup_id(), MeasureTagConstant.GROUP);
+        for (Map<String, Object> map : tagList
+        ) {
             //map转换成vo
-            TagListVo tagListVo = (TagListVo) ConvertUtil.convertMap(TagListVo.class,map);
+            TagListVo tagListVo = (TagListVo) ConvertUtil.convertMap(TagListVo.class, map);
             listVos.add(tagListVo);
         }
         groupRegionTagVo.setTag_list(listVos);
@@ -61,11 +69,11 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
         GroupRegionTagVo groupRegionTagVo = new GroupRegionTagVo();
         List<TagListVo> listVos = new ArrayList<>();
         //查询tag
-        List<Map<String,Object>> tagList = measureTagService.searchByGroupIdAndProjId(getProjMeasureRegionTagReq.getGroup_id(),getProjMeasureRegionTagReq.getProject_id(),MeasureTagConstant.PROJECT);
-        for (Map<String,Object> map: tagList
-                ) {
+        List<Map<String, Object>> tagList = measureTagService.searchByGroupIdAndProjId(getProjMeasureRegionTagReq.getGroup_id(), getProjMeasureRegionTagReq.getProject_id(), MeasureTagConstant.PROJECT);
+        for (Map<String, Object> map : tagList
+        ) {
             //map转换成vo
-            TagListVo tagListVo = (TagListVo) ConvertUtil.convertMap(TagListVo.class,map);
+            TagListVo tagListVo = (TagListVo) ConvertUtil.convertMap(TagListVo.class, map);
             listVos.add(tagListVo);
         }
         groupRegionTagVo.setTag_list(listVos);
@@ -79,16 +87,16 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
         AreaRegionTagVo areaRegionTagVo = new AreaRegionTagVo();
         List<RegionListVo> listVos = new ArrayList<>();
         //查询 measure_Region and rel 信息
-        List<Map<String,Object>> regionList = measureRegionService.getProjMeasureRegionByAreaId(getProjMeasureRegionReq.getProject_id(),getProjMeasureRegionReq.getArea_id());
-        for (Map<String,Object> map: regionList
-                ) {
+        List<Map<String, Object>> regionList = measureRegionService.getProjMeasureRegionByAreaId(getProjMeasureRegionReq.getProject_id(), getProjMeasureRegionReq.getArea_id());
+        for (Map<String, Object> map : regionList
+        ) {
             //map转换成vo
-            RegionListVo regionListVo = (RegionListVo) ConvertUtil.convertMap(RegionListVo.class,map);
+            RegionListVo regionListVo = (RegionListVo) ConvertUtil.convertMap(RegionListVo.class, map);
             PolygonVo polygonVo = new PolygonVo();
             //转换jsonObject
             JSONObject jsonObject = JSON.parseObject(map.get("Polygon").toString());
-            polygonVo.setX( Double.parseDouble(jsonObject.get("X").toString()));
-            polygonVo.setY( Double.parseDouble(jsonObject.get("Y").toString()));
+            polygonVo.setX(Double.parseDouble(jsonObject.get("X").toString()));
+            polygonVo.setY(Double.parseDouble(jsonObject.get("Y").toString()));
             regionListVo.setPolygon(polygonVo);
             RelVo relVo = new RelVo();
             relVo.setId(Integer.parseInt(map.get("relId").toString()));
@@ -99,6 +107,29 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
         }
         areaRegionTagVo.setRegion_list(listVos);
         ljBaseResponse.setData(areaRegionTagVo);
+        return ljBaseResponse;
+    }
+
+    @Override
+    public LjBaseResponse<Object> editOnGroup(EditOnGroupReq editOnGroupReq) {
+        LjBaseResponse<Object> ljBaseResponse = new LjBaseResponse<>();
+        List<EditTagProtoVo> editTagProtoVos = JSONArray.parseArray(editOnGroupReq.getEdit_tag_list(), EditTagProtoVo.class);
+        Integer affCount = measureTagService.editOnGroup(editOnGroupReq.getGroup_id(), editTagProtoVos, MeasureTagConstant.GROUP);
+        ljBaseResponse.setMessage(String.format("总共修改了 %s 条数据", affCount));
+        ljBaseResponse.setResult(0);
+        return ljBaseResponse;
+    }
+
+    @Override
+    public LjBaseResponse<Object> addOnGroup(AddOnGroupReq addOnGroupReq) {
+        LjBaseResponse<Object> ljBaseResponse = new LjBaseResponse<>();
+        if (addOnGroupReq.getName_list().length() > 0 && !addOnGroupReq.getName_list().equals("")) {
+            String[] nameArr = addOnGroupReq.getName_list().split(",");
+            List<String> nameList = Arrays.asList(nameArr);
+            Integer affCount = measureTagService.addOnGroup(addOnGroupReq.getGroup_id(), nameList, MeasureTagConstant.GROUP);
+            ljBaseResponse.setMessage(String.format("总共添加了 %s 条数据", affCount));
+            ljBaseResponse.setResult(0);
+        }
         return ljBaseResponse;
     }
 }

@@ -64,4 +64,20 @@ public interface IMeasureRegionService {
      * @return
      */
     MeasureRegion searchByUuid(Integer project_id, String uuid);
+
+    /**
+     *
+     * @param proj_id
+     * @param region_uuid
+     * @return
+     */
+    MeasureRegion searchByProjIdAndRegionUuid(Integer proj_id, String region_uuid);
+
+    /**
+     *
+     * @param proj_id
+     * @param relId
+     * @return
+     */
+    List<MeasureRegion> searchByProjIdAndRelId(Integer proj_id, Integer relId);
 }

@@ -24,7 +24,7 @@ public class StaffController {
 
     @GetMapping(value = "squad_search" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse squadSearch(@Valid @RequestBody SquadSearchReq squadSearchReq) {
-        iStaffService.squadSearch(squadSearchReq);
+        //iStaffService.squadSearch(squadSearchReq);
         return new LjBaseResponse();
     }
 

@@ -7,13 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class AreaServiceImpl implements IAreaService {
 
-    @Autowired
+    @Resource
     AreaMapper areaMapper;
 
     @Override
@@ -42,5 +43,12 @@ public class AreaServiceImpl implements IAreaService {
     @Override
     public List<Area> getAreaByIds(List<Integer> areaIds) {
         return areaMapper.getAreaByIds(areaIds);
+    }
+
+    @Override
+    public List<Area> searchByIdList(Integer proj_id, List<Integer> areaIds) {
+        Example example = new Example(Area.class);
+        example.createCriteria().andEqualTo("projectId",proj_id).andIn("id",areaIds);
+        return areaMapper.selectByExample(example);
     }
 }

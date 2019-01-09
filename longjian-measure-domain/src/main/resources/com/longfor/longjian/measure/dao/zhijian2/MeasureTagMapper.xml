@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.longfor.longjian.measure.dao.zhijian2.MeasureTagMapper" >
-  <resultMap id="BaseResultMap" type="com.longfor.longjian.measure.po.zhijian2.MeasureTag" >
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="group_id" property="groupId" jdbcType="INTEGER" />
-    <result column="proj_id" property="projId" jdbcType="INTEGER" />
-    <result column="ownership" property="ownership" jdbcType="INTEGER" />
-    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
-    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
-    <result column="delete_at" property="deleteAt" jdbcType="TIMESTAMP" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    <!--
-      WARNING - @mbg.generated
-    -->
-    id, name, group_id, proj_id, ownership, create_at, update_at, delete_at
-  </sql>
+<mapper namespace="com.longfor.longjian.measure.dao.zhijian2.MeasureTagMapper">
+    <resultMap id="BaseResultMap" type="com.longfor.longjian.measure.po.zhijian2.MeasureTag">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="group_id" property="groupId" jdbcType="INTEGER"/>
+        <result column="proj_id" property="projId" jdbcType="INTEGER"/>
+        <result column="ownership" property="ownership" jdbcType="INTEGER"/>
+        <result column="create_at" property="createAt" jdbcType="TIMESTAMP"/>
+        <result column="update_at" property="updateAt" jdbcType="TIMESTAMP"/>
+        <result column="delete_at" property="deleteAt" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        id, name, group_id, proj_id, ownership, create_at, update_at, delete_at
+    </sql>
 
-  <select id="searchByGroupId" resultType="map">
+    <select id="searchByGroupId" resultType="map">
     SELECT
     id tag_id,
     NAME name,
@@ -36,7 +36,7 @@
     AND delete_at IS NULL
   </select>
 
-  <select id="searchByGroupIdAndProjId" resultType="map">
+    <select id="searchByGroupIdAndProjId" resultType="map">
     SELECT
     id tag_id,
     NAME name,
@@ -51,4 +51,15 @@
     AND ownership = #{ownership}
     AND delete_at IS NULL
   </select>
+    <!--Integer updateByIdAndOwnership(@Param("group_id")Integer group_id, @Param("tagId")Integer tagId, @Param("ownership") Integer ownership, @Param("newDate")Date newDate);-->
+    <update id="updateByIdAndOwnership">
+    update measure_tag
+      set group_id=#{group_id},
+      update_at = #{newDate}
+      where
+        id=#{tagId}
+        and
+        ownership = #{ownership}
+         AND delete_at IS NULL
+  </update>
 </mapper>

@@ -2,20 +2,21 @@ package com.longfor.longjian.measure.app.controller.measureV1PapiController;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.paintAreaService.IProPaintAreaManageService;
+import com.longfor.longjian.measure.app.req.measureRegionReq.AddOnGroupReq;
+import com.longfor.longjian.measure.app.req.measureRegionReq.EditOnGroupReq;
 import com.longfor.longjian.measure.app.req.paintAreaReq.GetGroupMeasureRegionTagReq;
 import com.longfor.longjian.measure.app.req.paintAreaReq.GetProjMeasureRegionTagReq;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.GroupRegionTagVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * app_measure服务
@@ -56,23 +57,28 @@ public class MeasureRegionTagController {
         return ljBaseResponse;
     }
 
-    /**
-     *
+    /**集团实测描画区域标签管理
+     * http://192.168.37.159:3000/project/8/interface/api/2816
+     * http://192.168.37.159:3000/mock/8/longjian.longhu.net/measure/v1/papi/measure_region_tag/edit_by_group_id/?_ct=json
      * @return
      */
     @PostMapping(value = "edit_by_group_id/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse editByGroupId() {
-        return null;
+    public LjBaseResponse<Object> editByGroupId(@Valid EditOnGroupReq editOnGroupReq) {
+        LjBaseResponse<Object> ljBaseResponse = proPaintAreaManageService.editOnGroup(editOnGroupReq);
+        return ljBaseResponse;
     }
 
 
     /**
-     *
+     *集团实测描画区域标签管理添加标签
+     * http://192.168.37.159:3000/project/8/interface/api/2824
+     * http://192.168.37.159:3000/mock/8/longjian.longhu.net/measure/v1/papi/measure_region_tag/add_on_group/?_ct=json
      * @return
      */
     @PostMapping(value = "add_on_group/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse addOnGroup() {
-        return null;
+    public LjBaseResponse<Object> addOnGroup(@Valid AddOnGroupReq addOnGroupReq) {
+        LjBaseResponse<Object> ljBaseResponse = proPaintAreaManageService.addOnGroup(addOnGroupReq);
+        return ljBaseResponse;
     }
 
     /**

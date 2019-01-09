@@ -9,6 +9,12 @@ import lombok.Data;
  */
 @Data
 public class PolygonVo {
+    /**
+     * x坐标
+     */
     private Double x;
+    /**
+     * y坐标
+     */
     private Double y;
 }
