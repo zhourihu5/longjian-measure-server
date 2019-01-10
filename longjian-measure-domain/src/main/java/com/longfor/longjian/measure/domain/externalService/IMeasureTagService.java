@@ -1,5 +1,7 @@
 package com.longfor.longjian.measure.domain.externalService;
 
+import com.longfor.longjian.measure.vo.EditTagProtoVo;
+
 import java.util.List;
 import java.util.Map;
 
@@ -28,4 +30,21 @@ public interface IMeasureTagService {
      * @return
      */
     List<Map<String,Object>> searchByGroupIdAndProjId(Integer group_id, Integer proj_id, Integer ownership);
+
+    /**
+     *
+     * @param group_id
+     * @param editTagProtoVos
+     * @param group
+     */
+    Integer editOnGroup(Integer group_id, List<EditTagProtoVo> editTagProtoVos, Integer group);
+
+    /**
+     *
+     * @param group_id
+     * @param nameList
+     * @param group
+     * @return
+     */
+    Integer addOnGroup(Integer group_id, List<String> nameList, Integer group);
 }

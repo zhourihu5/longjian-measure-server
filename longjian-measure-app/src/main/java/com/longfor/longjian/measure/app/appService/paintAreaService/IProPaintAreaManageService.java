@@ -1,6 +1,8 @@
 package com.longfor.longjian.measure.app.appService.paintAreaService;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.measure.app.req.measureRegionReq.AddOnGroupReq;
+import com.longfor.longjian.measure.app.req.measureRegionReq.EditOnGroupReq;
 import com.longfor.longjian.measure.app.req.paintAreaReq.GetProjMeasureRegionReq;
 import com.longfor.longjian.measure.app.req.paintAreaReq.GetGroupMeasureRegionTagReq;
 import com.longfor.longjian.measure.app.req.paintAreaReq.GetProjMeasureRegionTagReq;
@@ -40,4 +42,18 @@ public interface IProPaintAreaManageService {
      * @return
      */
     LjBaseResponse<AreaRegionTagVo> getProjMeasureRegionByAreaId(GetProjMeasureRegionReq getProjMeasureRegionReq) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException;
+
+    /**
+     * 集团实测描画区域标签管理
+     * @param editOnGroupReq
+     * @return
+     */
+    LjBaseResponse<Object> editOnGroup(EditOnGroupReq editOnGroupReq);
+
+    /**
+     * 集团实测描画区域标签管理添加标签
+     * @param addOnGroupReq
+     * @return
+     */
+    LjBaseResponse<Object> addOnGroup(AddOnGroupReq addOnGroupReq);
 }

@@ -33,6 +33,12 @@ public interface IMeasureRegionRelService {
      */
     List<MeasureRegionRel> searchRelUnscopedByProjIdLastIdUpdateAtGt(Integer project_id, Integer last_id, Long timestamp, Integer measureApiGetPerTime, Integer start);
 
+    /**
+     *
+     * @param model
+     */
+    MeasureRegionRel save(MeasureRegionRel model);
+
     MeasureRegionRelVo selectById(Integer id);
 
 }

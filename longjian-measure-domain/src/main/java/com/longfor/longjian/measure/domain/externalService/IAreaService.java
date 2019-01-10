@@ -35,4 +35,12 @@ public interface IAreaService {
      * @return
      */
     List<Area> getAreaByIds(List<Integer> areaIds);
+
+    /**
+     *
+     * @param proj_id
+     * @param areaIds
+     * @return
+     */
+    List<Area> searchByIdList(Integer proj_id, List<Integer> areaIds);
 }
