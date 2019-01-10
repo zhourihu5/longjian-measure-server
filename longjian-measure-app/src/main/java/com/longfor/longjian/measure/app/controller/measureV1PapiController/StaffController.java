@@ -1,6 +1,7 @@
 package com.longfor.longjian.measure.app.controller.measureV1PapiController;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.exception.CommonException;
 import com.longfor.longjian.measure.app.appService.appService.IStaffService;
 import com.longfor.longjian.measure.app.req.staff.*;
 import lombok.extern.slf4j.Slf4j;
@@ -22,10 +23,31 @@ public class StaffController {
     private IStaffService iStaffService;
 
 
+    /**
+     * 搜索检查小组
+     * @param squadSearchReq
+     * @return
+     * @throws CommonException
+     */
     @GetMapping(value = "squad_search" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse squadSearch(@Valid @RequestBody SquadSearchReq squadSearchReq) {
-        iStaffService.squadSearch(squadSearchReq);
-        return new LjBaseResponse();
+    public LjBaseResponse squadSearch(SquadSearchReq squadSearchReq) throws CommonException {
+        return new LjBaseResponse(iStaffService.squadSearch(squadSearchReq));
+    }
+
+    /**
+     * 项目任务列表详情修改小组人员
+     * @param allowUserSearchReq
+     * @return
+     * @throws CommonException
+     */
+    @GetMapping(value = "allow_user_search" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public LjBaseResponse allowUserSearch( AllowUserSearchReq allowUserSearchReq) throws CommonException {
+        return new LjBaseResponse(iStaffService.allowUserSearch(allowUserSearchReq));
+    }
+
+    @GetMapping(value = "repairer_list_search" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public LjBaseResponse repairerListSearch( RepairerListSearchReq repairerListSearchReq) throws CommonException {
+        return new LjBaseResponse(iStaffService.repairerListSearch(repairerListSearchReq));
     }
 
 

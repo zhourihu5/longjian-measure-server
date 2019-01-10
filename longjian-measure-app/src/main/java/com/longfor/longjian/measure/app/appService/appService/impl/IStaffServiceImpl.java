@@ -1,10 +1,23 @@
 package com.longfor.longjian.measure.app.appService.appService.impl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.common.exception.CommonException;
 import com.longfor.longjian.measure.app.appService.appService.IStaffService;
+import com.longfor.longjian.measure.app.feignClient.ICoreUserFeignService;
+import com.longfor.longjian.measure.app.feignClient.ICoreUserProjectRoleFeignService;
+import com.longfor.longjian.measure.app.req.feignReq.MultiGetReq;
+import com.longfor.longjian.measure.app.req.feignReq.UserRolesByProjectIdReq;
 import com.longfor.longjian.measure.app.req.staff.*;
+import com.longfor.longjian.measure.app.vo.feignVo.UserInfoProtoListVRspoVo;
+import com.longfor.longjian.measure.app.vo.feignVo.UserInfoProtoVo;
+import com.longfor.longjian.measure.app.vo.feignVo.UserProjectRoleProtoVo;
+import com.longfor.longjian.measure.app.vo.feignVo.UserRolesByProjectIdListRspVo;
+import com.longfor.longjian.measure.app.vo.staffVo.AllowUserSearchVo;
+import com.longfor.longjian.measure.app.vo.staffVo.RepairerListSearchVo;
 import com.longfor.longjian.measure.domain.externalService.IMeasureRepairerUserService;
 import com.longfor.longjian.measure.domain.externalService.IMeasureSquadService;
 import com.longfor.longjian.measure.domain.externalService.IMeasureSquadUserService;
@@ -38,49 +51,182 @@ public class IStaffServiceImpl implements IStaffService {
     @Autowired
     private IMeasureRepairerUserService iMeasureRepairerUserService;
 
+    @Autowired
+    private ICoreUserFeignService coreUserFeignService;
+
+    @Autowired
+    private ICoreUserProjectRoleFeignService coreUserProjectRoleFeignService;
+
 
     @Override
-    public Page squadSearch(SquadSearchReq squadSearchReq) throws CommonException {
+    public JSONObject squadSearch(SquadSearchReq squadSearchReq) throws CommonException {
 
-        List<MeasureSquad>squadSearchReqList=new ArrayList<>();
+        JSONObject totalObject=new JSONObject();
+
+        List<MeasureSquad>measureSquadList=new ArrayList<>();
         Example example = new Example(MeasureSquad.class);
         Example.Criteria criteria = example.createCriteria().
                 andEqualTo("listId", squadSearchReq.getList_id());
         if(squadSearchReq.getPage()!=null&&squadSearchReq.getPage_size()!=null) {
             Page result = PageHelper.startPage(squadSearchReq.getPage(), squadSearchReq.getPage_size());
             iMeasureSquadService.selectByExample(example);
-            squadSearchReqList=result.getResult();
+            measureSquadList=result.getResult();
         }else if(squadSearchReq.getPage()==null&&squadSearchReq.getPage_size()==null) {
 
-            squadSearchReqList = iMeasureSquadService.selectByExample(example);
+            measureSquadList = iMeasureSquadService.selectByExample(example);
         }else{
             throw new CommonException("参数错误");
         }
 
         List<MeasureSquadUser> measureSquadUserList=new ArrayList<>();
 
-        for(int i=0;i<squadSearchReqList.size();i++){
+        JSONArray jsonArray=new JSONArray();
+
+        for(int i=0;i<measureSquadList.size();i++){
+
+            JSONObject jb=new JSONObject();
+
             Example uexample = new Example(MeasureSquadUser.class);
-            Example.Criteria ucriteria = example.createCriteria();
-            ucriteria.andEqualTo("squadId", squadSearchReqList.get(i).getId());
-            ucriteria.andIsNotNull("deleteAt");
+            Example.Criteria ucriteria = uexample.createCriteria();
+            ucriteria.andEqualTo("squadId", measureSquadList.get(i).getId());
+            ucriteria.andIsNull("deleteAt");
             measureSquadUserList=iMeasureSquadUserService.selectByExample(uexample);
+
+            jb.put("id",measureSquadList.get(i).getId());
+            jb.put("name",measureSquadList.get(i).getName());
+            jb.put("plan_rate",measureSquadList.get(i).getPlanRate());
+            jb.put("rate",measureSquadList.get(i).getRate());
+
+            List<Integer>  userIdList=new ArrayList<>();
+
+            for(int j=0;j<measureSquadUserList.size();j++){
+                userIdList.add(measureSquadUserList.get(j).getUserId());
+            }
+
+            jb.put("user_id_list",userIdList);
+
+            MultiGetReq multiGetReq=new MultiGetReq();
+            multiGetReq.setUser_ids(userIdList);
+            multiGetReq.setGroup_id(squadSearchReq.getGroup_id());
+
+            LjBaseResponse<UserInfoProtoListVRspoVo> ljBaseResponse=coreUserFeignService.searchByUserIdList(multiGetReq);
+
+            List<UserInfoProtoVo>userInfoProtoVos=ljBaseResponse.getData().getUser_infos();
+
+            List<String>userRealName=new ArrayList<>();
+
+            for(int k=0;k<userInfoProtoVos.size();k++){
+                userRealName.add(userInfoProtoVos.get(k).getReal_name());
+            }
+            jb.put("user_name_list",userRealName);
+
+            jsonArray.add(jb);
         }
 
-        Integer [] userIdList=new Integer[measureSquadUserList.size()];
+        totalObject.put("squad_info",jsonArray);
+        totalObject.put("total",measureSquadList.size());
 
-        for(int j=0;j<measureSquadUserList.size();j++){
-            userIdList[j]=measureSquadUserList.get(j).getUserId();
+        return totalObject;
+    }
+
+    @Override
+    public List<AllowUserSearchVo> allowUserSearch(AllowUserSearchReq allowUserSearchReq) {
+
+        Example example = new Example(MeasureSquadUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId", allowUserSearchReq.getProject_id());
+        criteria.andEqualTo("listId", allowUserSearchReq.getList_id());
+
+        List<MeasureSquadUser>measureSquadUserList=iMeasureSquadUserService.selectByExample(example);
+
+        Integer [] allUserIds=new Integer[measureSquadUserList.size()];
+
+        for(int i =0;i<measureSquadUserList.size();i++){
+            allUserIds[i]=measureSquadUserList.get(i).getUserId();
         }
 
+        UserRolesByProjectIdReq userRolesByProjectIdReq=new UserRolesByProjectIdReq();
+
+        userRolesByProjectIdReq.setGroup_id(allowUserSearchReq.getGroup_id());
+        userRolesByProjectIdReq.setProject_id(allowUserSearchReq.getProject_id());
+
+        LjBaseResponse<UserRolesByProjectIdListRspVo>ljBaseResponse=coreUserProjectRoleFeignService.userRolesByProjectId(userRolesByProjectIdReq);//项目角色表中该项目下所有的用户id
+
+        List<UserProjectRoleProtoVo> userProjectRoleProtoVoList=ljBaseResponse.getData().getUser_roles();
+
+        Integer [] staffUserIds=new Integer[userProjectRoleProtoVoList.size()];
+
+        for(int j=0;j<userProjectRoleProtoVoList.size();j++){
+            staffUserIds[j]=userProjectRoleProtoVoList.get(j).getUser_id();
+        }
+
+       List<Integer>allowUserIdList= ArrayUtil.getDiff(staffUserIds,allUserIds,"A-B");
 
 
+        MultiGetReq multiGetReq=new MultiGetReq();
+        multiGetReq.setUser_ids(allowUserIdList);
+        multiGetReq.setGroup_id(allowUserSearchReq.getGroup_id());
+
+        LjBaseResponse<UserInfoProtoListVRspoVo> userInfo=coreUserFeignService.searchByUserIdList(multiGetReq);//根据集团id  用户ids查询用户信息
+
+        List<UserInfoProtoVo>userInfoProtoVos=userInfo.getData().getUser_infos();
 
 
+        List<AllowUserSearchVo>allow_user_info=new ArrayList<>();
 
+        for(int z=0;z<userInfoProtoVos.size();z++){
+            AllowUserSearchVo allowUserSearchVo=new AllowUserSearchVo();
+            allowUserSearchVo.setUser_id(userInfoProtoVos.get(z).getUser_id());
+            allowUserSearchVo.setReal_name(userInfoProtoVos.get(z).getReal_name());
+            allow_user_info.add(allowUserSearchVo);
+        }
 
+        return allow_user_info;
+    }
 
-        return null;
+    @Override
+    public List<RepairerListSearchVo> repairerListSearch(RepairerListSearchReq repairerListSearchReq) {
+
+        Example example = new Example(MeasureRepairerUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId", repairerListSearchReq.getProject_id());
+        criteria.andEqualTo("listId", repairerListSearchReq.getList_id());
+        criteria.andEqualTo("roleType", repairerListSearchReq.getRole_type());
+
+        List<MeasureRepairerUser>measureRepairerUserList=iMeasureRepairerUserService.selectByExample(example);
+
+        List<Integer>repairerIdList=new ArrayList<>();
+
+        for(int i=0;i<measureRepairerUserList.size();i++){
+            repairerIdList.add(measureRepairerUserList.get(i).getUserId());
+        }
+
+        MultiGetReq multiGetReq=new MultiGetReq();
+        multiGetReq.setUser_ids(repairerIdList);
+        multiGetReq.setGroup_id(repairerListSearchReq.getGroup_id());
+
+        LjBaseResponse<UserInfoProtoListVRspoVo> userInfo=coreUserFeignService.searchByUserIdList(multiGetReq);//根据集团id  用户ids查询用户信息
+
+        List<UserInfoProtoVo>userInfoProtoVos=userInfo.getData().getUser_infos();
+
+        Map<Integer,String>map=new HashMap<>();
+
+        for(int k=0;k<userInfoProtoVos.size();k++){
+            map.put(userInfoProtoVos.get(k).getUser_id(),userInfoProtoVos.get(k).getReal_name());
+        }
+
+        List<RepairerListSearchVo>repairer_info=new ArrayList<>();
+
+        for(MeasureRepairerUser measureRepairerUser:measureRepairerUserList){
+            RepairerListSearchVo repairerListSearchVo=new RepairerListSearchVo();
+            repairerListSearchVo.setId(measureRepairerUser.getId());
+            repairerListSearchVo.setUser_id(measureRepairerUser.getUserId());
+            repairerListSearchVo.setReal_name(map.get(measureRepairerUser.getUserId()));
+            repairerListSearchVo.setRole_type(measureRepairerUser.getRoleType());
+
+            repairer_info.add(repairerListSearchVo);
+        }
+        return repairer_info;
     }
 
     @Override

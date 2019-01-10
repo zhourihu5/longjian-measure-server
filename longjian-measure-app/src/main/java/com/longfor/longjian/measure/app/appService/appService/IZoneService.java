@@ -1,5 +1,7 @@
 package com.longfor.longjian.measure.app.appService.appService;
 
+import com.alibaba.fastjson.JSONObject;
+import com.longfor.longjian.common.exception.CommonException;
 import com.longfor.longjian.measure.app.req.zone.*;
 
 import java.util.List;
@@ -9,7 +11,10 @@ import java.util.List;
  */
 public interface IZoneService {
 
-   List getResult(GetResultReq getResultReq);
+   JSONObject getResult(GetResultReq getResultReq);
+
+
+   JSONObject paginationSearch(PaginationSearchReq paginationSearchReq) throws CommonException;
 
 
    void updateStatus(UpdateStatusReq  updateStatusReq);

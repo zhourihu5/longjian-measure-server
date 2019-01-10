@@ -1,6 +1,7 @@
 package com.longfor.longjian.measure.domain.externalService;
 
 import com.longfor.longjian.measure.po.zhijian2.MeasureZoneResult;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 import java.util.Map;
@@ -131,10 +132,10 @@ public interface IMeasureZoneResultService {
 
     /**
      *
-     * @param measureZoneResult
+     * @param example
      * @return
      */
-    List<MeasureZoneResult>getMeasureZoneResult(MeasureZoneResult measureZoneResult);
+    List<MeasureZoneResult>selectByExample(Example example);
 
     /**
      * \
@@ -147,4 +148,6 @@ public interface IMeasureZoneResultService {
      * @param map
      */
     void delBySquadIdUuid(Map<String,Object>map);
+
+
 }

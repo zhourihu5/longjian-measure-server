@@ -6,6 +6,7 @@ import com.longfor.longjian.measure.po.zhijian2.MeasureRegion;
 import com.longfor.longjian.measure.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.*;
 
@@ -84,5 +85,10 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
     @Override
     public MeasureRegion searchByUuid(Integer project_id, String uuid) {
         return measureRegionMapper.getByConditionNoFoundErr(project_id,uuid);
+    }
+
+    @Override
+    public List<MeasureRegion> selectByExample(Example example) {
+        return measureRegionMapper.selectByExample(example);
     }
 }

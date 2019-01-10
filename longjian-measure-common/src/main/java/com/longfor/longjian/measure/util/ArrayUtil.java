@@ -3,9 +3,7 @@ package com.longfor.longjian.measure.util;
 
 import io.swagger.models.auth.In;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Wang on 2019/1/7.
@@ -55,6 +53,23 @@ public class ArrayUtil {
         }
         return newList;
     }
+
+    /**
+     * 比较2个set元素
+     * @param set1
+     * @param set2
+     * @return
+     */
+    public static boolean getSetDiff(Set<Integer> set1,Set<Integer> set2){
+        set1.removeAll(set2);
+        if(set1.size()>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
 
 }
 

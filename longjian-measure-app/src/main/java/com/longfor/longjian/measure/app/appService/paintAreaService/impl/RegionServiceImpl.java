@@ -9,7 +9,6 @@ import com.longfor.longjian.measure.app.vo.feignVo.AreaRetrieveVo;
 import com.longfor.longjian.measure.consts.Enum.MeasureErrorEnum;
 import com.longfor.longjian.measure.po.zhijian2.Area;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

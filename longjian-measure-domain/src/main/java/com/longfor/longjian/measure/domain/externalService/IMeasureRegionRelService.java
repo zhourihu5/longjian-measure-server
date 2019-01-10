@@ -1,8 +1,7 @@
 package com.longfor.longjian.measure.domain.externalService;
 
-import com.longfor.longjian.measure.po.zhijian2.MeasureRegion;
 import com.longfor.longjian.measure.po.zhijian2.MeasureRegionRel;
-import org.apache.ibatis.annotations.Param;
+import com.longfor.longjian.measure.vo.MeasureRegionRelVo;
 
 import java.util.List;
 import java.util.Map;
@@ -33,4 +32,7 @@ public interface IMeasureRegionRelService {
      * @return
      */
     List<MeasureRegionRel> searchRelUnscopedByProjIdLastIdUpdateAtGt(Integer project_id, Integer last_id, Long timestamp, Integer measureApiGetPerTime, Integer start);
+
+    MeasureRegionRelVo selectById(Integer id);
+
 }

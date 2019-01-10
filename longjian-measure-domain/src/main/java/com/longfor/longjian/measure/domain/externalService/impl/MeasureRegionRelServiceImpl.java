@@ -3,6 +3,7 @@ package com.longfor.longjian.measure.domain.externalService.impl;
 import com.longfor.longjian.measure.dao.zhijian2.MeasureRegionRelMapper;
 import com.longfor.longjian.measure.domain.externalService.IMeasureRegionRelService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureRegionRel;
+import com.longfor.longjian.measure.vo.MeasureRegionRelVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,5 +29,10 @@ public class MeasureRegionRelServiceImpl implements IMeasureRegionRelService {
     @Override
     public List<MeasureRegionRel> searchRelUnscopedByProjIdLastIdUpdateAtGt(Integer project_id, Integer last_id, Long timestamp, Integer measureApiGetPerTime, Integer start) {
         return measureRegionRelMapper.searchRelUnscopedByProjIdLastIdUpdateAtGt(project_id,last_id,timestamp,measureApiGetPerTime,start);
+    }
+
+    @Override
+    public MeasureRegionRelVo selectById(Integer id) {
+        return measureRegionRelMapper.selectById(id);
     }
 }

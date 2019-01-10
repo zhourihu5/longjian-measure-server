@@ -99,8 +99,8 @@ public class MeasureZoneResultServiceImpl implements IMeasureZoneResultService {
     }
 
     @Override
-    public List<MeasureZoneResult> getMeasureZoneResult(MeasureZoneResult measureZoneResult) {
-        return measureZoneResultMapper.select(measureZoneResult);
+    public List<MeasureZoneResult> selectByExample(Example example) {
+        return measureZoneResultMapper.selectByExample(example);
     }
 
     @Override

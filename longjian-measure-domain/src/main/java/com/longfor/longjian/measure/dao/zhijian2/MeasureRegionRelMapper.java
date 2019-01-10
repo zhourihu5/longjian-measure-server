@@ -2,6 +2,7 @@ package com.longfor.longjian.measure.dao.zhijian2;
 
 import com.longfor.gaia.gfs.data.mybatis.LFMySQLMapper;
 import com.longfor.longjian.measure.po.zhijian2.MeasureRegionRel;
+import com.longfor.longjian.measure.vo.MeasureRegionRelVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -34,4 +35,6 @@ public interface MeasureRegionRelMapper extends LFMySQLMapper<MeasureRegionRel> 
      * @return
      */
     List<MeasureRegionRel> searchRelUnscopedByProjIdLastIdUpdateAtGt(@Param("projectId") Integer project_id, @Param("lastId") Integer last_id, @Param("timestamp") Long timestamp, @Param("measureApiGetPerTime") Integer measureApiGetPerTime, @Param("start") Integer start);
+
+    MeasureRegionRelVo selectById(Integer id);
 }

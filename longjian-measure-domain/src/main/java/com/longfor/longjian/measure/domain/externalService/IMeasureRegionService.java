@@ -1,6 +1,7 @@
 package com.longfor.longjian.measure.domain.externalService;
 
 import com.longfor.longjian.measure.po.zhijian2.MeasureRegion;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 import java.util.Map;
@@ -64,4 +65,6 @@ public interface IMeasureRegionService {
      * @return
      */
     MeasureRegion searchByUuid(Integer project_id, String uuid);
+
+    List<MeasureRegion>selectByExample(Example example);
 }

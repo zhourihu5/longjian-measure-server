@@ -74,4 +74,9 @@ public class MeasureZoneServiceImpl implements IMeasureZoneService {
         measureZoneMapper.delByUuidList(map);
     }
 
+    @Override
+    public List<MeasureZone> selectByExample(Example example) {
+        return measureZoneMapper.selectByExample(example);
+    }
+
 }
