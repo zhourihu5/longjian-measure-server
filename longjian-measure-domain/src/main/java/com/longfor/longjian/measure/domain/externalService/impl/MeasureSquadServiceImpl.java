@@ -61,4 +61,9 @@ public class MeasureSquadServiceImpl implements IMeasureSquadService {
 
         return measureSquadMapper.updateByExampleSelective(measureSquad,example);
     }
+
+    @Override
+    public List<MeasureSquad> selectByExample(Example example) {
+        return measureSquadMapper.selectByExample(example);
+    }
 }

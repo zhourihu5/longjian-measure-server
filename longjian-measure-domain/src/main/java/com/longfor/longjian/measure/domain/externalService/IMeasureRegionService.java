@@ -76,4 +76,20 @@ public interface IMeasureRegionService {
     MeasureRegion save(MeasureRegion model);
 
     MeasureRegion update(MeasureRegion mode);
+
+    /**
+     *
+     * @param proj_id
+     * @param region_uuid
+     * @return
+     */
+    MeasureRegion searchByProjIdAndRegionUuid(Integer proj_id, String region_uuid);
+
+    /**
+     *
+     * @param proj_id
+     * @param relId
+     * @return
+     */
+    List<MeasureRegion> searchByProjIdAndRelId(Integer proj_id, Integer relId);
 }

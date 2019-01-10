@@ -1,6 +1,7 @@
 package com.longfor.longjian.measure.domain.externalService;
 
 import com.longfor.longjian.measure.po.zhijian2.MeasureSquadUser;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 import java.util.Map;
@@ -30,4 +31,6 @@ public interface IMeasureSquadUserService {
     void insertList(List<MeasureSquadUser>measureSquadUserList);
 
     void deleteMeasureSquadUser(MeasureSquadUser measureSquadUser);
+
+    List<MeasureSquadUser>selectByExample(Example example);
 }
