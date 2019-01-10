@@ -151,4 +151,21 @@ WHERE
     from measure_region where project_id = #{project_id}
     and uuid = #{uuid}
   </select>
+
+  <select id="getMaxRegionIndexGroupByAreaIdNoDeleted" resultType="map">
+    SELECT
+	MAX( region_index ) region_index,
+	area_id
+    FROM
+	measure_region
+    WHERE
+	project_id = #{projId}
+	AND area_id IN
+    <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+	AND delete_at IS NULL
+    GROUP BY
+	area_id
+  </select>
 </mapper>

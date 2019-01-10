@@ -64,4 +64,16 @@ public interface IMeasureRegionService {
      * @return
      */
     MeasureRegion searchByUuid(Integer project_id, String uuid);
+
+    /**
+     * 获取measure_region现有的最大的index
+     * @param project_id
+     * @param area_id_list
+     * @return
+     */
+    List<Map<String, Object>> getMaxRegionIndexGroupByAreaIdNoDeleted(Integer project_id, List area_id_list);
+
+    MeasureRegion save(MeasureRegion model);
+
+    MeasureRegion update(MeasureRegion mode);
 }
