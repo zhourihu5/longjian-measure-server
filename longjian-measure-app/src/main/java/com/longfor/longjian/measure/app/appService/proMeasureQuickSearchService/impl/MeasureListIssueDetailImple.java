@@ -12,7 +12,9 @@ import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
 import com.longfor.longjian.measure.po.zhijian2.MeasureList;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListIssue;
 import com.longfor.longjian.measure.po.zhijian2_apisvr.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
@@ -21,7 +23,8 @@ import java.util.*;
  * @author: DDC
  * @create: 2019-01-09 17:49
  **/
-
+@Service
+@Slf4j
 public class MeasureListIssueDetailImple implements IMeasureListIssueDetailService {
 
     @Autowired

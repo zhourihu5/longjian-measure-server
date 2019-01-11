@@ -7,14 +7,17 @@ import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetMeasureS
 import com.longfor.longjian.measure.app.vo.proMeasureQuickSearchVo.MeasureStatisticSquadStatsVo;
 import com.longfor.longjian.measure.domain.externalService.IMeasureZoneService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @description:
  * @author: DDC
  * @create: 2019-01-08 19:43
  **/
-
+@Service
+@Slf4j
 public class MeasureStatisticImpl implements IMeasureStatisticService {
 
     @Autowired
