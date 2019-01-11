@@ -10,7 +10,7 @@ public class CheckItemV3 {
 
     @Column(name = "father_key")
     private String fatherKey;
-
+    @Column(name = "`key`")
     private String key;
 
     private String path;
@@ -26,7 +26,7 @@ public class CheckItemV3 {
 
     @Column(name = "category_key")
     private String categoryKey;
-
+    @Column(name = "`order`")
     private String order;
 
     @Column(name = "zj_std_key")
@@ -34,9 +34,9 @@ public class CheckItemV3 {
 
     @Column(name = "custom_key")
     private String customKey;
-
+    @Column(name = "`name`")
     private String name;
-
+    @Column(name = "`desc`")
     private String desc;
 
     @Column(name = "common_issues")

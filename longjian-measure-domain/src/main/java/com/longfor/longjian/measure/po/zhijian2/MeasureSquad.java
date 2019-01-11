@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.po.zhijian2;
 
+
 import java.util.Date;
 import javax.persistence.*;
 

@@ -43,4 +43,11 @@ public class AreaServiceImpl implements IAreaService {
     public List<Area> getAreaByIds(List<Integer> areaIds) {
         return areaMapper.getAreaByIds(areaIds);
     }
+
+    @Override
+    public List<Area> searchByIdList(Integer proj_id, List<Integer> areaIds) {
+        Example example = new Example(Area.class);
+        example.createCriteria().andEqualTo("projectId",proj_id).andIn("id",areaIds);
+        return areaMapper.selectByExample(example);
+    }
 }

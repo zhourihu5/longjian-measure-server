@@ -47,8 +47,24 @@ longfor:
         longjian-basic-server:
           permission:
             url: http://172.17.96.88:8082/uc/inner/
+          coreArea:
+            url: http://localhost:8082/core_srv_area/
+          user:
+            url: http://localhost:8082/core_srv_user/user/
+          userProjectRole:
+            url: http://localhost:8082/core_srv_permission/
+          checkItem:
+            url: http://localhost:8082/core_srv_check_item/
+          measureCheckItem:
+            url: http://172.17.96.88:8082/house/oapi/v3/check_item/check_item/
         config:
           permission:
+            connectTimeout: 5000
+            readTimeout: 5000
+          coreArea:
+            connectTimeout: 5000
+            readTimeout: 5000
+          measureCheckItem:
             connectTimeout: 5000
             readTimeout: 5000
         cas-server:

@@ -34,4 +34,11 @@
       AND AND update_at > #{updateAtGt}
     </if>
   </select>
+
+  <insert id="insertMeasureSquad"
+          parameterType="com.longfor.longjian.measure.po.zhijian2.MeasureSquad" useGeneratedKeys="true" keyProperty="id" >
+    insert into measure_squad(list_id, project_id, name, plan_rate, rate, create_at, update_at) values
+    (#{listId},#{projectId},#{name},#{planRate},#{rate},#{createAt},#{updateAt})
+
+  </insert>
 </mapper>

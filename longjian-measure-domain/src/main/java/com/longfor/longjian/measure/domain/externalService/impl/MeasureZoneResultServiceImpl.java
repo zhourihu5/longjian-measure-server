@@ -2,10 +2,13 @@ package com.longfor.longjian.measure.domain.externalService.impl;
 
 import com.longfor.longjian.measure.dao.zhijian2.MeasureZoneResultMapper;
 import com.longfor.longjian.measure.domain.externalService.IMeasureZoneResultService;
+import com.longfor.longjian.measure.po.zhijian2.MeasureListArea;
 import com.longfor.longjian.measure.po.zhijian2.MeasureZoneResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -82,4 +85,32 @@ public class MeasureZoneResultServiceImpl implements IMeasureZoneResultService {
     public int insertObjectNoAffectedErr(MeasureZoneResult zoneResult) {
         return measureZoneResultMapper.insertSelective(zoneResult);
     }
+
+    @Override
+    public void delete(Integer id) {
+        Example example = new Example(MeasureZoneResult.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("listId",id);
+
+        MeasureZoneResult measureZoneResult=new MeasureZoneResult();
+        measureZoneResult.setListId(id);
+        measureZoneResult.setDeleteAt(new Date());
+        measureZoneResultMapper.updateByExampleSelective(measureZoneResult,example);
+    }
+
+    @Override
+    public List<MeasureZoneResult> selectByExample(Example example) {
+        return measureZoneResultMapper.selectByExample(example);
+    }
+
+    @Override
+    public void delByUuidList(Map<String, Object> map) {
+        measureZoneResultMapper.delByUuidList(map);
+    }
+
+    @Override
+    public void delBySquadIdUuid(Map<String, Object> map) {
+        measureZoneResultMapper.delBySquadIdUuid(map);
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.longfor.longjian.measure.domain.externalService;
 
 import com.longfor.longjian.measure.po.zhijian2.MeasureRegion;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 import java.util.Map;
@@ -64,4 +65,43 @@ public interface IMeasureRegionService {
      * @return
      */
     MeasureRegion searchByUuid(Integer project_id, String uuid);
+
+    /**
+     * 获取measure_region现有的最大的index
+     * @param project_id
+     * @param area_id_list
+     * @return
+     */
+    List<Map<String, Object>> getMaxRegionIndexGroupByAreaIdNoDeleted(Integer project_id, List area_id_list);
+
+    MeasureRegion save(MeasureRegion model);
+
+    MeasureRegion update(MeasureRegion mode);
+
+    /**
+     *
+     * @param proj_id
+     * @param region_uuid
+     * @return
+     */
+    MeasureRegion searchByProjIdAndRegionUuid(Integer proj_id, String region_uuid);
+
+    /**
+     *
+     * @param proj_id
+     * @param relId
+     * @return
+     */
+    List<MeasureRegion> searchByProjIdAndRelId(Integer proj_id, Integer relId);
+
+    List<MeasureRegion>selectByExample(Example example);
+
+    /**
+     *
+     * @param project_id
+     * @param region_ids
+     * @param polygon
+     * @param tag_id_list
+     */
+    void updateByProjectIdAndIdInNoDeleted(Integer project_id, List region_ids, String polygon, String tag_id_list);
 }

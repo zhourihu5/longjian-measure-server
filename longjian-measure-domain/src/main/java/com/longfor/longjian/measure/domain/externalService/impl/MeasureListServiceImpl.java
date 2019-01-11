@@ -10,7 +10,9 @@ import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
 import org.bouncycastle.cms.PasswordRecipientId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,6 +26,8 @@ public class MeasureListServiceImpl implements IMeasureListService {
     private MeasureZoneMapper measureZoneMapper;
     @Autowired
     private  MeasureSquadUserMapper measureSquadUserMapper;
+
+
     @Override
     public List<Map<String, Object>> getMeasureList(Integer finish_status, String q, Integer project_id, String categoryPathAndKey, String areaPathAndId, String[] userIds, Integer page, Integer page_size) {
         page = page - 1;
@@ -90,12 +94,41 @@ public class MeasureListServiceImpl implements IMeasureListService {
     }
 
     @Override
-    public int setStatus(MeasureList measureList) {
-        return  measureListMapper.updateByPrimaryKey(measureList);
+    public int updateMeasureList(MeasureList measureList) {
+        Example example = new Example(MeasureList.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("id",measureList.getId());
+        criteria.andIsNull("deleteAt");
+        return  measureListMapper.updateByExampleSelective(measureList,example);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        Example example = new Example(MeasureList.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("id",id);
+
+        MeasureList measureList=new MeasureList();
+        measureList.setId(id);
+        measureList.setDeleteAt(new Date());
+
+        measureListMapper.updateByExampleSelective(measureList,example);
+    }
+
+    @Override
+    public void updateFinishStatus(Map<String, Object> map) {
+        measureListMapper.updateFinishStatus(map);
     }
 
     @Override
     public MeasureList getMeasureListByProjIdAndId(Integer projId, Integer Id) {
         return measureListMapper.getMeasureListByProjIdAndId(projId,Id);
     }
+
+    @Override
+    public void updateCloseStatus(Map<String, Object> map) {
+        measureListMapper.updateCloseStatus(map);
+    }
+
+
 }

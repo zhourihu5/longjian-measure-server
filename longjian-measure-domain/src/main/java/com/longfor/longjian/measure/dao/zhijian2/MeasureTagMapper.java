@@ -6,6 +6,7 @@ import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.PatchMapping;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -29,4 +30,24 @@ public interface MeasureTagMapper extends LFMySQLMapper<MeasureTag> {
      * @return
      */
     List<Map<String,Object>> searchByGroupIdAndProjId(@Param("groupId") Integer group_id, @Param("projId") Integer proj_id, @Param("ownership") Integer ownership);
+
+    /**
+     *
+     * @param group_id
+     * @param tagId
+     * @param ownership
+     * @return
+     */
+    Integer updateByIdAndOwnership(@Param("group_id")Integer group_id, @Param("tagId")Integer tagId, @Param("ownership") Integer ownership, @Param("newDate")Date newDate);
+
+    /**
+     *
+     * @param group_id
+     * @param project_id
+     * @param tagId
+     * @param ownership
+     * @param newDate
+     * @return
+     */
+    Integer updateByProjectIdAndOwnership(@Param("group_id")Integer group_id, @Param("project_id")Integer project_id, @Param("tagId")Integer tagId, @Param("ownership")Integer ownership, @Param("newDate")Date newDate);
 }

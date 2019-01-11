@@ -92,22 +92,34 @@ public interface MeasureZoneMapper extends LFMySQLMapper<MeasureZone> {
      * @return com.longfor.longjian.measure.po.zhijian2.MeasureZone
      **/
     MeasureZone GetByCondition(@Param("projectId") Integer projectId , @Param("id") Integer id);
-    
+
     /**
-     * @Description: 
+     * @Description:
      * @param measureListId
      * @return java.lang.Integer
      * @author DDC
      * @date 2019/1/9 14:06
      **/
     Integer GetMeasureListCategoryCount(@Param("measureListId") Integer measureListId);
-    
+
     /**
-     * @Description: 
+     * @Description:
      * @param measureListId
      * @return java.lang.Integer
      * @author DDC
      * @date 2019/1/9 14:06
      **/
     Integer GetMeasureListBuildingCount(@Param("measureListId") Integer measureListId);
+
+    /**
+     *
+     * @param map
+     */
+    void updateStatus(Map<String,Object>map);
+
+    /**
+     *
+     * @param map
+     */
+    void delByUuidList(Map<String,Object>map);
 }

@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * /measureV1Papi/v3/stat_measure/in_stat_proj_status in_stat_proj_status.search
- * /measureV1Papi/v3/stat_measure/in_stat_proj_status in_stat_proj_status.update
+ * /measureV1PapiController/v3/stat_measure/in_stat_proj_status in_stat_proj_status.search
+ * /measureV1PapiController/v3/stat_measure/in_stat_proj_status in_stat_proj_status.update
  *
  * zhijian_server_stat_measure 服务
  * 集团统计分析

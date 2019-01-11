@@ -4,6 +4,7 @@ import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
 import com.longfor.longjian.measure.po.zhijian2.MeasureZoneResult;
 
 import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 import java.util.Map;
@@ -74,5 +75,21 @@ public interface IMeasureZoneService {
     Integer GetMeasureListBuildingCountAndRegionCount(Integer measureListId);
 
     Integer GetMeasureListCategoryCountAndCheckItemCount (Integer measureListId);
+
+    /**
+     *
+     * @param id
+     */
+    void delete (Integer id);
+
+    /**
+     *
+     * @param map
+     */
+    void updateStatus(Map<String,Object>map);
+
+    void delByUuidList(Map<String,Object>map);
+
+    List<MeasureZone>selectByExample(Example example);
 
 }

@@ -33,4 +33,22 @@
       AND update_at > #{updateAtGt}
     </if>
   </select>
+
+  <update id="delOld">
+
+    update  measure_repairer_user set delete_at=#{delete_at} where list_id=#{list_id} and role_type=#{role_type}
+
+    and project_id = #{project_id}
+
+    <if test="deleteUserIds!=null">
+
+      and user_id in
+
+      <foreach collection="deleteUserIds" index="index" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+
+    </if>
+
+  </update>
 </mapper>

@@ -23,4 +23,6 @@ public interface MeasureRuleMapper extends LFMySQLMapper<MeasureRule> {
      * @return
      */
     MeasureRule getByCategoryKey(@Param("categoryKey") String currentCategoryKey);
+
+    MeasureRule selectById(Integer id);
 }

@@ -1,12 +1,14 @@
-package com.longfor.longjian.measure.app.controller.measureV1Papi;
+package com.longfor.longjian.measure.app.controller.measureV1PapiController;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.paintAreaService.IProPaintAreaManageService;
+import com.longfor.longjian.measure.app.appService.paintAreaService.IRegionService;
+import com.longfor.longjian.measure.app.req.measureRegionReq.AddReq;
+import com.longfor.longjian.measure.app.req.measureRegionReq.EditReq;
 import com.longfor.longjian.measure.app.req.paintAreaReq.GetProjMeasureRegionReq;
-import com.longfor.longjian.measure.app.req.paintAreaReq.GetGroupMeasureRegionTagReq;
-import com.longfor.longjian.measure.app.req.paintAreaReq.GetProjMeasureRegionTagReq;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.AreaRegionTagVo;
-import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.GroupRegionTagVo;
+import com.longfor.longjian.measure.consts.Enum.RegionSrcTypeEnum;
+import com.longfor.longjian.measure.domain.externalService.IMeasureRegionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -30,6 +32,8 @@ public class ProPaintAreaManageController {
 
     @Autowired
     private IProPaintAreaManageService proPaintAreaManageService;
+    @Autowired
+    private IRegionService regionService;
 
     /**
      * 项目描画区域管理新增描画区域请求测区
@@ -45,12 +49,13 @@ public class ProPaintAreaManageController {
 
 
     /**
-     *
+     *添加描画区域
      * @return
      */
-    @PostMapping(value = "add/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse add() {
-        return null;
+    @PostMapping(value = "add" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public LjBaseResponse add(@RequestBody @Valid AddReq addReq) {
+        regionService.add(addReq.getProject_id(),addReq.getRegion_list(), RegionSrcTypeEnum.BackEnd.getId());
+        return new LjBaseResponse();
     }
 
 
@@ -65,12 +70,13 @@ public class ProPaintAreaManageController {
 
 
     /**
-     *
+     * 编辑描画区域
      * @return
      */
     @PostMapping(value = "edit/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse edit() {
-        return null;
+    public LjBaseResponse edit(@RequestBody @Valid EditReq editReq ) {
+        regionService.edit(editReq.getProject_id(),editReq.getRegion_info_list());
+        return new LjBaseResponse();
     }
 
 

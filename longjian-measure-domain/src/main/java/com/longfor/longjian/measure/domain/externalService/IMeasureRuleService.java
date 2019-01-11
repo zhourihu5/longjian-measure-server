@@ -2,6 +2,7 @@ package com.longfor.longjian.measure.domain.externalService;
 
 
 import com.longfor.longjian.measure.po.zhijian2.MeasureRule;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;
 import java.util.List;
@@ -21,4 +22,6 @@ public interface IMeasureRuleService {
      * @return
      */
     MeasureRule getByCategoryKey(String currentCategoryKey);
+
+    MeasureRule selectById(Integer id);
 }

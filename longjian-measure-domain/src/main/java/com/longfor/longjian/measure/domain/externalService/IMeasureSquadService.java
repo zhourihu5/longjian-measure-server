@@ -1,9 +1,9 @@
 package com.longfor.longjian.measure.domain.externalService;
 
 import com.longfor.longjian.measure.po.zhijian2.MeasureSquad;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
-import java.util.Map;
 
 public interface IMeasureSquadService {
     /**
@@ -23,4 +23,22 @@ public interface IMeasureSquadService {
      * @return
      */
     List<MeasureSquad> searchMeasureSquadByListIdTimestampGt(Integer projectId, Integer list_id, String updateAtGt);
+
+    /**
+     *
+     * @param id
+     */
+    void delete (Integer id);
+
+    int create(MeasureSquad measureSquad);
+
+    int update (MeasureSquad measureSquad);
+
+    /**
+     *
+     * @param example
+     * @return
+     */
+    List<MeasureSquad>selectByExample(Example example);
+
 }
