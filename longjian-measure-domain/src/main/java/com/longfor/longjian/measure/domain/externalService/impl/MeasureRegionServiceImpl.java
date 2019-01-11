@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 /**
@@ -17,7 +18,7 @@ import java.util.*;
 @Service
 public class MeasureRegionServiceImpl implements IMeasureRegionService {
 
-    @Autowired
+    @Resource
     private MeasureRegionMapper measureRegionMapper;
 
     @Override
@@ -103,6 +104,28 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
     public List<MeasureRegion> searchByProjIdAndRelId(Integer proj_id, Integer relId) {
         Example example = new Example(MeasureRegion.class);
         example.createCriteria().andEqualTo("projectId", proj_id).andEqualTo("relId", relId);
+        return measureRegionMapper.selectByExample(example);
+    }
+
+    @Override
+    public List<Map<String, Object>> getMaxRegionIndexGroupByAreaIdNoDeleted(Integer project_id, List area_id_list) {
+        return measureRegionMapper.getMaxRegionIndexGroupByAreaIdNoDeleted(project_id,area_id_list);
+    }
+
+    @Override
+    public MeasureRegion save(MeasureRegion model) {
+        measureRegionMapper.insertSelective(model);
+        return model;
+    }
+
+    @Override
+    public MeasureRegion update(MeasureRegion mode) {
+        measureRegionMapper.updateByPrimaryKeySelective(mode);
+        return null;
+    }
+
+    @Override
+    public List<MeasureRegion> selectByExample(Example example) {
         return measureRegionMapper.selectByExample(example);
     }
 }

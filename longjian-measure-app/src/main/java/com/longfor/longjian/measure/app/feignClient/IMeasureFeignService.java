@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * Jiazm 2019/01/10 16:03
  */
 @Service
-@LFFeignClient(group = "longjian-basic-server",value = "checkItem",configuration = LFFeignConfiguration.class)
+@LFFeignClient(group = "longjian-basic-server",value = "measureCheckItem",configuration = LFFeignConfiguration.class)
 public interface IMeasureFeignService {
     @PostMapping(value = "update_json" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     LjBaseResponse<CheckItemUpdateJsonVo> updateJson(@RequestParam(required = true,name = "category_id") Integer category_id,

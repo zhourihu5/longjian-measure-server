@@ -1,15 +1,23 @@
 package com.longfor.longjian.measure.app.appService.appService;
 
-import com.github.pagehelper.Page;
+import com.alibaba.fastjson.JSONObject;
 import com.longfor.longjian.common.exception.CommonException;
 import com.longfor.longjian.measure.app.req.staff.*;
+import com.longfor.longjian.measure.app.vo.staffVo.AllowUserSearchVo;
+import com.longfor.longjian.measure.app.vo.staffVo.RepairerListSearchVo;
+
+import java.util.List;
 
 /**
  * Created by Wang on 2019/1/7.
  */
 public interface IStaffService {
 
-    Page squadSearch(SquadSearchReq squadSearchReq) throws CommonException;
+    JSONObject squadSearch(SquadSearchReq squadSearchReq) throws CommonException;
+
+    List<AllowUserSearchVo> allowUserSearch(AllowUserSearchReq allowUserSearchReq);
+
+    List<RepairerListSearchVo>repairerListSearch(RepairerListSearchReq repairerListSearchReq);
 
     void squadAdd(SquadAddReq squadAddReq);
 

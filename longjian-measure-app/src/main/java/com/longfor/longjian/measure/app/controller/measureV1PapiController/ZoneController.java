@@ -1,6 +1,7 @@
 package com.longfor.longjian.measure.app.controller.measureV1PapiController;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.exception.CommonException;
 import com.longfor.longjian.measure.app.appService.appService.IZoneService;
 import com.longfor.longjian.measure.app.req.zone.*;
 import lombok.extern.slf4j.Slf4j;
@@ -27,8 +28,8 @@ public class ZoneController {
      * @return
      */
     @GetMapping(value = "pagination_search" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse paginationSearch(@Valid @RequestBody PaginationSearchReq paginationSearchReq) {
-        return new LjBaseResponse();
+    public LjBaseResponse paginationSearch(PaginationSearchReq paginationSearchReq)throws CommonException {
+        return new LjBaseResponse(zoneService.paginationSearch(paginationSearchReq));
     }
 
     /**
@@ -37,8 +38,8 @@ public class ZoneController {
      * @return
      */
     @GetMapping(value = "get_result" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse getResult(@Valid @RequestBody GetResultReq getResultReq) {
-        return new LjBaseResponse();
+    public LjBaseResponse getResult( GetResultReq getResultReq) {
+        return new LjBaseResponse(zoneService.getResult(getResultReq));
     }
 
     /**

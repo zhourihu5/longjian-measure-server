@@ -293,7 +293,7 @@ WHERE
 
     UPDATE measure_zone_result set delete_at=#{delete_at}
 
-    where  project_id = #{projId}
+    where  project_id = #{project_id}
 
     and  zone_uuid IN
     <foreach collection="zoneId" index="index" item="item" open="(" separator="," close=")">
@@ -307,7 +307,7 @@ WHERE
 
     UPDATE measure_zone_result set delete_at=#{delete_at}
 
-    where  project_id = #{projId}
+    where  project_id = #{project_id}
 
     <if test="squadId!=null and squadId!=''">
        and squad_id = #{squadId}

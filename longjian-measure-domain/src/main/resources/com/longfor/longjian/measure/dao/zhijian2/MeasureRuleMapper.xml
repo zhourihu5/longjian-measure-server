@@ -61,4 +61,25 @@
         AND delete_at IS  NULL
     </select>
 
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT
+        id,
+        category_key,
+        `desc`,
+        formula,
+        formula_default,
+        group_count_init,
+        group_count_max,
+        group_count_min,
+        point_need,
+        points,
+        rule_type,
+        team_id,
+        textures
+        FROM
+            measure_rule
+
+            where id=#{id} and delete_at IS  NULL
+    </select>
+
 </mapper>

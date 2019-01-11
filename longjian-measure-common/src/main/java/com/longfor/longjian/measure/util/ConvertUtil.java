@@ -1,12 +1,16 @@
 package com.longfor.longjian.measure.util;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -85,6 +89,27 @@ public class ConvertUtil {
             }
         }
         return obj;
+    }
+
+    /**
+     * 字符串转list 字符串以逗号隔开
+     * @param str
+     * @return
+     */
+    public static List<String> convertStrToList(String str){
+
+        List<String>newList=new ArrayList<>();
+
+        if(StringUtils.isBlank(str)){
+            return newList;
+        }else{
+            String [] arr=str.split(",");
+
+            for(int i=0;i<arr.length;i++){
+                newList.add(arr[i]);
+            }
+        }
+        return newList;
     }
 
     /**

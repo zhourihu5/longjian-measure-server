@@ -72,4 +72,18 @@ public interface MeasureRegionMapper extends LFMySQLMapper<MeasureRegion> {
      * @return
      */
     MeasureRegion getByConditionNoFoundErr(@Param("project_id") Integer project_id, @Param("uuid") String uuid);
+
+    /**
+     * 获取measure_region现有的最大的index
+     * @param project_id
+     * @param area_id_list
+     * @return
+     */
+    List<Map<String, Object>> getMaxRegionIndexGroupByAreaIdNoDeleted(@Param("projId") Integer project_id, @Param("areaIdList") List area_id_list);
+
+//    /**
+//     *
+//     * @param model
+//     */
+//    void save(@Param("model") MeasureRegion model);
 }

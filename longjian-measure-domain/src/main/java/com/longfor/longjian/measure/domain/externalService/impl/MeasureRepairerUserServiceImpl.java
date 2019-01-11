@@ -5,6 +5,7 @@ import com.longfor.longjian.measure.domain.externalService.IMeasureRepairerUserS
 import com.longfor.longjian.measure.po.zhijian2.MeasureRepairerUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 import java.util.Map;
@@ -33,5 +34,10 @@ public class MeasureRepairerUserServiceImpl implements IMeasureRepairerUserServi
     @Override
     public void insertList(List<MeasureRepairerUser> measureRepairerUsers) {
         measureRepairerUserMapper.insertList(measureRepairerUsers);
+    }
+
+    @Override
+    public List<MeasureRepairerUser> selectByExample(Example example) {
+        return measureRepairerUserMapper.selectByExample(example);
     }
 }

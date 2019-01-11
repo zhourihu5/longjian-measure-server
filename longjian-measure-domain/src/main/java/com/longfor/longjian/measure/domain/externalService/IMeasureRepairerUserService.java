@@ -1,6 +1,7 @@
 package com.longfor.longjian.measure.domain.externalService;
 
 import com.longfor.longjian.measure.po.zhijian2.MeasureRepairerUser;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 import java.util.Map;
@@ -21,5 +22,7 @@ public interface IMeasureRepairerUserService {
     void delOld(Map<String,Object> map);
 
     void insertList(List<MeasureRepairerUser>measureRepairerUsers);
+
+    List<MeasureRepairerUser> selectByExample(Example example);
 
 }

@@ -13,6 +13,12 @@
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="delete_at" property="deleteAt" jdbcType="TIMESTAMP" />
   </resultMap>
+
+  <resultMap id="MeasureRegionRelVoMap" type="com.longfor.longjian.measure.vo.MeasureRegionRelVo">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="desc" property="desc" jdbcType="VARCHAR" />
+    <result column="region_ids" property="region_ids" jdbcType="VARCHAR" />
+  </resultMap>
   <sql id="Base_Column_List" >
     <!--
       WARNING - @mbg.generated
@@ -60,5 +66,17 @@
       id ASC
       LIMIT #{start},#{measureApiGetPerTime}
     </if>
+  </select>
+
+  <select id="selectById" resultMap="MeasureRegionRelVoMap">
+     SELECT
+    id,
+    `desc`,
+    region_ids
+    FROM
+    measure_region_rel
+    WHERE
+    id = #{id}
+    AND delete_at IS NULL
   </select>
 </mapper>
