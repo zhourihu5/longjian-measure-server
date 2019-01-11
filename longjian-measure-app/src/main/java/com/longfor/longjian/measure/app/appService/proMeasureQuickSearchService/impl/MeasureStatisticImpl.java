@@ -1,7 +1,7 @@
 package com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.impl;
 
 import com.longfor.longjian.common.exception.LjBaseRuntimeException;
-import com.longfor.longjian.measure.app.appService.appService.MeasureListService;
+import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureListService;
 import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.IMeasureStatisticService;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetMeasureStatisticTaskReq;
 import com.longfor.longjian.measure.app.vo.proMeasureQuickSearchVo.MeasureStatisticSquadStatsVo;
@@ -18,10 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class MeasureStatisticImpl implements IMeasureStatisticService {
 
     @Autowired
-    private MeasureListService measureListService;
+    private IMeasureZoneService measureZoneService;
 
     @Autowired
-    private IMeasureZoneService measureZoneService;
+    private IAPPMeasureListService measureListService;
 
     @Override
     public MeasureStatisticSquadStatsVo SquadMeasureStatsJson(GetMeasureStatisticTaskReq getMeasureStatisticTaskReq) {
