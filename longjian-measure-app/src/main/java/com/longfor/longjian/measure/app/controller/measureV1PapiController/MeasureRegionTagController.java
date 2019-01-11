@@ -3,6 +3,8 @@ package com.longfor.longjian.measure.app.controller.measureV1PapiController;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.paintAreaService.IProPaintAreaManageService;
 import com.longfor.longjian.measure.app.req.measureRegionReq.AddOnGroupReq;
+import com.longfor.longjian.measure.app.req.measureRegionReq.AddOnProjReq;
+import com.longfor.longjian.measure.app.req.measureRegionReq.EditByProjIdReq;
 import com.longfor.longjian.measure.app.req.measureRegionReq.EditOnGroupReq;
 import com.longfor.longjian.measure.app.req.paintAreaReq.GetGroupMeasureRegionTagReq;
 import com.longfor.longjian.measure.app.req.paintAreaReq.GetProjMeasureRegionTagReq;
@@ -82,22 +84,28 @@ public class MeasureRegionTagController {
     }
 
     /**
-     *
+     *项目描画区域管理新增加描画区域添加标签
+     * http://192.168.37.159:3000/project/8/interface/api/2872
+     * http://192.168.37.159:3000/mock/8/longjian.longhu.net/measure/v1/papi/measure_region_tag/add_on_proj/?_ct=json
      * @return
      */
     @PostMapping(value = "add_on_proj/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse addOnProj() {
-        return null;
+    public LjBaseResponse<Object> addOnProj(@Valid AddOnProjReq addOnProjReq) {
+        LjBaseResponse<Object> ljBaseResponse = proPaintAreaManageService.addOnProj(addOnProjReq);
+        return ljBaseResponse;
     }
 
 
     /**
-     *
+     *项目描画区域管理新增描画区域修改标签
+     * http://192.168.37.159:3000/project/8/interface/api/2876
+     * http://192.168.37.159:3000/mock/8/longjian.longhu.net/measure/v1/papi/measure_region_tag/edit_by_proj_id/?_ct=json
      * @return
      */
     @PostMapping(value = "edit_by_proj_id/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse editByProjId() {
-        return null;
+    public LjBaseResponse<Object> editByProjId(@Valid EditByProjIdReq editByProjId) {
+        LjBaseResponse<Object> ljBaseResponse = proPaintAreaManageService.editByProjId(editByProjId);
+        return ljBaseResponse;
     }
 
 

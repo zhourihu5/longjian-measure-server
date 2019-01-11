@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,7 @@ import java.util.Map;
 @Service
 public class MeasureTagServiceImpl implements IMeasureTagService {
 
-    @Autowired
+    @Resource
     private MeasureTagMapper measureTagMapper;
 
     @Override
@@ -63,6 +64,36 @@ public class MeasureTagServiceImpl implements IMeasureTagService {
             measureTag.setCreateAt(date);
             measureTag.setUpdateAt(date);
             count += measureTagMapper.insertSelective(measureTag);
+        }
+        return count;
+    }
+
+    @Override
+    @LFAssignDataSource("zhijian2")
+    @Transactional(rollbackFor = Exception.class)
+    public Integer addOnProj(Integer group_id, Integer project_id, List<String> nameList, Integer ownership) {
+        Integer count=0;
+        for (String name : nameList) {
+            Date date =new Date();
+            MeasureTag measureTag =new MeasureTag();
+            measureTag.setGroupId(group_id);
+            measureTag.setProjId(project_id);
+            measureTag.setName(name);
+            measureTag.setOwnership(ownership);
+            measureTag.setCreateAt(date);
+            measureTag.setUpdateAt(date);
+            count += measureTagMapper.insertSelective(measureTag);
+        }
+        return count;
+    }
+
+    @Override
+    public Integer editOnProjId(Integer group_id, Integer project_id, List<EditTagProtoVo> editTagProtoVos, Integer ownership) {
+        Integer count=0;
+        for (EditTagProtoVo editTagProtoVo : editTagProtoVos) {
+            Date date =new Date();
+            Integer tagId = editTagProtoVo.getTagId();
+            count += measureTagMapper.updateByProjectIdAndOwnership(group_id,project_id,tagId, ownership,date);
         }
         return count;
     }

@@ -7,6 +7,8 @@ import com.google.common.collect.Lists;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.paintAreaService.IProPaintAreaManageService;
 import com.longfor.longjian.measure.app.req.measureRegionReq.AddOnGroupReq;
+import com.longfor.longjian.measure.app.req.measureRegionReq.AddOnProjReq;
+import com.longfor.longjian.measure.app.req.measureRegionReq.EditByProjIdReq;
 import com.longfor.longjian.measure.app.req.measureRegionReq.EditOnGroupReq;
 import com.longfor.longjian.measure.app.req.paintAreaReq.GetProjMeasureRegionReq;
 import com.longfor.longjian.measure.app.req.paintAreaReq.GetGroupMeasureRegionTagReq;
@@ -130,6 +132,29 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
             ljBaseResponse.setMessage(String.format("总共添加了 %s 条数据", affCount));
             ljBaseResponse.setResult(0);
         }
+        return ljBaseResponse;
+    }
+
+    @Override
+    public LjBaseResponse<Object> addOnProj(AddOnProjReq addOnProjReq) {
+        LjBaseResponse<Object> ljBaseResponse = new LjBaseResponse<>();
+        if (addOnProjReq.getName_list().length() > 0 && !addOnProjReq.getName_list().equals("")) {
+            String[] nameArr = addOnProjReq.getName_list().split(",");
+            List<String> nameList = Arrays.asList(nameArr);
+            Integer affCount = measureTagService.addOnProj(addOnProjReq.getGroup_id(),addOnProjReq.getProject_id(), nameList, MeasureTagConstant.PROJECT);
+            ljBaseResponse.setMessage(String.format("总共添加了 %s 条数据", affCount));
+            ljBaseResponse.setResult(0);
+        }
+        return ljBaseResponse;
+    }
+
+    @Override
+    public LjBaseResponse<Object> editByProjId(EditByProjIdReq editByProjId) {
+        LjBaseResponse<Object> ljBaseResponse = new LjBaseResponse<>();
+        List<EditTagProtoVo> editTagProtoVos = JSONArray.parseArray(editByProjId.getEdit_tag_list(), EditTagProtoVo.class);
+        Integer affCount = measureTagService.editOnProjId(editByProjId.getGroup_id(), editByProjId.getProject_id(),editTagProtoVos, MeasureTagConstant.PROJECT);
+        ljBaseResponse.setMessage(String.format("总共修改了 %s 条数据", affCount));
+        ljBaseResponse.setResult(0);
         return ljBaseResponse;
     }
 }
