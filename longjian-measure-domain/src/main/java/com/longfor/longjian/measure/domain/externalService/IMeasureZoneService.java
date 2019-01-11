@@ -86,4 +86,5 @@ public interface IMeasureZoneService {
 
     List<MeasureZone>selectByExample(Example example);
 
+    List<MeasureZone> selectByProjectIdAndRegionUUIdIn(Integer project_id, List<String> region_uuid_list);
 }

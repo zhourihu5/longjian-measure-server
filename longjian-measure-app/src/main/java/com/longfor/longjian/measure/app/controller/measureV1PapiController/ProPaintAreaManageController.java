@@ -1,9 +1,11 @@
 package com.longfor.longjian.measure.app.controller.measureV1PapiController;
 
+import com.alibaba.fastjson.JSONArray;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.paintAreaService.IProPaintAreaManageService;
 import com.longfor.longjian.measure.app.appService.paintAreaService.IRegionService;
 import com.longfor.longjian.measure.app.req.measureRegionReq.AddReq;
+import com.longfor.longjian.measure.app.req.measureRegionReq.DeleteReq;
 import com.longfor.longjian.measure.app.req.measureRegionReq.EditReq;
 import com.longfor.longjian.measure.app.req.paintAreaReq.GetProjMeasureRegionReq;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.AreaRegionTagVo;
@@ -17,6 +19,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.alibaba.druid.sql.ast.SQLPartitionValue.Operator.List;
 
 /**
  * app_measure服务
@@ -60,12 +66,14 @@ public class ProPaintAreaManageController {
 
 
     /**
-     *
+     * 删除描画区域
      * @return
      */
-    @PostMapping(value = "delete/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse delete() {
-        return null;
+    @PostMapping(value = "delete" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public LjBaseResponse delete(@RequestBody @Valid DeleteReq deleteReq) {
+        List<String> list = JSONArray.parseArray(deleteReq.getRegion_id_list(),String.class);
+        regionService.delete(deleteReq.getProject_id(),list.stream().map(Integer::parseInt).collect(Collectors.toList()));
+        return new LjBaseResponse();
     }
 
 
@@ -73,7 +81,7 @@ public class ProPaintAreaManageController {
      * 编辑描画区域
      * @return
      */
-    @PostMapping(value = "edit/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "edit" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse edit(@RequestBody @Valid EditReq editReq ) {
         regionService.edit(editReq.getProject_id(),editReq.getRegion_info_list());
         return new LjBaseResponse();

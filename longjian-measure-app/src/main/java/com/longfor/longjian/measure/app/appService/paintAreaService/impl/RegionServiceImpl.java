@@ -11,9 +11,11 @@ import com.longfor.longjian.measure.app.vo.feignVo.AreaRetrieveVo;
 import com.longfor.longjian.measure.consts.Enum.MeasureErrorEnum;
 import com.longfor.longjian.measure.domain.externalService.IMeasureRegionRelService;
 import com.longfor.longjian.measure.domain.externalService.IMeasureRegionService;
+import com.longfor.longjian.measure.domain.externalService.IMeasureZoneService;
 import com.longfor.longjian.measure.po.zhijian2.Area;
 import com.longfor.longjian.measure.po.zhijian2.MeasureRegion;
 import com.longfor.longjian.measure.po.zhijian2.MeasureRegionRel;
+import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +33,9 @@ public class RegionServiceImpl implements IRegionService {
     @Resource
     private IMeasureRegionService measureRegionService;
     @Resource
-    private IMeasureRegionRelService measureRegionRel;
+    private IMeasureRegionRelService measureRegionRelService;
+    @Resource
+    private IMeasureZoneService measureZoneService;
 
     @Override
     @Transactional
@@ -121,7 +125,7 @@ public class RegionServiceImpl implements IRegionService {
                 rel_dict.put("project_id",project_id);
                 rel_dict.put("region_ids",region_ids);
                 MeasureRegionRel model = JSONObject.toJavaObject((JSON)JSON.toJSON(rel_dict),MeasureRegionRel.class);
-                MeasureRegionRel rel_model = measureRegionRel.save(model);
+                MeasureRegionRel rel_model = measureRegionRelService.save(model);
 
                 //关系写回measure_region
                 model_list.forEach(mode ->{
@@ -140,5 +144,54 @@ public class RegionServiceImpl implements IRegionService {
         regionInfolist.forEach(region_info -> {
             measureRegionService.updateByProjectIdAndIdInNoDeleted(project_id,(List)region_info.get("region_ids"),region_info.get("polygon").toString(),region_info.get("tag_id_list").toString());
         });
+    }
+
+    @Override
+    @Transactional
+    public void delete(Integer project_id, List<Integer> region_id_list) {
+        //描区下不能有测区
+        List<MeasureRegion> region_model_list = measureRegionService.selectByProjectIdAndIdNoDeleted(project_id,region_id_list);
+        List<String> region_uuid_list = region_model_list.stream().map(MeasureRegion::getUuid).collect(Collectors.toList());
+        List<MeasureZone> zone_result = measureZoneService.selectByProjectIdAndRegionUUIdIn(project_id,region_uuid_list);
+        if (zone_result != null && zone_result.size() > 0){
+            log.info(JSON.toJSONString(zone_result));
+            throw new LjBaseRuntimeException(MeasureErrorEnum.MeasureZoneExist.getId(),MeasureErrorEnum.MeasureZoneExist.getValue());
+        }
+
+        //MeasureRegionRel里面的rel_ids去除MeasureRegion.id
+        //找出所有rel_id对应的model
+        List<Integer> rel_id_list = new ArrayList<>();
+        region_model_list.forEach(regoin_model -> {
+            if (regoin_model.getRelId() != 0){
+                rel_id_list.add(regoin_model.getRelId());
+            }
+        });
+        List<MeasureRegionRel> rel_model_list = measureRegionRelService.selectByProjectIdAndIdNoDeleted(project_id,rel_id_list);
+
+        log.info("rel_list: " + JSON.toJSONString(rel_id_list));
+        //建立关系映射字典
+        Map<Integer,List<Integer>> rel_model_dict = new HashMap<>();
+        rel_model_list.forEach(rel_model -> {
+            rel_model_dict.put(rel_model.getId(),Arrays.asList(rel_model.getRegionIds().split(",")).stream().map(Integer::parseInt).collect(Collectors.toList()));
+        });
+
+        //移除相关的id
+        region_model_list.forEach(region_model -> {
+            log.info(region_model.getRelId().toString());
+            if (region_model.getRelId() != 0){
+                rel_model_dict.get(region_model.getRelId()).remove(region_model.getId());
+            }
+        });
+
+        //更新相关的rel_model
+        rel_model_list.forEach(rel_model -> {
+            String region_ids = String.join(",",rel_model_dict.get(rel_model.getId()).stream().map(x -> x + "").collect(Collectors.toList()).toArray(new String[rel_model_dict.get(rel_model.getId()).size()]));
+            rel_model.setRegionIds(region_ids);
+            measureRegionRelService.update(rel_model);
+        });
+
+        //删除描区
+        log.info("region_id_list : " + region_id_list);
+        measureRegionService.delete(project_id,region_id_list);
     }
 }

@@ -44,4 +44,20 @@ public class MeasureRegionRelServiceImpl implements IMeasureRegionRelService {
     public MeasureRegionRelVo selectById(Integer id) {
         return measureRegionRelMapper.selectById(id);
     }
+
+    @Override
+    public List<MeasureRegionRel> selectByProjectIdAndIdNoDeleted(Integer project_id, List<Integer> rel_id_list) {
+        Example example = new Example(MeasureRegionRel.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId",project_id);
+        criteria.andIn("id",rel_id_list);
+        criteria.andIsNull("deleteAt");
+        return measureRegionRelMapper.selectByExample(example);
+    }
+
+    @Override
+    public MeasureRegionRel update(MeasureRegionRel rel_model) {
+        measureRegionRelMapper.updateByPrimaryKeySelective(rel_model);
+        return rel_model;
+    }
 }
