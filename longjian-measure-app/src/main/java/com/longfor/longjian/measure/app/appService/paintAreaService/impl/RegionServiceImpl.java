@@ -172,7 +172,7 @@ public class RegionServiceImpl implements IRegionService {
         //建立关系映射字典
         Map<Integer,List<Integer>> rel_model_dict = new HashMap<>();
         rel_model_list.forEach(rel_model -> {
-            rel_model_dict.put(rel_model.getId(),Arrays.asList(rel_model.getRegionIds().split(",")).stream().map(Integer::parseInt).collect(Collectors.toList()));
+            rel_model_dict.put(rel_model.getId(), Arrays.stream(rel_model.getRegionIds().split(",")).map(Integer::parseInt).collect(Collectors.toList()));
         });
 
         //移除相关的id
