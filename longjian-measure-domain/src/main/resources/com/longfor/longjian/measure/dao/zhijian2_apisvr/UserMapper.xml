@@ -43,4 +43,12 @@
     </foreach>
     AND delete_at IS NULL
   </select>
+  <select id="getUserByUserId" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM
+    `user`
+    WHERE
+    user_id = #{id}
+  </select>
 </mapper>

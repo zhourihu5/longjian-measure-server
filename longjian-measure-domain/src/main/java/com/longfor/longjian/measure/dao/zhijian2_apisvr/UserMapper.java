@@ -14,4 +14,13 @@ public interface UserMapper extends LFMySQLMapper<User> {
      * @return
      */
     List<Map<String,Object>> getUserByUserIds(@Param("userIds") List<Integer> userIds);
+
+    /**
+     * @Description:
+     * @param id
+     * @return com.longfor.longjian.measure.po.zhijian2_apisvr.User
+     * @author DDC
+     * @date 2019/1/11 15:50
+     **/
+    User getUserByUserId(@Param("id") Integer id);
 }

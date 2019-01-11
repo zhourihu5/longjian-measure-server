@@ -224,4 +224,14 @@ WHERE
 	AND close_status = #{unclosecode}
 	AND delete_at IS NULL
     </select>
+    <select id="GetIssueByProjectIdAndUuid" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        measure_list_issue
+        WHERE
+        project_id = #{projectId}
+        AND
+        uuid = #{uuid}
+    </select>
 </mapper>

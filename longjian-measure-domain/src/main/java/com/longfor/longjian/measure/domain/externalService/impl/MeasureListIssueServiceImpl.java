@@ -146,4 +146,9 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     public Integer searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(Integer project_id, Integer measure_list_id, String unclosecode, String categoryPathAndKey, Integer status) {
         return measureListIssueMapper.searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(project_id, measure_list_id, unclosecode, categoryPathAndKey,status);
     }
+
+    @Override
+    public MeasureListIssue GetIssueByProjectIdAndUuid(Integer projectId, String uuid) {
+        return measureListIssueMapper.GetIssueByProjectIdAndUuid(projectId, uuid);
+    }
 }

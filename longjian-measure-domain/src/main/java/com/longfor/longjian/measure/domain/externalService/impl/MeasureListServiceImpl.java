@@ -93,4 +93,9 @@ public class MeasureListServiceImpl implements IMeasureListService {
     public int setStatus(MeasureList measureList) {
         return  measureListMapper.updateByPrimaryKey(measureList);
     }
+
+    @Override
+    public MeasureList getMeasureListByProjIdAndId(Integer projId, Integer Id) {
+        return measureListMapper.getMeasureListByProjIdAndId(projId,Id);
+    }
 }

@@ -108,4 +108,14 @@ public interface IMeasureListService {
 
     int setStatus(MeasureList  measureList);
 
+    /**
+     * @Description:
+     * @param projId
+     * @param Id
+     * @return com.longfor.longjian.measure.po.zhijian2.MeasureList
+     * @author DDC
+     * @date 2019/1/10 20:54
+     **/
+    MeasureList getMeasureListByProjIdAndId(Integer projId,Integer Id);
+
 }

@@ -70,4 +70,13 @@ public interface ICategoryV3Service {
      * @return
      */
     CategoryV3 getCategoryByKeyNoFoundErr(String currentCategoryKey);
+
+    /**
+     * @Description:
+     * @param keys
+     * @return java.util.List<com.longfor.longjian.measure.po.zhijian2.CategoryV3>
+     * @author DDC
+     * @date 2019/1/10 20:55
+     **/
+    List<CategoryV3> SearchCategoryByKeyIn(List keys);
 }
