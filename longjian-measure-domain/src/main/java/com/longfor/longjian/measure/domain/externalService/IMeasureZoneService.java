@@ -70,6 +70,12 @@ public interface IMeasureZoneService {
      */
     List<MeasureZone> searchZoneByUuid(Integer projId, Set<String> zoneUuids);
 
+    MeasureZone GetByProjIdAndIdNoFoundErr(Integer projectId,Integer id);
+
+    Integer GetMeasureListBuildingCountAndRegionCount(Integer measureListId);
+
+    Integer GetMeasureListCategoryCountAndCheckItemCount (Integer measureListId);
+
     /**
      *
      * @param id

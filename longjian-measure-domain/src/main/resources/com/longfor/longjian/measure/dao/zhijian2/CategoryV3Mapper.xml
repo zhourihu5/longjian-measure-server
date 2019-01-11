@@ -98,4 +98,16 @@ WHERE
 	delete_at IS NULL
 	AND `key` = #{key}
   </select>
+    <select id="SearchCategoryByKeyIn" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        category_v3
+        WHERE
+        `key`
+        IN
+        <foreach collection="keyList" index="index" item="item" open="(" separator="," close=")">
+            item
+        </foreach>
+    </select>
 </mapper>

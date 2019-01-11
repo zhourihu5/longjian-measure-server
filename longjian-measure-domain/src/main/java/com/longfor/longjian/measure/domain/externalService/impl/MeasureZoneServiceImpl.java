@@ -90,4 +90,23 @@ public class MeasureZoneServiceImpl implements IMeasureZoneService {
         return measureZoneMapper.selectByExample(example);
     }
 
+    @Override
+    public MeasureZone GetByProjIdAndIdNoFoundErr(Integer projectId,Integer id) {
+        return measureZoneMapper.GetByCondition(projectId,id);
+    }
+
+    @Override
+    public Integer GetMeasureListCategoryCountAndCheckItemCount(Integer measureListId) {
+        measureZoneMapper.GetMeasureListCategoryCount(measureListId);
+        return null;
+    }
+
+    @Override
+    public Integer GetMeasureListBuildingCountAndRegionCount(Integer measureListId) {
+        measureZoneMapper.GetMeasureListBuildingCount(measureListId);
+        return null;
+    }
+
+
+
 }

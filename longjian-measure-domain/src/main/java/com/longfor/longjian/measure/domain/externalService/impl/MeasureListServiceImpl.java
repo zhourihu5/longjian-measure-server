@@ -121,6 +121,11 @@ public class MeasureListServiceImpl implements IMeasureListService {
     }
 
     @Override
+    public MeasureList getMeasureListByProjIdAndId(Integer projId, Integer Id) {
+        return measureListMapper.getMeasureListByProjIdAndId(projId,Id);
+    }
+
+    @Override
     public void updateCloseStatus(Map<String, Object> map) {
         measureListMapper.updateCloseStatus(map);
     }

@@ -110,4 +110,17 @@ public interface IMeasureListIssueService {
      * @return
      */
     Integer searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(Integer project_id, Integer measure_list_id, String unclosecode, String categoryPathAndKey, Integer status);
+
+    /**
+     * @Description:
+     * @param projectId
+     * @param uuid
+     * @return com.longfor.longjian.measure.po.zhijian2.MeasureListIssue
+     * @author DDC
+     * @date 2019/1/10 19:40
+     **/
+    MeasureListIssue GetIssueByProjectIdAndUuid(Integer projectId,String uuid);
+
+
+
 }

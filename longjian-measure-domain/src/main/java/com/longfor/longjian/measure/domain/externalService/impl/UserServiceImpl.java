@@ -3,6 +3,7 @@ package com.longfor.longjian.measure.domain.externalService.impl;
 import com.longfor.gaia.gfs.data.mybatis.datasource.LFAssignDataSource;
 import com.longfor.longjian.measure.dao.zhijian2_apisvr.UserMapper;
 import com.longfor.longjian.measure.domain.externalService.IUserService;
+import com.longfor.longjian.measure.po.zhijian2_apisvr.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,5 +20,10 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<Map<String, Object>> getUserByUserIds(List<Integer> userIds) {
         return userMapper.getUserByUserIds(userIds);
+    }
+
+    @Override
+    public User getUserByUserId(Integer id) {
+        return userMapper.getUserByUserId(id);
     }
 }

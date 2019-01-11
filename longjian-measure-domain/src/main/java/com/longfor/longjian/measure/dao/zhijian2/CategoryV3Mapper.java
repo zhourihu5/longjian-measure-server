@@ -51,4 +51,6 @@ public interface CategoryV3Mapper extends LFMySQLMapper<CategoryV3> {
      * @return
      */
     CategoryV3 getCategoryByKeyNoFoundErr(@Param("key") String currentCategoryKey);
+
+    List<CategoryV3> SearchCategoryByKeyIn(@Param("keyList") List keys);
 }
