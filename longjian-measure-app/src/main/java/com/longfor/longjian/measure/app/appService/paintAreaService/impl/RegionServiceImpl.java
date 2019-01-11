@@ -131,4 +131,14 @@ public class RegionServiceImpl implements IRegionService {
             }
         });
     }
+
+    @Override
+    @Transactional
+    public void edit(Integer project_id, String region_info_list) {
+        List<HashMap> regionInfolist = JSONArray.parseArray(region_info_list,HashMap.class);
+        log.info(JSON.toJSONString(regionInfolist));
+        regionInfolist.forEach(region_info -> {
+            measureRegionService.updateByProjectIdAndIdInNoDeleted(project_id,(List)region_info.get("region_ids"),region_info.get("polygon").toString(),region_info.get("tag_id_list").toString());
+        });
+    }
 }

@@ -128,4 +128,18 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
     public List<MeasureRegion> selectByExample(Example example) {
         return measureRegionMapper.selectByExample(example);
     }
+
+    @Override
+    public void updateByProjectIdAndIdInNoDeleted(Integer project_id, List region_ids, String polygon, String tag_id_list) {
+        MeasureRegion measureRegion = new MeasureRegion();
+        measureRegion.setPolygon(polygon);
+        measureRegion.setTagIdList(tag_id_list);
+
+        Example example = new Example(MeasureRegion.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId",project_id);
+        criteria.andIn("id",region_ids);
+        criteria.andIsNull("deleteAt");
+        measureRegionMapper.updateByExampleSelective(measureRegion,example);
+    }
 }

@@ -4,6 +4,7 @@ import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.paintAreaService.IProPaintAreaManageService;
 import com.longfor.longjian.measure.app.appService.paintAreaService.IRegionService;
 import com.longfor.longjian.measure.app.req.measureRegionReq.AddReq;
+import com.longfor.longjian.measure.app.req.measureRegionReq.EditReq;
 import com.longfor.longjian.measure.app.req.paintAreaReq.GetProjMeasureRegionReq;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.AreaRegionTagVo;
 import com.longfor.longjian.measure.consts.Enum.RegionSrcTypeEnum;
@@ -69,12 +70,13 @@ public class ProPaintAreaManageController {
 
 
     /**
-     *
+     * 编辑描画区域
      * @return
      */
     @PostMapping(value = "edit/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse edit() {
-        return null;
+    public LjBaseResponse edit(@RequestBody @Valid EditReq editReq ) {
+        regionService.edit(editReq.getProject_id(),editReq.getRegion_info_list());
+        return new LjBaseResponse();
     }
 
 

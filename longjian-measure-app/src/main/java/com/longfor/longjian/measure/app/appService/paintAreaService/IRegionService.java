@@ -8,4 +8,11 @@ public interface IRegionService {
      * @param id
      */
     void add(Integer project_id, String region_list, Integer id);
+
+    /**
+     * 编辑描画区域
+     * @param project_id
+     * @param region_info_list
+     */
+    void edit(Integer project_id, String region_info_list);
 }

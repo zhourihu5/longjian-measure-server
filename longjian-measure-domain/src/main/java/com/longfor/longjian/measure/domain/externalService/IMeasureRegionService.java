@@ -95,4 +95,13 @@ public interface IMeasureRegionService {
     List<MeasureRegion> searchByProjIdAndRelId(Integer proj_id, Integer relId);
 
     List<MeasureRegion>selectByExample(Example example);
+
+    /**
+     *
+     * @param project_id
+     * @param region_ids
+     * @param polygon
+     * @param tag_id_list
+     */
+    void updateByProjectIdAndIdInNoDeleted(Integer project_id, List region_ids, String polygon, String tag_id_list);
 }
