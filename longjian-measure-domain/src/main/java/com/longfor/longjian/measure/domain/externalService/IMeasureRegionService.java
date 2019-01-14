@@ -104,4 +104,6 @@ public interface IMeasureRegionService {
      * @param tag_id_list
      */
     void updateByProjectIdAndIdInNoDeleted(Integer project_id, List region_ids, String polygon, String tag_id_list);
+
+    MeasureRegion GetByUuid(Integer projId,String uuid);
 }

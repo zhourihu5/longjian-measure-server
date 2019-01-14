@@ -51,4 +51,16 @@
     </if>
 
   </update>
+  <select id="SearchMeasureReparierUserByListId" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM
+    measure_repairer_user
+    WHERE
+    project_id = #{projId}
+    AND
+    list_id = #{listId}
+    AND
+    delete_at IS NULL
+  </select>
 </mapper>

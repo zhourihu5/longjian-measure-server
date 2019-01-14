@@ -33,4 +33,6 @@ public interface IMeasureSquadUserService {
     void deleteMeasureSquadUser(MeasureSquadUser measureSquadUser);
 
     List<MeasureSquadUser>selectByExample(Example example);
+
+    List<MeasureSquadUser>SearchBySquadId(Integer projId,Integer squadId);
 }

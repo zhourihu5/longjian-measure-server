@@ -92,4 +92,6 @@ public interface IMeasureZoneService {
 
     List<MeasureZone>selectByExample(Example example);
 
+    MeasureZone GetZoneByUuid (Integer projId,String uuid);
+
 }

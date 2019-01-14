@@ -22,8 +22,15 @@ public class UserServiceImpl implements IUserService {
         return userMapper.getUserByUserIds(userIds);
     }
 
+    @LFAssignDataSource("zhijian2_apisvr")
     @Override
     public User getUserByUserId(Integer id) {
         return userMapper.getUserByUserId(id);
+    }
+
+    @LFAssignDataSource("zhijian2_apisvr")
+    @Override
+    public List<User> getUserEntitiesByUserIds(List<Integer> userIds) {
+        return userMapper.getUserEntitiesByUserIds(userIds);
     }
 }

@@ -149,5 +149,7 @@ public interface IMeasureZoneResultService {
      */
     void delBySquadIdUuid(Map<String,Object>map);
 
+    List<MeasureZoneResult> SearchZoneResultByProjIdZoneUuid(Integer ProjectId,String uuid);
+
 
 }

@@ -80,6 +80,11 @@ public class MeasureZoneServiceImpl implements IMeasureZoneService {
     }
 
     @Override
+    public MeasureZone GetZoneByUuid(Integer projId, String uuid) {
+        return  measureZoneMapper.getZoneByUuid(projId,uuid);
+    }
+
+    @Override
     public MeasureZone GetByProjIdAndIdNoFoundErr(Integer projectId,Integer id) {
         return measureZoneMapper.GetByCondition(projectId,id);
     }

@@ -142,4 +142,9 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
         criteria.andIsNull("deleteAt");
         measureRegionMapper.updateByExampleSelective(measureRegion,example);
     }
+
+    @Override
+    public MeasureRegion GetByUuid(Integer projId, String uuid) {
+        return measureRegionMapper.GetByUuid(projId,uuid);
+    }
 }
