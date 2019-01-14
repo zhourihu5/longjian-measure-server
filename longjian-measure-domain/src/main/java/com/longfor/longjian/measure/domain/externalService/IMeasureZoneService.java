@@ -86,4 +86,11 @@ public interface IMeasureZoneService {
 
     List<MeasureZone>selectByExample(Example example);
 
+    /**
+     *
+     * @param project_id
+     * @param zoneUuids
+     * @return
+     */
+    List<MeasureZone> searchZoneByProjUuids(Integer project_id, List<String> zoneUuids);
 }

@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.domain.externalService.impl;
 
+import com.longfor.gaia.gfs.data.mybatis.datasource.LFAssignDataSource;
 import com.longfor.longjian.measure.dao.zhijian2.MeasureZoneMapper;
 import com.longfor.longjian.measure.domain.externalService.IMeasureZoneService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureList;
@@ -78,5 +79,13 @@ public class MeasureZoneServiceImpl implements IMeasureZoneService {
     public List<MeasureZone> selectByExample(Example example) {
         return measureZoneMapper.selectByExample(example);
     }
-
+    @LFAssignDataSource("zhijian2")
+    @Override
+    public List<MeasureZone> searchZoneByProjUuids(Integer project_id, List<String> zoneUuids) {
+        Example example = new Example(MeasureZone.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId",project_id);
+        criteria.andIn("uuid",zoneUuids);
+        return measureZoneMapper.selectByExample(example);
+    }
 }

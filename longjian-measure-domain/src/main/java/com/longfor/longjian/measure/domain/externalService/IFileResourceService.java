@@ -2,6 +2,8 @@ package com.longfor.longjian.measure.domain.externalService;
 
 import com.longfor.longjian.measure.po.zhijian2.FileResource;
 
+import java.io.IOException;
+
 public interface IFileResourceService {
     /**
      *
@@ -9,4 +11,11 @@ public interface IFileResourceService {
      * @return
      */
     FileResource getByMd5NoFoundErr(String md5);
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    byte[] readFileAll(Integer id) throws IOException;
 }
