@@ -4,11 +4,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Jiazm 2019/01/10 11:21
+ * Jiazm 2019/01/11 14:12
  */
 @Data
 @NoArgsConstructor
-public class ResultFailedMsgVo {
-    private Integer id;
-    private Integer failedType;
+public class FormVo {
+    /**
+     * id
+     */
+    private Integer rootCategoryId;
 }

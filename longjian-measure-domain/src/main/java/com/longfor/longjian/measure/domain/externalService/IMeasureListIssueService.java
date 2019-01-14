@@ -3,6 +3,7 @@ package com.longfor.longjian.measure.domain.externalService;
 import com.longfor.longjian.measure.po.zhijian2.Area;
 import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListIssue;
+import com.longfor.longjian.measure.util.AreaUtils;
 
 import java.text.ParseException;
 import java.util.List;
@@ -110,6 +111,51 @@ public interface IMeasureListIssueService {
      * @return
      */
     Integer searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(Integer project_id, Integer measure_list_id, String unclosecode, String categoryPathAndKey, Integer status);
+
+    /**
+     *
+     * @param projectId
+     * @param limit
+     * @param page
+     * @param category_key
+     * @param areaIdList
+     * @param measureListIdList
+     * @param createAtRangeList
+     * @param status
+     * @param repairer_id
+     * @param is_overdue
+     * @return
+     */
+    Map<String, Object> searchMeasueListIssueInProj(Integer projectId, Integer limit, Integer page, String category_key, List<Integer> areaIdList, List<String> measureListIdList, List<String> createAtRangeList, Integer status, Integer repairer_id, String is_overdue) throws Exception;
+
+    /**
+     *
+     * @param categoryKeys
+     * @return
+     */
+    Map<String, List<String>> getCategoryPathNamesMap(List<String> categoryKeys);
+
+    /**
+     *
+     * @param projectId
+     * @param measureListIds
+     * @return
+     */
+    Map<Integer, String> getMeasureListNameMap(Integer projectId, List<Integer> measureListIds);
+
+    /**
+     *
+     * @param userIds
+     * @return
+     */
+    Map<Integer, String> getUserRealNameMap(List<Integer> userIds);
+
+    /**
+     *
+     * @param areaIdLists
+     * @return
+     */
+    Map<Integer, List<String>> getAreaPathNamesMap(List<Integer> areaIdLists) throws Exception;
 
     /**
      * @Description:

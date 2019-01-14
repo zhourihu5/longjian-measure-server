@@ -1,5 +1,7 @@
 package com.longfor.longjian.measure.domain.externalService.impl;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.longfor.longjian.measure.dao.zhijian2.MeasureRegionMapper;
 import com.longfor.longjian.measure.domain.externalService.IMeasureRegionService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureRegion;
@@ -126,6 +128,18 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
 
     @Override
     public List<MeasureRegion> selectByExample(Example example) {
+        return measureRegionMapper.selectByExample(example);
+    }
+
+    @Override
+    public List<MeasureRegion> searchByProjUuids(Integer project_id, List<String> regionUuids) {
+        Set<String> regionUuidSet = Sets.newHashSet();
+        regionUuidSet.addAll(regionUuids);
+        if (regionUuidSet.isEmpty()) {
+            return Lists.newArrayList();
+        }
+        Example example = new Example(MeasureRegion.class);
+        example.createCriteria().andEqualTo("projectId", project_id).andEqualTo("uuid", regionUuids);
         return measureRegionMapper.selectByExample(example);
     }
 
