@@ -122,5 +122,10 @@ public interface IMeasureListIssueService {
     MeasureListIssue GetIssueByProjectIdAndUuid(Integer projectId,String uuid);
 
 
-
+    /**
+     * 项目.实测实量.爆点管理.删除
+     * @param project_id
+     * @param uuid
+     */
+    void deletedByUpdateDeletedAt(Integer project_id, String uuid);
 }

@@ -14,4 +14,6 @@ public interface IUserService {
     List<Map<String,Object>> getUserByUserIds(List<Integer> userIds);
 
     User getUserByUserId(Integer id);
+
+    Map<Integer, User> getUsersByIds(List<Integer> collect);
 }

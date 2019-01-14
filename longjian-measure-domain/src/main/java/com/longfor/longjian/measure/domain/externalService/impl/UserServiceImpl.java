@@ -6,14 +6,17 @@ import com.longfor.longjian.measure.domain.externalService.IUserService;
 import com.longfor.longjian.measure.po.zhijian2_apisvr.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class UserServiceImpl implements IUserService {
 
-    @Autowired
+    @Resource
     private UserMapper userMapper;
 
     @LFAssignDataSource("zhijian2_apisvr")
@@ -22,8 +25,27 @@ public class UserServiceImpl implements IUserService {
         return userMapper.getUserByUserIds(userIds);
     }
 
+    @LFAssignDataSource("zhijian2_apisvr")
     @Override
     public User getUserByUserId(Integer id) {
         return userMapper.getUserByUserId(id);
+    }
+
+    @Override
+    public Map<Integer, User> getUsersByIds(List<Integer> collect) {
+        List<User> items = searchUserByIdsUnscoped(collect);
+        Map<Integer, User> users = new HashMap<>();
+        items.forEach(item -> {
+            users.put(item.getUserId(),item);
+        });
+        return users;
+    }
+
+    @LFAssignDataSource("zhijian2_apisvr")
+    private List<User> searchUserByIdsUnscoped(List<Integer> collect) {
+        Example example = new Example(User.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andIn("userId",collect);
+        return userMapper.selectByExample(example);
     }
 }

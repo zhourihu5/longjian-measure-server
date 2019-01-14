@@ -252,10 +252,10 @@ public class MeasureListIssueHelper {
             issue.setTyp(this.currentLog.getTyp());
             issue.setStatus(this.currentLog.getStatus());
             if (detail.getPlanEndOn() != -1) {
-                issue.setPlanEndOn((int) detail.getPlanEndOn());
+                issue.setPlanEndOn(Integer.parseInt(detail.getPlanEndOn() / 1000 + ""));
             }
             if (detail.getEndOn() != -1) {
-                issue.setEndOn((int) detail.getEndOn());
+                issue.setEndOn(Integer.parseInt(detail.getEndOn() / 1000 + ""));
             }
             issue.setDrawingMd5(detail.getDrawingMd5());
             issue.setPosX(detail.getPosX());
@@ -279,7 +279,7 @@ public class MeasureListIssueHelper {
                 issue.setCloseUser(detail.getCloseUser());
             }
             if (detail.getCloseTime() != -1) {
-                issue.setCloseTime((int) detail.getCloseTime());
+                issue.setCloseTime(Integer.parseInt(detail.getCloseTime() / 1000 + ""));
             }
             issue.setClientCreateAt(this.currentLog.getClientCreateAt());
         } else if (inOld) {
@@ -381,13 +381,13 @@ public class MeasureListIssueHelper {
         //计划结束时间
         if (detail.getPlanEndOn() != -1) {
             changed = true;
-            issue.setPlanEndOn((int) detail.getPlanEndOn());
+            issue.setPlanEndOn(Integer.parseInt(detail.getPlanEndOn() / 1000 + ""));
         }
 
         //结束时间
         if (detail.getEndOn() != -1) {
             changed = true;
-            issue.setEndOn((int) detail.getEndOn());
+            issue.setEndOn(Integer.parseInt(detail.getEndOn() / 1000 + ""));
         }
 
         //严重程度

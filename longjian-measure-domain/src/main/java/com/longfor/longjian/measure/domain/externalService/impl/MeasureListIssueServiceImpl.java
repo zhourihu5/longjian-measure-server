@@ -12,15 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.text.ParseException;
 import java.util.*;
 
 @Service
 @Slf4j
 public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
-    @Autowired
+    @Resource
     private MeasureListIssueMapper measureListIssueMapper;
-    @Autowired
+    @Resource
     private MeasureZoneMapper measureZoneMapper;
 
     @Override
@@ -150,5 +151,18 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     @Override
     public MeasureListIssue GetIssueByProjectIdAndUuid(Integer projectId, String uuid) {
         return measureListIssueMapper.GetIssueByProjectIdAndUuid(projectId, uuid);
+    }
+
+    @Override
+    public void deletedByUpdateDeletedAt(Integer project_id, String uuid) {
+        MeasureListIssue measureListIssue = new MeasureListIssue();
+        measureListIssue.setDeleteAt(new Date());
+
+        Example example = new Example(MeasureListIssue.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId",project_id);
+        criteria.andEqualTo("uuid",uuid);
+
+        measureListIssueMapper.updateByExampleSelective(measureListIssue,example);
     }
 }

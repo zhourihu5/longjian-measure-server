@@ -31,4 +31,12 @@ public interface IMeasureListIssueLogService {
      * @return
      */
     int insertObjects(List<MeasureListIssueLog> needInsertIssueMap);
+
+    /**
+     *
+     * @param project_id
+     * @param uuid
+     * @return
+     */
+    List<MeasureListIssueLog> searchByIssueUuid(Integer project_id, String uuid);
 }

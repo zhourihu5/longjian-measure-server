@@ -13,11 +13,11 @@ public class MeasureListIssueLogDetail {
     /**
      * 计划完成时间
      */
-    private long PlanEndOn;
+    private Long PlanEndOn;
     /**
      * 实际完成时间
      */
-    private long EndOn;
+    private Long EndOn;
     /**
      * 修复人ID
      */
@@ -53,7 +53,7 @@ public class MeasureListIssueLogDetail {
     /**
      * 关闭时间
      */
-    private  long CloseTime;
+    private  Long CloseTime;
     /**
      * 审核状态
      */
