@@ -146,6 +146,16 @@
      where project_id
      in(SELECT project_id FROM measure_squad_user WHERE project_id=1 AND delete_at IS NULL)
     </select>
+    <select id="getMeasureListByProjIdAndId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        measure_list
+        WHERE
+        project_id = #{projId}
+        AND
+        id = #{Id}
+    </select>
 
     <!--void updateFinishStatus(Map<String,Object>map);-->
     <update id="updateFinishStatus">

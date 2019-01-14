@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("oapi/v3/measure/measure_list_issue/")
 @Slf4j
-public class MeasureListIssueController {
+public class MeasureListIssue2Controller {
     @Autowired
     private IMeasureListIssueAppService measureListIssueService;
     /**

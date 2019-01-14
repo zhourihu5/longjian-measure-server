@@ -108,4 +108,22 @@ public interface IMeasureRegionService {
      * @return
      */
     List<MeasureRegion> searchByProjUuids(Integer project_id, List<String> regionUuids);
+
+    /**
+     *
+     * @param project_id
+     * @param region_ids
+     * @param polygon
+     * @param tag_id_list
+     */
+    void updateByProjectIdAndIdInNoDeleted(Integer project_id, List region_ids, String polygon, String tag_id_list);
+
+    List<MeasureRegion> selectByProjectIdAndIdNoDeleted(Integer project_id, List<Integer> region_id_list);
+
+    /**
+     * 逻辑删除
+     * @param project_id
+     * @param region_id_list
+     */
+    void delete(Integer project_id, List<Integer> region_id_list);
 }

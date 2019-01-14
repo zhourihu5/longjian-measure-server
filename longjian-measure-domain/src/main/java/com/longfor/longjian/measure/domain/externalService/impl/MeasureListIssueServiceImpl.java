@@ -344,4 +344,9 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
         });
         return mAreaName;
     }
+
+    @Override
+    public MeasureListIssue GetIssueByProjectIdAndUuid(Integer projectId, String uuid) {
+        return measureListIssueMapper.GetIssueByProjectIdAndUuid(projectId, uuid);
+    }
 }

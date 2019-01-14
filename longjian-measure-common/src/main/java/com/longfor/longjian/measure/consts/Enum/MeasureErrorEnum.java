@@ -7,7 +7,8 @@ package com.longfor.longjian.measure.consts.Enum;
  *core层 数据操作错误 1200100 ~ 1200199
  */
 public enum MeasureErrorEnum {
-    AreaMissing(1200301, "区域缺失");
+    AreaMissing(1200301, "区域缺失"),
+    MeasureZoneExist(1200201,"测区存在无法删除描区");
     private Integer id;
     private String value;
     public Integer getId() {

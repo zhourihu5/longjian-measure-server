@@ -79,6 +79,12 @@ public class CategoryV3ServiceImpl implements ICategoryV3Service {
         return categoryV3Mapper.getCategoryByKeyNoFoundErr(currentCategoryKey);
     }
 
+    @Override
+    public List<CategoryV3> SearchCategoryByKeyIn(List keys) {
+
+        return null;
+    }
+
     private CategoryPathTree getPathTree(CategoryV3 rootCategory, CategoryV3 root, List<CategoryV3> items) {
 
         CategoryPathTree tree = new CategoryPathTree(rootCategory,root);

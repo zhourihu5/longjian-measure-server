@@ -156,4 +156,17 @@ public interface IMeasureListIssueService {
      * @return
      */
     Map<Integer, List<String>> getAreaPathNamesMap(List<Integer> areaIdLists) throws Exception;
+
+    /**
+     * @Description:
+     * @param projectId
+     * @param uuid
+     * @return com.longfor.longjian.measure.po.zhijian2.MeasureListIssue
+     * @author DDC
+     * @date 2019/1/10 19:40
+     **/
+    MeasureListIssue GetIssueByProjectIdAndUuid(Integer projectId,String uuid);
+
+
+
 }

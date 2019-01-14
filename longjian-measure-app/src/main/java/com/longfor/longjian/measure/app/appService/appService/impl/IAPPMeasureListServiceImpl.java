@@ -5,7 +5,9 @@ import com.longfor.longjian.measure.app.req.MeasureList.*;
 import com.longfor.longjian.measure.app.vo.measureListVo.SetStatusVo;
 import com.longfor.longjian.measure.domain.externalService.*;
 import com.longfor.longjian.measure.po.zhijian2.MeasureList;
+import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +40,8 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
 
     @Resource
     private IMeasureSquadUserService iMeasureSquadUserService;
+
+    @Autowired IMeasureZoneService measureZoneService;
 
     @Override
     public SetStatusVo setStatus(SetStatusReq setStatusReq) {
@@ -114,5 +118,9 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
         map.put("update_at",new Date());
 
         iMeasureListService.updateCloseStatus(map);
+    }
+    @Override
+    public MeasureZone GetByProjIdAndIdNoFoundErr(Integer projectId , Integer id) {
+        return measureZoneService.GetByProjIdAndIdNoFoundErr(projectId , id);
     }
 }
