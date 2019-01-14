@@ -48,4 +48,10 @@ public class UserServiceImpl implements IUserService {
         criteria.andIn("userId",collect);
         return userMapper.selectByExample(example);
     }
+
+    @LFAssignDataSource("zhijian2_apisvr")
+    @Override
+    public List<User> getUserEntitiesByUserIds(List<Integer> userIds) {
+        return userMapper.getUserEntitiesByUserIds(userIds);
+    }
 }

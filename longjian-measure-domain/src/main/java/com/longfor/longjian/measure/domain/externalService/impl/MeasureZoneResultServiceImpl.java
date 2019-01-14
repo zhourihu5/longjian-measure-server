@@ -113,4 +113,9 @@ public class MeasureZoneResultServiceImpl implements IMeasureZoneResultService {
         measureZoneResultMapper.delBySquadIdUuid(map);
     }
 
+    @Override
+    public List<MeasureZoneResult> SearchZoneResultByProjIdZoneUuid(Integer ProjectId, String uuid) {
+        return measureZoneResultMapper.SearchZoneResultByProjIdZoneUuid(ProjectId,uuid);
+    }
+
 }

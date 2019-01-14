@@ -1,5 +1,7 @@
 package com.longfor.longjian.measure.domain.externalService.impl;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.longfor.longjian.measure.dao.zhijian2.MeasureRegionMapper;
 import com.longfor.longjian.measure.domain.externalService.IMeasureRegionService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureRegion;
@@ -109,7 +111,7 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
 
     @Override
     public List<Map<String, Object>> getMaxRegionIndexGroupByAreaIdNoDeleted(Integer project_id, List area_id_list) {
-        return measureRegionMapper.getMaxRegionIndexGroupByAreaIdNoDeleted(project_id,area_id_list);
+        return measureRegionMapper.getMaxRegionIndexGroupByAreaIdNoDeleted(project_id, area_id_list);
     }
 
     @Override
@@ -130,6 +132,18 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
     }
 
     @Override
+    public List<MeasureRegion> searchByProjUuids(Integer project_id, List<String> regionUuids) {
+        Set<String> regionUuidSet = Sets.newHashSet();
+        regionUuidSet.addAll(regionUuids);
+        if (regionUuidSet.isEmpty()) {
+            return Lists.newArrayList();
+        }
+        Example example = new Example(MeasureRegion.class);
+        example.createCriteria().andEqualTo("projectId", project_id).andEqualTo("uuid", regionUuids);
+        return measureRegionMapper.selectByExample(example);
+    }
+
+    @Override
     public void updateByProjectIdAndIdInNoDeleted(Integer project_id, List region_ids, String polygon, String tag_id_list) {
         MeasureRegion measureRegion = new MeasureRegion();
         measureRegion.setPolygon(polygon);
@@ -137,18 +151,18 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
 
         Example example = new Example(MeasureRegion.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("projectId",project_id);
-        criteria.andIn("id",region_ids);
+        criteria.andEqualTo("projectId", project_id);
+        criteria.andIn("id", region_ids);
         criteria.andIsNull("deleteAt");
-        measureRegionMapper.updateByExampleSelective(measureRegion,example);
+        measureRegionMapper.updateByExampleSelective(measureRegion, example);
     }
 
     @Override
     public List<MeasureRegion> selectByProjectIdAndIdNoDeleted(Integer project_id, List<Integer> region_id_list) {
         Example example = new Example(MeasureRegion.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("projectId",project_id);
-        criteria.andIn("id",region_id_list);
+        criteria.andEqualTo("projectId", project_id);
+        criteria.andIn("id", region_id_list);
         criteria.andIsNull("deleteAt");
         return measureRegionMapper.selectByExample(example);
     }
@@ -160,9 +174,14 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
 
         Example example = new Example(MeasureRegion.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("projectId",project_id);
-        criteria.andIn("id",region_id_list);
+        criteria.andEqualTo("projectId", project_id);
+        criteria.andIn("id", region_id_list);
 
-        measureRegionMapper.updateByExampleSelective(measureRegion,example);
+        measureRegionMapper.updateByExampleSelective(measureRegion, example);
+    }
+
+    @Override
+    public MeasureRegion GetByUuid(Integer projId, String uuid) {
+        return measureRegionMapper.GetByUuid(projId, uuid);
     }
 }

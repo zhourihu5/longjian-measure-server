@@ -77,11 +77,13 @@ public class MeasureListIssue {
     /**
      * 问题严重情况 1 严重 2 较差 3 轻微
      */
+    @Column(name = "`condition`")
     private Integer condition;
 
     /**
      * 问题描述
      */
+    @Column(name="`desc`")
     private String desc;
 
     /**

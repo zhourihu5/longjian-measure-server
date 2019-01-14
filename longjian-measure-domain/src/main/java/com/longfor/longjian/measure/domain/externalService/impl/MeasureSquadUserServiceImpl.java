@@ -72,4 +72,9 @@ public class MeasureSquadUserServiceImpl implements IMeasureSquadUserService{
     public List<MeasureSquadUser> selectByExample(Example example) {
         return measureSquadUserMapper.selectByExample(example);
     }
+
+    @Override
+    public List<MeasureSquadUser> SearchBySquadId(Integer projId, Integer squadId) {
+        return measureSquadUserMapper.SearchBySquadId(projId,squadId);
+    }
 }

@@ -94,7 +94,20 @@ public interface IMeasureRegionService {
      */
     List<MeasureRegion> searchByProjIdAndRelId(Integer proj_id, Integer relId);
 
+    /**
+     *
+     * @param example
+     * @return
+     */
     List<MeasureRegion>selectByExample(Example example);
+
+    /**
+     *
+     * @param project_id
+     * @param regionUuids
+     * @return
+     */
+    List<MeasureRegion> searchByProjUuids(Integer project_id, List<String> regionUuids);
 
     /**
      *
@@ -113,4 +126,6 @@ public interface IMeasureRegionService {
      * @param region_id_list
      */
     void delete(Integer project_id, List<Integer> region_id_list);
+
+    MeasureRegion GetByUuid(Integer projId,String uuid);
 }
