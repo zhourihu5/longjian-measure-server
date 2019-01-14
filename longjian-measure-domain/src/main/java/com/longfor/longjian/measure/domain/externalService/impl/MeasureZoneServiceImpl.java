@@ -5,6 +5,7 @@ import com.longfor.longjian.measure.domain.externalService.IMeasureZoneService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureList;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListArea;
 import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
+import com.longfor.longjian.measure.util.ExampleUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -76,6 +77,16 @@ public class MeasureZoneServiceImpl implements IMeasureZoneService {
 
     @Override
     public List<MeasureZone> selectByExample(Example example) {
+        return measureZoneMapper.selectByExample(example);
+    }
+
+    @Override
+    public List<MeasureZone> selectByProjectIdAndRegionUUIdIn(Integer project_id, List<String> region_uuid_list) {
+        Example example = new Example(MeasureZone.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId",project_id);
+        criteria.andIn("regionUuid",region_uuid_list);
+        ExampleUtil.addDeleteAtJudge(example);
         return measureZoneMapper.selectByExample(example);
     }
 

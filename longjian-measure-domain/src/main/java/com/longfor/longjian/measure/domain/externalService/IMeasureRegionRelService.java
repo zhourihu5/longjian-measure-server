@@ -41,4 +41,7 @@ public interface IMeasureRegionRelService {
 
     MeasureRegionRelVo selectById(Integer id);
 
+    List<MeasureRegionRel> selectByProjectIdAndIdNoDeleted(Integer project_id, List<Integer> rel_id_list);
+
+    MeasureRegionRel update(MeasureRegionRel rel_model);
 }
