@@ -89,6 +89,7 @@ public class MeasureListIssue2Controller {
         //TODO 在此添加Controller逻辑（golang中就是todo）
         //todo session中获取user
         Integer uid =5;
+        //todo 调用方法有点bug 暂无法测试
         proMeasureListIssueService.updateIssueCloseStatusByUuid(req.getUuid(),req.getProject_id(),uid,req.getClose_status());
         return new LjBaseResponse<>();
     }

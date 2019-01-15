@@ -370,4 +370,12 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
         example.createCriteria().andEqualTo("uuid", uuid).andEqualTo("projectId", project_id);
         return measureListIssueMapper.selectOneByExample(example);
     }
+
+    @Override
+    public MeasureListIssue getByUuidUnscoped(String issueUuid) {
+        Example example = new Example(MeasureListIssue.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("uuid",issueUuid);
+        return measureListIssueMapper.selectOneByExample(example);
+    }
 }

@@ -182,4 +182,11 @@ public interface IMeasureListIssueService {
      * @return
      */
     MeasureListIssue getByConditionNoFoundErr(Integer project_id, String uuid);
+
+    /**
+     *
+     * @param issueUuid
+     * @return
+     */
+    MeasureListIssue getByUuidUnscoped(String issueUuid);
 }

@@ -245,6 +245,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
         MeasureListIssueHelper helper = new MeasureListIssueHelper();
         helper.init(project_id);
         //变更类型
+        //todo 调用方法暂时有问题无法测试
         helper.start().setNormalField(UUID.randomUUID().toString(), issue.getListId(), issue.getUuid(),
                 issue.getSenderId(), eStr, eInt, status, eStr, eStr, new Date().getTime())
                 .setDatailField(eStr, Long.parseLong(plan_end_on.toString()), Long.parseLong(eInt.toString()),
