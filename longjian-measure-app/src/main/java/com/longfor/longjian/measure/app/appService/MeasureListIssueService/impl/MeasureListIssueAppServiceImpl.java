@@ -3,12 +3,17 @@ package com.longfor.longjian.measure.app.appService.MeasureListIssueService.impl
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.util.CtrlTool;
 import com.longfor.longjian.measure.app.appService.MeasureListIssueService.IMeasureListIssueAppService;
+import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.impl.MeasureListIssueDetailImple;
+import com.longfor.longjian.measure.app.commonEntity.MeasureListIssueHelper;
+import com.longfor.longjian.measure.app.req.MeasureList.MeasureIssueCloseStatusReq;
+import com.longfor.longjian.measure.app.req.MeasureList.MeasureIssueDeleteReq;
+import com.longfor.longjian.measure.app.req.MeasureList.MeasureIssueEdiReq;
 import com.longfor.longjian.measure.app.req.MeasureList.MeasureIssueQueryReq;
-import com.longfor.longjian.measure.app.vo.measureListVo.MeasureIssueQueryItemVo;
-import com.longfor.longjian.measure.app.vo.measureListVo.MeasureIssueQueryVo;
-import com.longfor.longjian.measure.app.vo.measureListVo.MeasureListSearchResultVo;
-import com.longfor.longjian.measure.app.vo.measureListVo.UserInfoVo;
+import com.longfor.longjian.measure.app.vo.measureListVo.*;
+import com.longfor.longjian.measure.consts.Enum.MeasureListCloseStatusEnum;
+import com.longfor.longjian.measure.consts.constant.MeasureListIssueType;
 import com.longfor.longjian.measure.domain.externalService.IMeasureListIssueService;
 import com.longfor.longjian.measure.domain.externalService.IMeasureRegionService;
 import com.longfor.longjian.measure.domain.externalService.IMeasureZoneService;
@@ -20,12 +25,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.util.*;
 
 /**
  * Jiazm 2019/01/11 19:18
@@ -39,13 +44,14 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
     private IMeasureZoneService measureZoneSerivce;
     @Resource
     private IMeasureRegionService measureRegionService;
-
+    @Resource
+    private CtrlTool ctrlTool;
     @Override
     public LjBaseResponse<MeasureIssueQueryVo> issueQueryJson(MeasureIssueQueryReq req, HttpServletRequest request) throws Exception {
         LjBaseResponse<MeasureIssueQueryVo> ljBaseResponse = new LjBaseResponse<>();
         MeasureIssueQueryVo measureIssueQueryVo = new MeasureIssueQueryVo();
         List<MeasureIssueQueryItemVo> measureIssueQueryItemVos = Lists.newArrayList();
-        //todo 调用鉴权
+        ctrlTool.projPerm(request,"项目.实测实量.爆点管理.查看");
         request.setAttribute("project_id", 1);
         Integer projectId = (Integer) request.getAttribute("project_id");
         String[] areaIdArr = StringUtils.split(req.getArea_ids(), ",");
@@ -148,7 +154,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
             MeasureListSearchResultVo measureList = new MeasureListSearchResultVo();
             measureList.setId(item.getListId());
             measureList.setName(mMeasureListName.get(item.getListId()));
-            UserInfoVo repairer =new UserInfoVo();
+            UserInfoVo repairer = new UserInfoVo();
             repairer.setId(item.getRepairerId());
             repairer.setReal_name(mUserName.get(item.getRepairerId()));
             r.setMeasure_list(measureList);
@@ -165,11 +171,11 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
             try {
                 MeasureZone zone = mZone.get(item.getUuid());
                 MeasureRegion region = mRegion.get(zone.getRegionUuid());
-                if(item.getAreaId().equals(region.getAreaId())){
-                    r.setArea_info(StringUtils.join(r.getArea_path_names(),"-")+" "+region.getRegionIndex() );
+                if (item.getAreaId().equals(region.getAreaId())) {
+                    r.setArea_info(StringUtils.join(r.getArea_path_names(), "-") + " " + region.getRegionIndex());
                     r.setRegion_id(region.getId());
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 throw new Exception(e);
             }
             measureIssueQueryItemVos.add(r);
@@ -179,7 +185,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
         return ljBaseResponse;
     }
 
-    public Map<String, Object> getIssueReferNameMap(Integer projectId, List<Integer> areaIdLists, List<String> categoryKeys, List<Integer> measureListIds, List<Integer> userIds) {
+    private Map<String, Object> getIssueReferNameMap(Integer projectId, List<Integer> areaIdLists, List<String> categoryKeys, List<Integer> measureListIds, List<Integer> userIds) {
         try {
             Map<Integer, List<String>> mAreaName = measureListIssueService.getAreaPathNamesMap(areaIdLists);
             Map<String, List<String>> mCategoryName = measureListIssueService.getCategoryPathNamesMap(categoryKeys);
@@ -194,5 +200,61 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
         } catch (Exception e) {
             return Maps.newHashMap();
         }
+    }
+    @Override
+    public LjBaseResponse<UpdateVo> issueDel(MeasureIssueDeleteReq measureIssueDeleteReq, HttpServletRequest request) {
+        return null;
+    }
+    @Override
+    public void updateMeasureListIssueByProjUuid(Integer project_id, String uuid, Integer repairer_id, Integer uid, Integer plan_end_on) throws Exception {
+        try {
+            MeasureListIssue issue = measureListIssueService.getByConditionNoFoundErr(project_id, uuid);
+            if (issue.getRepairerId().equals(repairer_id)) {
+                issue.setRepairerId(-1);
+            }
+            if (issue.getPlanEndOn().equals(plan_end_on)) {
+                issue.setPlanEndOn(-1);
+            }
+            boolean isClose = updateIssueRepairInfoByUuid(uuid, project_id, uid, repairer_id, plan_end_on);
+            if (isClose) {
+                    throw new RuntimeException("问题已经关闭，不可编辑");
+            }
+        } catch (Exception e) {
+            log.error("error:" + e);
+            throw new Exception(e);
+        }
+    }
+
+    public boolean updateIssueRepairInfoByUuid(String uuid, Integer project_id, Integer senderId, Integer repairer_id, Integer plan_end_on) throws Exception {
+        MeasureListIssue issue = null;
+        Integer eInt = -1;
+        String eStr = "";
+        Integer status = eInt;
+        boolean isClosed = false;
+        try {
+            issue = measureListIssueService.getByConditionNoFoundErr(project_id, uuid);
+            if (issue.getCloseStatus().equals(MeasureListCloseStatusEnum.Closed.getId())) {
+                return isClosed;
+            }
+            if (issue.getStatus().equals(MeasureListIssueType.NOTENOASSIGN) && repairer_id > 0) {
+                status = MeasureListIssueType.ASSIGNNOREFORM;
+            }
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
+        MeasureListIssueHelper helper = new MeasureListIssueHelper();
+        helper.init(project_id);
+        //变更类型
+        helper.start().setNormalField(UUID.randomUUID().toString(), issue.getListId(), issue.getUuid(),
+                issue.getSenderId(), eStr, eInt, status, eStr, eStr, new Date().getTime())
+                .setDatailField(eStr, Long.parseLong(plan_end_on.toString()), Long.parseLong(eInt.toString()),
+                        repairer_id, eInt, eInt, eStr, eInt, eInt, eInt, eInt, Long.parseLong(eInt.toString()), eInt)
+                .done();
+        try {
+            helper.execute();
+        }catch (Exception e){
+            throw e;
+        }
+        return isClosed;
     }
 }

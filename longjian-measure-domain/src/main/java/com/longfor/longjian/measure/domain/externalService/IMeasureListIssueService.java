@@ -175,6 +175,11 @@ public interface IMeasureListIssueService {
      */
     void deletedByUpdateDeletedAt(Integer project_id, String uuid);
 
-
-
+    /**
+     *
+     * @param project_id
+     * @param uuid
+     * @return
+     */
+    MeasureListIssue getByConditionNoFoundErr(Integer project_id, String uuid);
 }

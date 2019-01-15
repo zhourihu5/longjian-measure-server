@@ -4,6 +4,8 @@ import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.longfor.longjian.measure.consts.Enum.MeasureListCloseStatusEnum;
+import com.longfor.longjian.measure.consts.constant.MeasureListIssueType;
 import com.longfor.longjian.measure.dao.zhijian2.*;
 import com.longfor.longjian.measure.dao.zhijian2_apisvr.UserMapper;
 import com.longfor.longjian.measure.domain.externalService.IMeasureListIssueService;
@@ -20,6 +22,7 @@ import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
@@ -44,7 +47,6 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     private MeasureListMapper measureListMapper;
     @Resource
     private UserMapper userMapper;
-
     @Override
     public Integer countByMeasureListId(String id) {
         MeasureListIssue measureListIssue = new MeasureListIssue();
@@ -357,9 +359,15 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
 
         Example example = new Example(MeasureListIssue.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("projectId",project_id);
-        criteria.andEqualTo("uuid",uuid);
+        criteria.andEqualTo("projectId", project_id);
+        criteria.andEqualTo("uuid", uuid);
 
-        measureListIssueMapper.updateByExampleSelective(measureListIssue,example);
+        measureListIssueMapper.updateByExampleSelective(measureListIssue, example);
+    }
+    @Override
+    public MeasureListIssue getByConditionNoFoundErr(Integer project_id, String uuid) {
+        Example example = new Example(MeasureListIssue.class);
+        example.createCriteria().andEqualTo("uuid", uuid).andEqualTo("projectId", project_id);
+        return measureListIssueMapper.selectOneByExample(example);
     }
 }

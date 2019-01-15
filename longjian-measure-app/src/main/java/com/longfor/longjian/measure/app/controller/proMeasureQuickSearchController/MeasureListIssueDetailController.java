@@ -178,7 +178,6 @@ public class MeasureListIssueDetailController {
         if (measureListDetailUpdateCloseStatusReq.getClose_status()){
             status = MeasureListCloseStatusEnum.Closed.getId();
         }
-
         proMeasureListIssueService.updateIssueCloseStatusByUuid(measureListDetailUpdateCloseStatusReq.getUuid(),measureListDetailUpdateCloseStatusReq.getProject_id(),uid,status);
         return new LjBaseResponse();
     }

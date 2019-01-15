@@ -234,4 +234,13 @@ WHERE
         AND
         uuid = #{uuid}
     </select>
+    <!--MeasureListIssue getByUuid(@Param("issueUuid") String issueUuid);-->
+    <select id="getByUuid" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM
+        measure_list_issue
+        where
+        uuid = #{issueUuid}
+    </select>
 </mapper>
