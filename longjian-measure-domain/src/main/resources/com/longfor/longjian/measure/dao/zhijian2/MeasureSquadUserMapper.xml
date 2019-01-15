@@ -63,4 +63,14 @@
     </if>
 
   </update>
+  <select id="SearchBySquadId" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM
+    FROMmeasure_squad_user
+    WHERE
+    project_id = #{projId}
+    AND
+    squad_id = #{squadId}
+  </select>
 </mapper>

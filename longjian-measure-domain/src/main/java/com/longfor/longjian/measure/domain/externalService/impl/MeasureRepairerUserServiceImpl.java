@@ -40,4 +40,9 @@ public class MeasureRepairerUserServiceImpl implements IMeasureRepairerUserServi
     public List<MeasureRepairerUser> selectByExample(Example example) {
         return measureRepairerUserMapper.selectByExample(example);
     }
+
+    @Override
+    public List<MeasureRepairerUser> SearchMeasureReparierUserByListId(Integer projId, Integer listId) {
+        return measureRepairerUserMapper.SearchMeasureReparierUserByListId(projId,listId);
+    }
 }

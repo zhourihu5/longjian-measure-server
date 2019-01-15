@@ -41,4 +41,6 @@ public interface IMeasureSquadService {
      */
     List<MeasureSquad>selectByExample(Example example);
 
+    List<MeasureSquad> SearchSquadByProjIdListId(Integer projId , Integer listId);
+
 }

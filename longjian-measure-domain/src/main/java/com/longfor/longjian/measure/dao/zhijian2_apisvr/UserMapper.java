@@ -15,6 +15,8 @@ public interface UserMapper extends LFMySQLMapper<User> {
      */
     List<Map<String,Object>> getUserByUserIds(@Param("userIds") List<Integer> userIds);
 
+    List<User> getUserEntitiesByUserIds(@Param("userIds") List<Integer> userIds);
+
     /**
      * @Description:
      * @param id

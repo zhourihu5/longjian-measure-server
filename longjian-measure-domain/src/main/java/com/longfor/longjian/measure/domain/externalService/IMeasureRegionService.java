@@ -126,4 +126,6 @@ public interface IMeasureRegionService {
      * @param region_id_list
      */
     void delete(Integer project_id, List<Integer> region_id_list);
+
+    MeasureRegion GetByUuid(Integer projId,String uuid);
 }

@@ -20,7 +20,7 @@ import javax.validation.Valid;
  * @create: 2019-01-08 10:15
  **/
 @RestController
-@RequestMapping("oapi/v3/")
+@RequestMapping("oapi/v3/measure/measure_statistic/")
 @Slf4j
 public class MeasureStatisticController {
 
@@ -28,19 +28,19 @@ public class MeasureStatisticController {
     private IMeasureStatisticService measureStatisticService;
 
     /**
-     * @Description:
-     * @param
-     * @return void
+     * @Description: go项目实测快速查新任务概览组间对比
+     * http://192.168.37.159:3000/project/8/interface/api/2976
+     * @return
      * @author DDC
      * @date 2019/1/8 11:19
      **/
-    @GetMapping(value = "measure/measure_statistic/squad_measure_stats_json/" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "squad_measure_stats_json/" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse SquadMeasureStatsJson(@Valid GetMeasureStatisticTaskReq getMeasureStatisticTaskReq, Errors errors){
         if (errors.hasErrors()) {
             throw new LjBaseRuntimeException(-1,"");
         }
         //todo 未添加鉴权
-        return new LjBaseResponse(measureStatisticService.SquadMeasureStatsJson(getMeasureStatisticTaskReq));
+        return new LjBaseResponse<>(measureStatisticService.SquadMeasureStatsJson(getMeasureStatisticTaskReq));
     }
 }
 

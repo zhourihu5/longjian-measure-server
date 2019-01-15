@@ -151,18 +151,18 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
 
         Example example = new Example(MeasureRegion.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("projectId",project_id);
-        criteria.andIn("id",region_ids);
+        criteria.andEqualTo("projectId", project_id);
+        criteria.andIn("id", region_ids);
         criteria.andIsNull("deleteAt");
-        measureRegionMapper.updateByExampleSelective(measureRegion,example);
+        measureRegionMapper.updateByExampleSelective(measureRegion, example);
     }
 
     @Override
     public List<MeasureRegion> selectByProjectIdAndIdNoDeleted(Integer project_id, List<Integer> region_id_list) {
         Example example = new Example(MeasureRegion.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("projectId",project_id);
-        criteria.andIn("id",region_id_list);
+        criteria.andEqualTo("projectId", project_id);
+        criteria.andIn("id", region_id_list);
         criteria.andIsNull("deleteAt");
         return measureRegionMapper.selectByExample(example);
     }
@@ -174,9 +174,14 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
 
         Example example = new Example(MeasureRegion.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("projectId",project_id);
-        criteria.andIn("id",region_id_list);
+        criteria.andEqualTo("projectId", project_id);
+        criteria.andIn("id", region_id_list);
 
-        measureRegionMapper.updateByExampleSelective(measureRegion,example);
+        measureRegionMapper.updateByExampleSelective(measureRegion, example);
+    }
+
+    @Override
+    public MeasureRegion GetByUuid(Integer projId, String uuid) {
+        return measureRegionMapper.GetByUuid(projId, uuid);
     }
 }

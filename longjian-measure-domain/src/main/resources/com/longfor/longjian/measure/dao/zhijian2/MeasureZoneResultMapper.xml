@@ -320,4 +320,15 @@ WHERE
 
   </update>
 
+  <select id="SearchZoneResultByProjIdZoneUuid" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM
+    measure_zone_result
+    WHERE
+    project_id = #{ProjectId}
+    AND
+    zone_uuid = #{uuid}
+  </select>
+
 </mapper>

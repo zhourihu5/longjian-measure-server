@@ -168,4 +168,16 @@ WHERE
     GROUP BY
 	area_id
   </select>
+  <select id="GetByUuid" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM
+    measure_region
+    WHERE
+    project_id = #{projId}
+    AND
+    uuid = #{uuid}
+    AND
+    delete_at IS NULL
+  </select>
 </mapper>

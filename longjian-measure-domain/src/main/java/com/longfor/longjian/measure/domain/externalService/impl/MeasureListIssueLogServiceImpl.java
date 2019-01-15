@@ -4,14 +4,17 @@ import com.longfor.longjian.measure.dao.zhijian2.MeasureListIssueLogMapper;
 import com.longfor.longjian.measure.domain.externalService.IMeasureListIssueLogService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListIssue;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListIssueLog;
+import com.longfor.longjian.measure.util.ExampleUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @Service
 public class MeasureListIssueLogServiceImpl implements IMeasureListIssueLogService {
-    @Autowired
+    @Resource
     private MeasureListIssueLogMapper measureListIssueLogMapper;
     @Override
     public List<MeasureListIssueLog> searchIssueLogListByListIdLastIdTimestampGt(Integer projectId, Integer list_id, Integer last_id, Long timestamp, Integer start, Integer pageSize) {
@@ -26,5 +29,15 @@ public class MeasureListIssueLogServiceImpl implements IMeasureListIssueLogServi
     @Override
     public int insertObjects(List<MeasureListIssueLog> needInsertIssueMap) {
         return measureListIssueLogMapper.insertList(needInsertIssueMap);
+    }
+
+    @Override
+    public List<MeasureListIssueLog> searchByIssueUuid(Integer project_id, String uuid) {
+        Example example = new Example(MeasureListIssueLog.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId",project_id);
+        criteria.andEqualTo("issueUuid",uuid);
+        ExampleUtil.addDeleteAtJudge(example);
+        return measureListIssueLogMapper.selectByExample(example);
     }
 }

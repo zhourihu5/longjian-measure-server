@@ -25,4 +25,6 @@ public interface IMeasureRepairerUserService {
 
     List<MeasureRepairerUser> selectByExample(Example example);
 
+    List<MeasureRepairerUser> SearchMeasureReparierUserByListId(Integer projId,Integer listId);
+
 }

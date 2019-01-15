@@ -41,4 +41,14 @@
     (#{listId},#{projectId},#{name},#{planRate},#{rate},#{createAt},#{updateAt})
 
   </insert>
+  <select id="SearchSquadByProjIdListId" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM
+    measure_squad
+    WHERE
+    project_id = #{projId}
+    AND
+    lsit_id = #{listId}
+  </select>
 </mapper>

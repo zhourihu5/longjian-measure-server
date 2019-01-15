@@ -134,4 +134,6 @@ public interface MeasureZoneResultMapper extends LFMySQLMapper<MeasureZoneResult
      * @param map
      */
     void delBySquadIdUuid(Map<String,Object>map);
+
+    List<MeasureZoneResult> SearchZoneResultByProjIdZoneUuid(@Param("ProjectId") Integer ProjectId , @Param("uuid") String uuid);
 }
