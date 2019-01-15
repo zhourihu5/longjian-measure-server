@@ -51,14 +51,15 @@ public class FileResourceServiceImpl implements IFileResourceService {
 
     private byte[] readFileAllByte(FileResource fileResource) throws IOException {
         StoreUrlVo storeUrlVo = FileUtil.fileResourceGetStoreUrl(fileResource.getStoreKey());
-        if (!storeUrlVo.getSchema().equals("file")) {
-            throw new RuntimeException("file is not a local file");
+        if (!storeUrlVo.getSchema().equals("file")) {//file
+            throw new MalformedURLException("file is not a local file");
         }
         byte[] bytes = null;
         try {
-            bytes = FileUtil.urlTobyte(storeUrlVo.getSchema() + storeUrlVo.getUri() + fileResource.getFileName());//文件路径跟名称
-        } catch (Exception e) {
+            bytes = FileUtil.urlTobyte(storeUrlVo.getSchema()+"/"+ storeUrlVo.getUri() + fileResource.getFileName());//文件路径跟名称
+        } catch (MalformedURLException e) {
             log.error("error:" + e);
+            throw new MalformedURLException("error:"+e);
         }
         return bytes;
     }

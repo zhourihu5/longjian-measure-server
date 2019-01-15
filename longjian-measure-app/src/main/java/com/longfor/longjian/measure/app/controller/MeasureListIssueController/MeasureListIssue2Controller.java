@@ -27,6 +27,7 @@ public class MeasureListIssue2Controller {
     @Autowired
     private IMeasureListIssueAppService measureListIssueService;
     /**
+     * go项目实测爆点整改搜所
      *http://192.168.37.159:3000/project/8/interface/api/2984
      * http://192.168.37.159:3000/mock/8/longjian.longhu.net/oapi/v3/measure/measure_list_issue/issue_query_json/?_ct=json&project_id=930&page_level=project&group_id=4&team_id=25&limit=10&page=1&category_key=&area_ids=&measure_list_ids
      * @return
