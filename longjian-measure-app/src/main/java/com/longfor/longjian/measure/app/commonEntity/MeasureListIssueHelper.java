@@ -317,7 +317,7 @@ public class MeasureListIssueHelper {
      * @return
      */
     public MeasureListIssue getIssueFromDb(String issueUuid) {
-        MeasureListIssue issue = measureListIssueLogService.getByUuidUnscoped(issueUuid);
+        MeasureListIssue issue = measureListIssueService.getByUuidUnscoped(issueUuid);
         return issue;
     }
 
