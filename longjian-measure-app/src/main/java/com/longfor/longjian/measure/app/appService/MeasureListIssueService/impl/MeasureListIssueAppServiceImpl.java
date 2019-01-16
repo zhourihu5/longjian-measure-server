@@ -46,6 +46,9 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
     private IMeasureRegionService measureRegionService;
     @Resource
     private CtrlTool ctrlTool;
+    @Resource
+    private MeasureListIssueHelper helper;
+
     @Override
     public LjBaseResponse<MeasureIssueQueryVo> issueQueryJson(MeasureIssueQueryReq req, HttpServletRequest request) throws Exception {
         LjBaseResponse<MeasureIssueQueryVo> ljBaseResponse = new LjBaseResponse<>();
@@ -242,7 +245,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
         } catch (Exception e) {
             throw new Exception(e);
         }
-        MeasureListIssueHelper helper = new MeasureListIssueHelper();
+//        MeasureListIssueHelper helper = new MeasureListIssueHelper();
         helper.init(project_id);
         //变更类型
         //todo 调用方法暂时有问题无法测试

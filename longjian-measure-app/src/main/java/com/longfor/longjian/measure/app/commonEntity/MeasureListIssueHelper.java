@@ -602,7 +602,7 @@ public class MeasureListIssueHelper {
         }
 
         //执行推送
-//        kafkaProducer.produce(EventQueueEnum.PKG_MEASURE_ISSUE_REPORTED.getValue(), msgPkg);
+        kafkaProducer.produce(EventQueueEnum.PKG_MEASURE_ISSUE_REPORTED.getValue(), msgPkg);
 
     }
 

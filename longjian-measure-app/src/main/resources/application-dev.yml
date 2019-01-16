@@ -157,20 +157,20 @@ longfor:
             maxActive: 50
 
 kafka:
-#  topic: projectprogress
-  kafka_prefix: '32_lhone'
+  kafka_prefix: 32_lhone
   producer:
-    servers: 192.168.96.137:9092,192.168.96.137:9093,192.168.96.137:9094
+    servers: 192.168.36.94:9092,192.168.36.94:9093,192.168.36.94:9094
     retries: 0
     batch:
       size: 4096
     linger: 1
     buffer:
-      memory: 40960
+      # 为生产者提供的可控制的内存大小 单位为字节 此处暂时设置为128MB
+      memory: 134217728
   consumer:
-#    zookeeper:
-#      connect: 192.68.96.137:2181
-    servers:  192.168.96.137:9092,192.168.96.137:9093,192.168.96.137:9094
+    zookeeper:
+      connect: 192.68.36.94:2181
+    servers:  192.168.36.94:9092,192.168.36.94:9093,192.168.36.94:9094
     enable:
       auto:
         commit: false
@@ -181,9 +181,8 @@ kafka:
         interval: 100
       offset:
         reset: latest
-#    topic: projectprogress
     group:
-      id: projectprogress
+      id: event_unpkg
     concurrency: 10
 
 # 个性化配置

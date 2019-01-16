@@ -27,6 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -65,6 +66,8 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     private ICategoryV3Service categoryV3Service;
     @Autowired
     private KafkaProducer kafkaProducer;
+    @Resource
+    private MeasureListIssueHelper helper;
 
 
     @Override
@@ -84,7 +87,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         List<MeasureListIssueStruct> datas = new ArrayList<>();
         log.debug(apiMeasureReportIssueReq.getData());
         datas = JSONArray.parseArray(apiMeasureReportIssueReq.getData(), MeasureListIssueStruct.class);
-        MeasureListIssueHelper helper = new MeasureListIssueHelper();
+//        MeasureListIssueHelper helper = new MeasureListIssueHelper();
         for (MeasureListIssueStruct v:datas
              ) {
             helper.start().
