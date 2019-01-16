@@ -194,7 +194,8 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
         if (formVo.getRootCategoryId() > 0) {
             try {
                 rc = checkItemV3Service.getRootCategoryNoFoundErr(formVo.getRootCategoryId());
-                if (rc.getTeamId().equals(curTeam.getTeamId())) {
+                //todo rc.getTeamId().equals(curTeam.getTeamId()) 作用域问题暂时无法比较
+                if (rc.getTeamId().equals(5)) {
                     ljBaseResponse.setMessage(LoginEnum.NO_PERMISSION.getName());
                     return ljBaseResponse;
                 }
@@ -205,7 +206,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
                     content = fileResourceService.readFileAll(fileResource.getId());
                 }
             } catch (Exception e) {
-                ljBaseResponse.setMessage("error:" + e);
+                ljBaseResponse.setMessage(e.getMessage());
                 return ljBaseResponse;
             }
 
@@ -235,20 +236,17 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
         return ljBaseResponse;
     }
 
-    //未完成
-    private void readStructForm(HttpServletRequest request, FormVo formVo) {
+    /*private void readStructForm(HttpServletRequest request, FormVo formVo) {
         readForm(request, getBindings(formVo));
     }
 
-    //未完成
     private List<FormVo> getBindings(FormVo formVo) {
         return null;
     }
 
-    //未完成
     private void readForm(HttpServletRequest request, List<FormVo> formVos) {
 
-    }
+    }*/
 
     private void download(int code, String contentType, byte[] data, Map<String, Object> map) throws IOException {
         BufferedOutputStream bos = null;

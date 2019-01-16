@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.text.ParseException;
@@ -26,6 +27,7 @@ import java.util.*;
 @Component
 @Data
 @Slf4j
+@Transactional
 public class MeasureListIssueHelper {
     @Autowired
     private IMeasureListIssueService measureListIssueService;
@@ -77,7 +79,7 @@ public class MeasureListIssueHelper {
         this.categoryMap = new HashMap<>();
 
         this.droppedIssueLog = new ArrayList<>();
-
+        this.droppedIssue = new ArrayList<>();
         this.start();
 
         this.currentProjectId = projId;
@@ -317,7 +319,7 @@ public class MeasureListIssueHelper {
      * @return
      */
     public MeasureListIssue getIssueFromDb(String issueUuid) {
-        MeasureListIssue issue = measureListIssueLogService.getByUuidUnscoped(issueUuid);
+        MeasureListIssue issue = measureListIssueService.getByUuidUnscoped(issueUuid);
         return issue;
     }
 
@@ -584,16 +586,19 @@ public class MeasureListIssueHelper {
             }
             //issue log
             int affected;
-            affected = measureListIssueLogService.insertObjects(this.needInsertIssueLog);
-            if (this.needInsertIssueLog.size() != affected) {
-                String msg = "insert affected not match, len[" + this.needInsertIssueLog.size() + "] affected[" + affected + "]";
-                log.warn(msg);
-                throw new Exception(msg);
+            if(!needInsertIssueLog.isEmpty()){
+                affected = measureListIssueLogService.insertObjects(this.needInsertIssueLog);
+                if (this.needInsertIssueLog.size() != affected) {
+                    String msg = "insert affected not match, len[" + this.needInsertIssueLog.size() + "] affected[" + affected + "]";
+                    log.warn(msg);
+                    throw new Exception(msg);
+                }
             }
             txManager.commit(status);
         } catch (Exception e) {
             txManager.rollback(status);
             log.warn("執行失敗", e.getMessage());
+            e.printStackTrace();
         } finally {
             LFDataSourceContextHolder.clear();
         }
@@ -651,6 +656,9 @@ public class MeasureListIssueHelper {
      * @return
      */
     public MeasureListIssueHelper initSquadId(Set<Integer> listIds) {
+        if (listIds.size() <= 0){
+            return this;
+        }
         this.listIdAndUserIdToSquadIdMap = new HashMap<>();
         try {
             List<MeasureSquadUser> squadUsers = this.getSquadUsers(listIds);
@@ -659,7 +667,7 @@ public class MeasureListIssueHelper {
                 this.listIdAndUserIdToSquadIdMap.put(key, measureSquadUser.getSquadId());
             });
         } catch (Exception e) {
-            log.warn("helper init squadId error:%s", e.getMessage());
+            log.warn("helper init squadId error: " +  e.getMessage());
             return this;
         }
         return this;
@@ -763,6 +771,9 @@ public class MeasureListIssueHelper {
      * @return
      */
     public MeasureListIssueHelper initArea(List<Integer> areaIds) {
+        if (areaIds.size() <= 0){
+            return this;
+        }
         this.areaMap = new HashMap<>();
         try {
             List<Area> areas = areaService.getAreaByIds(areaIds);
@@ -770,7 +781,7 @@ public class MeasureListIssueHelper {
                 this.areaMap.put(area.getId(), area);
             });
         } catch (Exception e) {
-            log.warn("helper init area error:%s", e.getMessage());
+            log.warn("helper init area error: " + e.getMessage());
 //            this.settingError(e);
             return this;
         }
@@ -784,6 +795,9 @@ public class MeasureListIssueHelper {
      * @return
      */
     public MeasureListIssueHelper initCategory(List<String> categoryKeys) {
+        if (categoryKeys.size() <= 0){
+            return this;
+        }
         this.categoryMap = new HashMap<>();
         try {
             List<CategoryV3> categorys = categoryV3Service.getCategoryByKeys(categoryKeys);
@@ -791,7 +805,7 @@ public class MeasureListIssueHelper {
                 this.categoryMap.put(categoryV3.getKey(), categoryV3);
             });
         } catch (Exception e) {
-            log.warn("helper init category error:%s", e.getMessage());
+            log.warn("helper init category error: " +  e.getMessage());
             return this;
         }
         return this;
@@ -804,6 +818,9 @@ public class MeasureListIssueHelper {
      * @return
      */
     public MeasureListIssueHelper initZone(List<String> zoneUuids) {
+        if (zoneUuids.size() <= 0){
+            return this;
+        }
         this.zoneMap = new HashMap<>();
         try {
             List<MeasureZone> zones = measureZoneService.searchZoneByUuid(this.currentProjectId, new HashSet<>(zoneUuids));
@@ -811,7 +828,7 @@ public class MeasureListIssueHelper {
                 this.zoneMap.put(zone.getUuid(), zone);
             });
         } catch (Exception e) {
-            log.warn("helper init Zone error:%s", e.getMessage());
+            log.warn("helper init Zone error: " +  e.getMessage());
             return this;
         }
         return this;

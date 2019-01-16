@@ -19,6 +19,8 @@ public class ProMeasureListIssueServiceImpl implements IProMeasureListIssueServi
 
     @Resource
     private IMeasureListIssueService measureListIssueService;
+    @Resource
+    private MeasureListIssueHelper helper;
 
     @Override
     public void measureListIssueDeleteByProjUuid(Integer project_id, String uuid) {
@@ -38,7 +40,7 @@ public class ProMeasureListIssueServiceImpl implements IProMeasureListIssueServi
             return true;
         }
 
-        MeasureListIssueHelper helper = new MeasureListIssueHelper();
+//        MeasureListIssueHelper helper = new MeasureListIssueHelper();
         helper.init(projectId);
 
         if (MeasureListIssueCheckStatusEnum.CheckYes.getId().equals(status)){
@@ -66,7 +68,6 @@ public class ProMeasureListIssueServiceImpl implements IProMeasureListIssueServi
 
         MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(project_id,uuid);
 
-        MeasureListIssueHelper helper = new MeasureListIssueHelper();
         helper.init(project_id);
 
         //审核通过

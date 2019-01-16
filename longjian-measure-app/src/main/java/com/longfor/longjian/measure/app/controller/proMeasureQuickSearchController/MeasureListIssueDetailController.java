@@ -167,9 +167,9 @@ public class MeasureListIssueDetailController {
      * @return
      */
     @PostMapping(value = "update_close_status/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse updateCloseStatus(@Valid @RequestBody MeasureListDetailUpdateCloseStatusReq measureListDetailUpdateCloseStatusReq,HttpServletRequest request) throws Exception {
+    public LjBaseResponse updateCloseStatus(@Valid MeasureListDetailUpdateCloseStatusReq measureListDetailUpdateCloseStatusReq,HttpServletRequest request) throws Exception {
         //鉴权
-        ctrlTool.projPerm(request,"项目.实测实量.爆点管理.编辑");
+//        ctrlTool.projPerm(request,"项目.实测实量.爆点管理.编辑");
         // todo uId := getCurUid(c)
         Integer uid = 7566;
 
@@ -177,7 +177,6 @@ public class MeasureListIssueDetailController {
         if (measureListDetailUpdateCloseStatusReq.getClose_status()){
             status = MeasureListCloseStatusEnum.Closed.getId();
         }
-
         proMeasureListIssueService.updateIssueCloseStatusByUuid(measureListDetailUpdateCloseStatusReq.getUuid(),measureListDetailUpdateCloseStatusReq.getProject_id(),uid,status);
         return new LjBaseResponse();
     }

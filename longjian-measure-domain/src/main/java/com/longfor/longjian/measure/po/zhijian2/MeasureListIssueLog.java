@@ -23,6 +23,7 @@ public class MeasureListIssueLog {
     /**
      * 描述
      */
+    @Column(name = "`desc`")
     private String desc;
 
     /**
@@ -52,6 +53,7 @@ public class MeasureListIssueLog {
     /**
      * 状态：1 已记录未分配 2已分配未整改 3已整改未验收 4已验收 5已取消
      */
+    @Column(name = "`status`")
     private Integer status;
 
     /**
