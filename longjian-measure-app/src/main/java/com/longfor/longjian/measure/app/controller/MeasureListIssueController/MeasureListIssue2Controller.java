@@ -11,7 +11,6 @@ import com.longfor.longjian.measure.app.req.MeasureList.MeasureIssueQueryReq;
 import com.longfor.longjian.measure.app.vo.measureListVo.MeasureIssueQueryVo;
 import com.longfor.longjian.measure.app.vo.measureListVo.UpdateVo;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,8 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.math.BigDecimal;
-import java.text.ParseException;
 
 /**
  * Jiazm 2019/01/11 17:52
@@ -86,12 +83,14 @@ public class MeasureListIssue2Controller {
     @PostMapping(value = "issue_close_status/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<UpdateVo> issueCloseStatus(@Valid MeasureIssueCloseStatusReq req, HttpServletRequest request) throws Exception {
         ctrlTool.projPerm(request,"项目.实测实量.爆点管理.编辑");
+        LjBaseResponse<UpdateVo> ljBaseResponse = new LjBaseResponse<>();
+        UpdateVo updateVo = new UpdateVo();
         //TODO 在此添加Controller逻辑（golang中就是todo）
         //todo session中获取user
         Integer uid =5;
-        //todo 调用方法有点bug 暂无法测试
         proMeasureListIssueService.updateIssueCloseStatusByUuid(req.getUuid(),req.getProject_id(),uid,req.getClose_status());
-        return new LjBaseResponse<>();
+        ljBaseResponse.setData(updateVo);
+        return ljBaseResponse;
     }
 
     /**
@@ -105,8 +104,11 @@ public class MeasureListIssue2Controller {
     @PostMapping(value = "issue_del/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<UpdateVo> issueDel(@Valid MeasureIssueDeleteReq req, HttpServletRequest request) throws Exception {
         ctrlTool.projPerm(request,"项目.实测实量.爆点管理.删除");
+        LjBaseResponse<UpdateVo> ljBaseResponse = new LjBaseResponse<>();
+        UpdateVo updateVo = new UpdateVo();
         //TODO 在此添加Controller逻辑（golang中就是todo）
         proMeasureListIssueService.measureListIssueDeleteByProjUuid(req.getProject_id(),req.getUuid());
-        return new LjBaseResponse<>();
+        ljBaseResponse.setData(updateVo);
+        return ljBaseResponse;
     }
 }

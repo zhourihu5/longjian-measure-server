@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.common.util.CtrlTool;
 import com.longfor.longjian.measure.app.appService.MeasureListIssueService.IMeasureListIssueAppService;
+import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.IMeasureListIssueDetailService;
 import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.impl.MeasureListIssueDetailImple;
 import com.longfor.longjian.measure.app.commonEntity.MeasureListIssueHelper;
 import com.longfor.longjian.measure.app.req.MeasureList.MeasureIssueCloseStatusReq;
@@ -48,13 +49,12 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
     private CtrlTool ctrlTool;
     @Resource
     private MeasureListIssueHelper helper;
-
     @Override
     public LjBaseResponse<MeasureIssueQueryVo> issueQueryJson(MeasureIssueQueryReq req, HttpServletRequest request) throws Exception {
         LjBaseResponse<MeasureIssueQueryVo> ljBaseResponse = new LjBaseResponse<>();
         MeasureIssueQueryVo measureIssueQueryVo = new MeasureIssueQueryVo();
         List<MeasureIssueQueryItemVo> measureIssueQueryItemVos = Lists.newArrayList();
-        ctrlTool.projPerm(request,"项目.实测实量.爆点管理.查看");
+        ctrlTool.projPerm(request, "项目.实测实量.爆点管理.查看");
         request.setAttribute("project_id", 1);
         Integer projectId = (Integer) request.getAttribute("project_id");
         String[] areaIdArr = StringUtils.split(req.getArea_ids(), ",");
@@ -204,10 +204,12 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
             return Maps.newHashMap();
         }
     }
+
     @Override
     public LjBaseResponse<UpdateVo> issueDel(MeasureIssueDeleteReq measureIssueDeleteReq, HttpServletRequest request) {
         return null;
     }
+
     @Override
     public void updateMeasureListIssueByProjUuid(Integer project_id, String uuid, Integer repairer_id, Integer uid, Integer plan_end_on) throws Exception {
         try {
@@ -218,9 +220,9 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
             if (issue.getPlanEndOn().equals(plan_end_on)) {
                 issue.setPlanEndOn(-1);
             }
-            boolean isClose = updateIssueRepairInfoByUuid(uuid, project_id, uid, repairer_id, plan_end_on);
+            boolean isClose = this.updateIssueRepairInfoByUuid(uuid, project_id, uid, repairer_id, plan_end_on);
             if (isClose) {
-                    throw new RuntimeException("问题已经关闭，不可编辑");
+                throw new RuntimeException("问题已经关闭，不可编辑");
             }
         } catch (Exception e) {
             log.error("error:" + e);
@@ -245,10 +247,8 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
         } catch (Exception e) {
             throw new Exception(e);
         }
-//        MeasureListIssueHelper helper = new MeasureListIssueHelper();
         helper.init(project_id);
         //变更类型
-        //todo 调用方法暂时有问题无法测试
         helper.start().setNormalField(UUID.randomUUID().toString(), issue.getListId(), issue.getUuid(),
                 issue.getSenderId(), eStr, eInt, status, eStr, eStr, new Date().getTime())
                 .setDatailField(eStr, Long.parseLong(plan_end_on.toString()), Long.parseLong(eInt.toString()),
@@ -256,7 +256,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
                 .done();
         try {
             helper.execute();
-        }catch (Exception e){
+        } catch (Exception e) {
             throw e;
         }
         return isClosed;

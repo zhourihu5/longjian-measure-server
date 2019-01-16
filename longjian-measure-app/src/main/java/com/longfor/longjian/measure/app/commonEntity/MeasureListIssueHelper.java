@@ -586,11 +586,13 @@ public class MeasureListIssueHelper {
             }
             //issue log
             int affected;
-            affected = measureListIssueLogService.insertObjects(this.needInsertIssueLog);
-            if (this.needInsertIssueLog.size() != affected) {
-                String msg = "insert affected not match, len[" + this.needInsertIssueLog.size() + "] affected[" + affected + "]";
-                log.warn(msg);
-                throw new Exception(msg);
+            if(!needInsertIssueLog.isEmpty()){
+                affected = measureListIssueLogService.insertObjects(this.needInsertIssueLog);
+                if (this.needInsertIssueLog.size() != affected) {
+                    String msg = "insert affected not match, len[" + this.needInsertIssueLog.size() + "] affected[" + affected + "]";
+                    log.warn(msg);
+                    throw new Exception(msg);
+                }
             }
             txManager.commit(status);
         } catch (Exception e) {
