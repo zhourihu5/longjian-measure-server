@@ -49,6 +49,6 @@
     WHERE
     project_id = #{projId}
     AND
-    lsit_id = #{listId}
+    list_id = #{listId}
   </select>
 </mapper>

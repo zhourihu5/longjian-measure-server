@@ -1,16 +1,13 @@
 package com.longfor.longjian.measure.app.controller.proMeasureQuickSearchController;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.util.CtrlTool;
 import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.IMeasureListIssueDetailService;
 import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.IProMeasureListIssueLogService;
 import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.IProMeasureListIssueService;
-import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetMeasureListIssueDetailReq;
-import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.MeasureListDetailDeleteReq;
-import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.MeasureListDetailUpdateApproveIssueReq;
-import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.MeasureListDetailUpdateCloseStatusReq;
+import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.*;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
-import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.MeasureListDetailUpdateIssueRepairerReq;
 import com.longfor.longjian.measure.app.vo.proMeasureQuickSearchVo.MeasureListIssueDetailIssueInfoVo;
 import com.longfor.longjian.measure.app.vo.proMeasureQuickSearchVo.MeasureListIssueHistoryRepairLogVo;
 import com.longfor.longjian.measure.consts.Enum.MeasureListCloseStatusEnum;
@@ -21,6 +18,7 @@ import com.longfor.longjian.measure.app.vo.proMeasureQuickSearchVo.MeasureListIs
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,7 +59,7 @@ public class MeasureListIssueDetailController {
      * @date 2019/1/14 14:31
      **/
     @GetMapping(value = "issue_info/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureListIssueDetailIssueInfoVo> IssueInfo(@Valid GetMeasureListIssueDetailReq req){
+    public LjBaseResponse<MeasureListIssueDetailIssueInfoVo> IssueInfo(@Valid GetMeasureListIssueDetailReq req,Errors errors){
         //todo 未添加鉴权
         return new LjBaseResponse<>(measureListIssueDetailService.IssueInfo(req));
     }
@@ -101,9 +99,10 @@ public class MeasureListIssueDetailController {
      * @date 2019/1/14 20:32
      **/
     @PostMapping(value = "update_repairer/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse updateRepairer(MeasureListDetailUpdateIssueRepairerReq req){
-        //todo 未添加鉴权
-        return measureListIssueDetailService.updateRepairer(req);
+    public LjBaseResponse updateRepairer(@Valid MeasureListDetailUpdateIssueRepairerReq req,HttpServletRequest request) throws Exception {
+        ctrlTool.projPerm(request,"项目.实测实量.爆点管理.编辑");
+        measureListIssueDetailService.updateRepairer(req);
+        return new LjBaseResponse();
     }
 
     /**
@@ -181,6 +180,26 @@ public class MeasureListIssueDetailController {
 
         proMeasureListIssueService.updateIssueCloseStatusByUuid(measureListDetailUpdateCloseStatusReq.getUuid(),measureListDetailUpdateCloseStatusReq.getProject_id(),uid,status);
         return new LjBaseResponse();
+    }
+
+    /**
+     * @Description: go项目实测爆点修给问题状态
+     * http://192.168.37.159:3000/project/8/interface/api/3024
+     * @return com.longfor.longjian.common.base.LjBaseResponse
+     * @author DDC
+     * @date 2019/1/15 11:12
+     **/
+    @PostMapping(value = "update_issue_type/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public LjBaseResponse updateIssueType(@Valid PostMeasureListDetailUpdateIssueTypeReq req){
+        //todo 未添加鉴权
+        //ctrlTool.projPerm();
+        return measureListIssueDetailService.updateIssueType(req);
+    }
+
+    @PostMapping(value = "update_plan_end_on/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public LjBaseResponse UpdatePlanEndOn(@Valid PostMeasureListDetailUpdateIssuePlanEndOnReq req){
+        //todo 未添加鉴权
+        return measureListIssueDetailService.UpdatePlanEndOn(req);
     }
 
 }

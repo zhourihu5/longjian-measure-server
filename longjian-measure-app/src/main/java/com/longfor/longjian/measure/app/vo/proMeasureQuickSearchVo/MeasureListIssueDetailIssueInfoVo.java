@@ -19,7 +19,7 @@ public class MeasureListIssueDetailIssueInfoVo {
     /**
      *创建时间
      */
-    private Integer create_at;
+    private Long create_at;
 
     /**
      *检查项名称列表
