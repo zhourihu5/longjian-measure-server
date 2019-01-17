@@ -2,6 +2,8 @@ package com.longfor.longjian.measure.app.req.apiMeasureRuleReq;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
 @Data
 public class ApiMyTaskReq {
     /**

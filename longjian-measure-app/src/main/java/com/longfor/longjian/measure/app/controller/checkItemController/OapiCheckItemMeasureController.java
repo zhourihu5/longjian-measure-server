@@ -40,7 +40,7 @@ public class OapiCheckItemMeasureController {
      * @return
      */
     @GetMapping(value = "get_category_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<GetCategoryVo> getCategoryJson(@Valid GetCategoryReq getCategoryReq, HttpServletRequest request) {
+    public LjBaseResponse<GetCategoryVo> getCategoryJson(@Valid GetCategoryReq getCategoryReq, HttpServletRequest request) throws Exception {
         LjBaseResponse<GetCategoryVo> ljBaseResponse = oapiCheckItemMeasureService.getCategoryJson(getCategoryReq, request);
         return ljBaseResponse;
     }
@@ -50,7 +50,7 @@ public class OapiCheckItemMeasureController {
      * @return
      */
     @GetMapping(value = "get_check_item_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<GetCheckItemVo> getCheckItemJson(@Valid GetCheckItemReq getCheckItemReq, HttpServletRequest request) {
+    public LjBaseResponse<GetCheckItemVo> getCheckItemJson(@Valid GetCheckItemReq getCheckItemReq, HttpServletRequest request) throws Exception {
         LjBaseResponse<GetCheckItemVo> ljBaseResponse = oapiCheckItemMeasureService.getCheckItemJson(getCheckItemReq, request);
         return ljBaseResponse;
 
@@ -65,7 +65,7 @@ public class OapiCheckItemMeasureController {
      * @return
      */
     @PostMapping(value = "update_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<CheckItemUpdateJsonVo> updateJson(UpdateReqMeasureReq updateReqMeasureReq, HttpServletRequest request) {
+    public LjBaseResponse<CheckItemUpdateJsonVo> updateJson(@Valid UpdateReqMeasureReq updateReqMeasureReq, HttpServletRequest request) {
         LjBaseResponse<CheckItemUpdateJsonVo> ljBaseResponse = oapiCheckItemMeasureService.updateJson(updateReqMeasureReq, request);
         return ljBaseResponse;
     }
@@ -79,7 +79,7 @@ public class OapiCheckItemMeasureController {
      * @return
      */
     @GetMapping(value = "list_tree_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<CheckItemListVo> listTreeJson(ListTreeJsonReq listTreeJsonReq, HttpServletRequest request) {
+    public LjBaseResponse<CheckItemListVo> listTreeJson(@Valid ListTreeJsonReq listTreeJsonReq, HttpServletRequest request) {
         LjBaseResponse<CheckItemListVo> ljBaseResponse = oapiCheckItemMeasureService.listTreeJson(listTreeJsonReq, request);
         return ljBaseResponse;
     }

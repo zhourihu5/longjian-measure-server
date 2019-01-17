@@ -19,21 +19,6 @@ public interface IMeasureListIssueAppService {
      * @return
      */
     LjBaseResponse<MeasureIssueQueryVo> issueQueryJson(MeasureIssueQueryReq measureIssueQueryReq, HttpServletRequest request) throws Exception;
-
-    /**
-     *  go项目实测爆点列表编辑
-     * @param measureIssueEdiReq
-     * @param request
-     * @return
-     */
-    /**
-     *  go项目实测爆点删除问题
-     * @param measureIssueDeleteReq
-     * @param request
-     * @return
-     */
-    LjBaseResponse<UpdateVo> issueDel(MeasureIssueDeleteReq measureIssueDeleteReq, HttpServletRequest request);
-
     /**
      *
      * @param project_id

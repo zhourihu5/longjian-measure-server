@@ -103,7 +103,7 @@ public class APPMeasureSyncController {
      * @return
      */
     @GetMapping(value = "measure/my_task/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MyTaskVo> getMyTask(ApiMyTaskReq apiMyTaskReq, HttpServletRequest request) throws Exception {
+    public LjBaseResponse<MyTaskVo> getMyTask(@Valid ApiMyTaskReq apiMyTaskReq, HttpServletRequest request) throws Exception {
         return appMeasureSyncService.getMyTask(apiMyTaskReq,request);
     }
 
@@ -114,7 +114,7 @@ public class APPMeasureSyncController {
      * @return
      */
     @GetMapping(value = "measure/measure_zone/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureZoneVo> getMeasureZone(ApiMeasureZoneReq apiMeasureZoneReq) throws Exception {
+    public LjBaseResponse<MeasureZoneVo> getMeasureZone(@Valid ApiMeasureZoneReq apiMeasureZoneReq) throws Exception {
 
         return appMeasureSyncService.getMeasureZone(apiMeasureZoneReq);
     }

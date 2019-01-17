@@ -56,7 +56,7 @@ longfor:
           checkItem:
             url: http://localhost:8082/core_srv_check_item/
           measureCheckItem:
-            url: http://172.17.96.88:8082/house/oapi/v3/check_item/check_item/
+            url: http://172.17.96.88:8082/oapi/v3/check_item/check_item/
         config:
           permission:
             connectTimeout: 5000

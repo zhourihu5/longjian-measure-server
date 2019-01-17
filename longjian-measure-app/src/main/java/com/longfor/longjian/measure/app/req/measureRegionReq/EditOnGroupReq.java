@@ -3,6 +3,7 @@ package com.longfor.longjian.measure.app.req.measureRegionReq;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -14,10 +15,12 @@ public class EditOnGroupReq implements Serializable {
     /**
      * 集团id
      */
+    @NotNull
     private Integer group_id;
     /**
      * 编辑的标签列表
      */
+    @NotNull
     private String edit_tag_list;
     /**
      * 分页
