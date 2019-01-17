@@ -14,7 +14,6 @@ public class GetMeasureListIssueDetailReq {
     /**
      * 语言 取值范围及含义：;1 - 简体中文; ;2 - English;
      */
-    @NotNull
     private Integer lang;
     /**
      * 唯一编号

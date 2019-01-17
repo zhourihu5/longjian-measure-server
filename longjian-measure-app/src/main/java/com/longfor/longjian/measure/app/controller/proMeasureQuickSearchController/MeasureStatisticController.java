@@ -37,7 +37,7 @@ public class MeasureStatisticController {
     @GetMapping(value = "squad_measure_stats_json/" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse SquadMeasureStatsJson(@Valid GetMeasureStatisticTaskReq getMeasureStatisticTaskReq, Errors errors){
         if (errors.hasErrors()) {
-            throw new LjBaseRuntimeException(-1,"");
+            throw new LjBaseRuntimeException(-1,"参数异常");
         }
         //todo 未添加鉴权
         return new LjBaseResponse<>(measureStatisticService.SquadMeasureStatsJson(getMeasureStatisticTaskReq));

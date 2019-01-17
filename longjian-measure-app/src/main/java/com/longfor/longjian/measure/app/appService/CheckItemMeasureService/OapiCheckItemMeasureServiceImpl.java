@@ -17,6 +17,7 @@ import com.longfor.longjian.measure.app.vo.checkItemsVo.CheckItemListVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.*;
 import com.longfor.longjian.measure.consts.Enum.LoginEnum;
 import com.longfor.longjian.measure.consts.Enum.YesNoEnum;
+import com.longfor.longjian.measure.domain.externalService.ICategoryV3Service;
 import com.longfor.longjian.measure.domain.externalService.ICheckItemV3Service;
 import com.longfor.longjian.measure.domain.externalService.IFileResourceService;
 import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
@@ -39,7 +40,6 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -56,6 +56,8 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
     private IMeasureFeignService measureFeignService;
     @Resource
     private IFileResourceService fileResourceService;
+    @Resource
+    private ICategoryV3Service categoryV3Service;
 
     @Override
     public LjBaseResponse<GetCheckItemVo> getCheckItemJson(GetCheckItemReq getCheckItemReq, HttpServletRequest request) {
@@ -236,6 +238,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
         return ljBaseResponse;
     }
 
+
     /*private void readStructForm(HttpServletRequest request, FormVo formVo) {
         readForm(request, getBindings(formVo));
     }
@@ -279,6 +282,5 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
                 }
             }
         }
-
     }
 }
