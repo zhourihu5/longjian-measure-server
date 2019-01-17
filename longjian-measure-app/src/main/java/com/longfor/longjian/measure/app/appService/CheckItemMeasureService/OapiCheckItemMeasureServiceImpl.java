@@ -1,12 +1,9 @@
 package com.longfor.longjian.measure.app.appService.CheckItemMeasureService;
 
-import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
 import com.longfor.longjian.common.FeignClient.IPermissionService;
 import com.longfor.longjian.common.base.LjBaseResponse;
-import com.longfor.longjian.common.consts.ErrorNumEnum;
-import com.longfor.longjian.common.exception.CommonRuntimeException;
-import com.longfor.longjian.common.req.feignClientReq.TeamPermissionReq;
+import com.longfor.longjian.common.util.CtrlTool;
 import com.longfor.longjian.measure.app.feignClient.IMeasureFeignService;
 import com.longfor.longjian.measure.app.req.CheckItemMeasureReq.GetCategoryReq;
 import com.longfor.longjian.measure.app.req.CheckItemMeasureReq.GetCheckItemReq;
@@ -16,7 +13,6 @@ import com.longfor.longjian.measure.app.req.fileReq.FileReq;
 import com.longfor.longjian.measure.app.vo.checkItemsVo.CheckItemListVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.*;
 import com.longfor.longjian.measure.consts.Enum.LoginEnum;
-import com.longfor.longjian.measure.consts.Enum.YesNoEnum;
 import com.longfor.longjian.measure.domain.externalService.ICategoryV3Service;
 import com.longfor.longjian.measure.domain.externalService.ICheckItemV3Service;
 import com.longfor.longjian.measure.domain.externalService.IFileResourceService;
@@ -35,7 +31,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -57,28 +52,20 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
     @Resource
     private IFileResourceService fileResourceService;
     @Resource
+    private CtrlTool ctrlTool;
+    @Resource
     private ICategoryV3Service categoryV3Service;
 
     @Override
-    public LjBaseResponse<GetCheckItemVo> getCheckItemJson(GetCheckItemReq getCheckItemReq, HttpServletRequest request) {
+    public LjBaseResponse<GetCheckItemVo> getCheckItemJson(GetCheckItemReq getCheckItemReq, HttpServletRequest request) throws Exception {
+        try {
+            ctrlTool.teamPerm(request,"集团.实测实量.检查项管理.查看");
+        }catch (Exception e){
+            throw new Exception(e);
+        }
         LjBaseResponse<GetCheckItemVo> ljBaseResponse = new LjBaseResponse<>();
         GetCheckItemVo getCheckItemVo = new GetCheckItemVo();
-        HttpSession session = request.getSession();
-        session.setAttribute("uid", 2);
-        session.setAttribute("team_id", 1);
-        Integer uid = (Integer) session.getAttribute("uid");
-        Integer teamId = (Integer) session.getAttribute("team_id");
-        TeamPermissionReq teamPermissionReq = new TeamPermissionReq();
-        teamPermissionReq.setUser_id(uid);
-        teamPermissionReq.setTeam_id(teamId);
-        teamPermissionReq.setPer_title("集团.实测实量.检查项管理.查看");
-        LjBaseResponse<Object> response = permissionService.teamPermission(teamPermissionReq);
-        Map data = JSON.parseObject(JSON.toJSONString(response.getData()), Map.class);
-        Object has_per = data.get("has_per");
-        String Yes = YesNoEnum.Yes.toString();
-        if (!Yes.equals(has_per)) {
-            throw new CommonRuntimeException(ErrorNumEnum.PermissionDenied);
-        }
+
         String subKey = StringUtils.substring(getCheckItemReq.getKey(), 2, getCheckItemReq.getKey().length());
         try {
             CheckItemV3 checkItem = checkItemV3Service.getCheckItemByKeyNoFoundErr(subKey);
@@ -101,25 +88,15 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
     }
 
     @Override
-    public LjBaseResponse<GetCategoryVo> getCategoryJson(GetCategoryReq getCategoryReq, HttpServletRequest request) {
+    public LjBaseResponse<GetCategoryVo> getCategoryJson(GetCategoryReq getCategoryReq, HttpServletRequest request) throws Exception {
+        try {
+            ctrlTool.teamPerm(request,"集团.实测实量.检查项管理.查看");
+        }catch (Exception e){
+            throw new Exception(e);
+        }
         LjBaseResponse<GetCategoryVo> ljBaseResponse = new LjBaseResponse<>();
         GetCategoryVo getCategoryVo = new GetCategoryVo();
-        HttpSession session = request.getSession();
-        session.setAttribute("uid", 2);
-        session.setAttribute("team_id", 1);
-        Integer uid = (Integer) session.getAttribute("uid");
-        Integer teamId = (Integer) session.getAttribute("team_id");
-        TeamPermissionReq teamPermissionReq = new TeamPermissionReq();
-        teamPermissionReq.setUser_id(uid);
-        teamPermissionReq.setTeam_id(teamId);
-        teamPermissionReq.setPer_title("集团.实测实量.检查项管理.查看");
-        LjBaseResponse<Object> response = permissionService.teamPermission(teamPermissionReq);
-        Map data = JSON.parseObject(JSON.toJSONString(response.getData()), Map.class);
-        Object has_per = data.get("has_per");
-        String Yes = YesNoEnum.Yes.toString();
-        if (!Yes.equals(has_per)) {
-            throw new CommonRuntimeException(ErrorNumEnum.PermissionDenied);
-        }
+
         String subKey = StringUtils.substring(getCategoryReq.getKey(), 2, getCategoryReq.getKey().length());
         try {
             CategoryV3 categoryV3 = checkItemV3Service.getCategoryByKeyNoFoundErr(subKey);
@@ -163,29 +140,16 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
     }
 
     @Override
-    public LjBaseResponse<Object> file(FileReq fileReq, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        LjBaseResponse<Object> ljBaseResponse = new LjBaseResponse<>();
-        //鉴权
-        HttpSession session = request.getSession();
-        session.setAttribute("uid", 2);
-        session.setAttribute("team_id", 1);
-        Integer uid = (Integer) session.getAttribute("uid");
-        Integer teamId = (Integer) session.getAttribute("team_id");
-        TeamPermissionReq teamPermissionReq = new TeamPermissionReq();
-        teamPermissionReq.setUser_id(uid);
-        teamPermissionReq.setTeam_id(teamId);
-        teamPermissionReq.setPer_title("集团.实测实量.检查项管理.查看");
-        LjBaseResponse<Object> ljBaseResponse1 = permissionService.teamPermission(teamPermissionReq);
-        Map data = JSON.parseObject(JSON.toJSONString(ljBaseResponse1.getData()), Map.class);
-        Object has_per = data.get("has_per");
-        String Yes = YesNoEnum.Yes.toString();
-        if (!Yes.equals(has_per)) {
-            throw new CommonRuntimeException(ErrorNumEnum.PermissionDenied);
+    public LjBaseResponse<Object> file(FileReq fileReq, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+            ctrlTool.teamPerm(request,"集团.实测实量.检查项管理.查看");
+        }catch (Exception e){
+            throw new Exception(e);
         }
+        LjBaseResponse<Object> ljBaseResponse = new LjBaseResponse<>();
         FormVo formVo = new FormVo();
         formVo.setRootCategoryId(fileReq.getId());
-        //readStructForm(request, formVo); todo 这行代码看不明白
-        //不知道作用域为什么能直接取出对象？
+        //todo 作用域取对象
         Team curTeam = (Team) request.getAttribute("cur_group");
         ReadFileVo readFileVo = new ReadFileVo();
         String name = null;
@@ -213,7 +177,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
             }
 
         }
-        if (name.equals("")) {
+        if (StringUtils.isBlank(name)) {
             try {
                 String filename = "./templates/file_templates/category_import_measure.xlsx";
                 name = "实测实量检查项导入模板.xlsx";
@@ -223,10 +187,10 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
                 return ljBaseResponse;
             }
         }
-        if (mimeType.equals("")) {
+        if (StringUtils.isBlank(mimeType)) {
             mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
         }
-        if (!name.equals("")) {
+        if (StringUtils.isNotBlank(name)) {
             response.addHeader("Content-Disposition", String.format("attachment; filename=/%s/", name));
         }
         StoreUrlVo storeUrlVo = FileUtil.fileResourceGetStoreUrl(fileResource.getStoreKey());
@@ -238,18 +202,6 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
         return ljBaseResponse;
     }
 
-
-    /*private void readStructForm(HttpServletRequest request, FormVo formVo) {
-        readForm(request, getBindings(formVo));
-    }
-
-    private List<FormVo> getBindings(FormVo formVo) {
-        return null;
-    }
-
-    private void readForm(HttpServletRequest request, List<FormVo> formVos) {
-
-    }*/
 
     private void download(int code, String contentType, byte[] data, Map<String, Object> map) throws IOException {
         BufferedOutputStream bos = null;

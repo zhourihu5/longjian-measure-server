@@ -21,7 +21,7 @@ public interface IOapiCheckItemMeasureService {
      * @param getCategoryReq
      * @return
      */
-    LjBaseResponse<GetCategoryVo> getCategoryJson(GetCategoryReq getCategoryReq, HttpServletRequest request);
+    LjBaseResponse<GetCategoryVo> getCategoryJson(GetCategoryReq getCategoryReq, HttpServletRequest request) throws Exception;
 
     /**
      *
@@ -29,7 +29,7 @@ public interface IOapiCheckItemMeasureService {
      * @param request
      * @return
      */
-    LjBaseResponse<GetCheckItemVo> getCheckItemJson(GetCheckItemReq getCheckItemReq, HttpServletRequest request);
+    LjBaseResponse<GetCheckItemVo> getCheckItemJson(GetCheckItemReq getCheckItemReq, HttpServletRequest request) throws Exception;
 
     /**
      * go集团实测检查项上传
@@ -53,5 +53,5 @@ public interface IOapiCheckItemMeasureService {
      * @param request
      * @return
      */
-    LjBaseResponse<Object> file(FileReq fileReq, HttpServletRequest request, HttpServletResponse response) throws IOException;
+    LjBaseResponse<Object> file(FileReq fileReq, HttpServletRequest request, HttpServletResponse response) throws Exception;
 }
