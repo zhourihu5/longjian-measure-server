@@ -116,6 +116,8 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
 
     @Override
     public MeasureRegion save(MeasureRegion model) {
+        model.setCreateAt(new Date());
+        model.setUpdateAt(new Date());
         measureRegionMapper.insertSelective(model);
         return model;
     }
@@ -147,6 +149,7 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
     public void updateByProjectIdAndIdInNoDeleted(Integer project_id, List region_ids, String polygon, String tag_id_list) {
         MeasureRegion measureRegion = new MeasureRegion();
         measureRegion.setPolygon(polygon);
+        measureRegion.setUpdateAt(new Date());
         measureRegion.setTagIdList(tag_id_list);
 
         Example example = new Example(MeasureRegion.class);
