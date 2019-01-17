@@ -2,11 +2,14 @@ package com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService
 
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.common.exception.LjBaseRuntimeException;
+import com.longfor.longjian.measure.app.appService.areaService.ICoreAreaService;
 import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.IMeasureListIssueDetailService;
 import com.longfor.longjian.measure.app.commonEntity.AreasMap;
 import com.longfor.longjian.measure.app.commonEntity.MeasureListIssueHelper;
 import com.longfor.longjian.measure.app.commonEntity.MeasureSquadAndSquadUser;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.MeasureListDetailUpdateIssueRepairerReq;
+import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.PostMeasureListDetailUpdateIssuePlanEndOnReq;
+import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.PostMeasureListDetailUpdateIssueTypeReq;
 import com.longfor.longjian.measure.app.vo.proMeasureQuickSearchVo.*;
 import com.longfor.longjian.measure.app.commonEntity.MeasureListIssueInfo;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetMeasureListIssueDetailReq;
@@ -14,7 +17,9 @@ import com.longfor.longjian.measure.consts.constant.MeasureListIssueType;
 import com.longfor.longjian.measure.domain.externalService.*;
 import com.longfor.longjian.measure.po.zhijian2.*;
 import com.longfor.longjian.measure.po.zhijian2_apisvr.User;
+import com.longfor.longjian.measure.util.StringSplitToListUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,6 +74,9 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
     @Autowired
     private MeasureListIssueHelper measureListIssueHelper;
 
+    @Autowired
+    private ICoreAreaService coreAreaService;
+
     @Override
     public MeasureListIssueDetailIssueInfoVo IssueInfo(GetMeasureListIssueDetailReq req) {
         MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(req.getProject_id(), req.getUuid());
@@ -81,7 +89,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         rsp.setTask_name(info.getTaskName());
         rsp.setCategory_path_names(info.getAreaPathNames());
         rsp.setArea_path_names(info.getAreaPathNames());
-        //rsp.setCreate_at();
+        rsp.setCreate_at(info.getIssue().getCreateAt().getTime());
         rsp.setIssue_type(info.getIssue().getTyp());
         rsp.setClose_status(info.getIssue().getCloseStatus());
         rsp.setPlan_end_on(info.getIssue().getPlanEndOn());
@@ -147,9 +155,9 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         if (measureZone!=null) {
             //todo proj_id 同上
             MeasureRegion region = measureRegionService.GetByUuid(20, measureZone.getRegionUuid());
+            MeasureRegionVo regionvo = new MeasureRegionVo();
             if (region!=null) {
                 //todo xconv
-                MeasureRegionVo regionvo = new MeasureRegionVo();
                 regionvo.setId(region.getId());
                 regionvo.setProject_id(region.getProjectId());
                 regionvo.setArea_id(region.getAreaId());
@@ -189,12 +197,13 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
                 squadVo.setName(squal.getSquad().getName());
                 for (MeasureSquadUser user : squal.getUsers()) {
                     if (userMap.containsKey(user.getUserId())) {
-                        users.add(userMap.get(user.getId()).getRealName());
+                        users.add(userMap.get(user.getUserId()).getRealName());
                     }
                 }
                 squadVo.setUsers(users);
                 squads.add(squadVo);
             }
+            vo.setSquads(squads);
         }
         return vo;
     }
@@ -224,7 +233,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
     }
 
     @Override
-    public LjBaseResponse updateRepairer(MeasureListDetailUpdateIssueRepairerReq req) {
+    public void updateRepairer(MeasureListDetailUpdateIssueRepairerReq req) {
         /**
          * c *niuhe.Context
          * uId := getCurUid(c)
@@ -232,6 +241,38 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         //todo id是鉴权部分返回, 暂时写死
         Integer uid= 1;
         boolean isClosed = UpdateIssueRepairInfoByUuid(req.getUuid(), req.getProject_id(), uid, req.getRepairer_id(), -1L);
+        if (isClosed) {
+            //todo 异常码
+            throw new LjBaseRuntimeException(-1,"问题已被关闭");
+        }
+    }
+
+    @Override
+    public LjBaseResponse updateIssueType(PostMeasureListDetailUpdateIssueTypeReq req) {
+        /**
+         * c *niuhe.Context
+         * uId := getCurUid(c)
+         */
+        //todo id是鉴权部分返回, 暂时写死
+        Integer uid = 1;
+        boolean isClosed = UpdateIssueTypeByUuid(req.getUuid(), req.getProject_id(),uid, req.getType());
+        if (isClosed) {
+            //todo 异常码
+            throw new LjBaseRuntimeException(-1,"问题已被关闭");
+        }
+        return new LjBaseResponse();
+
+    }
+
+    @Override
+    public LjBaseResponse UpdatePlanEndOn(PostMeasureListDetailUpdateIssuePlanEndOnReq req) {
+        /**
+         * c *niuhe.Context
+         * uId := getCurUid(c)
+         */
+        //todo id是鉴权部分返回, 暂时写死
+        Integer uid = 1;
+        boolean isClosed = UpdateIssueRepairInfoByUuid(req.getUuid(), req.getProject_id(), uid, -1, req.getPlan_end_on());
         if (isClosed) {
             //todo 异常码
             throw new LjBaseRuntimeException(-1,"问题已被关闭");
@@ -247,86 +288,112 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
             list = measureListService.getMeasureListByProjIdAndId(projId, issue.getListId());
             if (list!=null) {
                 info.setTaskName(list.getName());
+            }else {
+                info.setTaskName("");
             }
         }
-
+        //对categoryPathAndKey字段进行处理
         String categoryPathAndKey = issue.getCategoryPathAndKey();
-        List<String> keys = Arrays.asList((categoryPathAndKey.substring(1, categoryPathAndKey.length() - 2)).split("/"));
-        List<CategoryV3> categorys = categoryV3Service.SearchCategoryByKeyIn(keys);
-        //新建一个map , key是category的key, 值为category实例
-        Map<String,CategoryV3> cmap = new HashMap<>();
-        for (CategoryV3 category : categorys) {
-            cmap.put(category.getKey(),category);
+        List<String> keys = StringSplitToListUtil.removeStartAndEndStrAndSplit(categoryPathAndKey, "/", "/");
+        Map<String, List<String>> cateMap = getCategoryPathNamesMap(keys);
+        if (cateMap.containsKey(issue.getCategoryKey())) {
+            info.setAreaPathNames(cateMap.get(issue.getCategoryKey()));
         }
-
-
-        Map<String,List<String>> cateMap = new HashMap<>();
-        for (String key : keys) {
-            CategoryV3 category = cmap.get(key);
-            if (category!=null) {
-                List<String> names = new ArrayList<>();
-                String path = category.getPath();
-                List<String> paths = Arrays.asList((path.substring(1, path.length() - 2)).split("/"));
-                paths.add(category.getKey());
-                for (String s : paths) {
-                    if (cmap.get(s)!=null) {
-                        names.add(cmap.get(s).getName());
-                    }
-                }
-                cateMap.put(key,names);
-            }
-        }
-        List<String> cateNames = cateMap.get(issue.getCategoryKey());
-        if (cateNames!=null) {
-            info.setCategoryPathNames(cateNames);
-        }
-
-
-        Map<Integer,List<String>> areaMap = new HashMap<>();
-        List<Integer> areaIds = new ArrayList<>();
-        areaIds.add(issue.getAreaId());
-        List<Area> areaByIds = areaService.getAreaByIds(areaIds);
-        AreasMap areasMap = new AreasMap();
-        for (Area area : areaByIds) {
-            areasMap.getAreas().put(area.getId(),area);
-        }
-        areasMap.setList(areaByIds);
-
-        for (Integer id : areaIds) {
-            Area area = areasMap.getAreas().get(id);
-            List<Integer> ids = new ArrayList<>();
-            List<String> names = new ArrayList<>();
-            String[] strings = area.getPath().split("/");
-            for (String string : strings) {
-                try {
-                    int parseInt = Integer.parseInt(string);
-                    ids.add(parseInt);
-                }catch (NumberFormatException e){
-                    //todo 异常码未确定
-                    throw new LjBaseRuntimeException(-1,"字符转化异常");
-                }
-            }
-            for (Integer integer : ids) {
-                Area area1 = areasMap.getAreas().get(integer);
-                if (area1!=null) {
-                    names.add(area1.getName());
-                }
-            }
-            areaMap.put(id,names);
-        }
-
-        List<String> idNames = areaMap.get(issue.getAreaId());
-        if (idNames!=null) {
-            info.setAreaPathNames(idNames);
+        List<Integer> ids = new ArrayList<>();
+        ids.add(issue.getAreaId());
+        Map<Integer, List<String>> areaMap = GetAreaPathNamesMap(ids);
+        if (areaMap.containsKey(issue.getAreaId())) {
+            info.setAreaPathNames(areaMap.get(issue.getAreaId()));
         }
 
         if (issue.getRepairerId()>0) {
             User user = userService.getUserByUserId(issue.getRepairerId());
             if (user!=null) {
                 info.setRepairerName(user.getRealName());
+            }else{
+                info.setRepairerName("");
             }
         }
         return info;
+    }
+
+    public Map<String,List<String>> getCategoryPathNamesMap(List<String> keys){
+        Map<String,List<String>> cateMap = new HashMap<>();
+        List<CategoryV3> categorys = categoryV3Service.SearchCategoryByKeyIn(keys);
+        //cMap中key是category的key, 值为category实例
+        Map<String,CategoryV3> cMap = new HashMap<>();
+        for (CategoryV3 category : categorys) {
+            cMap.put(category.getKey(),category);
+        }
+
+        for (String key : keys) {
+            List<String> fullNames = null;
+            if (cMap.containsKey(key)) {
+                fullNames = getFullNames(cMap, cMap.get(key));
+            }
+            cateMap.put(key,fullNames);
+        }
+        return cateMap;
+    }
+
+    public Map<Integer,List<String>>GetAreaPathNamesMap(List<Integer> ids){
+        AreasMap aMap = coreAreaService.createAreasMapByLeaveIds(ids);
+        Map<Integer,List<String>> r = new HashMap<>();
+        for (Integer id : ids) {
+            r.put(id,GetPathNames(aMap,id));
+        }
+
+        return r;
+    }
+
+    public List<String> GetPathNames(AreasMap aMap,Integer id){
+        List<String> names = new ArrayList<>();
+        Area area = aMap.getAreas().get(id);
+        if (area == null) {
+            return names;
+        }
+        List<Integer> ids = getPathIds(area);
+        for (Integer aid : ids) {
+            Map<Integer, Area> areas = aMap.getAreas();
+            if (areas.containsKey(aid)) {
+                names.add(areas.get(aid).getName());
+            }
+
+        }
+        return names;
+
+    }
+
+    public List<Integer> getPathIds(Area area){
+        List<Integer> ids = new ArrayList<>();
+        String[] idsStr = area.getPath().split("/");
+        for (String idStr : idsStr) {
+            int id = Integer.parseInt(idStr);
+            ids.add(id);
+        }
+        ids.add(area.getId());
+        return ids;
+    }
+
+    public List<String> getFullNames(Map<String,CategoryV3> cMap,CategoryV3 category){
+        List<String> names = null;
+        if (category!=null) {
+            names = new ArrayList<>();
+            String path = category.getPath();
+            List<String> paths = StringSplitToListUtil.removeStartAndEndStrAndSplit(path, "/", "/");
+            paths.add(category.getKey());
+            //遍历paths
+            for (String singlePath : paths) {
+                if ("".equals(singlePath)) {
+                    continue;
+                }
+                if (cMap.containsKey(singlePath)) {
+                    names.add(cMap.get(singlePath).getName());
+                }
+            }
+            return names;
+        }
+        return names;
     }
 
     public Map<Integer,User> GetUsersByIds(List<Integer> uids){
@@ -369,6 +436,35 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
             log.warn("日期解析异常");
             e.printStackTrace();
 
+        }
+        measureListIssueHelper.execute();
+        return isClose;
+    }
+
+    public boolean UpdateIssueTypeByUuid(String uuid,Integer projectId,Integer senderId,Integer typ){
+        Integer eInt = -1;
+        Long eLong = -1L;
+        String eStr = "";
+        MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(projectId, uuid);
+        boolean isClose = false;
+        if (issue.getCloseStatus() == MeasureListIssueType.CLOSED) {
+            isClose = true;
+            return isClose;
+        }
+        measureListIssueHelper.init(projectId);
+        try {
+            measureListIssueHelper.start().setNormalField(
+                    UUID.randomUUID().toString().replace("-",""),
+                    issue.getListId(),
+                    issue.getUuid(),
+                    senderId,eStr,typ,eInt,eStr,eStr,
+                    System.currentTimeMillis()/1000L
+            ).setDatailField(
+                    eStr, eLong, eLong, eInt, eInt, eInt, eStr, eInt, eInt, eInt, eInt, eLong, eInt
+            ).done();
+        } catch (ParseException e) {
+            log.warn("日期解析异常");
+            e.printStackTrace();
         }
         measureListIssueHelper.execute();
         return isClose;

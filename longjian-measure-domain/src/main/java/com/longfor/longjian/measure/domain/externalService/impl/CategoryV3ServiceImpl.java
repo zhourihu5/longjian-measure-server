@@ -81,8 +81,7 @@ public class CategoryV3ServiceImpl implements ICategoryV3Service {
 
     @Override
     public List<CategoryV3> SearchCategoryByKeyIn(List keys) {
-
-        return null;
+        return categoryV3Mapper.SearchCategoryByKeyIn(keys);
     }
 
     private CategoryPathTree getPathTree(CategoryV3 rootCategory, CategoryV3 root, List<CategoryV3> items) {

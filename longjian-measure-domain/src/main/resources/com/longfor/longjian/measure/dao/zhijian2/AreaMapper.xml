@@ -30,8 +30,8 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, project_id, name, custom_code, path, type, area_class_id, is_lock, order_by, 
-    drawing_md5, father_id, create_at, update_at, delete_at
+    id,project_id,`name`,custom_code,path,`type`,area_class_id,is_lock,order_by,
+    drawing_md5,father_id,create_at,update_at,delete_at
   </sql>
   <sql id="Blob_Column_List" >
     <!--
@@ -64,12 +64,22 @@
     AND delete_at IS NULL
   </select>
   <select id="getAreaByIds" resultMap="BaseResultMap">
-    select
-    id, project_id, `name`, custom_code, path, type, area_class_id, is_lock, order_by,
-    drawing_md5, father_id, create_at, update_at, delete_at
-    from area where id in
-    <foreach collection="areaIds" index="index" item="item" open="(" separator="," close=")">
-      #{item}
-    </foreach>
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM
+    area
+    WHERE
+    id
+    IN
+    <choose>
+      <when test=" areaIds.size() >0 ">
+        <foreach collection="areaIds" index="index" item="item" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </when>
+      <otherwise>
+        ("-1")
+      </otherwise>
+    </choose>
   </select>
 </mapper>

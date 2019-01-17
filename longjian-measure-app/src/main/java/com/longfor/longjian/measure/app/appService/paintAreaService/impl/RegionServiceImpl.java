@@ -75,12 +75,12 @@ public class RegionServiceImpl implements IRegionService {
         index_map.forEach(map ->{
             index_dict.put(map.get("area_id").toString(),map.get("region_index"));
         });
-        log.info("index_dict: " + JSON.toJSONString(index_map));
+        log.info("index_dict: " + JSON.toJSONString(index_dict));
 
         //补全没有出现过的测区index
         Map<String,Object> true_index_dict = new HashMap<>();
         area_id_list.forEach(area_id -> {
-            true_index_dict.put(area_id.toString(),index_dict.get(area_id) == null ? 0 : index_dict.get(area_id));
+            true_index_dict.put(area_id.toString(),index_dict.get(area_id.toString()) == null ? 0 : index_dict.get(area_id.toString()));
         });
         log.info("true_index_dict: " + JSON.toJSONString(true_index_dict));
 
@@ -99,7 +99,7 @@ public class RegionServiceImpl implements IRegionService {
                 String uuid = UUID.randomUUID().toString();
                 String gen_uuid = uuid.replace("-","");
                 String polygon = region_info.get("polygon").toString();
-                true_index_dict.put(area_id.toString(),(int)true_index_dict.get(area_id) + 1);
+                true_index_dict.put(area_id.toString(),(int)true_index_dict.get(area_id.toString()) + 1);
                 Map<String,Object> region_dict = new HashMap<>();
                 region_dict.put("project_id",project_id);
                 region_dict.put("area_id",area_id);
@@ -108,7 +108,7 @@ public class RegionServiceImpl implements IRegionService {
                 region_dict.put("polygon",polygon);
                 region_dict.put("src_type",src_type);
                 region_dict.put("uuid",gen_uuid);
-                region_dict.put("region_index",true_index_dict.get(area_id));
+                region_dict.put("region_index",true_index_dict.get(area_id.toString()));
                 region_dict.put("rel_id",0);
                 region_dict.put("tag_id_list",region_info.get("tag_id_list"));
                 log.info("region_dict : " + JSON.toJSONString(region_dict));
@@ -166,29 +166,31 @@ public class RegionServiceImpl implements IRegionService {
                 rel_id_list.add(regoin_model.getRelId());
             }
         });
-        List<MeasureRegionRel> rel_model_list = measureRegionRelService.selectByProjectIdAndIdNoDeleted(project_id,rel_id_list);
+        if (rel_id_list.size() > 0) {
+            List<MeasureRegionRel> rel_model_list = measureRegionRelService.selectByProjectIdAndIdNoDeleted(project_id, rel_id_list);
 
-        log.info("rel_list: " + JSON.toJSONString(rel_id_list));
-        //建立关系映射字典
-        Map<Integer,List<Integer>> rel_model_dict = new HashMap<>();
-        rel_model_list.forEach(rel_model -> {
-            rel_model_dict.put(rel_model.getId(), Arrays.stream(rel_model.getRegionIds().split(",")).map(Integer::parseInt).collect(Collectors.toList()));
-        });
+            log.info("rel_list: " + JSON.toJSONString(rel_id_list));
+            //建立关系映射字典
+            Map<Integer, List<Integer>> rel_model_dict = new HashMap<>();
+            rel_model_list.forEach(rel_model -> {
+                rel_model_dict.put(rel_model.getId(), Arrays.stream(rel_model.getRegionIds().split(",")).map(Integer::parseInt).collect(Collectors.toList()));
+            });
 
-        //移除相关的id
-        region_model_list.forEach(region_model -> {
-            log.info(region_model.getRelId().toString());
-            if (region_model.getRelId() != 0){
-                rel_model_dict.get(region_model.getRelId()).remove(region_model.getId());
-            }
-        });
+            //移除相关的id
+            region_model_list.forEach(region_model -> {
+                log.info(region_model.getRelId().toString());
+                if (region_model.getRelId() != 0) {
+                    rel_model_dict.get(region_model.getRelId()).remove(region_model.getId());
+                }
+            });
 
-        //更新相关的rel_model
-        rel_model_list.forEach(rel_model -> {
-            String region_ids = String.join(",",rel_model_dict.get(rel_model.getId()).stream().map(x -> x + "").collect(Collectors.toList()).toArray(new String[rel_model_dict.get(rel_model.getId()).size()]));
-            rel_model.setRegionIds(region_ids);
-            measureRegionRelService.update(rel_model);
-        });
+            //更新相关的rel_model
+            rel_model_list.forEach(rel_model -> {
+                String region_ids = String.join(",", rel_model_dict.get(rel_model.getId()).stream().map(x -> x + "").collect(Collectors.toList()).toArray(new String[rel_model_dict.get(rel_model.getId()).size()]));
+                rel_model.setRegionIds(region_ids);
+                measureRegionRelService.update(rel_model);
+            });
+        }
 
         //删除描区
         log.info("region_id_list : " + region_id_list);
