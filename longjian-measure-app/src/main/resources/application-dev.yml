@@ -48,13 +48,13 @@ longfor:
           permission:
             url: http://172.17.96.88:8082/uc/inner/
           coreArea:
-            url: http://localhost:8082/core_srv_area/
+            url: http://172.17.96.88:8082/core_srv_area/
           user:
-            url: http://localhost:8082/core_srv_user/user/
+            url: http://172.17.96.88:8082/core_srv_user/user/
           userProjectRole:
-            url: http://localhost:8082/core_srv_permission/
+            url: http://172.17.96.88:8082/core_srv_permission/
           checkItem:
-            url: http://localhost:8082/core_srv_check_item/
+            url: http://172.17.96.88:8082/core_srv_check_item/
           measureCheckItem:
             url: http://172.17.96.88:8082/oapi/v3/check_item/check_item/
         config:
