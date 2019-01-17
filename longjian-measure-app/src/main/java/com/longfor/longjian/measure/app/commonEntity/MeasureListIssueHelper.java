@@ -345,7 +345,7 @@ public class MeasureListIssueHelper {
         boolean changed = false;
 
         //问题类型
-        if (this.currentLog.getTyp() != -1) {
+        if (this.currentLog.getTyp() == null ||this.currentLog.getTyp() != -1) {
             changed = true;
             issue.setTyp(this.currentLog.getTyp());
         }

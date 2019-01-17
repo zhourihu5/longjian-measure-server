@@ -5,6 +5,7 @@ import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureListSer
 import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.IMeasureStatisticService;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetMeasureStatisticTaskReq;
 import com.longfor.longjian.measure.app.vo.proMeasureQuickSearchVo.MeasureStatisticSquadStatsVo;
+import com.longfor.longjian.measure.domain.externalService.IMeasureListIssueService;
 import com.longfor.longjian.measure.domain.externalService.IMeasureZoneService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,9 @@ public class MeasureStatisticImpl implements IMeasureStatisticService {
 
     @Autowired
     private IAPPMeasureListService measureListService;
+
+    @Autowired
+    private IMeasureListIssueService measureListIssueService;
 
     @Override
     public MeasureStatisticSquadStatsVo SquadMeasureStatsJson(GetMeasureStatisticTaskReq getMeasureStatisticTaskReq) {
@@ -51,7 +55,6 @@ public class MeasureStatisticImpl implements IMeasureStatisticService {
         measureStatisticSquadStatsVo.setBuilding_count(0);
         return measureStatisticSquadStatsVo;
     }
-
 }
 
 
