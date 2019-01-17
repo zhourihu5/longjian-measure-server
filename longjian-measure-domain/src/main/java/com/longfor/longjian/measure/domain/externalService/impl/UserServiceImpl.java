@@ -32,6 +32,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    @LFAssignDataSource("zhijian2_apisvr")
     public Map<Integer, User> getUsersByIds(List<Integer> collect) {
         List<User> items = searchUserByIdsUnscoped(collect);
         Map<Integer, User> users = new HashMap<>();

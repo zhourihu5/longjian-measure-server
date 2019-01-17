@@ -15,7 +15,7 @@ public class MeasureListDetailUpdateApproveIssueReq {
      * 项目ID
      */
     @NotNull
-    private Integer ProjectId;
+    private Integer project_id;
     /**
      * 是否通过
      */
