@@ -46,7 +46,7 @@
     mrr.region_ids
     FROM
     measure_region mr
-    JOIN measure_region_rel mrr ON mr.rel_id = mrr.id
+    LEFT JOIN measure_region_rel mrr ON mr.rel_id = mrr.id
     WHERE
     mr.project_id = #{projId}
     AND mr.area_id = #{areaId}
