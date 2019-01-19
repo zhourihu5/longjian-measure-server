@@ -3,6 +3,7 @@ package com.longfor.longjian.measure.app.appService.proMeasureManagerService.imp
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.util.RequestContextHolderUtil;
 import com.longfor.longjian.measure.app.appService.proMeasureManagerService.IProMeasureService;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetCheckerListReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureAreaListReq;
@@ -164,6 +165,8 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     public LjBaseResponse<SquadsAndPassVo> getCompareBetweenGroup(GetCompareBetweenGroupReq getCompareBetweenGroupReq) throws Exception {
         LjBaseResponse<SquadsAndPassVo> ljBaseResponse = new LjBaseResponse<>();
         SquadsAndPassVo squadsAndPassVo = new SquadsAndPassVo();
+        ctrlTool.projPerm(RequestContextHolderUtil.getRequest(),"项目.实测实量.统计.查看");
+        //todo proj, _, err := ctrl_tool.ProjPerm(c, "项目.实测实量.统计.查看")
         //验证任务是否属于这个项目
         boolean existPlan = measureListService.searchByProjectIdAndMeasureListId(getCompareBetweenGroupReq.getProject_id(),getCompareBetweenGroupReq.getMeasure_list_id()) != null;
         if (!existPlan){
@@ -732,7 +735,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             });
             results.forEach(result -> {
                 if (result.get("total_sum") != null && Integer.parseInt(result.get("total_sum").toString()) > 0 && measureSquad.getId().toString().equals(result.get("squadId").toString())){
-                    float rate = Float.parseFloat(result.get("total_sum").toString()) / Float.parseFloat(result.get("ok_total_sum").toString());
+                    float rate = Float.parseFloat(result.get("ok_total_sum").toString()) / Float.parseFloat(result.get("total_sum").toString());
                     if (rate < 0.6){
                         squadsPassVo.setLt60_count(squadsPassVo.getLt60_count() + 1 );
                     }
@@ -744,6 +747,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
                     }
                 }
             });
+            squadsPassVo.setAverage_percent(String.format("%.2f",Double.parseDouble(squadsPassVo.getAverage_percent())));
             squadsPassVos.add(squadsPassVo);
         });
         return squadsPassVos;
@@ -769,6 +773,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
                     squadsVo.setComplete_percent((squadCount.get("count") == null ? 0.00 : Float.parseFloat(squadCount.get("count").toString())) / Float.parseFloat(total.toString()) * 100.0*100.0 / Float.parseFloat(measureSquad.getPlanRate().toString()) + "");
                 }
             });
+            squadsVo.setComplete_percent(String.format("%.2f",Double.parseDouble(squadsVo.getComplete_percent())));
             squadsVos.add(squadsVo);
         });
         return squadsVos;
