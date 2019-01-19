@@ -27,7 +27,7 @@ public interface MeasureListIssueMapper extends LFMySQLMapper<MeasureListIssue> 
      * @param typ
      * @return
      */
-    Integer getCountByTyp(@Param("projectId") Integer project_id, @Param("listId") Integer measure_list_id, @Param("typ") String typ);
+    Integer getCountByTyp(@Param("projectId") Integer project_id, @Param("listId") Integer measure_list_id, @Param("typ") String typ,@Param("closeStatus") String closeStatus);
 
     /**
      *
@@ -36,7 +36,7 @@ public interface MeasureListIssueMapper extends LFMySQLMapper<MeasureListIssue> 
      * @param status
      * @return
      */
-    Integer getCountByStatus(@Param("projectId") Integer project_id, @Param("listId") Integer measure_list_id, @Param("status") String status);
+    Integer getCountByStatus(@Param("projectId") Integer project_id, @Param("listId") Integer measure_list_id, @Param("status") String status,@Param("closeStatus") String closeStatus);
 
     /**
      * newCountList

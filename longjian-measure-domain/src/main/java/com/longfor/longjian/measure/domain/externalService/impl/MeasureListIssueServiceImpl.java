@@ -57,17 +57,17 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     @Override
     public Map<String, Object> getMeasureListIssueBrief(Integer project_id, Integer measure_list_id, String UNCLOSECODE, String REPAIRABLE, String NOREPAIRABLE, String NOTENOASSIGN, String ASSIGNNOREFORM, String REFORMNOCHECK, String CHECKYES) {
         Map<String, Object> map = new HashMap<>();
-        int zoneCount = measureListIssueMapper.getZoneCount(project_id, measure_list_id, UNCLOSECODE);
+        Integer zoneCount = measureListIssueMapper.getZoneCount(project_id, measure_list_id, UNCLOSECODE);
         map.put("zone_count", zoneCount);
-        map.put("repairable_count", measureListIssueMapper.getCountByTyp(project_id, measure_list_id, REPAIRABLE));
-        map.put("unrepairable_count", measureListIssueMapper.getCountByTyp(project_id, measure_list_id, NOREPAIRABLE));
-        map.put("note_no_assign", measureListIssueMapper.getCountByStatus(project_id, measure_list_id, NOTENOASSIGN));
-        map.put("assign_no_reform", measureListIssueMapper.getCountByStatus(project_id, measure_list_id, ASSIGNNOREFORM));
-        map.put("reform_no_check", measureListIssueMapper.getCountByStatus(project_id, measure_list_id, REFORMNOCHECK));
-        map.put("check_yes", measureListIssueMapper.getCountByStatus(project_id, measure_list_id, CHECKYES));
+        map.put("repairable_count", measureListIssueMapper.getCountByTyp(project_id, measure_list_id, REPAIRABLE,UNCLOSECODE));
+        map.put("unrepairable_count", measureListIssueMapper.getCountByTyp(project_id, measure_list_id, NOREPAIRABLE,UNCLOSECODE));
+        map.put("note_no_assign", measureListIssueMapper.getCountByStatus(project_id, measure_list_id, NOTENOASSIGN,UNCLOSECODE));
+        map.put("assign_no_reform", measureListIssueMapper.getCountByStatus(project_id, measure_list_id, ASSIGNNOREFORM,UNCLOSECODE));
+        map.put("reform_no_check", measureListIssueMapper.getCountByStatus(project_id, measure_list_id, REFORMNOCHECK,UNCLOSECODE));
+        map.put("check_yes", measureListIssueMapper.getCountByStatus(project_id, measure_list_id, CHECKYES,UNCLOSECODE));
         //查找所有测区
         int count = measureZoneMapper.searchTotalByProjectIdAndMeasureListId(project_id, new int[]{measure_list_id});
-        String zonePercentage = String.format("%.2f", (double) zoneCount / count);
+        String zonePercentage = String.format("%.2f",  (Double.parseDouble(zoneCount.toString()) / count) * 100);
         if ("0.00".equals(zonePercentage) || zoneCount == 0 || count == 0) {
             map.put("zone_percentage", "0");
         } else {

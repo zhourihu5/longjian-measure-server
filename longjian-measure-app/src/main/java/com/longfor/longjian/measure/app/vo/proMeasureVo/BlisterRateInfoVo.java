@@ -8,13 +8,14 @@ import lombok.Data;
  */
 @Data
 public class BlisterRateInfoVo {
-    private Integer assign_no_reform;
-    private Integer check_yes;
-    private Integer note_no_assign;
-    private Integer reform_no_check;
-    private Integer repairable_count;
-    private Integer unrepairable_count;
     private Integer zone_count;
     private String zone_percentage;
+    private Integer repairable_count;
+    private Integer unrepairable_count;
+    private Integer note_no_assign;
+    private Integer assign_no_reform;
+    private Integer reform_no_check;
+    private Integer check_yes;
+
 
 }
