@@ -454,20 +454,19 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             return null;
         }
         //map去重，获取categorys
-        Map<String, String> mCategory = new HashMap<>();
-        issues.forEach(issue -> {
-            mCategory.put(issue.getCategoryKey(), issue.getCategoryKey());
-        });
         List<String> categoryKeys = new ArrayList<>();
-        for (Map.Entry<String, String> entry : mCategory.entrySet()) {
-            categoryKeys.add(entry.getValue());
-        }
+        issues.forEach(issue -> {
+            if (!categoryKeys.contains(issue.getCategoryKey())) {
+                categoryKeys.add(issue.getCategoryKey());
+            }
+        });
+//        }
         if (StringUtils.isBlank(getBlisterRateCheckItemsReq.getCategory_key())) {
             try {
                 //获取顶级检查项
                 List<CategoryV3> categoryV3s = searchCategoryTopByCategoryKeyIn(categoryKeys);
                 int count = categoryV3s.size();
-                if (count <= 0) {
+                if (count <= 0 || categoryV3s.size() < 0) {
                     return null;
                 }
 
@@ -612,7 +611,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
                 return;
             }
             //去重
-            if (existCategoryKeys.contains(categoryV3.getKey())){
+            if (existCategoryKeys.contains(categoryV3.getKey())) {
                 return;
             }
             existCategoryKeys.add(categoryV3.getKey());
@@ -632,10 +631,10 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             squadList.forEach(squad -> {
                 SquadsVo squadsVo = new SquadsVo();
                 squadsVo.setSquad_id(Integer.parseInt(squad.get("squadId").toString()));
-                squadsVo.setPass_percent(String.format("%.2f",Float.parseFloat(squad.get("pass_percent").toString()) * 100));
+                squadsVo.setPass_percent(String.format("%.2f", Float.parseFloat(squad.get("pass_percent").toString()) * 100));
                 if (isLeaf) {
-                    squadsVo.setChecked_percent(String.format("%.2f",Float.parseFloat(squad.get("count").toString()) / zoneCount * 100.0));
-                }else {
+                    squadsVo.setChecked_percent(String.format("%.2f", Float.parseFloat(squad.get("count").toString()) / zoneCount * 100.0));
+                } else {
                     squadsVo.setChecked_percent("");
                 }
                 squads.add(squadsVo);
