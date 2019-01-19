@@ -29,9 +29,9 @@ public class RelVo {
     /**
      * 更新时间
      */
-    private Long update_at;
+    private int update_at;
     /**
      * 删除时间
      */
-    private Long delete_at;
+    private int delete_at;
 }

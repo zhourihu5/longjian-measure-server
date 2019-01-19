@@ -22,6 +22,7 @@ import com.longfor.longjian.measure.consts.constant.MeasureListConstant;
 import com.longfor.longjian.measure.domain.externalService.*;
 import com.longfor.longjian.measure.po.zhijian2.*;
 import com.longfor.longjian.measure.util.DateUtil;
+import com.longfor.longjian.measure.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -734,12 +735,14 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
      */
     private RelVo converMeasureRegionRelToRegionRelListVo(MeasureRegionRel regionRel) {
         RelVo relVo = new RelVo();
-        relVo.setDelete_at(regionRel.getDeleteAt() == null ? 0 : regionRel.getDeleteAt().getTime());
-        relVo.setDesc(regionRel.getDesc());
+        relVo.setDelete_at(regionRel.getDeleteAt() == null ? 0 : (int)(regionRel.getDeleteAt().getTime() / 1000));
+        if (StringUtils.isNotBlank(regionRel.getDesc())) {
+            relVo.setDesc(regionRel.getDesc());
+        }
         relVo.setId(regionRel.getId());
         relVo.setProject_id(regionRel.getProjectId());
         relVo.setRegion_ids(regionRel.getRegionIds());
-        relVo.setUpdate_at(regionRel.getUpdateAt() == null ? 0 : regionRel.getUpdateAt().getTime());
+        relVo.setUpdate_at(regionRel.getUpdateAt() == null ? 0 : (int)(regionRel.getUpdateAt().getTime()/1000));
         return relVo;
     }
 
