@@ -362,7 +362,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     public LjBaseResponse<MeasureRegionVo> getMeasureRegion(ApiMeasureRegionReq apiMeasureRegionReq) throws Exception {
         LjBaseResponse<MeasureRegionVo> ljBaseResponse = new LjBaseResponse<>();
         MeasureRegionVo measureRegionVo = new MeasureRegionVo();
-        List<RegionListVo> region_list = new ArrayList<>();
+        List<MeasureRegionListVo> region_list = new ArrayList<>();
         List<RelVo> rel_list = new ArrayList<>();
         String[] projectIds = apiMeasureRegionReq.getProject_ids().split(",");
         if (projectIds.length == 0) {
@@ -377,7 +377,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         }
         //类转换,手动
         regionList.forEach(region -> {
-            RegionListVo regionListVo = converMeasureRegionToRegionListVo(region);
+            MeasureRegionListVo regionListVo = converMeasureRegionToMeasureRegionListVo(region);
             region_list.add(regionListVo);
         });
         List<MeasureRegionRel> regionRelList = new ArrayList<>();
@@ -763,36 +763,13 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         regionListVo.setRegion_index(region.getRegionIndex());
         regionListVo.setRel_id(region.getRelId());
         regionListVo.setSrc_type(region.getSrcType());
-        regionListVo.setTag_id_list(region.getTagIdList());
+        if (StringUtils.isNotBlank(region.getTagIdList())) {
+            regionListVo.setTag_id_list(region.getTagIdList());
+        }
         regionListVo.setUpdate_at(region.getUpdateAt() == null ? 0 : (int)(region.getUpdateAt().getTime() / 1000));
         regionListVo.setUuid(region.getUuid());
         JSONObject polygon = JSON.parseObject(region.getPolygon());
-//        PolygonVo polygonVo = new PolygonVo();
-//        polygonVo.setX(Double.parseDouble(polygon.get("X") + ""));
-//        polygonVo.setY(Double.parseDouble(polygon.get("Y") + ""));
         regionListVo.setPolygon(Double.parseDouble(polygon.get("X") + "") + "," + Double.parseDouble(polygon.get("Y") + ""));
-        return regionListVo;
-    }
-
-    private RegionListVo converMeasureRegionToRegionListVo(MeasureRegion region){
-        RegionListVo regionListVo = new RegionListVo();
-        regionListVo.setArea_id(region.getAreaId());
-        regionListVo.setArea_path_and_id(region.getAreaPathAndId());
-        regionListVo.setDelete_at(region.getDeleteAt() == null ? 0 : (int)(region.getDeleteAt().getTime() / 1000));
-        regionListVo.setDrawing_md5(region.getDrawingMd5());
-        regionListVo.setId(region.getId());
-        regionListVo.setProject_id(region.getProjectId());
-        regionListVo.setRegion_index(region.getRegionIndex());
-        regionListVo.setRel_id(region.getRelId());
-        regionListVo.setSrc_type(region.getSrcType());
-        regionListVo.setTag_id_list(region.getTagIdList());
-        regionListVo.setUpdate_at(region.getUpdateAt() == null ? 0 : (int)(region.getUpdateAt().getTime() / 1000));
-        regionListVo.setUuid(region.getUuid());
-        JSONObject polygon = JSON.parseObject(region.getPolygon());
-        PolygonVo polygonVo = new PolygonVo();
-        polygonVo.setX(Double.parseDouble(polygon.get("X") + ""));
-        polygonVo.setY(Double.parseDouble(polygon.get("Y") + ""));
-//        regionListVo.setPolygon(Double.parseDouble(polygon.get("X") + "") + "," + Double.parseDouble(polygon.get("Y") + ""));
         return regionListVo;
     }
 }

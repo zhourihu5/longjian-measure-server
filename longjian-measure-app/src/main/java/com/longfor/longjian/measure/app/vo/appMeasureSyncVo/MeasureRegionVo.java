@@ -14,6 +14,6 @@ import java.util.List;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MeasureRegionVo {
-    private List<RegionListVo> region_list;
+    private List<MeasureRegionListVo> region_list;
     private List<RelVo> rel_list;
 }
