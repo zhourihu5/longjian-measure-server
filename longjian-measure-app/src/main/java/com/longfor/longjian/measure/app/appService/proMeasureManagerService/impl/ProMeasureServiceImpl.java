@@ -194,6 +194,8 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     public LjBaseResponse<PassDiffVo> getLoserCompareBetweenGroup(GetLoserCompareBetweenGroupReq getLoserCompareBetweenGroupReq) throws Exception {
         LjBaseResponse<PassDiffVo> ljBaseResponse = new LjBaseResponse<>();
         PassDiffVo passDiffVo = new PassDiffVo();
+        ctrlTool.projPerm(RequestContextHolderUtil.getRequest(), "项目.实测实量.统计.查看");
+        //todo proj, _, err := ctrl_tool.ProjPerm(c, "项目.实测实量.统计.查看")
         //验证任务是否属于这个项目
         boolean existPlan = measureListService.searchByProjectIdAndMeasureListId(getLoserCompareBetweenGroupReq.getProject_id(), getLoserCompareBetweenGroupReq.getMeasure_list_id()) != null;
         if (!existPlan) {
@@ -224,6 +226,8 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     public LjBaseResponse<CompareItemBetweenSquadsVo> getCompareItemBetweenSquads(GetCompareItemBetweenSquadsReq getCompareItemBetweenSquadsReq) throws Exception {
         LjBaseResponse<CompareItemBetweenSquadsVo> ljBaseResponse = new LjBaseResponse<>();
         CompareItemBetweenSquadsVo compareItemBetweenSquadsVo = new CompareItemBetweenSquadsVo();
+        ctrlTool.projPerm(RequestContextHolderUtil.getRequest(), "项目.实测实量.统计.查看");
+        //todo proj, _, err := ctrl_tool.ProjPerm(c, "项目.实测实量.统计.查看")
         //验证任务是否属于这个项目
         MeasureList measureList = measureListService.searchByProjectIdAndMeasureListId(getCompareItemBetweenSquadsReq.getProject_id(), getCompareItemBetweenSquadsReq.getMeasure_list_id());
         if (measureList == null) {
@@ -594,6 +598,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             //没传CategoryKey，取最顶级
             getCompareItemBetweenSquadsReq.setCategory_key(measureList.getRootCategoryKey());
         }
+        List<String> existCategoryKeys = new ArrayList<>();
         List<MeasureZoneResult> measureZoneResults = measureZoneResultService.getSubActiveMeasureCategoryZonesByListIdCategoryKey(getCompareItemBetweenSquadsReq.getProject_id(), getCompareItemBetweenSquadsReq.getMeasure_list_id(), getCompareItemBetweenSquadsReq.getCategory_key());
         measureZoneResults.forEach(measureZoneResult -> {
             CategoryDetailsVo categoryDetailsVo = new CategoryDetailsVo();
@@ -606,6 +611,12 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             if (categoryV3 == null) {
                 return;
             }
+            //去重
+            if (existCategoryKeys.contains(categoryV3.getKey())){
+                return;
+            }
+            existCategoryKeys.add(categoryV3.getKey());
+
             //zoneCount
             int zoneCount = measureZoneService.getMeasureZoneCountByListIdCategoryKey(getCompareItemBetweenSquadsReq.getProject_id(), getCompareItemBetweenSquadsReq.getMeasure_list_id(), subKey);
             if (zoneCount <= 0) {
@@ -621,9 +632,11 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             squadList.forEach(squad -> {
                 SquadsVo squadsVo = new SquadsVo();
                 squadsVo.setSquad_id(Integer.parseInt(squad.get("squadId").toString()));
-                squadsVo.setPass_percent(Float.parseFloat(squad.get("pass_percent").toString()) * 100 + "");
+                squadsVo.setPass_percent(String.format("%.2f",Float.parseFloat(squad.get("pass_percent").toString()) * 100));
                 if (isLeaf) {
-                    squadsVo.setChecked_percent(Float.parseFloat(squad.get("count").toString()) / zoneCount * 100.0 + "");
+                    squadsVo.setChecked_percent(String.format("%.2f",Float.parseFloat(squad.get("count").toString()) / zoneCount * 100.0));
+                }else {
+                    squadsVo.setChecked_percent("");
                 }
                 squads.add(squadsVo);
             });
