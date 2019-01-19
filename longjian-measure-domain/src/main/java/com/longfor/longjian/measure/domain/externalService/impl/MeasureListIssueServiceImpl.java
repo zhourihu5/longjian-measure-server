@@ -49,9 +49,11 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     private UserMapper userMapper;
     @Override
     public Integer countByMeasureListId(String id) {
-        MeasureListIssue measureListIssue = new MeasureListIssue();
-        measureListIssue.setListId(Integer.parseInt(id));
-        return measureListIssueMapper.selectCount(measureListIssue);
+        Example example = new Example(MeasureListIssue.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("listId",id);
+        criteria.andIsNull("deleteAt");
+        return measureListIssueMapper.selectCountByExample(example);
     }
 
     @Override

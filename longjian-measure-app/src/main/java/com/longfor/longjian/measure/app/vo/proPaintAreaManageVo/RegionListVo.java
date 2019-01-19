@@ -42,7 +42,7 @@ public class RegionListVo {
     private Integer src_type;
     private String  uuid;
     private PolygonVo polygon;
-    private RelVo rel = new RelVo();
+    private RelVo rel;
     private String tag_id_list;
 
     /**
@@ -53,9 +53,9 @@ public class RegionListVo {
     /**
      * 更新时间
      */
-    private Long update_at;
+    private int update_at;
     /**
      * 删除时间
      */
-    private Long delete_at;
+    private int delete_at;
 }

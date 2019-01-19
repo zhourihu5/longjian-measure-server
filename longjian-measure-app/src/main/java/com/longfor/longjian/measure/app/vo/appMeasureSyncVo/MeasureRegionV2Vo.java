@@ -14,7 +14,7 @@ public class MeasureRegionV2Vo {
     /**
      * 描画区域列表
      */
-    private List<RegionListVo> region_list;
+    private List<MeasureRegionListVo> region_list;
     /**
      * 本次获取的最后ID
      */

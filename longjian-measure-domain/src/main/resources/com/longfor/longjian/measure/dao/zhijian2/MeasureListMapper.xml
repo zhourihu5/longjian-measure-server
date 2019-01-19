@@ -27,7 +27,7 @@
     </sql>
 
     <select id="getMeasureList" resultType="map">
-        SELECT
+        SELECT DISTINCT
         ml.close_status as closeStatusId,
         ml.create_at as createAt,
         ml.finish_status as finishStatusId,
@@ -70,7 +70,7 @@
 
     <select id="getTotalMeasure" resultType="int">
         SELECT
-        count(ml.id)
+        count(DISTINCT ml.id)
         FROM
         measure_list ml
         JOIN category_v3 cv3 ON ml.root_category_key = cv3.`key`

@@ -106,6 +106,8 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
                 relVo.setDesc(map.get("desc").toString());
                 relVo.setRegion_ids(map.get("region_ids").toString());
                 regionListVo.setRel(relVo);
+            }else {
+                regionListVo.setRel(new RelVo());
             }
             listVos.add(regionListVo);
         }

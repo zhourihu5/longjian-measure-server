@@ -400,7 +400,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     public LjBaseResponse<MeasureRegionV2Vo> getMeasureRegionV2(ApiMeasureRegionReqV2 apiMeasureRegionReqV2) throws Exception {
         LjBaseResponse<MeasureRegionV2Vo> ljBaseResponse = new LjBaseResponse<>();
         MeasureRegionV2Vo measureRegionV2Vo = new MeasureRegionV2Vo();
-        List<RegionListVo> region_list = new ArrayList<>();
+        List<MeasureRegionListVo> region_list = new ArrayList<>();
         Integer start = 0;
         try {
             List<MeasureRegion> items = measureRegionService.searchUnscopedByProjIdLastIdUpdateAtGt(apiMeasureRegionReqV2.getProject_id(), apiMeasureRegionReqV2.getLast_id(), apiMeasureRegionReqV2.getTimestamp(), MEASURE_API_GET_PER_TIME, start);
@@ -410,7 +410,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             }
             measureRegionV2Vo.setLast_id(newLastId);
             items.forEach(measureRegion -> {
-                RegionListVo regionListVo = converMeasureRegionToRegionListVo(measureRegion);
+                MeasureRegionListVo regionListVo = converMeasureRegionToMeasureRegionListVo(measureRegion);
                 region_list.add(regionListVo);
             });
             measureRegionV2Vo.setRegion_list(region_list);
@@ -749,11 +749,11 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
      * @param region
      * @return
      */
-    private RegionListVo converMeasureRegionToRegionListVo(MeasureRegion region) {
-        RegionListVo regionListVo = new RegionListVo();
+    private MeasureRegionListVo converMeasureRegionToMeasureRegionListVo(MeasureRegion region) {
+        MeasureRegionListVo regionListVo = new MeasureRegionListVo();
         regionListVo.setArea_id(region.getAreaId());
         regionListVo.setArea_path_and_id(region.getAreaPathAndId());
-        regionListVo.setDelete_at(region.getDeleteAt() == null ? 0 : region.getDeleteAt().getTime());
+        regionListVo.setDelete_at(region.getDeleteAt() == null ? 0 : (int)(region.getDeleteAt().getTime() / 1000));
         regionListVo.setDrawing_md5(region.getDrawingMd5());
         regionListVo.setId(region.getId());
         regionListVo.setProject_id(region.getProjectId());
@@ -761,13 +761,35 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         regionListVo.setRel_id(region.getRelId());
         regionListVo.setSrc_type(region.getSrcType());
         regionListVo.setTag_id_list(region.getTagIdList());
-        regionListVo.setUpdate_at(region.getUpdateAt() == null ? 0 : region.getUpdateAt().getTime());
+        regionListVo.setUpdate_at(region.getUpdateAt() == null ? 0 : (int)(region.getUpdateAt().getTime() / 1000));
+        regionListVo.setUuid(region.getUuid());
+        JSONObject polygon = JSON.parseObject(region.getPolygon());
+//        PolygonVo polygonVo = new PolygonVo();
+//        polygonVo.setX(Double.parseDouble(polygon.get("X") + ""));
+//        polygonVo.setY(Double.parseDouble(polygon.get("Y") + ""));
+        regionListVo.setPolygon(Double.parseDouble(polygon.get("X") + "") + "," + Double.parseDouble(polygon.get("Y") + ""));
+        return regionListVo;
+    }
+
+    private RegionListVo converMeasureRegionToRegionListVo(MeasureRegion region){
+        RegionListVo regionListVo = new RegionListVo();
+        regionListVo.setArea_id(region.getAreaId());
+        regionListVo.setArea_path_and_id(region.getAreaPathAndId());
+        regionListVo.setDelete_at(region.getDeleteAt() == null ? 0 : (int)(region.getDeleteAt().getTime() / 1000));
+        regionListVo.setDrawing_md5(region.getDrawingMd5());
+        regionListVo.setId(region.getId());
+        regionListVo.setProject_id(region.getProjectId());
+        regionListVo.setRegion_index(region.getRegionIndex());
+        regionListVo.setRel_id(region.getRelId());
+        regionListVo.setSrc_type(region.getSrcType());
+        regionListVo.setTag_id_list(region.getTagIdList());
+        regionListVo.setUpdate_at(region.getUpdateAt() == null ? 0 : (int)(region.getUpdateAt().getTime() / 1000));
         regionListVo.setUuid(region.getUuid());
         JSONObject polygon = JSON.parseObject(region.getPolygon());
         PolygonVo polygonVo = new PolygonVo();
         polygonVo.setX(Double.parseDouble(polygon.get("X") + ""));
         polygonVo.setY(Double.parseDouble(polygon.get("Y") + ""));
-        regionListVo.setPolygon(polygonVo);
+//        regionListVo.setPolygon(Double.parseDouble(polygon.get("X") + "") + "," + Double.parseDouble(polygon.get("Y") + ""));
         return regionListVo;
     }
 }

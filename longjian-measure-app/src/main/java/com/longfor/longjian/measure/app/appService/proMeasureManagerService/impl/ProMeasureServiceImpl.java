@@ -4,6 +4,7 @@ import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.common.util.CtrlTool;
 import com.longfor.longjian.common.util.RequestContextHolderUtil;
 import com.longfor.longjian.measure.app.appService.proMeasureManagerService.IProMeasureService;
+import com.longfor.longjian.measure.app.commonEntity.MeasureListSearchResult;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetCheckerListReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureAreaListReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureCheckItemsReq;
@@ -879,10 +880,16 @@ public class ProMeasureServiceImpl implements IProMeasureService {
                 measurePlanVo.setFinish_status(MeasureListConstant.FINISHED);
             }
             measurePlanVo.setIssue_count(measureListIssueService.countByMeasureListId(map.get("id").toString()));
-            measurePlanVo.setCreate_at(DateUtil.getLongFromString(map.get("createAt").toString()));
+            measurePlanVo.setCreate_at(DateUtil.getLongFromString(map.get("createAt").toString()) / 1000);
             // todo area 数据处理
+            List<MeasureListSearchResult> r = list2SearchResult(getProMeasurePlanListReq.getProject_id(),list);
             measurePlanVoList.add(measurePlanVo);
         }
         return measurePlanVoList;
+    }
+
+    private List<MeasureListSearchResult> list2SearchResult(Integer project_id, List<Map<String, Object>> list) {
+        // todo area 数据处理
+        return null;
     }
 }
