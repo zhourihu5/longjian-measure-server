@@ -1,6 +1,8 @@
-package com.longfor.longjian.measure.app.vo.proPaintAreaManageVo;
+package com.longfor.longjian.measure.app.vo.appMeasureSyncVo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.PolygonVo;
+import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.RelVo;
 import lombok.Data;
 
 import java.util.List;
@@ -23,7 +25,7 @@ import java.util.List;
  */
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class RegionListVo {
+public class MeasureRegionListVo {
     private Integer id;
     private Integer area_id;
     /**
@@ -41,7 +43,7 @@ public class RegionListVo {
      */
     private Integer src_type;
     private String  uuid;
-    private PolygonVo polygon;
+    private String polygon;
     private RelVo rel;
     private String tag_id_list;
 
@@ -59,3 +61,5 @@ public class RegionListVo {
      */
     private int delete_at;
 }
+
+

@@ -7,11 +7,11 @@ public class MeasureListIssueHistoryRepairLogItemVo {
     /**
      * 目标用户ID目标用户ID
      */
-    private Integer target_user_id;
+    private Integer target_user_id = 0;
     /**
      * 目标用户名称
      */
-    private String target_user_name;
+    private String target_user_name = "";
     /**
      * 日志类型
      */
@@ -19,5 +19,5 @@ public class MeasureListIssueHistoryRepairLogItemVo {
     /**
      * 内容内容
      */
-    private String data;
+    private String data = "";
 }

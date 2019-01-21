@@ -113,7 +113,6 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         if (issue!=null) {
             MeasureRule rule = measureRuleService.getByCategoryKey(issue.getCategoryKey());
             if (rule!=null) {
-                //todo xconv
                 MeasureRuleVo rulevo = new MeasureRuleVo();
                 rulevo.setId(rule.getId());
                 rulevo.setCategory_key(rule.getCategoryKey());
@@ -139,7 +138,6 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         for (MeasureZoneResult result : results) {
             MeasureListIssueDetailSquadResultVo squadResult = new MeasureListIssueDetailSquadResultVo();
             squadResult.setSquad_id(result.getSquadId());
-            //todo date属性的json转化并赋值过程
             squadResult.setData(result.getData());
             voResesults.add(squadResult);
         }
@@ -147,17 +145,16 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
 
         MeasureZone measureZone = null;
         try {
-            //todo 方法需要的proj_id来自于权限部分, 先写死
+            //方法需要的proj_id来自于权限部分, 先写死
             measureZone = measureZoneService.GetZoneByUuid(20, issue.getZoneUuid());
         }catch (Exception e){
             log.error("");
         }
         if (measureZone!=null) {
-            //todo proj_id 同上
+            // proj_id 同上
             MeasureRegion region = measureRegionService.GetByUuid(20, measureZone.getRegionUuid());
             MeasureRegionVo regionvo = new MeasureRegionVo();
             if (region!=null) {
-                //todo xconv
                 regionvo.setId(region.getId());
                 regionvo.setProject_id(region.getProjectId());
                 regionvo.setArea_id(region.getAreaId());

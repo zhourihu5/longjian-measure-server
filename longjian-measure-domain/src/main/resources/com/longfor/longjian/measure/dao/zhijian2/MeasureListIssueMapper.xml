@@ -73,6 +73,7 @@
     AND project_id = #{projectId}
     AND list_id = #{listId}
     AND typ = #{typ}
+    AND close_status = #{closeStatus}
   </select>
 
     <select id="getCountByStatus" resultType="int">
@@ -85,6 +86,7 @@
     AND project_id = #{projectId}
     AND list_id = #{listId}
     AND `status` = #{status}
+    AND close_status = #{closeStatus}
   </select>
 
     <select id="searchMeasureListIssueTrendNewCountList" resultType="map">

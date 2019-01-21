@@ -14,7 +14,6 @@ import com.longfor.longjian.measure.domain.externalService.IMeasureListIssueLogS
 import com.longfor.longjian.measure.domain.externalService.IUserService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListIssueLog;
 import com.longfor.longjian.measure.po.zhijian2_apisvr.User;
-import com.longfor.longjian.measure.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,17 +38,18 @@ public class ProMeasureListIssueLogServiceImpl implements IProMeasureListIssueLo
     public List<MeasureListIssueHistoryRepairLogVo> getIssueActionLogByIssueUuid(Integer project_id, String uuid) {
         List<MeasureListIssueHistoryRepairLogVo> items = new LinkedList<>();
 
-        List<MeasureListIssueLog> logs = measureListIssueLogService.searchByIssueUuid(project_id,uuid);
+        List<MeasureListIssueLog> logs = measureListIssueLogService.searchByIssueUuid(project_id, uuid);
 
-        if (logs == null || logs.size() == 0){
+        if (logs == null || logs.size() == 0) {
             return null;
         }
 
         List<Integer> uids = new ArrayList<>();
-        logs.forEach(log -> {
-            uids.add(log.getSenderId());
-            MeasureListIssueLogDetail detail = JSONObject.toJavaObject((JSON)JSON.toJSON(log.getDetail()),MeasureListIssueLogDetail.class);
-            if (detail.getRepairerId() != null && detail.getRepairerId() > 0){
+        logs.forEach(l -> {
+            uids.add(l.getSenderId());
+            MeasureListIssueLogDetail detail = JSONObject.parseObject(l.getDetail(), MeasureListIssueLogDetail.class);
+            log.info(JSON.toJSONString(detail));
+            if (detail.getRepairerId() != null && detail.getRepairerId() > 0) {
                 uids.add(detail.getRepairerId());
             }
         });
@@ -61,11 +60,12 @@ public class ProMeasureListIssueLogServiceImpl implements IProMeasureListIssueLo
         boolean hasCreateLog = false;
 
         for (MeasureListIssueLog measureListIssueLog : logs) {
-            MeasureListIssueLogDetail detail = JSONObject.toJavaObject((JSON) JSON.toJSON(measureListIssueLog.getDetail()), MeasureListIssueLogDetail.class);
+            log.info(JSON.toJSONString(measureListIssueLog));
+            MeasureListIssueLogDetail detail = JSONObject.parseObject(measureListIssueLog.getDetail(), MeasureListIssueLogDetail.class);
             MeasureListIssueHistoryRepairLogVo item = new MeasureListIssueHistoryRepairLogVo();
             item.setUser_id(measureListIssueLog.getSenderId());
             if (userMap.get(measureListIssueLog.getSenderId()) != null) {
-                item.setUser_name(userMap.get(measureListIssueLog.getSenderId()).getUserName());
+                item.setUser_name(userMap.get(measureListIssueLog.getSenderId()).getRealName());
             }
             item.setCreate_at(Integer.parseInt((measureListIssueLog.getCreateAt().getTime() / 1000) + ""));
 
@@ -81,77 +81,77 @@ public class ProMeasureListIssueLogServiceImpl implements IProMeasureListIssueLo
             }
 
             //处理状态变化
-            switch (measureListIssueLog.getStatus()) {
-                case MeasureListIssueType.NOTENOASSIGN: {
-                    //创建问题
-                    hasCreateLog = true;
+            log.info(measureListIssueLog.getStatus().toString());
+            if (measureListIssueLog.getStatus() == MeasureListIssueType.NOTENOASSIGN) {
+                //创建问题
+                hasCreateLog = true;
+                MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
+                l.setLog_type(MeasureListIssueActionLogTypeEnum.Create.getId());
+                item.getItems().add(0, l);
+            } else if (measureListIssueLog.getStatus() == MeasureListIssueType.ASSIGNNOREFORM) {
+                // 判断是审核驳回的还是分配未整改的
+                if (MeasureListIssueCheckStatusEnum.CheckNo.getId().equals(detail.getCheckStatus())) {
+                    //审核驳回
                     MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
-                    l.setLog_type(MeasureListIssueActionLogTypeEnum.Create.getId());
-                    item.getItems().add(0,l);
-                }
-                case MeasureListIssueType.ASSIGNNOREFORM: {
-                    // 判断是审核驳回的还是分配未整改的
-                    if (MeasureListIssueCheckStatusEnum.CheckNo.getId().equals(detail.getCheckStatus())) {
-                        //审核驳回
-                        MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
-                        l.setLog_type(MeasureListIssueActionLogTypeEnum.Unapprove.getId());
-                        l.setData(measureListIssueLog.getDesc());
-                        item.getItems().add(l);
-                    }else {
-                        MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
-                        l.setLog_type(MeasureListIssueActionLogTypeEnum.Assign.getId());
-                        l.setTarget_user_id(detail.getRepairerId());
-                        if (userMap.get(l.getTarget_user_id()) != null){
-                            l.setTarget_user_name(userMap.get(l.getTarget_user_id()).getRealName());
-                        }
-                        l.setData(detail.getPlanEndOn() != null ? detail.getPlanEndOn() / 1000 + "" : "");
-                        item.getItems().add(l);
+                    l.setLog_type(MeasureListIssueActionLogTypeEnum.Unapprove.getId());
+                    l.setData(measureListIssueLog.getDesc());
+                    item.getItems().add(l);
+                } else {
+                    MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
+                    l.setLog_type(MeasureListIssueActionLogTypeEnum.Assign.getId());
+                    l.setTarget_user_id(detail.getRepairerId());
+                    if (userMap.get(l.getTarget_user_id()) != null) {
+                        l.setTarget_user_name(userMap.get(l.getTarget_user_id()).getRealName());
                     }
-                }
-                case MeasureListIssueType.REFORMNOCHECK: {
-                    //提交整改记录
-                    MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
-                    l.setLog_type(MeasureListIssueActionLogTypeEnum.Repair.getId());
+                    l.setData(detail.getPlanEndOn() != null && detail.getPlanEndOn() > 0 ? detail.getPlanEndOn() / 1000 + "" : "-1");
                     item.getItems().add(l);
                 }
-                default: {
-                    if ((detail.getPlanEndOn() != null && detail.getPlanEndOn() != -1) || detail.getRepairerId() > 0){
-                        MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
-                        l.setLog_type(MeasureListIssueActionLogTypeEnum.Assign.getId());
-                        l.setTarget_user_id(detail.getRepairerId());
-                        if (userMap.get(l.getTarget_user_id()) != null){
-                            l.setTarget_user_name(userMap.get(l.getTarget_user_id()).getRealName());
-                        }
-                        l.setData(detail.getPlanEndOn() != null ? detail.getPlanEndOn() / 1000 + "" : "");
-                        item.getItems().add(l);
+            } else if (measureListIssueLog.getStatus() == MeasureListIssueType.REFORMNOCHECK) {
+                //提交整改记录
+                MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
+                l.setLog_type(MeasureListIssueActionLogTypeEnum.Repair.getId());
+                item.getItems().add(l);
+            } else if (measureListIssueLog.getStatus() == MeasureListIssueType.CHECKYES) {
+                MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
+                l.setLog_type(MeasureListIssueActionLogTypeEnum.Approve.getId());
+                item.getItems().add(l);
+            } else {
+                if ((detail.getPlanEndOn() != null && detail.getPlanEndOn() != -1) || detail.getRepairerId() > 0) {
+                    MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
+                    l.setLog_type(MeasureListIssueActionLogTypeEnum.Assign.getId());
+                    l.setTarget_user_id(detail.getRepairerId());
+                    if (userMap.get(l.getTarget_user_id()) != null) {
+                        l.setTarget_user_name(userMap.get(l.getTarget_user_id()).getRealName());
                     }
-                    if (StringUtils.isNotBlank(measureListIssueLog.getDesc())){
-                        MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
-                        l.setLog_type(MeasureListIssueActionLogTypeEnum.AddDesc.getId());
-                        item.getItems().add(l);
-                    }
-                    if (StringUtils.isNotBlank(measureListIssueLog.getAttachmentMd5List())){
-                        MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
-                        l.setLog_type(MeasureListIssueActionLogTypeEnum.AddAttachment.getId());
-                        item.getItems().add(l);
-                    }
+                    l.setData(detail.getPlanEndOn() != null && detail.getPlanEndOn() > 0 ? detail.getPlanEndOn() / 1000 + "" : "-1");
+                    item.getItems().add(l);
+                }
+                if (StringUtils.isNotBlank(measureListIssueLog.getDesc())) {
+                    MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
+                    l.setLog_type(MeasureListIssueActionLogTypeEnum.AddDesc.getId());
+                    item.getItems().add(l);
+                }
+                if (StringUtils.isNotBlank(measureListIssueLog.getAttachmentMd5List())) {
+                    MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
+                    l.setLog_type(MeasureListIssueActionLogTypeEnum.AddAttachment.getId());
+                    item.getItems().add(l);
                 }
             }
 
             //处理问题类型变化
-            if (MeasureListIssueType.REPAIRABLE == measureListIssueLog.getTyp() || MeasureListIssueType.NOREPAIRABLE == measureListIssueLog.getTyp()){
+            if (MeasureListIssueType.REPAIRABLE == measureListIssueLog.getTyp() || MeasureListIssueType.NOREPAIRABLE == measureListIssueLog.getTyp()) {
                 MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
                 l.setLog_type(MeasureListIssueActionLogTypeEnum.ChangeType.getId());
                 l.setData(measureListIssueLog.getTyp() + "");
                 item.getItems().add(l);
             }
 
-            if(item.getItems().size() > 0){
+            if (item.getItems().size() > 0) {
                 items.add(item);
             }
         }
 
-        if (!hasCreateLog){
+        if (!hasCreateLog) {
             //创建log为空的时候，说明新增时附带分配了，需要新增一个log出来
             MeasureListIssueHistoryRepairLogVo item = new MeasureListIssueHistoryRepairLogVo();
             MeasureListIssueHistoryRepairLogVo m = items.get(0);
@@ -161,7 +161,7 @@ public class ProMeasureListIssueLogServiceImpl implements IProMeasureListIssueLo
             MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
             l.setLog_type(MeasureListIssueActionLogTypeEnum.Create.getId());
             item.getItems().add(l);
-            items.add(0,item);
+            items.add(0, item);
         }
         return items;
     }

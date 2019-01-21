@@ -53,7 +53,7 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
         GroupRegionTagVo groupRegionTagVo = new GroupRegionTagVo();
         List<TagListVo> listVos = new ArrayList<>();
         //查询tag
-        List<Map<String, Object>> tagList = measureTagService.searchByGroupId(getGroupMeasureRegionTagReq.getGroup_id(), MeasureTagConstant.GROUP);
+        List<Map<String, Object>> tagList = measureTagService.searchByGroupIdAndProjId(getGroupMeasureRegionTagReq.getGroup_id(), 0,MeasureTagConstant.GROUP);
         for (Map<String, Object> map : tagList
         ) {
             //map转换成vo
@@ -100,11 +100,15 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
             polygonVo.setX(Double.parseDouble(jsonObject.get("X").toString()));
             polygonVo.setY(Double.parseDouble(jsonObject.get("Y").toString()));
             regionListVo.setPolygon(polygonVo);
-            RelVo relVo = new RelVo();
-            relVo.setId(Integer.parseInt(map.get("relId").toString()));
-            relVo.setDesc(map.get("desc").toString());
-            relVo.setRegion_ids(map.get("region_ids").toString());
-            regionListVo.setRel(relVo);
+            if (map.get("relId") != null) {
+                RelVo relVo = new RelVo();
+                relVo.setId(Integer.parseInt(map.get("relId").toString()));
+                relVo.setDesc(map.get("desc").toString());
+                relVo.setRegion_ids(map.get("region_ids").toString());
+                regionListVo.setRel(relVo);
+            }else {
+                regionListVo.setRel(new RelVo());
+            }
             listVos.add(regionListVo);
         }
         areaRegionTagVo.setRegion_list(listVos);
