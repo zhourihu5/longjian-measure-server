@@ -128,4 +128,11 @@ public interface IMeasureRegionService {
     void delete(Integer project_id, List<Integer> region_id_list);
 
     MeasureRegion GetByUuid(Integer projId,String uuid);
+    /**
+     *
+     * @param projId
+     * @param timeFmt
+     * @return
+     */
+    List<MeasureRegion> searchUnscopedByProjIdUpdateAtGt2(Integer projId, String timeFmt);
 }

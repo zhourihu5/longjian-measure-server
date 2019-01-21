@@ -141,7 +141,7 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
             return Lists.newArrayList();
         }
         Example example = new Example(MeasureRegion.class);
-        example.createCriteria().andEqualTo("projectId", project_id).andEqualTo("uuid", regionUuids);
+        example.createCriteria().andEqualTo("projectId", project_id).andIn("uuid", regionUuids);
         return measureRegionMapper.selectByExample(example);
     }
 
@@ -186,5 +186,14 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
     @Override
     public MeasureRegion GetByUuid(Integer projId, String uuid) {
         return measureRegionMapper.GetByUuid(projId, uuid);
+    }
+
+    @Override
+    public List<MeasureRegion> searchUnscopedByProjIdUpdateAtGt2(Integer projId, String timeFmt) {
+        Example example = new Example(MeasureRegion.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId", projId);
+        criteria.andGreaterThan("updateAt", timeFmt);
+        return measureRegionMapper.selectByExample(example);
     }
 }

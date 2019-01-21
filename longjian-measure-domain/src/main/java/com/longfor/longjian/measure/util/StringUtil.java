@@ -1,5 +1,9 @@
 package com.longfor.longjian.measure.util;
 
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
+
+@Slf4j
 public class StringUtil {
 
     public static String[] getPathSlice(String keyPath) {
@@ -27,6 +31,45 @@ public class StringUtil {
         }
         return "/";
     }
+
+    /**
+     * 比较两个Id序列的大小
+     *
+     * @param a
+     * @param b
+     * @param sep
+     * @param ignoreBlank
+     * @return
+     */
+    public static Integer compareIdList(String a, String b, String sep, boolean ignoreBlank) {
+        if (a.equals(b)) {
+            return 0;
+        }
+        try {
+            String[] la = StringUtils.split(a, sep);
+            String[] lb = StringUtils.split(b, sep);
+            Integer lengtha = la.length;
+            Integer lengthb = lb.length;
+            Integer length = null;
+            length = lengtha;
+            if (lengthb < length) {
+                length = lengthb;
+            }
+            for (int i = 0; i < length; i++) {
+                String ia = la[i];
+                String ib = lb[i];
+                if (ia.equals(ib)) {
+                    continue;
+                }
+                return Integer.parseInt(ia) - Integer.parseInt(ib);
+            }
+            return lengtha - lengthb;
+        } catch (Exception e) {
+            log.error("error:" + e.getMessage());
+            return 0;
+        }
+    }
+    //比较两个Id序列的大小
 
 
 //    public static void main(String[] args) {

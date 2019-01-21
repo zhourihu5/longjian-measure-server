@@ -1,6 +1,7 @@
 package com.longfor.longjian.measure.domain.externalService;
 
 import com.longfor.longjian.measure.po.zhijian2.MeasureList;
+import com.longfor.longjian.measure.po.zhijian2.MeasureSquad;
 import com.longfor.longjian.measure.po.zhijian2.MeasureSquadUser;
 import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
 import org.apache.ibatis.annotations.Param;
@@ -125,4 +126,35 @@ public interface IMeasureListService {
      **/
     MeasureList getMeasureListByProjIdAndId(Integer projId,Integer Id);
 
+    /**
+     *
+     * @param projId
+     * @param list_id
+     * @return
+     */
+    List<MeasureSquad> searchOnlyMeasureSquadByProjIdAndListId(Integer projId, Integer list_id);
+
+    /**
+     *
+     * @param projId
+     * @param list_id
+     * @return
+     */
+    MeasureList getNoFoundErr(Integer projId, Integer list_id);
+
+    /**
+     *
+     * @param id
+     * @param keySet
+     * @return
+     */
+    List<MeasureZone> searchZoneByProjUuids(Integer id, Set<String> keySet);
+
+    /**
+     *
+     * @param id
+     * @param keySet
+     * @return
+     */
+    List<MeasureSquad> searchByProjIdIdIn(Integer id, Set<Integer> keySet);
 }

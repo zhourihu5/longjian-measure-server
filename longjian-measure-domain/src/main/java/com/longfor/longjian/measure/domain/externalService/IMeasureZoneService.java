@@ -102,4 +102,11 @@ public interface IMeasureZoneService {
     List<MeasureZone> selectByProjectIdAndRegionUUIdIn(Integer project_id, List<String> region_uuid_list);
     MeasureZone GetZoneByUuid (Integer projId,String uuid);
 
+    /**
+     *
+     * @param projId
+     * @param list_id
+     * @return
+     */
+    List<MeasureZone> searchByListId(Integer projId, Integer list_id);
 }

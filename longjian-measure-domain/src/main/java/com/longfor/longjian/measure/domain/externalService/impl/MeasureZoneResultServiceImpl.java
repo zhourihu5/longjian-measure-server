@@ -118,4 +118,17 @@ public class MeasureZoneResultServiceImpl implements IMeasureZoneResultService {
         return measureZoneResultMapper.SearchZoneResultByProjIdZoneUuid(ProjectId,uuid);
     }
 
+    @Override
+    public List<MeasureZoneResult> searchByListId(Integer projId, Integer list_id) {
+        Example example =new Example(MeasureZoneResult.class);
+        example.createCriteria().andEqualTo("projectId",projId).andEqualTo("listId",list_id);
+        return measureZoneResultMapper.selectByExample(example);
+    }
+
+    @Override
+    public List<MeasureZoneResult> searchByProjIdListId(Integer projId, Integer id) {
+        Example example =new Example(MeasureZoneResult.class);
+        example.createCriteria().andEqualTo("projectId",projId).andEqualTo("listId",id);
+        return measureZoneResultMapper.selectByExample(example);
+    }
 }

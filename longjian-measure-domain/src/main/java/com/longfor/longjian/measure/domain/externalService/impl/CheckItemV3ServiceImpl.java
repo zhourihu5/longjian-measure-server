@@ -15,6 +15,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Jiazm 2019/01/09 20:35
@@ -47,5 +48,13 @@ public class CheckItemV3ServiceImpl implements ICheckItemV3Service {
         Example example =new Example(CategoryV3.class);
         example.createCriteria().andEqualTo("id",rootCategoryId);
         return categoryV3Mapper.selectOneByExample(example);
+    }
+
+    @Override
+    @LFAssignDataSource("zhijian2")
+    public List<CategoryV3> searchCategoryByKeyIn(Set<String> keySet) {
+        Example example =new Example(CategoryV3.class);
+        example.createCriteria().andIn("key",keySet);
+        return categoryV3Mapper.selectByExample(example);
     }
 }

@@ -7,6 +7,7 @@ import tk.mybatis.mapper.entity.Example;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface IMeasureRuleService {
     /**
@@ -24,4 +25,18 @@ public interface IMeasureRuleService {
     MeasureRule getByCategoryKey(String currentCategoryKey);
 
     MeasureRule selectById(Integer id);
+
+    /**
+     *
+     * @param keySet
+     * @return
+     */
+    List<MeasureRule> searchUnscopedByIds(Set<Integer> keySet);
+
+    /**
+     *
+     * @param keySet
+     * @return
+     */
+    List<MeasureRule> searchByIds(Set<Integer> keySet);
 }

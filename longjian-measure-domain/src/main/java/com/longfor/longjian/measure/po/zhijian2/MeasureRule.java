@@ -17,6 +17,7 @@ public class MeasureRule {
     /**
      * 规则说明
      */
+    @Column(name = "`desc`")
     private String desc;
 
     /**

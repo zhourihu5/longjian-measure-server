@@ -151,5 +151,18 @@ public interface IMeasureZoneResultService {
 
     List<MeasureZoneResult> SearchZoneResultByProjIdZoneUuid(Integer ProjectId,String uuid);
 
+    /**
+     * @param projId
+     * @param list_id
+     * @return
+     */
+    List<MeasureZoneResult> searchByListId(Integer projId, Integer list_id);
 
+    /**
+     *
+     * @param projId
+     * @param id
+     * @return
+     */
+    List<MeasureZoneResult> searchByProjIdListId(Integer projId, Integer id);
 }

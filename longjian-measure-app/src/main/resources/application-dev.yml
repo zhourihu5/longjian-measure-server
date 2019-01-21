@@ -219,6 +219,8 @@ export:
   base_dir: /Users/crazy/py-work/zhijian_scripts/writable
   #base_dir: C:/tmp
   base_uri: writable
+  measure_base_dir: /data/zhijian/writable
+  measure_base_uri: writable
   # APP下载地址
 upload_server_addr: https://zj.buildingqm.com
 # 远端服务接口

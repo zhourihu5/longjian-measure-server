@@ -5,6 +5,7 @@ import com.longfor.longjian.measure.dao.zhijian2.MeasureZoneMapper;
 import com.longfor.longjian.measure.domain.externalService.IMeasureZoneService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureList;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListArea;
+import com.longfor.longjian.measure.po.zhijian2.MeasureRule;
 import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
 import com.longfor.longjian.measure.util.ExampleUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,6 +123,11 @@ public class MeasureZoneServiceImpl implements IMeasureZoneService {
         return null;
     }
 
-
-
+    @Override
+    @LFAssignDataSource("zhijian2")
+    public List<MeasureZone> searchByListId(Integer projId, Integer list_id) {
+        Example example =new Example(MeasureZone.class);
+        example.createCriteria().andEqualTo("projectId",projId).andEqualTo("listId",list_id);
+        return measureZoneMapper.selectByExample(example);
+    }
 }

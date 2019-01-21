@@ -1,9 +1,11 @@
 package com.longfor.longjian.measure.domain.externalService;
 
 import com.longfor.longjian.measure.po.zhijian2.Area;
+import com.longfor.longjian.measure.vo.AreaInfoWithExtendVo;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface IAreaService {
     /**
@@ -43,4 +45,18 @@ public interface IAreaService {
      * @return
      */
     List<Area> searchByIdList(Integer proj_id, List<Integer> areaIds);
+
+    /**
+     *
+     * @param keySet
+     * @return
+     */
+    List<Area> selectByIds(Set<Integer> keySet);
+
+    /**
+     *
+     * @param areas
+     * @return
+     */
+    List<AreaInfoWithExtendVo> formatAreaInfoWithExtend(List<Area> areas) throws Exception;
 }
