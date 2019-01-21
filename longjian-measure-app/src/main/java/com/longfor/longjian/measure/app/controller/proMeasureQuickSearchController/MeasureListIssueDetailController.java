@@ -57,8 +57,9 @@ public class MeasureListIssueDetailController {
      * @date 2019/1/14 14:31
      **/
     @GetMapping(value = "issue_info/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureListIssueDetailIssueInfoVo> IssueInfo(@Valid GetMeasureListIssueDetailReq req, Errors errors) {
-        //todo 未添加鉴权
+    public LjBaseResponse<MeasureListIssueDetailIssueInfoVo> IssueInfo(@Valid GetMeasureListIssueDetailReq req,HttpServletRequest request) throws Exception {
+        ctrlTool.projPerm(request,"项目.实测实量.爆点管理.查看");
+        //todo 方法需要的proj_id来自于权限部分, 先写死
         return new LjBaseResponse<>(measureListIssueDetailService.IssueInfo(req));
     }
 
@@ -70,8 +71,9 @@ public class MeasureListIssueDetailController {
      * @date 2019/1/14 14:34
      **/
     @GetMapping(value = "zone_info/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureListIssueDetailZoneInfoVo> zoneInfo(@Valid GetMeasureListIssueDetailReq req) {
-        //todo 未添加鉴权
+    public LjBaseResponse<MeasureListIssueDetailZoneInfoVo> zoneInfo(@Valid GetMeasureListIssueDetailReq req,HttpServletRequest request) throws Exception {
+        ctrlTool.projPerm(request,"项目.实测实量.爆点管理.查看");
+        //todo 方法需要的proj_id来自于权限部分, 先写死
         return new LjBaseResponse<>(measureListIssueDetailService.zoneInfo(req));
     }
 
@@ -84,8 +86,9 @@ public class MeasureListIssueDetailController {
      * @date 2019/1/14 14:59
      **/
     @GetMapping(value = "repair_list/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<List<MeasureListIssueDetailRepairerVo>> repairList(@Valid GetMeasureListIssueDetailReq req) {
-        //todo 未添加鉴权
+    public LjBaseResponse<List<MeasureListIssueDetailRepairerVo>> repairList(@Valid GetMeasureListIssueDetailReq req,HttpServletRequest request) throws Exception {
+        ctrlTool.projPerm(request,"项目.实测实量.爆点管理.查看");
+        //todo 鉴权部分返回proj
         return new LjBaseResponse<>(measureListIssueDetailService.repairList(req));
     }
 
@@ -191,15 +194,14 @@ public class MeasureListIssueDetailController {
      * @date 2019/1/15 11:12
      **/
     @PostMapping(value = "update_issue_type/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse updateIssueType(@Valid PostMeasureListDetailUpdateIssueTypeReq req) {
-        //todo 未添加鉴权
-        //ctrlTool.projPerm();
+    public LjBaseResponse updateIssueType(@Valid PostMeasureListDetailUpdateIssueTypeReq req,HttpServletRequest request) throws Exception {
+        ctrlTool.projPerm(request,"项目.实测实量.爆点管理.编辑");
         return measureListIssueDetailService.updateIssueType(req);
     }
 
     @PostMapping(value = "update_plan_end_on/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse UpdatePlanEndOn(@Valid PostMeasureListDetailUpdateIssuePlanEndOnReq req) {
-        //todo 未添加鉴权
+    public LjBaseResponse UpdatePlanEndOn(@Valid PostMeasureListDetailUpdateIssuePlanEndOnReq req,HttpServletRequest request) throws Exception {
+        ctrlTool.projPerm(request,"项目.实测实量.爆点管理.编辑");
         return measureListIssueDetailService.UpdatePlanEndOn(req);
     }
 

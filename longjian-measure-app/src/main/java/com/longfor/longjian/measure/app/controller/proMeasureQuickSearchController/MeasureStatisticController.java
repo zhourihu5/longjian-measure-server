@@ -2,6 +2,7 @@ package com.longfor.longjian.measure.app.controller.proMeasureQuickSearchControl
 
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.common.exception.LjBaseRuntimeException;
+import com.longfor.longjian.common.util.CtrlTool;
 import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.IMeasureStatisticService;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetMeasureStatisticTaskReq;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 /**
@@ -27,6 +29,9 @@ public class MeasureStatisticController {
     @Autowired
     private IMeasureStatisticService measureStatisticService;
 
+    @Autowired
+    private CtrlTool ctrlTool;
+
     /**
      * @Description: go项目实测快速查新任务概览组间对比
      * http://192.168.37.159:3000/project/8/interface/api/2976
@@ -35,11 +40,8 @@ public class MeasureStatisticController {
      * @date 2019/1/8 11:19
      **/
     @GetMapping(value = "squad_measure_stats_json/" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse SquadMeasureStatsJson(@Valid GetMeasureStatisticTaskReq getMeasureStatisticTaskReq, Errors errors){
-        if (errors.hasErrors()) {
-            throw new LjBaseRuntimeException(-1,"参数异常");
-        }
-        //todo 未添加鉴权
+    public LjBaseResponse SquadMeasureStatsJson(@Valid GetMeasureStatisticTaskReq getMeasureStatisticTaskReq,HttpServletRequest request) throws Exception {
+        ctrlTool.projPerm(request,"项目.实测实量.统计.查看");
         return new LjBaseResponse<>(measureStatisticService.SquadMeasureStatsJson(getMeasureStatisticTaskReq));
     }
 }
