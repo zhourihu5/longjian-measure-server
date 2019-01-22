@@ -126,7 +126,7 @@ public interface IMeasureListIssueService {
      * @param is_overdue
      * @return
      */
-    Map<String, Object> searchMeasueListIssueInProj(Integer projectId, Integer limit, Integer page, String category_key, List<Integer> areaIdList, List<String> measureListIdList, List<String> createAtRangeList, Integer status, Integer repairer_id, String is_overdue) throws Exception;
+    Map<String, Object> searchMeasueListIssueInProj(Integer projectId, Integer limit, Integer page, String category_key, List<Integer> areaIdList, List<String> measureListIdList, List<String> createAtRangeList, Integer status, Integer repairer_id, Boolean is_overdue) throws Exception;
 
     /**
      *
@@ -142,14 +142,6 @@ public interface IMeasureListIssueService {
      * @return
      */
     Map<Integer, String> getMeasureListNameMap(Integer projectId, List<Integer> measureListIds);
-
-    /**
-     *
-     * @param userIds
-     * @return
-     */
-    Map<Integer, String> getUserRealNameMap(List<Integer> userIds);
-
     /**
      *
      * @param areaIdLists

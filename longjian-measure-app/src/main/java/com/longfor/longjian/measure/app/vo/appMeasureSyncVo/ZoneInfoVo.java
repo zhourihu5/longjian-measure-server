@@ -32,6 +32,12 @@ public class ZoneInfoVo {
      * 区域Id
      */
     private Integer area_id;
+
+    /**
+     * 区域路径及ID
+     */
+    private String area_path_and_id;
+
     /**
      * 任务类型key
      */
@@ -60,14 +66,5 @@ public class ZoneInfoVo {
      * 删除时间(`0`表示未删除)
      */
     private Integer delete_at;
-
-    /**
-     * 区域路径及ID
-     */
-    private String area_path_and_id;
-
-
-
-
 
 }

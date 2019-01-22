@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.domain.externalService.impl;
 
+import com.google.common.collect.Maps;
 import com.longfor.gaia.gfs.data.mybatis.datasource.LFAssignDataSource;
 import com.longfor.longjian.measure.dao.zhijian2_apisvr.UserMapper;
 import com.longfor.longjian.measure.domain.externalService.IUserService;
@@ -54,5 +55,21 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<User> getUserEntitiesByUserIds(List<Integer> userIds) {
         return userMapper.getUserEntitiesByUserIds(userIds);
+    }
+
+    @Override
+    @LFAssignDataSource("zhijian2_apisvr")
+    public Map<Integer, String> getUserRealNameMap(List<Integer> userIds) {
+        if (userIds.size() == 0) {
+            return Maps.newHashMap();
+        }
+        Example example = new Example(User.class);
+        example.createCriteria().andIn("userId", userIds);
+        Map<Integer, String> r = Maps.newHashMap();
+        List<User> userList = userMapper.selectByExample(example);
+        userList.forEach(user -> {
+            r.put(user.getUserId(), user.getRealName());
+        });
+        return r;
     }
 }

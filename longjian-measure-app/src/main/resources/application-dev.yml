@@ -238,3 +238,6 @@ api_svcs:
   PROJECT:
     addr: http://127.0.0.1:9202/v3/
 
+display_logo_url: assets/favicon.png
+display_company_name: 默认
+display_system_name: 智检

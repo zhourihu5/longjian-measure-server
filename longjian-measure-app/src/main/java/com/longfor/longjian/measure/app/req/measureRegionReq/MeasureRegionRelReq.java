@@ -14,16 +14,16 @@ public class MeasureRegionRelReq {
     /**
      * 集团id
      */
-    @NotNull
+    @NotNull(message = "group_id不能为空")
     private Integer group_id;
     /**
      * 项目id
      */
-    @NotNull
+    @NotNull(message = "proj_id不能为空")
     private Integer proj_id;
     /**
      * 描画区域uuid
      */
-    @NotNull
+    @NotNull(message = "region_uuid不能为空")
     private String region_uuid;
 }

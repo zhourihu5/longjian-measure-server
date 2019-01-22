@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.longfor.gaia.gfs.data.mybatis.datasource.LFAssignDataSource;
 import com.longfor.longjian.measure.consts.Enum.MeasureListCloseStatusEnum;
 import com.longfor.longjian.measure.consts.constant.MeasureListIssueType;
 import com.longfor.longjian.measure.dao.zhijian2.*;
@@ -47,11 +48,12 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     private MeasureListMapper measureListMapper;
     @Resource
     private UserMapper userMapper;
+
     @Override
     public Integer countByMeasureListId(String id) {
         Example example = new Example(MeasureListIssue.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("listId",id);
+        criteria.andEqualTo("listId", id);
         criteria.andIsNull("deleteAt");
         return measureListIssueMapper.selectCountByExample(example);
     }
@@ -61,15 +63,15 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
         Map<String, Object> map = new HashMap<>();
         Integer zoneCount = measureListIssueMapper.getZoneCount(project_id, measure_list_id, UNCLOSECODE);
         map.put("zone_count", zoneCount);
-        map.put("repairable_count", measureListIssueMapper.getCountByTyp(project_id, measure_list_id, REPAIRABLE,UNCLOSECODE));
-        map.put("unrepairable_count", measureListIssueMapper.getCountByTyp(project_id, measure_list_id, NOREPAIRABLE,UNCLOSECODE));
-        map.put("note_no_assign", measureListIssueMapper.getCountByStatus(project_id, measure_list_id, NOTENOASSIGN,UNCLOSECODE));
-        map.put("assign_no_reform", measureListIssueMapper.getCountByStatus(project_id, measure_list_id, ASSIGNNOREFORM,UNCLOSECODE));
-        map.put("reform_no_check", measureListIssueMapper.getCountByStatus(project_id, measure_list_id, REFORMNOCHECK,UNCLOSECODE));
-        map.put("check_yes", measureListIssueMapper.getCountByStatus(project_id, measure_list_id, CHECKYES,UNCLOSECODE));
+        map.put("repairable_count", measureListIssueMapper.getCountByTyp(project_id, measure_list_id, REPAIRABLE, UNCLOSECODE));
+        map.put("unrepairable_count", measureListIssueMapper.getCountByTyp(project_id, measure_list_id, NOREPAIRABLE, UNCLOSECODE));
+        map.put("note_no_assign", measureListIssueMapper.getCountByStatus(project_id, measure_list_id, NOTENOASSIGN, UNCLOSECODE));
+        map.put("assign_no_reform", measureListIssueMapper.getCountByStatus(project_id, measure_list_id, ASSIGNNOREFORM, UNCLOSECODE));
+        map.put("reform_no_check", measureListIssueMapper.getCountByStatus(project_id, measure_list_id, REFORMNOCHECK, UNCLOSECODE));
+        map.put("check_yes", measureListIssueMapper.getCountByStatus(project_id, measure_list_id, CHECKYES, UNCLOSECODE));
         //查找所有测区
         int count = measureZoneMapper.searchTotalByProjectIdAndMeasureListId(project_id, new int[]{measure_list_id});
-        String zonePercentage = String.format("%.2f",  (Double.parseDouble(zoneCount.toString()) / count) * 100);
+        String zonePercentage = String.format("%.2f", (Double.parseDouble(zoneCount.toString()) / count) * 100);
         if ("0.00".equals(zonePercentage) || zoneCount == 0 || count == 0) {
             map.put("zone_percentage", "0");
         } else {
@@ -174,12 +176,12 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     }
 
     @Override
-    public Map<String, Object> searchMeasueListIssueInProj(Integer projectId, Integer limit, Integer page, String category_key, List<Integer> areaIdList, List<String> measureListIdList, List<String> createAtRangeList, Integer status, Integer repairer_id, String is_overdue) throws Exception {
+    public Map<String, Object> searchMeasueListIssueInProj(Integer projectId, Integer limit, Integer page, String category_key, List<Integer> areaIdList, List<String> measureListIdList, List<String> createAtRangeList, Integer status, Integer repairer_id, Boolean is_overdue) throws Exception {
         Map<String, Object> map = Maps.newHashMap();
         Example example = new Example(MeasureListIssue.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("projectId", projectId);
-        if (measureListIdList.size() > 0) {
+        if (!measureListIdList.isEmpty() && measureListIdList.size() > 0) {
             criteria.andIn("listId", measureListIdList);
         }
         if (createAtRangeList.size() == 2 && Integer.parseInt(createAtRangeList.get(1)) > 0) {
@@ -188,7 +190,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
             Date t2 = sdf.parse(createAtRangeList.get(1));
             criteria.andBetween("createAt", t1, t2);
         }
-        if (areaIdList.size() > 0) {
+        if (!areaIdList.isEmpty() && areaIdList.size() > 0) {
             AreaUtils areaUtils = null;
             try {
                 areaUtils = this.createAreasMapByLeaveIds(areaIdList);
@@ -203,7 +205,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
                 }
             }
         }
-        if (category_key.length() > 0) {
+        if (category_key != null && category_key.length() > 0) {
             try {
                 CategoryV3 category = categoryV3Mapper.getCategoryByKeyNoFoundErr(category_key);
                 if (category != null) {
@@ -216,19 +218,20 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
             }
 
         }
-        if (status > 0) {
+        if (status != null && status > 0) {
             criteria.andEqualTo("status", status);
         }
-        if (repairer_id > 0) {
+        if (repairer_id != null && repairer_id > 0) {
             criteria.andEqualTo("repairerId", repairer_id);
         }
-        if (!is_overdue.equals("")) {
+        if (is_overdue != null && is_overdue != false) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Long nowTimestamp = sdf.parse("2006-01-02 23:59:59").getTime();
             Long startTimestamp = sdf.parse("1980-01-01 00:00:00").getTime();
             criteria.andGreaterThan("planEndOn", startTimestamp.intValue());
             criteria.andCondition("( end_on > plan_end_on or ( end_on < " + startTimestamp.intValue() + " and plan_end_on < " + nowTimestamp.intValue() + " ))");
         }
+        criteria.andIsNull("deleteAt");
         Integer count = measureListIssueMapper.selectCountByExample(example);
         Integer start = 0;
         if (page > 1) {
@@ -323,22 +326,6 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
         });
         return r;
     }
-
-    @Override
-    public Map<Integer, String> getUserRealNameMap(List<Integer> userIds) {
-        if (userIds.size() == 0) {
-            return Maps.newHashMap();
-        }
-        Example example = new Example(User.class);
-        example.createCriteria().andIn("userId", userIds);
-        Map<Integer, String> r = Maps.newHashMap();
-        List<User> userList = userMapper.selectByExample(example);
-        userList.forEach(user -> {
-            r.put(user.getUserId(), user.getRealName());
-        });
-        return r;
-    }
-
     @Override
     public Map<Integer, List<String>> getAreaPathNamesMap(List<Integer> areaIdLists) throws Exception {
         AreaUtils areaUtils = this.createAreasMapByLeaveIds(areaIdLists);
@@ -366,6 +353,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
 
         measureListIssueMapper.updateByExampleSelective(measureListIssue, example);
     }
+
     @Override
     public MeasureListIssue getByConditionNoFoundErr(Integer project_id, String uuid) {
         Example example = new Example(MeasureListIssue.class);
@@ -377,7 +365,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     public MeasureListIssue getByUuidUnscoped(String issueUuid) {
         Example example = new Example(MeasureListIssue.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("uuid",issueUuid);
+        criteria.andEqualTo("uuid", issueUuid);
         return measureListIssueMapper.selectOneByExample(example);
     }
 }

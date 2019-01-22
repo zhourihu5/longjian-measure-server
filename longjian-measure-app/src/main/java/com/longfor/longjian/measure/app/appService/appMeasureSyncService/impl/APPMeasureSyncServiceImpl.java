@@ -149,10 +149,12 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         List<ZoneInfoVo> zoneInfoVos = new ArrayList<>();
         MeasureList measureList = measureListService.getNoProjNoFoundErr(apiMeasureZoneReqV2.getList_id().toString());
         Integer lastId = 0;
-        lastId = measureList.getId();
         Integer start = 0;
         Integer limit = MEASURE_API_GET_PER_TIME;
         List<MeasureZone> measureZones = measureZoneService.searchZoneUnscopedByListIdLastIdUpdateAtGt2(measureList.getProjectId(), apiMeasureZoneReqV2.getList_id(), apiMeasureZoneReqV2.getLast_id(), apiMeasureZoneReqV2.getTimestamp(), start, limit);
+        if((measureZones.size()-1)>0){
+            lastId =measureZones.get(measureZones.size()-1).getId();
+        }
         measureZones.forEach(measureZone -> {
             ZoneInfoVo zoneInfoVo = converMeasureZoneToZoneInfoVo(measureZone);
             zoneInfoVos.add(zoneInfoVo);
@@ -529,8 +531,8 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         issueListVo.setDelete_time(measureListIssue.getDeleteAt() == null ? 0 : DateUtil.dateToTimestamp(measureListIssue.getDeleteAt()));
         issueListVo.setClose_user(measureListIssue.getCloseUser());
         issueListVo.setClose_time(measureListIssue.getCloseTime());
+        issueListVo.setClose_status(measureListIssue.getCloseStatus());
         issueListVo.setClient_create_at(measureListIssue.getClientCreateAt() == null ? 0 : DateUtil.dateToTimestamp(measureListIssue.getClientCreateAt()));
-        issueListVo.setCreate_at(measureListIssue.getCreateAt() == null ? 0 : DateUtil.dateToTimestamp(measureListIssue.getCreateAt()));
         return issueListVo;
     }
 

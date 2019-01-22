@@ -139,12 +139,46 @@
     </select>
     <!--List<MeasureList> searchListByProjIdUserId(@Param("projectId") String projectId,@Param("userId") Integer userId);-->
     <select id="searchListByProjIdUserId" resultMap="BaseResultMap">
-        select id, `name`, project_id, area_type, close_status, finish_status, root_category_key,
-    plan_begin_on, plan_end_on, create_at, update_at, delete_at
-    from
-     measure_list
-     where project_id
-     in(SELECT project_id FROM measure_squad_user WHERE project_id=1 AND delete_at IS NULL)
+             SELECT
+             id, `name`, project_id, area_type, close_status, finish_status, root_category_key,
+            plan_begin_on, plan_end_on, create_at, update_at, delete_at
+        FROM
+            measure_list ml
+        WHERE
+            ml.project_id = #{projectId}
+        AND (
+            (
+                ml.id IN (
+                    SELECT
+                        msu.list_id
+                    FROM
+                        measure_squad_user msu
+                    WHERE
+                        msu.project_id = #{projectId}
+                    AND msu.user_id = #{userId}
+                    AND (
+                        msu.delete_at IS NULL
+                        OR msu.delete_at = '0001-01-01 00:00:00'
+                    )
+                )
+            )
+            OR (
+                ml.id IN (
+                    SELECT
+                        mru.list_id
+                    FROM
+                        measure_repairer_user mru
+                    WHERE
+                        mru.project_id = #{projectId}
+                    AND mru.user_id = #{userId}
+                    AND (
+                        mru.delete_at IS NULL
+                        OR mru.delete_at = '0001-01-01 00:00:00'
+                    )
+                )
+            )
+        )
+        AND  ml.delete_at IS NULL
     </select>
     <select id="getMeasureListByProjIdAndId" resultMap="BaseResultMap">
         SELECT
@@ -160,7 +194,7 @@
     <!--void updateFinishStatus(Map<String,Object>map);-->
     <update id="updateFinishStatus">
 
-        update measure_list  set finish_status=#{finish_status},update_at=#{update_at}
+        update measure_list set finish_status=#{finish_status},update_at=#{update_at}
 
         where
 
@@ -173,7 +207,7 @@
     <!--void updateCloseStatus(Map<String,Object>map);-->
     <update id="updateCloseStatus">
 
-        update measure_list  set close_status=#{close_status},update_at=#{update_at}
+        update measure_list set close_status=#{close_status},update_at=#{update_at}
 
         where
 

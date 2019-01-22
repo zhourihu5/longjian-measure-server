@@ -33,9 +33,25 @@ public class IssueListVo {
      */
     private Integer list_id;
     /**
+     * 所属测区uuid
+     */
+    private String zone_uuid;
+    /**
      * 描画区域UUID
      */
     private String region_uuid;
+    /**
+     * 小队Id
+     */
+    private Integer squad_id;
+    /**
+     * 提交人user_id
+     */
+    private Integer sender_id;
+    /**
+     * 整改人user_id
+     */
+    private Integer repairer_id;
     /**
      * 区域Id
      */
@@ -47,28 +63,6 @@ public class IssueListVo {
     /**
      * 更新时间
      */
-    private Integer update_at;
-    /**
-     * 删除时间(`0`表示未删除)
-     */
-    private Integer delete_at;
-    /**
-     * 所属测区uuid
-     */
-    private String zone_uuid;
-    /**
-     * 小队Id
-     */
-    private Integer squad_id;
-    private String drawing_md5;
-    /**
-     * 提交人user_id
-     */
-    private Integer sender_id;
-    /**
-     * 整改人user_id
-     */
-    private Integer repairer_id;
     /**
      * 问题类型
      */
@@ -85,6 +79,7 @@ public class IssueListVo {
      * 完成时间
      */
     private Integer end_on;
+    private String drawing_md5;
     /**
      * 图纸上的位置X
      */
@@ -138,15 +133,16 @@ public class IssueListVo {
      */
     private Integer close_time;
     /**
+     *关闭标志 1=打开 2=关闭
+     */
+    private Integer close_status;
+    /**
      * 客户端记录时间
      */
     private Integer client_create_at;
+    private Integer update_at;
     /**
-     * 创建时间
+     * 删除时间(`0`表示未删除)
      */
-    private Integer create_at;
-
-    
-
-
+    private Integer delete_at;
 }

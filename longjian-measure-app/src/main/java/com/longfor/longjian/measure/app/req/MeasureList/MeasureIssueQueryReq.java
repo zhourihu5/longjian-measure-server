@@ -21,7 +21,7 @@ public class MeasureIssueQueryReq {
     private String area_ids;        // 区域ids
     private String measure_list_ids; // 清单ids
     private String create_at_range;   // 创建时间范围
-    private String is_overdue;        // 整改超期
+    private Boolean is_overdue;        // 整改超期
     private Integer repairer_id;          // 整改人Id
     private Integer status;          // 问题状态
 }

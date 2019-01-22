@@ -34,12 +34,4 @@ public class AreaProtoVo {
      *区域路径
      */
     private String path;
-    /**
-     *项目id
-     */
-    private Integer project_id;
-    /**
-     *区域类型
-     */
-    private Integer  type;
 }

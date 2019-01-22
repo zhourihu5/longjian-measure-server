@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.MeasureRegionRelSearchService.IMeasureRegionRelSearchService;
 import com.longfor.longjian.measure.app.appService.areaService.ICoreAreaService;
@@ -26,6 +27,7 @@ import javax.persistence.Column;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Jiazm 2019/01/09 11:03
@@ -58,7 +60,7 @@ public class MeasureRegionRelSearchImpl implements IMeasureRegionRelSearchServic
         measureRegionList.forEach(measureRegion -> {
             areaIds.add(measureRegion.getAreaId());
         });
-        List<Integer> areaIdPaths =Lists.newArrayList();
+        Set<Integer> areaIdPaths = Sets.newHashSet();
         List<AreaRetrieveVo> areaRetrieveVos = coreAreaService.searchByIdList(measureRegionRelReq.getProj_id(), areaIds);
         areaRetrieveVos.forEach(areaRetrieveVo -> {
             areaMap.put(areaRetrieveVo.getId(),areaRetrieveVo);
@@ -67,7 +69,7 @@ public class MeasureRegionRelSearchImpl implements IMeasureRegionRelSearchServic
                 areaIdPaths.add(Integer.parseInt(areaPathId));
             }
         });
-        List<AreaRetrieveVo> areaRetrieveVoList = coreAreaService.searchByIdList(measureRegionRelReq.getProj_id(), areaIds);
+        List<AreaRetrieveVo> areaRetrieveVoList = coreAreaService.searchByIdList(measureRegionRelReq.getProj_id(), new ArrayList<Integer>(areaIdPaths));
         areaRetrieveVoList.forEach(areaRetrieveVo -> {
             areaMap.put(areaRetrieveVo.getId(),areaRetrieveVo);
         });
@@ -115,8 +117,6 @@ public class MeasureRegionRelSearchImpl implements IMeasureRegionRelSearchServic
             areaProtoVo.setLocation(areaRetrieveVo.getLocation());
             areaProtoVo.setName(areaRetrieveVo.getName());
             areaProtoVo.setPath(areaRetrieveVo.getPath());
-            areaProtoVo.setProject_id(areaRetrieveVo.getProject_id());
-            areaProtoVo.setType(areaRetrieveVo.getType());
             measureRegionRelProtoVo.setArea(areaProtoVo);
             measureRegionRelProtoVos.add(measureRegionRelProtoVo);
         }

@@ -169,10 +169,10 @@ WHERE
         zone_uuid, client_create_at, create_at, update_at, delete_at
         from measure_list_issue
         where list_id=#{list_id}
-        and delete_at is null
         <if test="timestamp != null and timestamp >= 0">
             AND update_at > FROM_UNIXTIME( #{timestamp} )
         </if>
+        order by id ASC 
         limit #{start},#{limit}
     </select>
 

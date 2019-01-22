@@ -11,11 +11,11 @@ import java.util.List;
 @Data
 public class IssueVo {
     /**
-     * 本次获取的最后ID
-     */
-    private Integer last_id;
-    /**
      * issue列表
      */
     private List<IssueListVo> issue_list;
+    /**
+     * 本次获取的最后ID
+     */
+    private Integer last_id;
 }

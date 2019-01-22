@@ -18,4 +18,11 @@ public interface IUserService {
     Map<Integer, User> getUsersByIds(List<Integer> collect);
 
     List<User> getUserEntitiesByUserIds(List<Integer> userIds);
+
+    /**
+     *
+     * @param userIds
+     * @return
+     */
+    Map<Integer, String> getUserRealNameMap(List<Integer> userIds);
 }
