@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.app.req.measureRegionReq;
 
+import com.longfor.longjian.common.consts.ReqParamCheckErrors;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,16 +15,16 @@ public class AddOnProjReq {
     /**
      * 集团id
      */
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer group_id;
     /**
      * 项目id
      */
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer project_id;
     /**
      * 标签名列表, 用逗号分隔的字符串
      */
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private String name_list;
 }

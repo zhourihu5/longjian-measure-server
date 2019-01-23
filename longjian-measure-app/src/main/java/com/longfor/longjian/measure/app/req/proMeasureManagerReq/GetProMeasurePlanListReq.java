@@ -1,6 +1,9 @@
 package com.longfor.longjian.measure.app.req.proMeasureManagerReq;
 
+import com.longfor.longjian.common.consts.ReqParamCheckErrors;
 import lombok.Data;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * wangxs
@@ -35,10 +38,12 @@ public class GetProMeasurePlanListReq {
     /**
      * 页次
      */
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer page;
     /**
      * 每页数
      */
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer page_size;
 
 

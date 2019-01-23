@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.app.req.measureRegionReq;
 
+import com.longfor.longjian.common.consts.ReqParamCheckErrors;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,17 +15,17 @@ public class EditByProjIdReq {
     /**
      * 集团id
      */
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer group_id;
     /**
      * 编辑的标签列表
      */
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private String edit_tag_list;
     /**
      * 项目id
      */
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer project_id;
 
 }

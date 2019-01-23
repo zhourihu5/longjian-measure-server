@@ -1,7 +1,9 @@
 package com.longfor.longjian.measure.app.req.paintAreaReq;
 
+import com.longfor.longjian.common.consts.ReqParamCheckErrors;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -13,6 +15,7 @@ public class GetGroupMeasureRegionTagReq implements Serializable {
 
 
     private String _ct;
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer group_id;
     private String page_level;
     private Integer project_id;

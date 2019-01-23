@@ -155,7 +155,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
         String name = null;
         String mimeType = null;
         byte[] content = null;
-        CategoryV3 rc = null;
+        CategoryV3 rc = new CategoryV3();
         FileResource fileResource = null;
         if (formVo.getRootCategoryId() > 0) {
             try {

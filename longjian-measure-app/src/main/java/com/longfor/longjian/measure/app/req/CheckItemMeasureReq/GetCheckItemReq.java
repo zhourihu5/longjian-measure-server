@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.app.req.CheckItemMeasureReq;
 
+import com.longfor.longjian.common.consts.ReqParamCheckErrors;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,6 +19,6 @@ public class GetCheckItemReq {
     /**
      * Key
      */
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private String key;
 }

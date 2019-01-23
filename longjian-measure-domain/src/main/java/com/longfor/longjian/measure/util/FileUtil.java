@@ -5,9 +5,7 @@ import com.longfor.longjian.measure.vo.StoreUrlVo;
 import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -17,29 +15,26 @@ import java.util.List;
  */
 public class FileUtil {
     //将文件转换成byte数组
-    public static byte[] urlTobyte(String url) throws IOException {
-        URL ur = new URL(url);
-        BufferedInputStream in = null;
-        ByteArrayOutputStream out = null;
+    public static byte[] urlTobyte(String filePath) throws IOException {
+        byte[] buffer = null;
         try {
-            in = new BufferedInputStream(ur.openStream());
-            out = new ByteArrayOutputStream(1024);
-            byte[] temp = new byte[1024];
-            int size = 0;
-            while ((size = in.read(temp)) != -1) {
-                out.write(temp, 0, size);
+            File file = new File(filePath);
+            FileInputStream fis = new FileInputStream(file);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream(1000);
+            byte[] b = new byte[1000];
+            int n;
+            while ((n = fis.read(b)) != -1) {
+                bos.write(b, 0, n);
             }
-        } catch (Exception e) {
-            throw new MalformedURLException("error:" + e);
-        } finally {
-            try {
-                in.close();
-            } catch (IOException e) {
-                throw new IOException("error:" + e);
-            }
+            fis.close();
+            bos.close();
+            buffer = bos.toByteArray();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        byte[] content = out.toByteArray();
-        return content;
+        return buffer;
     }
     public static StoreUrlVo fileResourceGetStoreUrl(String storeKey) {
         StoreUrlVo storeUrlVo = new StoreUrlVo();

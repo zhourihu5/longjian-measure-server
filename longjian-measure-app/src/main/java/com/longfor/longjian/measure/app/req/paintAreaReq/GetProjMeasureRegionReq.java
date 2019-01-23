@@ -1,6 +1,9 @@
 package com.longfor.longjian.measure.app.req.paintAreaReq;
 
+import com.longfor.longjian.common.consts.ReqParamCheckErrors;
 import lombok.Data;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * wangxs
@@ -9,11 +12,14 @@ import lombok.Data;
 @Data
 public class GetProjMeasureRegionReq {
     private String _ct;
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer group_id;
     private String page_level;
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer project_id;
     private Integer team_id;
     private Integer proj_id;
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer area_id;
 
 }

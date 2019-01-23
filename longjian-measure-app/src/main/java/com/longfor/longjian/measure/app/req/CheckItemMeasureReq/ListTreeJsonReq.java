@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.app.req.CheckItemMeasureReq;
 
+import com.longfor.longjian.common.consts.ReqParamCheckErrors;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +20,6 @@ public class ListTreeJsonReq {
      * category_v3表id
      * 任务类型ID
      */
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer id;
 }

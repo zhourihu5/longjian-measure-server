@@ -24,12 +24,12 @@
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="delete_at" property="deleteAt" jdbcType="TIMESTAMP" />
+    <result column="data" property="data" jdbcType="LONGVARCHAR" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.longfor.longjian.measure.po.zhijian2.MeasureZoneResult" extends="BaseResultMap" >
     <!--
       WARNING - @mbg.generated
     -->
-    <result column="data" property="data" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     <!--
@@ -37,7 +37,7 @@
     -->
     id, project_id, area_id, area_path_and_id, category_key, category_path_and_key, close_status, 
     list_id, ok_total, region_uuid, rule_id, score, squad_id, total, uuid, zone_uuid, 
-    create_at, update_at, delete_at
+    create_at, update_at, delete_at,`data`
   </sql>
   <sql id="Blob_Column_List" >
     <!--

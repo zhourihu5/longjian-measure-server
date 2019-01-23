@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.app.req.CheckItemMeasureReq;
 
+import com.longfor.longjian.common.consts.ReqParamCheckErrors;
 import javafx.beans.DefaultProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,7 @@ public class UpdateReqMeasureReq {
     /**
      *检查项Id
      */
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer category_id;
     /**
      * 检查项类型
@@ -29,11 +30,10 @@ public class UpdateReqMeasureReq {
     /**
      *文件Md5
      */
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private String file_md5;
     /**
      *强制写入
      */
-    @NotNull
     private Boolean force;
 }

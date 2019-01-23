@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.app.req.measureRegionReq;
 
+import com.longfor.longjian.common.consts.ReqParamCheckErrors;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,16 +15,16 @@ public class MeasureRegionRelReq {
     /**
      * 集团id
      */
-    @NotNull(message = "group_id不能为空")
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer group_id;
     /**
      * 项目id
      */
-    @NotNull(message = "proj_id不能为空")
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer proj_id;
     /**
      * 描画区域uuid
      */
-    @NotNull(message = "region_uuid不能为空")
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private String region_uuid;
 }
