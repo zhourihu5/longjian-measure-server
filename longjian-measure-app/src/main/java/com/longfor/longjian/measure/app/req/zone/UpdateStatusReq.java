@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.app.req.zone;
 
+import com.longfor.longjian.common.consts.ReqParamCheckErrors;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -15,24 +16,24 @@ public class UpdateStatusReq {
     /**
      * 集团id
      */
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private  Integer group_id;
 
     /**
      * 项目id
      */
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private  Integer project_id;
 
     /**
      * 测区id列表以逗号分隔
      */
-    @NotBlank
+    @NotBlank(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private String zone_id_list;
 
     /**
      *测区开关状态
      */
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer close_status;
 }

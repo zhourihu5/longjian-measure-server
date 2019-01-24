@@ -3,8 +3,11 @@ package com.longfor.longjian.measure.app.appService.MeasureListIssueService.impl
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.entity.ProjectBase;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.util.CtrlTool;
 import com.longfor.longjian.common.util.DateUtil;
+import com.longfor.longjian.common.util.SessionInfo;
 import com.longfor.longjian.measure.app.appService.MeasureListIssueService.IMeasureListIssueAppService;
 import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.IMeasureListIssueDetailService;
 import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.impl.MeasureListIssueDetailImple;
@@ -53,20 +56,22 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
     private MeasureListIssueHelper helper;
     @Resource
     private IUserService userService;
-
+    @Resource
+    private SessionInfo sessionInfo;
     @Override
     public LjBaseResponse<MeasureIssueQueryVo> issueQueryJson(MeasureIssueQueryReq req, HttpServletRequest request) throws Exception {
         LjBaseResponse<MeasureIssueQueryVo> ljBaseResponse = new LjBaseResponse<>();
         MeasureIssueQueryVo measureIssueQueryVo = new MeasureIssueQueryVo();
         List<MeasureIssueQueryItemVo> measureIssueQueryItemVos = Lists.newArrayList();
+        ProjectBase projectBase =null;
         try {
             ctrlTool.projPerm(request, "项目.实测实量.爆点管理.查看");
+            projectBase = (ProjectBase)sessionInfo.getBaseInfo("cur_proj");
         } catch (Exception e) {
             log.error("error:" + e);
-            throw new Exception(e);
+            throw new LjBaseRuntimeException(-9999,e.getMessage());
         }
-        request.setAttribute("project_id", 927);
-        Integer projectId = (Integer) request.getAttribute("project_id");
+        Integer projectId = projectBase.getId();
         String[] areaIdArr = StringUtils.split(req.getArea_ids(), ",");
         Integer[] convert = (Integer[]) ConvertUtils.convert(areaIdArr, Integer.class);
         String[] measureListIdArr = StringUtils.split(req.getMeasure_list_ids(), ",");

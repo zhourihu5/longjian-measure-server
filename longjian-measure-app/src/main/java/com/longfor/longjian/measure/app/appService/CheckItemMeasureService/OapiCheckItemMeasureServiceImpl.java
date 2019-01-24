@@ -3,7 +3,10 @@ package com.longfor.longjian.measure.app.appService.CheckItemMeasureService;
 import com.google.common.collect.Maps;
 import com.longfor.longjian.common.FeignClient.IPermissionService;
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.entity.TeamBase;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.util.CtrlTool;
+import com.longfor.longjian.common.util.SessionInfo;
 import com.longfor.longjian.measure.app.feignClient.IMeasureFeignService;
 import com.longfor.longjian.measure.app.req.CheckItemMeasureReq.GetCategoryReq;
 import com.longfor.longjian.measure.app.req.CheckItemMeasureReq.GetCheckItemReq;
@@ -55,7 +58,8 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
     private CtrlTool ctrlTool;
     @Resource
     private ICategoryV3Service categoryV3Service;
-
+    @Resource
+    private SessionInfo sessionInfo;
     @Override
     public LjBaseResponse<GetCheckItemVo> getCheckItemJson(GetCheckItemReq getCheckItemReq, HttpServletRequest request) throws Exception {
         try {
@@ -141,16 +145,16 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
 
     @Override
     public LjBaseResponse<Object> file(FileReq fileReq, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        TeamBase teamBase =null;
         try {
             ctrlTool.teamPerm(request,"集团.实测实量.检查项管理.查看");
+            teamBase = (TeamBase)sessionInfo.getBaseInfo("cur_group");
         }catch (Exception e){
-            throw new Exception(e);
+            throw new LjBaseRuntimeException(-9999,e.getMessage());
         }
         LjBaseResponse<Object> ljBaseResponse = new LjBaseResponse<>();
         FormVo formVo = new FormVo();
         formVo.setRootCategoryId(fileReq.getId());
-        //todo 作用域取对象
-        Team curTeam = (Team) request.getAttribute("cur_group");
         ReadFileVo readFileVo = new ReadFileVo();
         String name = null;
         String mimeType = null;
@@ -160,8 +164,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
         if (formVo.getRootCategoryId() > 0) {
             try {
                 rc = checkItemV3Service.getRootCategoryNoFoundErr(formVo.getRootCategoryId());
-                //todo rc.getTeamId().equals(curTeam.getTeamId()) 作用域问题暂时无法比较
-                if (rc.getTeamId().equals(5)) {
+                if (rc.getTeamId().equals(teamBase.getTeamId())) {
                     ljBaseResponse.setMessage(LoginEnum.NO_PERMISSION.getName());
                     return ljBaseResponse;
                 }

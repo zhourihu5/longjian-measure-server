@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.app.req.staff;
 
+import com.longfor.longjian.common.consts.ReqParamCheckErrors;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -11,28 +12,28 @@ import javax.validation.constraints.NotNull;
 @Data
 public class RepairerListUpdateReq {
 
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer group_id;
 
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer project_id;
 
     /**
      * 任务id
      */
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer list_id;
 
 
     /**
      * 用户id以逗号分隔
      */
-    @NotBlank
+    @NotBlank(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private String user_id_list;
 
     /**
      * 整改小组人员类型
      */
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer role_type;
 }

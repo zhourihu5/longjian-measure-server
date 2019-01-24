@@ -1,7 +1,10 @@
 package com.longfor.longjian.measure.app.controller.MeasureListIssueController;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.entity.UserBase;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.util.CtrlTool;
+import com.longfor.longjian.common.util.SessionInfo;
 import com.longfor.longjian.measure.app.appService.MeasureListIssueService.IMeasureListIssueAppService;
 import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.IProMeasureListIssueService;
 import com.longfor.longjian.measure.app.req.MeasureList.MeasureIssueCloseStatusReq;
@@ -35,6 +38,9 @@ public class MeasureListIssue2Controller {
     private IProMeasureListIssueService proMeasureListIssueService;
     @Resource
     private CtrlTool ctrlTool;
+    @Resource
+    private SessionInfo sessionInfo;
+
     /**
      * go项目实测爆点整改搜所
      *http://192.168.37.159:3000/project/8/interface/api/2984
@@ -57,12 +63,17 @@ public class MeasureListIssue2Controller {
      */
     @PostMapping(value = "issue_edit/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<UpdateVo> issueEdit(@Valid MeasureIssueEdiReq req, HttpServletRequest request) throws Exception {
-        ctrlTool.projPerm(request, "项目.实测实量.爆点管理.编辑");
-        //todo request中取user
+        UserBase userBase =null;
+        try {
+            ctrlTool.projPerm(request, "项目.实测实量.爆点管理.编辑");
+            userBase = sessionInfo.getSessionUser();
+        }catch (Exception e){
+            throw new LjBaseRuntimeException(-9999,e.getMessage());
+        }
         LjBaseResponse<UpdateVo> ljBaseResponse = new LjBaseResponse<>();
         UpdateVo updateVo = new UpdateVo();
         try {
-            Integer uid = 2;
+            Integer uid = userBase.getUserId();
             measureListIssueService.updateMeasureListIssueByProjUuid(req.getProject_id(), req.getUuid(), req.getRepairer_id(), uid, req.getPlan_end_on());
         } catch (Exception e) {
             log.error("error:" + e);
@@ -82,12 +93,17 @@ public class MeasureListIssue2Controller {
      */
     @PostMapping(value = "issue_close_status/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<UpdateVo> issueCloseStatus(@Valid MeasureIssueCloseStatusReq req, HttpServletRequest request) throws Exception {
-        ctrlTool.projPerm(request,"项目.实测实量.爆点管理.编辑");
+        UserBase userBase =null;
+        try {
+            ctrlTool.projPerm(request, "项目.实测实量.爆点管理.编辑");
+            userBase = sessionInfo.getSessionUser();
+        }catch (Exception e){
+            throw new LjBaseRuntimeException(-9999,e.getMessage());
+        }
         LjBaseResponse<UpdateVo> ljBaseResponse = new LjBaseResponse<>();
         UpdateVo updateVo = new UpdateVo();
         //TODO 在此添加Controller逻辑（golang中就是todo）
-        //todo session中获取user
-        Integer uid =5;
+        Integer uid =userBase.getUserId();
         proMeasureListIssueService.updateIssueCloseStatusByUuid(req.getUuid(),req.getProject_id(),uid,req.getClose_status());
         ljBaseResponse.setData(updateVo);
         return ljBaseResponse;
@@ -103,7 +119,11 @@ public class MeasureListIssue2Controller {
      */
     @PostMapping(value = "issue_del/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<UpdateVo> issueDel(@Valid MeasureIssueDeleteReq req, HttpServletRequest request) throws Exception {
-        ctrlTool.projPerm(request,"项目.实测实量.爆点管理.删除");
+        try {
+            ctrlTool.projPerm(request,"项目.实测实量.爆点管理.删除");
+        }catch (Exception e){
+            throw new LjBaseRuntimeException(-9999,e.getMessage());
+        }
         LjBaseResponse<UpdateVo> ljBaseResponse = new LjBaseResponse<>();
         UpdateVo updateVo = new UpdateVo();
         //TODO 在此添加Controller逻辑（golang中就是todo）

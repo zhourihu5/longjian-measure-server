@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.app.req.zone;
 
+import com.longfor.longjian.common.consts.ReqParamCheckErrors;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -15,18 +16,18 @@ public class DelByUuidListReq {
     /**
      * 集团id
      */
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private  Integer group_id;
 
     /**
      * 项目id
      */
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private  Integer project_id;
 
     /**
      * 测区uuid
      */
-    @NotBlank
+    @NotBlank(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private String uuid_list;
 }

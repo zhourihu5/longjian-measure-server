@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.app.req.staff;
 
+import com.longfor.longjian.common.consts.ReqParamCheckErrors;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -10,22 +11,22 @@ import javax.validation.constraints.NotNull;
 @Data
 public class RepairerListSearchReq {
 
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer group_id;
 
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer project_id;
 
     /**
      * 任务id
      */
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer list_id;
 
     /**
      * 角色信息
      */
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer role_type;
 
 }
