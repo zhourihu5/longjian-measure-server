@@ -41,7 +41,11 @@ public class MeasureStatisticController {
      **/
     @GetMapping(value = "squad_measure_stats_json/" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse SquadMeasureStatsJson(@Valid GetMeasureStatisticTaskReq getMeasureStatisticTaskReq,HttpServletRequest request) throws Exception {
-        ctrlTool.projPerm(request,"项目.实测实量.统计.查看");
+        try {
+            ctrlTool.projPerm(request,"项目.实测实量.统计.查看");
+        }catch (Exception e){
+            throw new LjBaseRuntimeException(-9999,e.getMessage());
+        }
         return new LjBaseResponse<>(measureStatisticService.SquadMeasureStatsJson(getMeasureStatisticTaskReq));
     }
 }

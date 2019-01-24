@@ -151,7 +151,7 @@ public class JsonUtil {
         return df2.format(date1);
     }
 
-    public static void main(String[] args) throws ParseException {
+   /* public static void main(String[] args) throws ParseException {
         System.out.println(dealDateFormat("2017-06-23T11:30:19+08:00"));
-    }
+    }*/
 }
