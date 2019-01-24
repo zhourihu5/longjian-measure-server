@@ -889,7 +889,9 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     }
 
     private List<MeasureListSearchResult> list2SearchResult(Integer project_id, List<Map<String, Object>> list) {
-        // todo area 数据处理
+        Map<String,String> mapCategoryName = new HashMap<>();
+        List<Integer> listIds = new ArrayList<>(list.size());
+
         return null;
     }
 }

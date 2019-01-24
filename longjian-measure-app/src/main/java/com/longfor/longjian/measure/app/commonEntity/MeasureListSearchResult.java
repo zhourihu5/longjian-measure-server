@@ -4,11 +4,14 @@ import com.longfor.longjian.measure.po.zhijian2.Area;
 import com.longfor.longjian.measure.po.zhijian2.MeasureList;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 public class MeasureListSearchResult {
     private MeasureList list;
     private String rootCategory;
-    private Area topAreas;
+    private List<Area> topAreas = new ArrayList<>();
     private String finishStatus;
     private String closeStatus;
 }
