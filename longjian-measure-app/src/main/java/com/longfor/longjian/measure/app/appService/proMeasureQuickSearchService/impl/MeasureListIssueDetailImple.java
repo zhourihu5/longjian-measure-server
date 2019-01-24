@@ -1,7 +1,11 @@
 package com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.impl;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.entity.ProjectBase;
+import com.longfor.longjian.common.entity.UserBase;
 import com.longfor.longjian.common.exception.LjBaseRuntimeException;
+import com.longfor.longjian.common.util.CtrlTool;
+import com.longfor.longjian.common.util.SessionInfo;
 import com.longfor.longjian.measure.app.appService.areaService.ICoreAreaService;
 import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.IMeasureListIssueDetailService;
 import com.longfor.longjian.measure.app.commonEntity.AreasMap;
@@ -23,6 +27,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.text.ParseException;
 import java.util.*;
 
@@ -76,15 +81,22 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
 
     @Autowired
     private ICoreAreaService coreAreaService;
-
+    @Resource
+    private SessionInfo sessionInfo;
     @Override
     public MeasureListIssueDetailIssueInfoVo IssueInfo(GetMeasureListIssueDetailReq req) {
         MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(req.getProject_id(), req.getUuid());
         if (issue == null) {
             throw new LjBaseRuntimeException(-1,"");
         }
-        //todo 鉴权返回proj , 现暂时写死
-        MeasureListIssueInfo info = FormatMeasureListIssue(20, issue);
+        ProjectBase cur_proj=null;
+        try {
+            cur_proj= (ProjectBase)sessionInfo.getBaseInfo("cur_proj");
+        }catch (Exception e){
+            throw new LjBaseRuntimeException(-9999,e.getMessage());
+        }
+
+        MeasureListIssueInfo info = FormatMeasureListIssue(cur_proj.getId(), issue);
         MeasureListIssueDetailIssueInfoVo rsp = new MeasureListIssueDetailIssueInfoVo();
         rsp.setTask_name(info.getTaskName());
         rsp.setCategory_path_names(info.getAreaPathNames());
@@ -142,17 +154,22 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
             voResesults.add(squadResult);
         }
         vo.setResults(voResesults);
+        ProjectBase cur_proj=null;
+        try {
+            cur_proj= (ProjectBase)sessionInfo.getBaseInfo("cur_proj");
+        }catch (Exception e){
+            throw new LjBaseRuntimeException(-9999,e.getMessage());
+        }
 
         MeasureZone measureZone = null;
         try {
-            //方法需要的proj_id来自于权限部分, 先写死
-            measureZone = measureZoneService.GetZoneByUuid(20, issue.getZoneUuid());
+            measureZone = measureZoneService.GetZoneByUuid(cur_proj.getId(), issue.getZoneUuid());
         }catch (Exception e){
             log.error("");
         }
         if (measureZone!=null) {
             // proj_id 同上
-            MeasureRegion region = measureRegionService.GetByUuid(20, measureZone.getRegionUuid());
+            MeasureRegion region = measureRegionService.GetByUuid(cur_proj.getId(), measureZone.getRegionUuid());
             MeasureRegionVo regionvo = new MeasureRegionVo();
             if (region!=null) {
                 regionvo.setId(region.getId());
@@ -210,8 +227,14 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         List<MeasureListIssueDetailRepairerVo> vo = new ArrayList<>();
         MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(req.getProject_id(), req.getUuid());
         List<MeasureRepairerUser> measureRepairerUsers = null;
+        ProjectBase cur_proj=null;
+        try {
+            cur_proj= (ProjectBase)sessionInfo.getBaseInfo("cur_proj");
+        }catch (Exception e){
+            throw new LjBaseRuntimeException(-9999,e.getMessage());
+        }
         if (issue!=null) {
-            measureRepairerUsers = measureRepairerUserService.SearchMeasureReparierUserByListId(req.getProject_id(), issue.getListId());
+            measureRepairerUsers = measureRepairerUserService.SearchMeasureReparierUserByListId(cur_proj.getId(), issue.getListId());
         }
         List<Integer> uids = new ArrayList<>();
         for (MeasureRepairerUser repairerUser : measureRepairerUsers) {
@@ -235,11 +258,14 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
          * c *niuhe.Context
          * uId := getCurUid(c)
          */
-        //todo id是鉴权部分返回, 暂时写死
-        Integer uid= 1;
-        boolean isClosed = UpdateIssueRepairInfoByUuid(req.getUuid(), req.getProject_id(), uid, req.getRepairer_id(), -1L);
+        UserBase sessionUser=null;
+        try {
+            sessionUser = sessionInfo.getSessionUser();
+        }catch (Exception e){
+            throw new LjBaseRuntimeException(-9999,e.getMessage());
+        }
+        boolean isClosed = UpdateIssueRepairInfoByUuid(req.getUuid(), req.getProject_id(), sessionUser.getUserId(), req.getRepairer_id(), -1L);
         if (isClosed) {
-            //todo 异常码
             throw new LjBaseRuntimeException(-1,"问题已被关闭");
         }
     }
@@ -250,11 +276,14 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
          * c *niuhe.Context
          * uId := getCurUid(c)
          */
-        //todo id是鉴权部分返回, 暂时写死
-        Integer uid = 1;
-        boolean isClosed = UpdateIssueTypeByUuid(req.getUuid(), req.getProject_id(),uid, req.getType());
+        UserBase sessionUser=null;
+        try {
+            sessionUser = sessionInfo.getSessionUser();
+        }catch (Exception e){
+            throw new LjBaseRuntimeException(-9999,e.getMessage());
+        }
+        boolean isClosed = UpdateIssueTypeByUuid(req.getUuid(), req.getProject_id(),sessionUser.getUserId(), req.getType());
         if (isClosed) {
-            //todo 异常码
             throw new LjBaseRuntimeException(-1,"问题已被关闭");
         }
         return new LjBaseResponse();
@@ -267,11 +296,14 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
          * c *niuhe.Context
          * uId := getCurUid(c)
          */
-        //todo id是鉴权部分返回, 暂时写死
-        Integer uid = 1;
-        boolean isClosed = UpdateIssueRepairInfoByUuid(req.getUuid(), req.getProject_id(), uid, -1, req.getPlan_end_on());
+        UserBase sessionUser=null;
+        try {
+            sessionUser = sessionInfo.getSessionUser();
+        }catch (Exception e){
+            throw new LjBaseRuntimeException(-9999,e.getMessage());
+        }
+        boolean isClosed = UpdateIssueRepairInfoByUuid(req.getUuid(), req.getProject_id(), sessionUser.getUserId(), -1, req.getPlan_end_on());
         if (isClosed) {
-            //todo 异常码
             throw new LjBaseRuntimeException(-1,"问题已被关闭");
         }
         return new LjBaseResponse();

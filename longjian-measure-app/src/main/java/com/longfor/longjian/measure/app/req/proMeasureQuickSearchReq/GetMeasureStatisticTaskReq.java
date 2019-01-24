@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq;
 
+import com.longfor.longjian.common.consts.ReqParamCheckErrors;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -19,13 +20,13 @@ public class GetMeasureStatisticTaskReq {
     /**
      * 项目ID
      */
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer project_id;
 
     /**
      * 任务ID
      */
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer measure_list_id;
 }
 

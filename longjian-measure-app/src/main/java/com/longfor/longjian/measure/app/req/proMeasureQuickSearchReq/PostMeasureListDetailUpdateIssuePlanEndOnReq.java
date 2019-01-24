@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq;
 
+import com.longfor.longjian.common.consts.ReqParamCheckErrors;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -14,19 +15,19 @@ public class PostMeasureListDetailUpdateIssuePlanEndOnReq {
     /**
      * 唯一编号
      */
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private String uuid;
 
     /**
      *项目ID
      */
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer project_id;
 
     /**
      * 整改期限
      */
-    @NotNull
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Long plan_end_on;
 }
 

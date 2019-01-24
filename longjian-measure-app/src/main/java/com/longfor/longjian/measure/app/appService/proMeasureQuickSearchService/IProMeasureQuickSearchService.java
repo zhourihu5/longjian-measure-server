@@ -9,6 +9,7 @@ import com.longfor.longjian.measure.app.vo.proMeasureVo.CategoryListVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.CheckerVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.QuickSearchPlanVo;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface IProMeasureQuickSearchService {
@@ -19,13 +20,13 @@ public interface IProMeasureQuickSearchService {
      * @param getQuickSearchPlanListReq
      * @return
      */
-    LjBaseResponse<ItemsVo<List<QuickSearchPlanVo>>> getQuickSearchPlanList(GetQuickSearchPlanListReq getQuickSearchPlanListReq);
+    LjBaseResponse<ItemsVo<List<QuickSearchPlanVo>>> getQuickSearchPlanList(GetQuickSearchPlanListReq getQuickSearchPlanListReq, HttpServletRequest request);
 
     /**
      * go项目实测快速查询区域合格率检查项
      * @param getAreaPOPCheckItemList
      * @return
      */
-    LjBaseResponse<CategoryListVo> getAreaPOPCheckItemList(GetAreaPOPCheckItemListReq getAreaPOPCheckItemList);
+    LjBaseResponse<CategoryListVo> getAreaPOPCheckItemList(GetAreaPOPCheckItemListReq getAreaPOPCheckItemList, HttpServletRequest request);
 
 }
