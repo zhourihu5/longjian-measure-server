@@ -13,9 +13,9 @@ import java.util.Date;
  * 日期工具类
  * Created by Wang on 2018/8/10.
  */
-public class DateUtil {
+public class DateTool {
 
-    private static final Logger logger = LoggerFactory.getLogger(DateUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(DateTool.class);
 
 
     //日期格式，精确到日 2017-4-16
@@ -25,7 +25,7 @@ public class DateUtil {
     public static final DateFormat dateFormatter = DateFormat.getDateTimeInstance();
 
 
-    private DateUtil(){}
+    private DateTool(){}
 
     /**
      * 返回短时间格式

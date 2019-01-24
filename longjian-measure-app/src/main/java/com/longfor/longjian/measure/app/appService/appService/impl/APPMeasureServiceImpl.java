@@ -12,8 +12,6 @@ import com.longfor.longjian.measure.app.commonEntity.MeasureListIssueStruct;
 import com.longfor.longjian.measure.app.commonEntity.MeasureZoneResultCreateMsg;
 import com.longfor.longjian.measure.app.req.appReq.*;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.*;
-import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.PolygonVo;
-import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.RegionListVo;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.RelVo;
 import com.longfor.longjian.measure.consts.Enum.ApiDropDataReasonEnum;
 import com.longfor.longjian.measure.consts.Enum.EventQueueEnum;
@@ -21,8 +19,7 @@ import com.longfor.longjian.measure.consts.constant.KeyProcedureTaskConstant;
 import com.longfor.longjian.measure.consts.constant.MeasureListConstant;
 import com.longfor.longjian.measure.domain.externalService.*;
 import com.longfor.longjian.measure.po.zhijian2.*;
-import com.longfor.longjian.measure.util.DateUtil;
-import com.longfor.longjian.measure.util.StringUtil;
+import com.longfor.longjian.measure.util.DateTool;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -320,7 +317,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                     if (i == 0) {
                         senderId = t.getRecorder_id();
                     }
-                    if (t.getUpdate_at() != null && t.getUpdate_at() > DateUtil.getLongFromString(clientCreateAt)) {
+                    if (t.getUpdate_at() != null && t.getUpdate_at() > DateTool.getLongFromString(clientCreateAt)) {
                         clientCreateAt = t.getUpdate_at().toString();
                     }
                     i++;
@@ -328,7 +325,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                 msgPkg.append(zoneResult.getUuid(), zoneResult.getZoneUuid(), zoneResult.getProjectId(), zoneResult.getListId(),
                         senderId, zoneResult.getAreaId(), zoneResult.getAreaPathAndId(), zoneResult.getCategoryKey(),
                         zoneResult.getCategoryPathAndKey(), zoneResult.getOkTotal(), zoneResult.getTotal(),
-                        DateUtil.getLongFromString(clientCreateAt));
+                        DateTool.getLongFromString(clientCreateAt));
             } catch (Exception e) {
                 log.warn("zoneResultDao.GetByZoneUuid:" + resultListVo.getZone_uuid());
                 throw e;
@@ -476,7 +473,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             measureList = measureListService.getNoProjNoFoundErr(apiMeasureSquadAndRepairerReq.getList_id().toString());
             String updateAtGt = "";
             if (apiMeasureSquadAndRepairerReq.getTimestamp() != null && apiMeasureSquadAndRepairerReq.getTimestamp() > 0) {
-                updateAtGt = DateUtil.getDateStringByLong(apiMeasureSquadAndRepairerReq.getTimestamp());
+                updateAtGt = DateTool.getDateStringByLong(apiMeasureSquadAndRepairerReq.getTimestamp());
             }
             List<MeasureSquad> squads = measureSquadService.searchMeasureSquadByListIdTimestampGt(measureList.getProjectId(), apiMeasureSquadAndRepairerReq.getList_id(), updateAtGt);
             squads.forEach(measureSquad -> {

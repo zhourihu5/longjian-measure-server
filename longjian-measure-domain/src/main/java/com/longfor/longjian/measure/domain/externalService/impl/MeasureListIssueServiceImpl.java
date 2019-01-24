@@ -1,12 +1,8 @@
 package com.longfor.longjian.measure.domain.externalService.impl;
 
-import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.longfor.gaia.gfs.data.mybatis.datasource.LFAssignDataSource;
-import com.longfor.longjian.measure.consts.Enum.MeasureListCloseStatusEnum;
-import com.longfor.longjian.measure.consts.constant.MeasureListIssueType;
 import com.longfor.longjian.measure.dao.zhijian2.*;
 import com.longfor.longjian.measure.dao.zhijian2_apisvr.UserMapper;
 import com.longfor.longjian.measure.domain.externalService.IMeasureListIssueService;
@@ -14,16 +10,14 @@ import com.longfor.longjian.measure.po.zhijian2.Area;
 import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
 import com.longfor.longjian.measure.po.zhijian2.MeasureList;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListIssue;
-import com.longfor.longjian.measure.po.zhijian2_apisvr.User;
 import com.longfor.longjian.measure.util.AreaUtils;
 import com.longfor.longjian.measure.util.CategoryUtils;
-import com.longfor.longjian.measure.util.DateUtil;
+import com.longfor.longjian.measure.util.DateTool;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
@@ -114,8 +108,8 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
                 map.put("reform_count", 0);
             }
             result.add(map);
-            startTime = DateUtil.getShortDateStringByStringDate(startTime, 1);
-        } while (DateUtil.getLongFromShortString(startTime) <= DateUtil.getLongFromShortString(endTime));
+            startTime = DateTool.getShortDateStringByStringDate(startTime, 1);
+        } while (DateTool.getLongFromShortString(startTime) <= DateTool.getLongFromShortString(endTime));
 //        Collections.sort(humans, Comparator.comparing(Human::getName));
         return result;
     }

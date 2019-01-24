@@ -25,9 +25,8 @@ import com.longfor.longjian.measure.model.tree.CategoryPathTreeNode;
 import com.longfor.longjian.measure.po.zhijian2.*;
 import com.longfor.longjian.measure.po.zhijian2_apisvr.Team;
 import com.longfor.longjian.measure.util.ConvertUtil;
-import com.longfor.longjian.measure.util.DateUtil;
+import com.longfor.longjian.measure.util.DateTool;
 import com.longfor.longjian.measure.util.LambdaExceptionUtil;
-import com.netflix.ribbon.proxy.annotation.Http;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -298,11 +297,11 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         String endTime = "";
         //如果客户端传上来的为0 ，查找最近一周的
         if (getBlisterRateInfoTimeNotesReq.getBegin_on() <= 0 && getBlisterRateInfoTimeNotesReq.getEnd_on() <= 0) {
-            startTime = DateUtil.getBeforeWeekShortDate(new Date());
-            endTime = DateUtil.getStringDate(new Date());
+            startTime = DateTool.getBeforeWeekShortDate(new Date());
+            endTime = DateTool.getShortDateStringByLong(new Date().getTime());
         } else {
-            startTime = DateUtil.getShortDateStringByLong(getBlisterRateInfoTimeNotesReq.getBegin_on());
-            endTime = DateUtil.getShortDateStringByLong(getBlisterRateInfoTimeNotesReq.getEnd_on());
+            startTime = DateTool.getShortDateStringByLong(getBlisterRateInfoTimeNotesReq.getBegin_on());
+            endTime = DateTool.getShortDateStringByLong(getBlisterRateInfoTimeNotesReq.getEnd_on());
         }
         List<Map<String, Object>> blisterTimeNotesList = measureListIssueService.searchMeasureListIssueTrend(getBlisterRateInfoTimeNotesReq.getProject_id(), getBlisterRateInfoTimeNotesReq.getMeasure_list_id(), startTime, endTime, MeasureListConstant.UNCLOSECODE);
         blisterTimeNotesList.forEach(LambdaExceptionUtil.throwingConsumerWrapper(blisterTimeNote -> {
@@ -907,7 +906,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
                 measurePlanVo.setFinish_status(MeasureListConstant.FINISHED);
             }
             measurePlanVo.setIssue_count(measureListIssueService.countByMeasureListId(map.get("id").toString()));
-            measurePlanVo.setCreate_at(DateUtil.getLongFromString(map.get("createAt").toString()) / 1000);
+            measurePlanVo.setCreate_at(DateTool.getLongFromString(map.get("createAt").toString()) / 1000);
             // todo area 数据处理
             List<MeasureListSearchResult> r = list2SearchResult(getProMeasurePlanListReq.getProject_id(), list);
             measurePlanVoList.add(measurePlanVo);

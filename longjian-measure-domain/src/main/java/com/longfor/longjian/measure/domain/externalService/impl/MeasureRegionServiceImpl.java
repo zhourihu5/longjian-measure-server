@@ -5,8 +5,6 @@ import com.google.common.collect.Sets;
 import com.longfor.longjian.measure.dao.zhijian2.MeasureRegionMapper;
 import com.longfor.longjian.measure.domain.externalService.IMeasureRegionService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureRegion;
-import com.longfor.longjian.measure.util.DateUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 

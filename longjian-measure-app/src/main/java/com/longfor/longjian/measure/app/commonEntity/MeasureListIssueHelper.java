@@ -11,7 +11,7 @@ import com.longfor.longjian.measure.consts.constant.MeasureListConstant;
 import com.longfor.longjian.measure.consts.constant.MeasureListIssueType;
 import com.longfor.longjian.measure.domain.externalService.*;
 import com.longfor.longjian.measure.po.zhijian2.*;
-import com.longfor.longjian.measure.util.DateUtil;
+import com.longfor.longjian.measure.util.DateTool;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,7 +123,7 @@ public class MeasureListIssueHelper {
         this.currentLog.setStatus(status);
         this.currentLog.setAttachmentMd5List(attachmentMd5List);
         this.currentLog.setCategoryKey(categoryKey);
-        this.currentLog.setClientCreateAt(DateUtil.getDateByLong(clientCreateAt));
+        this.currentLog.setClientCreateAt(DateTool.getDateByLong(clientCreateAt));
         return this;
     }
 
