@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.kafka.KafkaProducer;
+import com.longfor.longjian.common.util.SessionInfo;
 import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureService;
 import com.longfor.longjian.measure.app.appService.appService.IKeyProcedureTaskAppService;
 import com.longfor.longjian.measure.app.commonEntity.MeasureListIssueHelper;
@@ -69,7 +71,8 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     private KafkaProducer kafkaProducer;
     @Resource
     private MeasureListIssueHelper helper;
-
+    @Resource
+    private SessionInfo sessionInfo;
 
     @Override
     public LjBaseResponse<DroppedInfoVo> reportIssue(ApiMeasureReportIssueReq apiMeasureReportIssueReq, HttpServletRequest request) throws Exception {
@@ -77,8 +80,12 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         DroppedInfoVo droppedInfoVo = new DroppedInfoVo();
         // 检查uuid，没有uuid也可以执行以下代码以保存请求内容
         String reportUuidStatus = KeyProcedureTaskConstant.ERROR;
-        // TODO session获取uid
-        Integer uid = 8;
+        Integer uid = null;
+        try {
+            uid = (Integer) sessionInfo.getBaseInfo("userId");
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
+        }
         try {
             keyProcedureTaskAppService.startReport(apiMeasureReportIssueReq.getReport_uuid(), uid, request);
         } catch (Exception e) {
@@ -89,19 +96,19 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         log.debug(apiMeasureReportIssueReq.getData());
         datas = JSONArray.parseArray(apiMeasureReportIssueReq.getData(), MeasureListIssueStruct.class);
 //        MeasureListIssueHelper helper = new MeasureListIssueHelper();
-        for (MeasureListIssueStruct v:datas
-             ) {
+        for (MeasureListIssueStruct v : datas
+        ) {
             helper.start().
-                    setNormalField(v.getUuid(),v.getList_id(),v.getIssue_uuid(),v.getSender_id(),v.getDesc(),
-                            v.getTyp(),v.getStatus(),v.getAttachment_md5_list(),v.getCategory_key(),Long.parseLong(v.getClient_create_at().toString())).
-                    setDatailField(v.getZone_uuid(),Long.parseLong(v.getPlan_end_on().toString()),Long.parseLong(v.getEnd_on().toString()),v.getRepairer_id(),
-                            v.getCondition(),v.getArea_id(),v.getDrawing_md5(),v.getPos_x(),v.getPos_y(),
-                            v.getClose_status(),v.getClose_user(),Long.parseLong(v.getClose_time().toString()),v.getCheck_status())
+                    setNormalField(v.getUuid(), v.getList_id(), v.getIssue_uuid(), v.getSender_id(), v.getDesc(),
+                            v.getTyp(), v.getStatus(), v.getAttachment_md5_list(), v.getCategory_key(), Long.parseLong(v.getClient_create_at().toString())).
+                    setDatailField(v.getZone_uuid(), Long.parseLong(v.getPlan_end_on().toString()), Long.parseLong(v.getEnd_on().toString()), v.getRepairer_id(),
+                            v.getCondition(), v.getArea_id(), v.getDrawing_md5(), v.getPos_x(), v.getPos_y(),
+                            v.getClose_status(), v.getClose_user(), Long.parseLong(v.getClose_time().toString()), v.getCheck_status())
                     .done();
         }
-        try{
+        try {
             helper.execute();
-        }catch (Exception e){
+        } catch (Exception e) {
             throw e;
         }
         droppedInfoVo.setDropped(helper.getDroppedIssueLog());
@@ -116,8 +123,12 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         DroppedInfoVo droppedInfoVo = new DroppedInfoVo();
         // 检查uuid，没有uuid也可以执行以下代码以保存请求内容
         String reportUuidStatus = KeyProcedureTaskConstant.ERROR;
-        // TODO session获取uid
-        Integer uid = 8;
+        Integer uid = null;
+        try {
+            uid = (Integer) sessionInfo.getBaseInfo("userId");
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
+        }
         try {
             keyProcedureTaskAppService.startReport(apiMeasureReportZoneResultReq.getReport_uuid(), uid, request);
         } catch (Exception e) {
@@ -735,14 +746,14 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
      */
     private RelVo converMeasureRegionRelToRegionRelListVo(MeasureRegionRel regionRel) {
         RelVo relVo = new RelVo();
-        relVo.setDelete_at(regionRel.getDeleteAt() == null ? 0 : (int)(regionRel.getDeleteAt().getTime() / 1000));
+        relVo.setDelete_at(regionRel.getDeleteAt() == null ? 0 : (int) (regionRel.getDeleteAt().getTime() / 1000));
         if (StringUtils.isNotBlank(regionRel.getDesc())) {
             relVo.setDesc(regionRel.getDesc());
         }
         relVo.setId(regionRel.getId());
         relVo.setProject_id(regionRel.getProjectId());
         relVo.setRegion_ids(regionRel.getRegionIds());
-        relVo.setUpdate_at(regionRel.getUpdateAt() == null ? 0 : (int)(regionRel.getUpdateAt().getTime()/1000));
+        relVo.setUpdate_at(regionRel.getUpdateAt() == null ? 0 : (int) (regionRel.getUpdateAt().getTime() / 1000));
         return relVo;
     }
 
@@ -756,7 +767,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         MeasureRegionListVo regionListVo = new MeasureRegionListVo();
         regionListVo.setArea_id(region.getAreaId());
         regionListVo.setArea_path_and_id(region.getAreaPathAndId());
-        regionListVo.setDelete_at(region.getDeleteAt() == null ? 0 : (int)(region.getDeleteAt().getTime() / 1000));
+        regionListVo.setDelete_at(region.getDeleteAt() == null ? 0 : (int) (region.getDeleteAt().getTime() / 1000));
         regionListVo.setDrawing_md5(region.getDrawingMd5());
         regionListVo.setId(region.getId());
         regionListVo.setProject_id(region.getProjectId());
@@ -766,7 +777,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         if (StringUtils.isNotBlank(region.getTagIdList())) {
             regionListVo.setTag_id_list(region.getTagIdList());
         }
-        regionListVo.setUpdate_at(region.getUpdateAt() == null ? 0 : (int)(region.getUpdateAt().getTime() / 1000));
+        regionListVo.setUpdate_at(region.getUpdateAt() == null ? 0 : (int) (region.getUpdateAt().getTime() / 1000));
         regionListVo.setUuid(region.getUuid());
         JSONObject polygon = JSON.parseObject(region.getPolygon());
         regionListVo.setPolygon(Double.parseDouble(polygon.get("X") + "") + "," + Double.parseDouble(polygon.get("Y") + ""));

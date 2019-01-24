@@ -147,7 +147,7 @@ public class ProMeasureQuickSearchController {
      * @return
      */
     @GetMapping(value = "measure/measure_statistic/issue_brief_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<BlisterRateInfoVo> getBlisterRateInfo(GetBlisterRateInfoReq getBlisterRateInfoReq) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    public LjBaseResponse<BlisterRateInfoVo> getBlisterRateInfo(@Valid GetBlisterRateInfoReq getBlisterRateInfoReq) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
         return proMeasureService.getBlisterRateInfo(getBlisterRateInfoReq);
     }
 
@@ -159,7 +159,7 @@ public class ProMeasureQuickSearchController {
      * @return
      */
     @GetMapping(value = "measure/measure_statistic/issue_trend_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<ItemsVo<List<BlisterTimeNotesVo>>> getBlisterRateInfoTimeNotes(GetBlisterRateInfoTimeNotesReq getBlisterRateInfoTimeNotesReq) throws ParseException {
+    public LjBaseResponse<ItemsVo<List<BlisterTimeNotesVo>>> getBlisterRateInfoTimeNotes(@Valid GetBlisterRateInfoTimeNotesReq getBlisterRateInfoTimeNotesReq) throws ParseException {
         return proMeasureService.getBlisterRateInfoTimeNotes(getBlisterRateInfoTimeNotesReq);
     }
 
@@ -170,7 +170,7 @@ public class ProMeasureQuickSearchController {
      * @return
      */
     @GetMapping(value = "measure/measure_statistic/issue_distribution_category_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<BlisterCheckItemsVo> getBlisterRateCheckItems(GetBlisterRateCheckItemsReq getBlisterRateCheckItemsReq){
+    public LjBaseResponse<BlisterCheckItemsVo> getBlisterRateCheckItems(@Valid GetBlisterRateCheckItemsReq getBlisterRateCheckItemsReq){
         return proMeasureService.getBlisterRateCheckItems(getBlisterRateCheckItemsReq);
     }
 
@@ -180,7 +180,7 @@ public class ProMeasureQuickSearchController {
      * @return
      */
     @GetMapping(value = "measure/measure_statistic/sub_category_area_percentage/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<ItemsVo<List<AreaPOPVo>>> getAreaPOP(GetAreaPOPReq getAreaPOPreq) throws Exception {
+    public LjBaseResponse<ItemsVo<List<AreaPOPVo>>> getAreaPOP(@Valid GetAreaPOPReq getAreaPOPreq) throws Exception {
         return proMeasureService.getAreaPOP(getAreaPOPreq);
     }
     

@@ -71,7 +71,13 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     public LjBaseResponse<ProMeasurePlanListVo> getProMeasurePlanList(GetProMeasurePlanListReq getProMeasurePlanListReq, HttpServletRequest request) throws Exception {
         LjBaseResponse<ProMeasurePlanListVo> ljBaseResponse = new LjBaseResponse<>();
         ProMeasurePlanListVo proMeasurePlanListVo = new ProMeasurePlanListVo();
-        ctrlTool.projPerm(request, "项目.实测实量.任务管理.查看");
+        ProjectBase projectBase =null;
+        try {
+            ctrlTool.projPerm(request, "项目.实测实量.任务管理.查看");
+            projectBase =(ProjectBase)sessionInfo.getBaseInfo("cur_proj");
+        }catch (Exception e){
+            throw new LjBaseRuntimeException(-9999,e.getMessage());
+        }
         String[] userIds = null;
         if (StringUtils.isNotBlank(getProMeasurePlanListReq.getUser_ids())) {
             userIds = getProMeasurePlanListReq.getUser_ids().split(",");
@@ -81,7 +87,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         //areaPathAndId 参数赋值
         String areaPathAndId = getAreaPathAndId(getProMeasurePlanListReq);
         //获取measureList
-        List<ProMeasurePlanVo> list = SearchByProjIdCategoryKeyAreaIdStatusUserIdInPage(getProMeasurePlanListReq, userIds, categoryPathAndKey, areaPathAndId);
+        List<ProMeasurePlanVo> list = SearchByProjIdCategoryKeyAreaIdStatusUserIdInPage(projectBase,getProMeasurePlanListReq, userIds, categoryPathAndKey, areaPathAndId);
         //获取total
         Integer total = measureListService.getTotalMeasure(getProMeasurePlanListReq.getFinish_status(), getProMeasurePlanListReq.getQ(), getProMeasurePlanListReq.getProject_id(), categoryPathAndKey, areaPathAndId, userIds);
         proMeasurePlanListVo.setItems(list);
@@ -159,6 +165,12 @@ public class ProMeasureServiceImpl implements IProMeasureService {
 
     @Override
     public LjBaseResponse<ItemsVo<List<CheckerVo>>> getCheckerList(GetCheckerListReq getCheckerListReq) {
+        try {
+            ctrlTool.projPerm(RequestContextHolderUtil.getRequest(),"项目.实测实量.描画区域管理.查看");
+        }catch (Exception e){
+            log.error(e.getMessage());
+            throw new LjBaseRuntimeException(-9999,e.getMessage());
+        }
         LjBaseResponse<ItemsVo<List<CheckerVo>>> ljBaseResponse = new LjBaseResponse<>();
         ItemsVo<List<CheckerVo>> itemsVo = new ItemsVo<>();
         List<CheckerVo> checkerVos = new ArrayList<>();
@@ -331,6 +343,13 @@ public class ProMeasureServiceImpl implements IProMeasureService {
 
     @Override
     public LjBaseResponse<ItemsVo<List<AreaPOPVo>>> getAreaPOP(GetAreaPOPReq getAreaPOPreq) throws Exception {
+        ProjectBase projectBase =null;
+        try {
+            ctrlTool.projPerm(RequestContextHolderUtil.getRequest(),"项目.实测实量.统计.查看");
+            projectBase =(ProjectBase)sessionInfo.getBaseInfo("cur_proj");
+        }catch (Exception e){
+
+        }
         LjBaseResponse<ItemsVo<List<AreaPOPVo>>> ljBaseResponse = new LjBaseResponse<>();
         ItemsVo<List<AreaPOPVo>> itemsVo = new ItemsVo<>();
         List<AreaPOPVo> areaPOPVos = new ArrayList<>();
@@ -340,7 +359,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         if (listIds.length == 0 || areaIds.length == 0 || getAreaPOPreq.getParent_category_key().length() == 0) {
             throw new Exception("参数不完整");
         }
-        List<Map<String, Object>> list = searchMeasureCategoryAreaStatByProjectIdAndListIdsAndParentCategoryKeyAndAreaIds(getAreaPOPreq.getProject_id(), listIds, getAreaPOPreq.getParent_category_key(), areaIds);
+        List<Map<String, Object>> list = searchMeasureCategoryAreaStatByProjectIdAndListIdsAndParentCategoryKeyAndAreaIds(projectBase.getId(), listIds, getAreaPOPreq.getParent_category_key(), areaIds);
         list.forEach(LambdaExceptionUtil.throwingConsumerWrapper(map -> {
             AreaPOPVo areaPOPVo = (AreaPOPVo) ConvertUtil.convertMap(AreaPOPVo.class, map);
             List<MeasureStatisticAreaDistributeVo> area_dist = new ArrayList<>();
@@ -888,10 +907,10 @@ public class ProMeasureServiceImpl implements IProMeasureService {
      * @param areaPathAndId
      * @return
      */
-    private List<ProMeasurePlanVo> SearchByProjIdCategoryKeyAreaIdStatusUserIdInPage(GetProMeasurePlanListReq getProMeasurePlanListReq, String[] userIds, String categoryPathAndKey, String areaPathAndId) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException, ParseException {
+    private List<ProMeasurePlanVo> SearchByProjIdCategoryKeyAreaIdStatusUserIdInPage(ProjectBase projectBase,GetProMeasurePlanListReq getProMeasurePlanListReq, String[] userIds, String categoryPathAndKey, String areaPathAndId) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException, ParseException {
         List<ProMeasurePlanVo> measurePlanVoList = new ArrayList<>();
         //查询 MeasureList
-        List<Map<String, Object>> list = measureListService.getMeasureList(getProMeasurePlanListReq.getFinish_status(), getProMeasurePlanListReq.getQ(), getProMeasurePlanListReq.getProject_id(), categoryPathAndKey, areaPathAndId, userIds, getProMeasurePlanListReq.getPage(), getProMeasurePlanListReq.getPage_size());
+        List<Map<String, Object>> list = measureListService.getMeasureList(getProMeasurePlanListReq.getFinish_status(), getProMeasurePlanListReq.getQ(),projectBase.getId(), categoryPathAndKey, areaPathAndId, userIds, getProMeasurePlanListReq.getPage(), getProMeasurePlanListReq.getPage_size());
         for (Map<String, Object> map : list
         ) {
             //map转换成vo

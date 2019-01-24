@@ -28,7 +28,7 @@ public class ZoneController {
      * @return
      */
     @GetMapping(value = "pagination_search" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse paginationSearch(PaginationSearchReq paginationSearchReq)throws CommonException {
+    public LjBaseResponse paginationSearch(@Valid PaginationSearchReq paginationSearchReq)throws CommonException {
         return new LjBaseResponse(zoneService.paginationSearch(paginationSearchReq));
     }
 
@@ -38,7 +38,7 @@ public class ZoneController {
      * @return
      */
     @GetMapping(value = "get_result" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse getResult( GetResultReq getResultReq) {
+    public LjBaseResponse getResult( @Valid GetResultReq getResultReq) {
         return new LjBaseResponse(zoneService.getResult(getResultReq));
     }
 

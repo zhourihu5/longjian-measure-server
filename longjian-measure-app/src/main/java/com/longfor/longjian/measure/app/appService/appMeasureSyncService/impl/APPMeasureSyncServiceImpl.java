@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.util.DateUtil;
+import com.longfor.longjian.common.util.SessionInfo;
 import com.longfor.longjian.measure.app.appService.appMeasureSyncService.IAPPMeasureSyncService;
 import com.longfor.longjian.measure.app.appService.appService.IKeyProcedureTaskAppService;
 import com.longfor.longjian.measure.app.req.apiMeasureRuleReq.*;
@@ -18,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -46,6 +49,8 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
     private IMeasureRegionService measureRegionService;
     @Autowired
     private ICheckItemService checkItemService;
+    @Resource
+    private SessionInfo sessionInfo;
 
     @Override
     public LjBaseResponse<RuleListVo> getMeasureRule(ApiMeasureRuleReq apiMeasureRuleReq) throws Exception {
@@ -91,10 +96,12 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
             throw new Exception("project id is empty.");
         }
         String[] projectIds = apiMyTaskReq.getProject_id().split(",");
-        //HttpSession session = request.getSession();
-        //todo session没有uid
-        //Integer userId = (Integer) session.getAttribute("uid");
-        Integer userId = 6;
+        Integer userId = null;
+        try {
+            userId = (Integer) sessionInfo.getBaseInfo("userId");
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
+        }
         for (String projectId : projectIds
         ) {
             List<MeasureList> measureLists = measureListService.searchListByProjIdUserId(projectId, userId);
@@ -152,8 +159,8 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         Integer start = 0;
         Integer limit = MEASURE_API_GET_PER_TIME;
         List<MeasureZone> measureZones = measureZoneService.searchZoneUnscopedByListIdLastIdUpdateAtGt2(measureList.getProjectId(), apiMeasureZoneReqV2.getList_id(), apiMeasureZoneReqV2.getLast_id(), apiMeasureZoneReqV2.getTimestamp(), start, limit);
-        if((measureZones.size()-1)>0){
-            lastId =measureZones.get(measureZones.size()-1).getId();
+        if ((measureZones.size() - 1) > 0) {
+            lastId = measureZones.get(measureZones.size() - 1).getId();
         }
         measureZones.forEach(measureZone -> {
             ZoneInfoVo zoneInfoVo = converMeasureZoneToZoneInfoVo(measureZone);
@@ -247,9 +254,12 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         List<DroppedVo> droppedVos = new ArrayList<>();
         ReportStatusEnum reportUuidStatus = ReportStatusEnum.ERROR;
         //获取uid
-        //todo 暂时获取不到uid
-        //Integer uid = (Integer)request.getSession().getAttribute("uid");
-        Integer uid = 8;
+        Integer uid = null;
+        try {
+            uid = (Integer) sessionInfo.getBaseInfo("userId");
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
+        }
         try {
             keyProcedureTaskAppService.startReport(apiMeasureReportRegionReq.getReport_uuid(), uid, request);
         } catch (Exception e) {
@@ -347,9 +357,12 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         LjBaseResponse<DroppedInfoVo> ljBaseResponse = new LjBaseResponse<>();
         DroppedInfoVo droppedInfoVo = new DroppedInfoVo();
         //获取uid
-        //todo 暂时获取不到uid
-        //Integer uid = (Integer)request.getSession().getAttribute("uid");
-        Integer uid = 8;
+        Integer uid = null;
+        try {
+            uid = (Integer) sessionInfo.getBaseInfo("userId");
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
+        }
         try {
             keyProcedureTaskAppService.startReport(req.getReport_uuid(), uid, request);
         } catch (Exception e) {

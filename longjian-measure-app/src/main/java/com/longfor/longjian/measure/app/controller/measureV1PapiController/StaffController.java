@@ -30,7 +30,7 @@ public class StaffController {
      * @throws CommonException
      */
     @GetMapping(value = "squad_search" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse squadSearch(SquadSearchReq squadSearchReq) throws CommonException {
+    public LjBaseResponse squadSearch(@Valid SquadSearchReq squadSearchReq) throws CommonException {
         return new LjBaseResponse(iStaffService.squadSearch(squadSearchReq));
     }
 
@@ -41,12 +41,12 @@ public class StaffController {
      * @throws CommonException
      */
     @GetMapping(value = "allow_user_search" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse allowUserSearch( AllowUserSearchReq allowUserSearchReq) throws CommonException {
+    public LjBaseResponse allowUserSearch(@Valid AllowUserSearchReq allowUserSearchReq) throws CommonException {
         return new LjBaseResponse(iStaffService.allowUserSearch(allowUserSearchReq));
     }
 
     @GetMapping(value = "repairer_list_search" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse repairerListSearch( RepairerListSearchReq repairerListSearchReq) throws CommonException {
+    public LjBaseResponse repairerListSearch( @Valid RepairerListSearchReq repairerListSearchReq) throws CommonException {
         return new LjBaseResponse(iStaffService.repairerListSearch(repairerListSearchReq));
     }
 
