@@ -103,7 +103,6 @@ public class MeasureListIssue2Controller {
         LjBaseResponse<UpdateVo> ljBaseResponse = new LjBaseResponse<>();
         UpdateVo updateVo = new UpdateVo();
         //TODO 在此添加Controller逻辑（golang中就是todo）
-        //todo session中获取user
         Integer uid =userBase.getUserId();
         proMeasureListIssueService.updateIssueCloseStatusByUuid(req.getUuid(),req.getProject_id(),uid,req.getClose_status());
         ljBaseResponse.setData(updateVo);
