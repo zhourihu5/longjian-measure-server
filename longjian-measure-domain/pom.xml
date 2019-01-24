@@ -22,6 +22,12 @@
     <dependencies>
 
         <dependency>
+            <groupId>com.longfor.longjian</groupId>
+            <artifactId>longjian-common</artifactId>
+            <version>1.0.4-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.longfor.gaia.gfs</groupId>
             <artifactId>gaia-gfs-data-mybatis</artifactId>
             <version>${gaia-gfs.version}</version>

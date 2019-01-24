@@ -2,6 +2,7 @@ package com.longfor.longjian.measure.config;
 
 import com.longfor.gaia.gfs.data.redis.DynamicRedisProvider;
 import com.longfor.gaia.gfs.data.redis.JacksonSerializer;
+import com.longfor.longjian.common.framework.CustomRedisTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -19,11 +20,10 @@ public class RedisConfig {
     @Resource
     private DynamicRedisProvider dynamicRedisProvider;
 
-    @Bean(name = "demoRedis")
-    public RedisTemplate demoRedis() {
-        StringRedisTemplate template = new StringRedisTemplate(dynamicRedisProvider.loadRedis().get("demoRedis"));
+    @Bean(name = "redisTemplate")
+    public RedisTemplate basicRedis() {
+        CustomRedisTemplate template = new CustomRedisTemplate(dynamicRedisProvider.loadRedis().get("demoRedis"));
         JacksonSerializer.setJacksonSerializer(template);
         return template;
     }
-
 }
