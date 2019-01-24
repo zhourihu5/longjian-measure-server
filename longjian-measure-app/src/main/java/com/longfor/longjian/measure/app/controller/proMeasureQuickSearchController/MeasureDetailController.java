@@ -51,7 +51,7 @@ public class MeasureDetailController {
             ctrlTool.projPerm(request, "项目.实测实量.任务管理.查看");
             UserBase user = sessionInfo.getSessionUser();
             ProjectBase cur_proj = (ProjectBase)sessionInfo.getBaseInfo("cur_proj");
-            measureDetailService.exportExcelAsync(1, 1, req.getList_id(), response);
+            measureDetailService.exportExcelAsync(user.getUserId(), cur_proj.getId(), req.getList_id(), response);
         } catch (Exception e) {
             log.error("error:" + e);
             throw new LjBaseRuntimeException(-9999,e.getMessage());

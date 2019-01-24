@@ -1,8 +1,12 @@
 package com.longfor.longjian.measure.app.appService.proMeasureManagerService.impl;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.entity.ProjectBase;
+import com.longfor.longjian.common.entity.TeamBase;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.util.CtrlTool;
 import com.longfor.longjian.common.util.RequestContextHolderUtil;
+import com.longfor.longjian.common.util.SessionInfo;
 import com.longfor.longjian.measure.app.appService.proMeasureManagerService.IProMeasureService;
 import com.longfor.longjian.measure.app.commonEntity.MeasureListSearchResult;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetCheckerListReq;
@@ -23,11 +27,13 @@ import com.longfor.longjian.measure.po.zhijian2_apisvr.Team;
 import com.longfor.longjian.measure.util.ConvertUtil;
 import com.longfor.longjian.measure.util.DateUtil;
 import com.longfor.longjian.measure.util.LambdaExceptionUtil;
+import com.netflix.ribbon.proxy.annotation.Http;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
@@ -58,6 +64,8 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     private IMeasureSquadService measureSquadService;
     @Autowired
     private CtrlTool ctrlTool;
+    @Resource
+    private SessionInfo sessionInfo;
 
     @Override
     public LjBaseResponse<ProMeasurePlanListVo> getProMeasurePlanList(GetProMeasurePlanListReq getProMeasurePlanListReq, HttpServletRequest request) throws Exception {
@@ -83,13 +91,19 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     }
 
     @Override
-    public LjBaseResponse<ItemsVo<List<ProMeasureCheckIteamVo>>> getProMeasureCheckItems(GetProMeasureCheckItemsReq getProMeasureCheckItemsReq) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
+    public LjBaseResponse<ItemsVo<List<ProMeasureCheckIteamVo>>> getProMeasureCheckItems(GetProMeasureCheckItemsReq getProMeasureCheckItemsReq, HttpServletRequest request) throws Exception {
+        TeamBase group = null;
+        try {
+            ctrlTool.projPerm(request, "项目.实测实量.任务管理.查看");
+            group = (TeamBase) sessionInfo.getBaseInfo("cur_group");
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
+        }
         LjBaseResponse<ItemsVo<List<ProMeasureCheckIteamVo>>> ljBaseResponse = new LjBaseResponse<>();
         ItemsVo<List<ProMeasureCheckIteamVo>> itemsVo = new ItemsVo<>();
         List<ProMeasureCheckIteamVo> proMeasureCheckIteamVoArrayList = new ArrayList<>();
-        //todo 从sessionz中取出group信息（Team表）,然后找到最顶层的父级team ,暂时手动赋值
         Team team = new Team();
-        team.setTeamId(4);
+        team.setTeamId(group.getTeamId());
         List<Map<String, Object>> list = new ArrayList<>();
         if (StringUtils.isNotBlank(getProMeasureCheckItemsReq.getKey())) {
             //查子集
@@ -163,8 +177,13 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     public LjBaseResponse<SquadsAndPassVo> getCompareBetweenGroup(GetCompareBetweenGroupReq getCompareBetweenGroupReq) throws Exception {
         LjBaseResponse<SquadsAndPassVo> ljBaseResponse = new LjBaseResponse<>();
         SquadsAndPassVo squadsAndPassVo = new SquadsAndPassVo();
-        ctrlTool.projPerm(RequestContextHolderUtil.getRequest(), "项目.实测实量.统计.查看");
-        //todo proj, _, err := ctrl_tool.ProjPerm(c, "项目.实测实量.统计.查看")
+        ProjectBase projectBase= null;
+        try {
+            ctrlTool.projPerm(RequestContextHolderUtil.getRequest(), "项目.实测实量.统计.查看");
+            projectBase =(ProjectBase)sessionInfo.getBaseInfo("cur_proj");
+        }catch (Exception e){
+            throw  new LjBaseRuntimeException(-9999,e.getMessage());
+        }
         //验证任务是否属于这个项目
         boolean existPlan = measureListService.searchByProjectIdAndMeasureListId(getCompareBetweenGroupReq.getProject_id(), getCompareBetweenGroupReq.getMeasure_list_id()) != null;
         if (!existPlan) {
@@ -172,7 +191,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             throw new Exception("任务不存在");
         }
         // 获取测区数量
-        Integer total = measureZoneService.searchTotalByProjectIdAndMeasureListId(getCompareBetweenGroupReq.getProject_id(), new int[]{getCompareBetweenGroupReq.getMeasure_list_id()});
+        Integer total = measureZoneService.searchTotalByProjectIdAndMeasureListId(projectBase.getId(), new int[]{getCompareBetweenGroupReq.getMeasure_list_id()});
         // 计算出所有小组的总检查数，map格式，无需转换
         List<Map<String, Object>> squadCounts = measureZoneResultService.statMeasureListZoneResultCountByListIdGroupBySquad(getCompareBetweenGroupReq.getMeasure_list_id());
         //查询组
@@ -195,8 +214,11 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     public LjBaseResponse<PassDiffVo> getLoserCompareBetweenGroup(GetLoserCompareBetweenGroupReq getLoserCompareBetweenGroupReq) throws Exception {
         LjBaseResponse<PassDiffVo> ljBaseResponse = new LjBaseResponse<>();
         PassDiffVo passDiffVo = new PassDiffVo();
-        ctrlTool.projPerm(RequestContextHolderUtil.getRequest(), "项目.实测实量.统计.查看");
-        //todo proj, _, err := ctrl_tool.ProjPerm(c, "项目.实测实量.统计.查看")
+        try {
+            ctrlTool.projPerm(RequestContextHolderUtil.getRequest(), "项目.实测实量.统计.查看");
+        }catch (Exception e){
+            throw  new LjBaseRuntimeException(-9999,e.getMessage());
+        }
         //验证任务是否属于这个项目
         boolean existPlan = measureListService.searchByProjectIdAndMeasureListId(getLoserCompareBetweenGroupReq.getProject_id(), getLoserCompareBetweenGroupReq.getMeasure_list_id()) != null;
         if (!existPlan) {
@@ -227,8 +249,13 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     public LjBaseResponse<CompareItemBetweenSquadsVo> getCompareItemBetweenSquads(GetCompareItemBetweenSquadsReq getCompareItemBetweenSquadsReq) throws Exception {
         LjBaseResponse<CompareItemBetweenSquadsVo> ljBaseResponse = new LjBaseResponse<>();
         CompareItemBetweenSquadsVo compareItemBetweenSquadsVo = new CompareItemBetweenSquadsVo();
-        ctrlTool.projPerm(RequestContextHolderUtil.getRequest(), "项目.实测实量.统计.查看");
-        //todo proj, _, err := ctrl_tool.ProjPerm(c, "项目.实测实量.统计.查看")
+        ProjectBase projectBase =null;
+      try {
+          ctrlTool.projPerm(RequestContextHolderUtil.getRequest(), "项目.实测实量.统计.查看");
+          projectBase = (ProjectBase)sessionInfo.getBaseInfo("cur_proj");
+      }catch (Exception e){
+          throw new LjBaseRuntimeException(-9999,e.getMessage());
+      }
         //验证任务是否属于这个项目
         MeasureList measureList = measureListService.searchByProjectIdAndMeasureListId(getCompareItemBetweenSquadsReq.getProject_id(), getCompareItemBetweenSquadsReq.getMeasure_list_id());
         if (measureList == null) {
@@ -245,7 +272,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             squadsPassVo.setRate(measureSquad.getPlanRate() + "");
             squads_rate.add(squadsPassVo);
         });
-        List<CategoryDetailsVo> category_details = getCategoryDetails(getCompareItemBetweenSquadsReq, measureList);
+        List<CategoryDetailsVo> category_details = getCategoryDetails(getCompareItemBetweenSquadsReq, measureList,projectBase);
         compareItemBetweenSquadsVo.setCategory_details(category_details);
         compareItemBetweenSquadsVo.setSquads_rate(squads_rate);
         ljBaseResponse.setData(compareItemBetweenSquadsVo);
@@ -592,14 +619,14 @@ public class ProMeasureServiceImpl implements IProMeasureService {
      * @param measureList
      * @return
      */
-    private List<CategoryDetailsVo> getCategoryDetails(GetCompareItemBetweenSquadsReq getCompareItemBetweenSquadsReq, MeasureList measureList) {
+    private List<CategoryDetailsVo> getCategoryDetails(GetCompareItemBetweenSquadsReq getCompareItemBetweenSquadsReq, MeasureList measureList,ProjectBase projectBase) {
         List<CategoryDetailsVo> categoryDetailsVos = new ArrayList<>();
         if (StringUtils.isBlank(getCompareItemBetweenSquadsReq.getCategory_key())) {
             //没传CategoryKey，取最顶级
             getCompareItemBetweenSquadsReq.setCategory_key(measureList.getRootCategoryKey());
         }
         List<String> existCategoryKeys = new ArrayList<>();
-        List<MeasureZoneResult> measureZoneResults = measureZoneResultService.getSubActiveMeasureCategoryZonesByListIdCategoryKey(getCompareItemBetweenSquadsReq.getProject_id(), getCompareItemBetweenSquadsReq.getMeasure_list_id(), getCompareItemBetweenSquadsReq.getCategory_key());
+        List<MeasureZoneResult> measureZoneResults = measureZoneResultService.getSubActiveMeasureCategoryZonesByListIdCategoryKey(projectBase.getId(), getCompareItemBetweenSquadsReq.getMeasure_list_id(), getCompareItemBetweenSquadsReq.getCategory_key());
         measureZoneResults.forEach(measureZoneResult -> {
             CategoryDetailsVo categoryDetailsVo = new CategoryDetailsVo();
             //获取子节点
@@ -882,7 +909,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             measurePlanVo.setIssue_count(measureListIssueService.countByMeasureListId(map.get("id").toString()));
             measurePlanVo.setCreate_at(DateUtil.getLongFromString(map.get("createAt").toString()) / 1000);
             // todo area 数据处理
-            List<MeasureListSearchResult> r = list2SearchResult(getProMeasurePlanListReq.getProject_id(),list);
+            List<MeasureListSearchResult> r = list2SearchResult(getProMeasurePlanListReq.getProject_id(), list);
             measurePlanVoList.add(measurePlanVo);
         }
         return measurePlanVoList;

@@ -145,10 +145,10 @@ longfor:
           username: zhijian
           password: JM4tLp9u6pPANLhT
     redis:
-      namespace: longjian:measure:app
+      namespace: longjian:app
       connection:
         demoRedis:
-          database: 10
+          database: 1
           timeout: 2000
           host: 192.168.37.158
           port: 6379
