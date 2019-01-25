@@ -157,4 +157,12 @@ public interface IMeasureListService {
      * @return
      */
     List<MeasureSquad> searchByProjIdIdIn(Integer id, Set<Integer> keySet);
+
+    /**
+     *
+     * @param projectId
+     * @param id
+     * @return
+     */
+    MeasureList GetByProjIdAndIdNoFoundErr(Integer projectId, Integer id);
 }

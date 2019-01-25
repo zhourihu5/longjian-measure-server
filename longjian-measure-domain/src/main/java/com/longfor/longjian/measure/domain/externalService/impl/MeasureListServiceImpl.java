@@ -162,4 +162,12 @@ public class MeasureListServiceImpl implements IMeasureListService {
         example.createCriteria().andEqualTo("projectId", projId).andIn("id", keySet);
         return measureSquadMapper.selectByExample(example);
     }
+
+    @Override
+    public MeasureList GetByProjIdAndIdNoFoundErr(Integer projectId, Integer id) {
+        Example example = new Example(MeasureList.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId", projectId).andEqualTo("id",id);
+        return measureListMapper.selectOneByExample(example);
+    }
 }
