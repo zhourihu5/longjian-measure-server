@@ -26,6 +26,7 @@ import java.util.List;
 public class RegionListVo {
     private Integer id;
     private Integer area_id;
+    private Integer proj_id;
     /**
      * 路径区域（暂勿使用）
      */
