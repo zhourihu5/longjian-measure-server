@@ -2,14 +2,17 @@ package com.longfor.longjian.measure.domain.externalService.impl;
 
 import com.longfor.longjian.measure.dao.zhijian2.MeasureListAreaMapper;
 import com.longfor.longjian.measure.domain.externalService.IMeasureListAreaService;
+import com.longfor.longjian.measure.po.zhijian2.Area;
 import com.longfor.longjian.measure.po.zhijian2.MeasureList;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListArea;
+import com.longfor.longjian.measure.util.ExampleUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Wang on 2019/1/7.
@@ -33,5 +36,15 @@ public class IMeasureListAreaServiceImpl implements IMeasureListAreaService {
         measureListArea.setDeleteAt(new Date());
 
         measureListAreaMapper.updateByExampleSelective(measureListArea,example);
+    }
+
+    @Override
+    public List<MeasureListArea> searchListAreaByListIdIn(Integer project_id, List<Integer> listIds) {
+        Example example = new Example(MeasureListArea.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId",project_id);
+        criteria.andIn("listId",listIds);
+        ExampleUtil.addDeleteAtJudge(example);
+        return measureListAreaMapper.selectByExample(example);
     }
 }

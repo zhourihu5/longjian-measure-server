@@ -31,6 +31,7 @@
         ml.close_status as closeStatusId,
         ml.create_at as createAt,
         ml.finish_status as finishStatusId,
+        ml.root_category_key as rootCategoryKey,
         ml.id,
         ml. NAME AS `name`,
         cv3.`name` AS root_category
