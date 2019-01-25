@@ -446,7 +446,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
     private RuleInfoVo converMeasureRuleToRuleInfoVo(MeasureRule measureRule) {
         RuleInfoVo ruleInfoVo = new RuleInfoVo();
         ruleInfoVo.setCategory_key(measureRule.getCategoryKey());
-        ruleInfoVo.setDelete_at(measureRule.getDeleteAt() == null ? 0 : measureRule.getDeleteAt().getTime());
+        ruleInfoVo.setDelete_at(measureRule.getDeleteAt() == null ? 0 : DateUtil.dateToTimestamp(measureRule.getDeleteAt()));
         ruleInfoVo.setDesc(measureRule.getDesc());
         ruleInfoVo.setGroup_count_init(measureRule.getGroupCountInit());
         ruleInfoVo.setGroup_count_max(measureRule.getGroupCountMax());
@@ -455,7 +455,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         ruleInfoVo.setRule_type(measureRule.getRuleType());
         ruleInfoVo.setTeam_id(measureRule.getTeamId());
         ruleInfoVo.setTextures(measureRule.getTextures());
-        ruleInfoVo.setUpdate_at(measureRule.getUpdateAt() == null ? 0 : measureRule.getUpdateAt().getTime());
+        ruleInfoVo.setUpdate_at(measureRule.getUpdateAt() == null ? 0 : DateUtil.dateToTimestamp(measureRule.getUpdateAt()));
         ruleInfoVo.setFormula(measureRule.getFormula());
         ruleInfoVo.setPoints(stringtoPointVo(measureRule.getPoints()));
         return ruleInfoVo;

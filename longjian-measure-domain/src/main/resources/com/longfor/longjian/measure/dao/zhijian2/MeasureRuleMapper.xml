@@ -44,12 +44,12 @@
     </select>
     <!--List<Map<String,Object>> searchUnscopedByTeamIdUpdateAtGt(@Param("teamId")Integer teamId, @Param("updateAtDate")Date updateAtDate);-->
     <select id="searchUnscopedByTeamIdUpdateAtGt" resultMap="BaseResultMap">
-         select id, category_key, 'desc', formula, formula_default, group_count_init, group_count_max,
-    group_count_min, point_need, points, rule_type, team_id, textures, create_at, update_at,
-    delete_at from  measure_rule where
-    delete_at IS NULL
-    and
-    team_id=#{teamId} and update_at > #{updateAtDate}
+        select
+        <include refid="Base_Column_List"/>
+        from measure_rule where
+        delete_at IS NULL
+        and
+        team_id=#{teamId} and update_at > #{updateAtDate}
 
     </select>
 
@@ -58,7 +58,7 @@
         <include refid="Base_Column_List"/>
         FROM measure_rule
         WHERE category_key = #{categoryKey}
-        AND delete_at IS  NULL
+        AND delete_at IS NULL
     </select>
 
     <select id="selectById" resultMap="BaseResultMap">
