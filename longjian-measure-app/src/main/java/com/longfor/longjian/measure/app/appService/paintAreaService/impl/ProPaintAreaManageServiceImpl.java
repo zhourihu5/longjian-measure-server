@@ -13,6 +13,7 @@ import com.longfor.longjian.measure.app.req.measureRegionReq.EditOnGroupReq;
 import com.longfor.longjian.measure.app.req.paintAreaReq.GetProjMeasureRegionReq;
 import com.longfor.longjian.measure.app.req.paintAreaReq.GetGroupMeasureRegionTagReq;
 import com.longfor.longjian.measure.app.req.paintAreaReq.GetProjMeasureRegionTagReq;
+import com.longfor.longjian.measure.util.StringUtil;
 import com.longfor.longjian.measure.vo.EditTagProtoVo;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.*;
 import com.longfor.longjian.measure.consts.constant.MeasureTagConstant;
@@ -21,6 +22,7 @@ import com.longfor.longjian.measure.domain.externalService.IMeasureRegionRelServ
 import com.longfor.longjian.measure.domain.externalService.IMeasureRegionService;
 import com.longfor.longjian.measure.domain.externalService.IMeasureTagService;
 import com.longfor.longjian.measure.util.JsonUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import springfox.documentation.spring.web.json.Json;
@@ -100,7 +102,7 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
             polygonVo.setX(Double.parseDouble(jsonObject.get("X").toString()));
             polygonVo.setY(Double.parseDouble(jsonObject.get("Y").toString()));
             regionListVo.setPolygon(polygonVo);
-            if (map.get("relId") != null) {
+            if (map.get("relId") != null && StringUtils.isNotBlank(map.get("relId").toString())) {
                 RelVo relVo = new RelVo();
                 relVo.setId(Integer.parseInt(map.get("relId").toString()));
                 relVo.setDesc(map.get("desc").toString());

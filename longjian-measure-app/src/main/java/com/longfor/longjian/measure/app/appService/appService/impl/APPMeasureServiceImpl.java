@@ -677,7 +677,6 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         List<Object> deviation = (List<Object>) singlePointTest.get("Deviation");
         if (deviation != null) {
             deviation.forEach(d -> {
-                //todo bug未调
                 singlePointTestVo.setDeviation(singlePointTestVo.getDeviation() == null ? "" + "," + d : singlePointTestVo.getDeviation() + "," + d);
             });
         }
