@@ -1,5 +1,7 @@
 package com.longfor.longjian.measure.app.appService.proMeasureManagerService.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.common.entity.ProjectBase;
 import com.longfor.longjian.common.entity.TeamBase;
@@ -7,6 +9,7 @@ import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.util.CtrlTool;
 import com.longfor.longjian.common.util.RequestContextHolderUtil;
 import com.longfor.longjian.common.util.SessionInfo;
+import com.longfor.longjian.common.util.StringUtil;
 import com.longfor.longjian.measure.app.appService.proMeasureManagerService.IProMeasureService;
 import com.longfor.longjian.measure.app.commonEntity.MeasureListSearchResult;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetCheckerListReq;
@@ -38,6 +41,7 @@ import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -62,6 +66,8 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     @Autowired
     private IMeasureSquadService measureSquadService;
     @Autowired
+    private IMeasureListAreaService measureListAreaService;
+    @Autowired
     private CtrlTool ctrlTool;
     @Resource
     private SessionInfo sessionInfo;
@@ -77,6 +83,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         }catch (Exception e){
             throw new LjBaseRuntimeException(-9999,e.getMessage());
         }
+        Integer projectId = projectBase.getId();
         String[] userIds = null;
         if (StringUtils.isNotBlank(getProMeasurePlanListReq.getUser_ids())) {
             userIds = getProMeasurePlanListReq.getUser_ids().split(",");
@@ -86,7 +93,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         //areaPathAndId 参数赋值
         String areaPathAndId = getAreaPathAndId(getProMeasurePlanListReq);
         //获取measureList
-        List<ProMeasurePlanVo> list = SearchByProjIdCategoryKeyAreaIdStatusUserIdInPage(projectBase,getProMeasurePlanListReq, userIds, categoryPathAndKey, areaPathAndId);
+        List<ProMeasurePlanVo> list = SearchByProjIdCategoryKeyAreaIdStatusUserIdInPage(projectId,getProMeasurePlanListReq, userIds, categoryPathAndKey, areaPathAndId);
         //获取total
         Integer total = measureListService.getTotalMeasure(getProMeasurePlanListReq.getFinish_status(), getProMeasurePlanListReq.getQ(), getProMeasurePlanListReq.getProject_id(), categoryPathAndKey, areaPathAndId, userIds);
         proMeasurePlanListVo.setItems(list);
@@ -906,10 +913,11 @@ public class ProMeasureServiceImpl implements IProMeasureService {
      * @param areaPathAndId
      * @return
      */
-    private List<ProMeasurePlanVo> SearchByProjIdCategoryKeyAreaIdStatusUserIdInPage(ProjectBase projectBase,GetProMeasurePlanListReq getProMeasurePlanListReq, String[] userIds, String categoryPathAndKey, String areaPathAndId) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException, ParseException {
+    private List<ProMeasurePlanVo> SearchByProjIdCategoryKeyAreaIdStatusUserIdInPage(Integer projectId,GetProMeasurePlanListReq getProMeasurePlanListReq, String[] userIds, String categoryPathAndKey, String areaPathAndId) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException, ParseException {
         List<ProMeasurePlanVo> measurePlanVoList = new ArrayList<>();
         //查询 MeasureList
-        List<Map<String, Object>> list = measureListService.getMeasureList(getProMeasurePlanListReq.getFinish_status(), getProMeasurePlanListReq.getQ(),projectBase.getId(), categoryPathAndKey, areaPathAndId, userIds, getProMeasurePlanListReq.getPage(), getProMeasurePlanListReq.getPage_size());
+        List<Map<String, Object>> list = measureListService.getMeasureList(getProMeasurePlanListReq.getFinish_status(), getProMeasurePlanListReq.getQ(),projectId, categoryPathAndKey, areaPathAndId, userIds, getProMeasurePlanListReq.getPage(), getProMeasurePlanListReq.getPage_size());
+        list2SearchResult(getProMeasurePlanListReq.getProject_id(), list);
         for (Map<String, Object> map : list
         ) {
             //map转换成vo
@@ -926,17 +934,73 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             }
             measurePlanVo.setIssue_count(measureListIssueService.countByMeasureListId(map.get("id").toString()));
             measurePlanVo.setCreate_at(DateTool.getLongFromString(map.get("createAt").toString()) / 1000);
-            // todo area 数据处理
-            List<MeasureListSearchResult> r = list2SearchResult(getProMeasurePlanListReq.getProject_id(), list);
+            System.out.println(JSON.toJSONString(map.get("topAreas")));
+            List<Area> areas = JSONArray.parseArray(JSON.toJSONString(map.get("topAreas")),Area.class);
+            measurePlanVo.setTop_areas(areas.stream().map(Area::getName).collect(Collectors.joining("、")));
             measurePlanVoList.add(measurePlanVo);
         }
         return measurePlanVoList;
     }
 
-    private List<MeasureListSearchResult> list2SearchResult(Integer project_id, List<Map<String, Object>> list) {
+    private void list2SearchResult(Integer project_id, List<Map<String, Object>> list) {
         Map<String,String> mapCategoryName = new HashMap<>();
         List<Integer> listIds = new ArrayList<>(list.size());
+        List<String> rootCategoryKeys = list.stream().filter(item -> {
+            listIds.add((int)item.get("id"));
+            String key = item.get("rootCategoryKey").toString();
+            if (mapCategoryName.get(key) != null){
+                return false;
+            }
+            mapCategoryName.put(key,"");
+            return true;
+        }).map(iteam -> iteam.get("rootCategoryKey").toString()).collect(Collectors.toList());
+        List<CategoryV3> categorys = categoryV3Service.SearchCategoryByKeyIn(rootCategoryKeys);
 
-        return null;
+        categorys.forEach(category -> {
+            mapCategoryName.put(category.getKey(),category.getName());
+        });
+
+        list.forEach(item -> {
+            String key = item.get("rootCategoryKey").toString();
+            if (mapCategoryName.get(key) != null){
+                item.put("rootCategory",mapCategoryName.get(key));
+            }
+        });
+
+        List<MeasureListArea> listAreas = measureListAreaService.searchListAreaByListIdIn(project_id,listIds);
+        Map<Integer,Boolean> mapTopAreaId = new HashMap<>();
+        Map<Integer,List<Integer>> mapListTopAreaId = new HashMap<>();
+        for (MeasureListArea area : listAreas) {
+            List<Integer> ids = StringUtil.splitToIdsSlash(area.getAreaPathAndId(), false);
+            if (ids.size() == 0) {
+                continue;
+            }
+            int topId = ids.get(0);
+            List<Integer> listTopAreaId = mapListTopAreaId.get(area.getListId());
+            if (listTopAreaId == null){
+                listTopAreaId = new ArrayList<>();
+                mapListTopAreaId.put(area.getListId(),listTopAreaId);
+            }
+            mapListTopAreaId.get(area.getListId()).add(topId);
+            if (mapTopAreaId.get(topId) != null && mapTopAreaId.get(topId)){
+                continue;
+            }
+            mapTopAreaId.put(topId,true);
+        }
+
+        List<Area> topAreas = areaService.selectByIds(mapTopAreaId.keySet());
+        Map<Integer,Area> mapAreas = topAreas.stream().collect(Collectors.toMap(Area::getId,a -> a));
+        for (Map<String, Object> item : list) {
+//            item.FinishStatus = zj3_consts.MeasureListFinishStatus.GetName(item.List.FinishStatus)
+//            item.CloseStatus = zj3_consts.MeasureListCloseStatus.GetName(item.List.CloseStatus)
+            List<Integer> topIds = mapListTopAreaId.get(item.get("id"));
+            if (topIds == null) {
+                continue;
+            }
+            topIds = topIds.stream().distinct().collect(Collectors.toList());
+            item.put("topAreas",topIds.stream().map(id -> {
+                return mapAreas.get(id);
+            }).filter(area -> area != null).collect(Collectors.toList()));
+        }
     }
 }
