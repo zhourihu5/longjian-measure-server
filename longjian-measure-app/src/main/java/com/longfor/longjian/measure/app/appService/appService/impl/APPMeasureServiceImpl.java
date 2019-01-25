@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.kafka.KafkaProducer;
+import com.longfor.longjian.common.util.DateUtil;
 import com.longfor.longjian.common.util.SessionInfo;
 import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureService;
 import com.longfor.longjian.measure.app.appService.appService.IKeyProcedureTaskAppService;
@@ -30,10 +31,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -596,7 +594,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         resultListVo.setArea_id(measureZoneResult.getAreaId());
         resultListVo.setArea_path_and_id(measureZoneResult.getAreaPathAndId());
         resultListVo.setCategory_key(measureZoneResult.getCategoryKey());
-        resultListVo.setDelete_at(measureZoneResult.getDeleteAt() == null ? 0 : measureZoneResult.getDeleteAt().getTime());
+        resultListVo.setDelete_at(measureZoneResult.getDeleteAt() == null ? 0 : DateUtil.dateToTimestamp(measureZoneResult.getDeleteAt()));
         resultListVo.setId(measureZoneResult.getId());
         resultListVo.setList_id(measureZoneResult.getListId());
         resultListVo.setCategory_path_and_key(measureZoneResult.getCategoryPathAndKey());
@@ -604,7 +602,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         resultListVo.setProject_id(measureZoneResult.getProjectId());
         resultListVo.setRegion_uuid(measureZoneResult.getRegionUuid());
         resultListVo.setZone_uuid(measureZoneResult.getZoneUuid());
-        resultListVo.setUpdate_at(measureZoneResult.getUpdateAt() == null ? 0 : measureZoneResult.getUpdateAt().getTime());
+        resultListVo.setUpdate_at(measureZoneResult.getUpdateAt() == null ? 0 : DateUtil.dateToTimestamp(measureZoneResult.getUpdateAt()));
         resultListVo.setTotal(measureZoneResult.getTotal());
         resultListVo.setUuid(measureZoneResult.getUuid());
         resultListVo.setSquad_id(measureZoneResult.getSquadId());
@@ -634,7 +632,9 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         textResultVo.setRecorder_id(textResult.getInteger("RecorderId"));
         textResultVo.setScore(textResult.getDouble("Score"));
         textResultVo.setTexture(textResult.getString("Texture"));
-        textResultVo.setUpdate_at(textResult.getDate("UpdateAt") == null ? 0 : textResult.getDate("UpdateAt").getTime());
+        Date update = textResult.getDate("UpdateAt");
+        //System.out.println(update);
+        textResultVo.setUpdate_at(textResult.getDate("UpdateAt") == null ? 0 : DateUtil.dateToTimestamp(textResult.getDate("UpdateAt")));
         List<SinglePointTestVo> d = new ArrayList<>();
         String data = textResult.getString("Data");
         if (StringUtils.isNotBlank(data)) {
@@ -673,10 +673,11 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         } else {
             singlePointTestVo.setData("");
         }
-        singlePointTestVo.setData(singlePointTestVo.getData().substring(1));
+        //singlePointTestVo.setData(singlePointTestVo.getData().substring(1));
         List<Object> deviation = (List<Object>) singlePointTest.get("Deviation");
         if (deviation != null) {
             deviation.forEach(d -> {
+                //todo bug未调
                 singlePointTestVo.setDeviation(singlePointTestVo.getDeviation() == null ? "" + "," + d : singlePointTestVo.getDeviation() + "," + d);
             });
         }
