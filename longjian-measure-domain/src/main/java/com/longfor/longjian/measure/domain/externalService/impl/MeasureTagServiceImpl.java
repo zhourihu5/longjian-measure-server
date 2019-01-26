@@ -45,7 +45,7 @@ public class MeasureTagServiceImpl implements IMeasureTagService {
         for (EditTagProtoVo editTagProtoVo : editTagProtoVos) {
             Date date =new Date();
             Integer tagId = editTagProtoVo.getTagId();
-            count += measureTagMapper.updateByIdAndOwnership(group_id, tagId, ownership,date);
+            count += measureTagMapper.updateByIdAndOwnership(group_id, tagId,editTagProtoVo.getName(),ownership,date);
         }
         return count;
     }
@@ -53,13 +53,14 @@ public class MeasureTagServiceImpl implements IMeasureTagService {
     @Override
     @LFAssignDataSource("zhijian2")
     @Transactional(rollbackFor = Exception.class)
-    public Integer addOnGroup(Integer group_id, List<String> nameList, Integer ownership) {
+    public Integer addOnGroup(Integer group_id, List<String> nameList, Integer ownership,Integer proj_id) {
         Integer count=0;
         for (String name : nameList) {
             Date date =new Date();
             MeasureTag measureTag =new MeasureTag();
             measureTag.setGroupId(group_id);
             measureTag.setName(name);
+            measureTag.setProjId(0);
             measureTag.setOwnership(ownership);
             measureTag.setCreateAt(date);
             measureTag.setUpdateAt(date);

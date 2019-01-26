@@ -7,6 +7,7 @@ import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetMeasureS
 import com.longfor.longjian.measure.app.vo.proMeasureQuickSearchVo.MeasureStatisticSquadStatsVo;
 import com.longfor.longjian.measure.domain.externalService.IMeasureListIssueService;
 import com.longfor.longjian.measure.domain.externalService.IMeasureZoneService;
+import com.longfor.longjian.measure.po.zhijian2.MeasureList;
 import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +34,8 @@ public class MeasureStatisticImpl implements IMeasureStatisticService {
     @Override
     public MeasureStatisticSquadStatsVo SquadMeasureStatsJson(GetMeasureStatisticTaskReq getMeasureStatisticTaskReq) {
 
-        MeasureZone measureZone = measureListService.GetByProjIdAndIdNoFoundErr(getMeasureStatisticTaskReq.getProject_id(), getMeasureStatisticTaskReq.getMeasure_list_id());
-        if (measureZone == null) {
+        MeasureList measureList = measureListService.GetByProjIdAndIdNoFoundErr(getMeasureStatisticTaskReq.getProject_id(), getMeasureStatisticTaskReq.getMeasure_list_id());
+        if (measureList == null) {
             throw new LjBaseRuntimeException(100000,"数据不存在");
         }
 
@@ -47,7 +48,7 @@ public class MeasureStatisticImpl implements IMeasureStatisticService {
             regionCount = 0;
         }
         MeasureStatisticSquadStatsVo measureStatisticSquadStatsVo = new MeasureStatisticSquadStatsVo();
-        measureStatisticSquadStatsVo.setStatus(measureZone.getFinishStatus());
+        measureStatisticSquadStatsVo.setStatus(measureList.getFinishStatus());
         measureStatisticSquadStatsVo.setCheck_item_count(checkItemCount);
         measureStatisticSquadStatsVo.setRegion_count(regionCount);
         //原有逻辑就是添加为0

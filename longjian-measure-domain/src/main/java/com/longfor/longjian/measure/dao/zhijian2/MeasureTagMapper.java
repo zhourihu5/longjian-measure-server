@@ -38,7 +38,7 @@ public interface MeasureTagMapper extends LFMySQLMapper<MeasureTag> {
      * @param ownership
      * @return
      */
-    Integer updateByIdAndOwnership(@Param("group_id")Integer group_id, @Param("tagId")Integer tagId, @Param("ownership") Integer ownership, @Param("newDate")Date newDate);
+    Integer updateByIdAndOwnership(@Param("group_id")Integer group_id, @Param("tagId")Integer tagId,@Param("name")String name, @Param("ownership") Integer ownership, @Param("newDate")Date newDate);
 
     /**
      *

@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 public class RuleInfoVo {
     private String category_key;
-    private Long delete_at;
+    private Integer delete_at;
     private String desc;
     private Integer group_count_init;
     private Integer group_count_max;
@@ -20,7 +20,7 @@ public class RuleInfoVo {
     private Integer rule_type;
     private Integer team_id;
     private String textures;
-    private Long update_at;
+    private Integer update_at;
     private String formula;
     private List<PointVo> points;
 }

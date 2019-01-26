@@ -4,6 +4,7 @@ import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureListSer
 import com.longfor.longjian.measure.app.req.MeasureList.*;
 import com.longfor.longjian.measure.app.vo.measureListVo.SetStatusVo;
 import com.longfor.longjian.measure.domain.externalService.*;
+import com.longfor.longjian.measure.domain.externalService.impl.MeasureListServiceImpl;
 import com.longfor.longjian.measure.po.zhijian2.MeasureList;
 import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +43,8 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
     private IMeasureSquadUserService iMeasureSquadUserService;
 
     @Autowired IMeasureZoneService measureZoneService;
-
+    @Resource
+    private IMeasureListService measureListService;
     @Override
     public SetStatusVo setStatus(SetStatusReq setStatusReq) {
 
@@ -120,7 +122,7 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
         iMeasureListService.updateCloseStatus(map);
     }
     @Override
-    public MeasureZone GetByProjIdAndIdNoFoundErr(Integer projectId , Integer id) {
-        return measureZoneService.GetByProjIdAndIdNoFoundErr(projectId , id);
+    public MeasureList GetByProjIdAndIdNoFoundErr(Integer projectId , Integer id) {
+        return measureListService.GetByProjIdAndIdNoFoundErr(projectId , id);
     }
 }
