@@ -55,6 +55,7 @@
     <update id="updateByIdAndOwnership">
     update measure_tag
       set group_id=#{group_id},
+      `name` = #{name},
       update_at = #{newDate}
       where
         id=#{tagId}

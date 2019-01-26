@@ -27,4 +27,5 @@ public class AddOnGroupReq implements Serializable {
      * 分页
      */
     private String page_level;
+    private Integer proj_id ;
 }

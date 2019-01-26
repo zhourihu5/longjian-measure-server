@@ -131,10 +131,13 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
     @Override
     public LjBaseResponse<Object> addOnGroup(AddOnGroupReq addOnGroupReq) {
         LjBaseResponse<Object> ljBaseResponse = new LjBaseResponse<>();
+        if(addOnGroupReq.getProj_id() == null){
+            addOnGroupReq.setProj_id(0);
+        }
         if (addOnGroupReq.getName_list().length() > 0 && !addOnGroupReq.getName_list().equals("")) {
             String[] nameArr = addOnGroupReq.getName_list().split(",");
             List<String> nameList = Arrays.asList(nameArr);
-            Integer affCount = measureTagService.addOnGroup(addOnGroupReq.getGroup_id(), nameList, MeasureTagConstant.GROUP);
+            Integer affCount = measureTagService.addOnGroup(addOnGroupReq.getGroup_id(), nameList, MeasureTagConstant.GROUP,addOnGroupReq.getProj_id());
             ljBaseResponse.setMessage(String.format("总共添加了 %s 条数据", affCount));
             ljBaseResponse.setResult(0);
         }
