@@ -63,11 +63,12 @@
         ownership = #{ownership}
          AND delete_at IS NULL
   </update>
-    <!--Integer updateByProjectIdAndOwnership(@Param("group_id")Integer group_id, @Param("project_id")Integer project_id, @Param("tagId")Integer tagId, @Param("ownership")Integer ownership, @Param("newDate")Date newDate);-->
+    <!--Integer updateByProjectIdAndOwnership(@Param("group_id")Integer group_id, @Param("project_id")Integer project_id, @Param("tagId")Integer tagId,@Param("name")String name, @Param("ownership")Integer ownership, @Param("newDate")Date newDate);-->
     <update id="updateByProjectIdAndOwnership">
         update measure_tag
       set group_id = #{group_id},
       proj_id = #{project_id},
+      `name` = #{name},
       update_at = #{newDate}
       where
         id=#{tagId}

@@ -94,7 +94,8 @@ public class MeasureTagServiceImpl implements IMeasureTagService {
         for (EditTagProtoVo editTagProtoVo : editTagProtoVos) {
             Date date =new Date();
             Integer tagId = editTagProtoVo.getTagId();
-            count += measureTagMapper.updateByProjectIdAndOwnership(group_id,project_id,tagId, ownership,date);
+            String name = editTagProtoVo.getName();
+            count += measureTagMapper.updateByProjectIdAndOwnership(group_id,project_id,tagId,name, ownership,date);
         }
         return count;
     }
