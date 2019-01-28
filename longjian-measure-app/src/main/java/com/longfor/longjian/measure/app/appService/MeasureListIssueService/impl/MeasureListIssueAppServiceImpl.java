@@ -94,6 +94,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
         measureIssueQueryVo.setPage(req.getPage());
         List<MeasureListIssue> items = (List<MeasureListIssue>) issueMap.get("items");
         if (items.size() == 0) {
+            measureIssueQueryVo.setItems(new ArrayList<>());
             ljBaseResponse.setData(measureIssueQueryVo);
             return ljBaseResponse;
         }
