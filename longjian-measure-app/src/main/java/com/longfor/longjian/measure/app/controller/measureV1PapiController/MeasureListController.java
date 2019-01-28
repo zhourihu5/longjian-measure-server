@@ -93,7 +93,6 @@ public class MeasureListController {
      * @throws Exception
      */
     @GetMapping(value = "condition_search",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    //todo  接口写完待调试
     public LjBaseResponse<MeasureListInfoVo> conditionSearch(@Valid ConditionSearchReq req) throws Exception {
         return measureListService.conditionSearch(req);
     }
