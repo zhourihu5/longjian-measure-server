@@ -165,4 +165,19 @@ public interface IMeasureListService {
      * @return
      */
     MeasureList GetByProjIdAndIdNoFoundErr(Integer projectId, Integer id);
+
+    /**
+     *
+     * @param group_id
+     * @param project_id
+     * @param page
+     * @param page_size
+     * @param area_id
+     * @param user_id_list
+     * @param finish_status
+     * @param name
+     * @param category_key
+     * @return
+     */
+    Map<String, Object> conditionSearch(Integer group_id, Integer project_id, Integer page, Integer page_size, String area_id, String user_id_list, Integer finish_status, String name, String category_key) throws Exception;
 }

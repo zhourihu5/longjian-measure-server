@@ -3,6 +3,9 @@ package com.longfor.longjian.measure.app.controller.measureV1PapiController;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureListService;
 import com.longfor.longjian.measure.app.req.MeasureList.*;
+import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.MeasureListVo;
+import com.longfor.longjian.measure.app.vo.measureListVo.MeasureListInfoVo;
+import com.longfor.longjian.measure.po.zhijian2.MeasureList;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -82,5 +85,17 @@ public class MeasureListController {
         return new LjBaseResponse();
     }
 
+    /**
+     * http://192.168.37.159:3000/project/8/interface/api/772
+     * http://192.168.37.159:3000/mock/8/measure/v1/papi/measure_list/condition_search/?_ct=json&project_id=927&page_level=project&group_id=4&team_id=25&category_key=&area_id=&finish_status=&name=&user_id_list=&page=1&page_size=20
+     * @param req
+     * @return
+     * @throws Exception
+     */
+    @GetMapping(value = "condition_search",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    //todo  接口写完待调试
+    public LjBaseResponse<MeasureListInfoVo> conditionSearch(@Valid ConditionSearchReq req) throws Exception {
+        return measureListService.conditionSearch(req);
+    }
 
 }
