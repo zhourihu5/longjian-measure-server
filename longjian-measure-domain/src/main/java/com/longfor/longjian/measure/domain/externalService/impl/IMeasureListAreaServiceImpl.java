@@ -47,4 +47,14 @@ public class IMeasureListAreaServiceImpl implements IMeasureListAreaService {
         ExampleUtil.addDeleteAtJudge(example);
         return measureListAreaMapper.selectByExample(example);
     }
+
+    @Override
+    public List<MeasureListArea> searchByListId(String projectId, Integer id) {
+        Example example = new Example(MeasureListArea.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId",projectId);
+        criteria.andEqualTo("listId",id);
+        ExampleUtil.addDeleteAtJudge(example);
+        return measureListAreaMapper.selectByExample(example);
+    }
 }

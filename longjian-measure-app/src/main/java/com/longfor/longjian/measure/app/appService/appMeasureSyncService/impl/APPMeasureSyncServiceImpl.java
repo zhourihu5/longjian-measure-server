@@ -3,6 +3,7 @@ package com.longfor.longjian.measure.app.appService.appMeasureSyncService.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.util.DateUtil;
@@ -17,6 +18,7 @@ import com.longfor.longjian.measure.domain.externalService.*;
 import com.longfor.longjian.measure.po.zhijian2.*;
 import com.longfor.longjian.measure.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +53,8 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
     private ICheckItemService checkItemService;
     @Resource
     private SessionInfo sessionInfo;
+    @Resource
+    private IMeasureListAreaService measureListAreaService;
 
     @Override
     public LjBaseResponse<RuleListVo> getMeasureRule(ApiMeasureRuleReq apiMeasureRuleReq) throws Exception {
@@ -106,7 +110,8 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         ) {
             List<MeasureList> measureLists = measureListService.searchListByProjIdUserId(projectId, userId);
             measureLists.forEach(measureList -> {
-                TaskInfoVo taskInfoVo = convermeasureListToTaskInfoVo(measureList);
+                List<MeasureListArea> areas = measureListAreaService.searchByListId(projectId, measureList.getId());
+                TaskInfoVo taskInfoVo = convermeasureListToTaskInfoVo(measureList, areas);
                 taskInfoVos.add(taskInfoVo);
             });
         }
@@ -474,7 +479,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
      * @param measureList
      * @return
      */
-    private TaskInfoVo convermeasureListToTaskInfoVo(MeasureList measureList) {
+    private TaskInfoVo convermeasureListToTaskInfoVo(MeasureList measureList, List<MeasureListArea> areas) {
         TaskInfoVo taskInfoVo = new TaskInfoVo();
         taskInfoVo.setId(measureList.getId());
         taskInfoVo.setProject_id(measureList.getProjectId());
@@ -483,10 +488,15 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         taskInfoVo.setClose_status(measureList.getCloseStatus());
         taskInfoVo.setPlan_begin_on(DateUtil.dateToTimestamp(measureList.getPlanBeginOn()));
         taskInfoVo.setPlan_end_on(DateUtil.dateToTimestamp(measureList.getPlanEndOn()));
-        taskInfoVo.setArea_ids(measureList.getAreaType());
+        List<Integer> idLists = Lists.newArrayList();
+        areas.forEach(measureListArea -> {
+            idLists.add(measureListArea.getAreaId());
+        });
+        String s = StringUtils.join(idLists, ",");
+        taskInfoVo.setArea_ids(s);
         taskInfoVo.setRoot_category_key(measureList.getRootCategoryKey());
         taskInfoVo.setUpdate_at(DateUtil.dateToTimestamp(measureList.getUpdateAt()));
-        taskInfoVo.setDelete_at(DateUtil.dateToTimestamp(measureList.getUpdateAt()));
+        taskInfoVo.setDelete_at(measureList.getDeleteAt() == null ? 0 : DateUtil.dateToTimestamp(measureList.getDeleteAt()));
         return taskInfoVo;
     }
 

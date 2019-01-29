@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.app.vo.checkItemsVo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -39,4 +40,12 @@ public class TreeNodeVo implements Serializable {
      * 是否检查项
      */
     private boolean is_check_item;
+    @JsonProperty("is_category")
+    public Boolean getIs_category() {
+        return is_category;
+    }
+    @JsonProperty("is_check_item")
+    public Boolean getIs_check_item() {
+        return is_check_item;
+    }
 }
