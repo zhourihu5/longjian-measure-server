@@ -1,10 +1,13 @@
 package com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.impl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.google.gson.JsonArray;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.common.entity.ProjectBase;
 import com.longfor.longjian.common.entity.UserBase;
 import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.util.CtrlTool;
+import com.longfor.longjian.common.util.DateUtil;
 import com.longfor.longjian.common.util.SessionInfo;
 import com.longfor.longjian.measure.app.appService.areaService.ICoreAreaService;
 import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.IMeasureListIssueDetailService;
@@ -21,6 +24,7 @@ import com.longfor.longjian.measure.consts.constant.MeasureListIssueType;
 import com.longfor.longjian.measure.domain.externalService.*;
 import com.longfor.longjian.measure.po.zhijian2.*;
 import com.longfor.longjian.measure.po.zhijian2_apisvr.User;
+import com.longfor.longjian.measure.util.ConvertUtil;
 import com.longfor.longjian.measure.util.StringSplitToListUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -83,26 +87,27 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
     private ICoreAreaService coreAreaService;
     @Resource
     private SessionInfo sessionInfo;
+
     @Override
     public MeasureListIssueDetailIssueInfoVo IssueInfo(GetMeasureListIssueDetailReq req) {
         MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(req.getProject_id(), req.getUuid());
         if (issue == null) {
-            throw new LjBaseRuntimeException(-1,"");
+            throw new LjBaseRuntimeException(-1, "");
         }
-        ProjectBase cur_proj=null;
+        ProjectBase cur_proj = null;
         try {
-            cur_proj= (ProjectBase)sessionInfo.getBaseInfo("cur_proj");
-        }catch (Exception e){
-            throw new LjBaseRuntimeException(-9999,e.getMessage());
+            cur_proj = (ProjectBase) sessionInfo.getBaseInfo("cur_proj");
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
 
         MeasureListIssueInfo info = FormatMeasureListIssue(cur_proj.getId(), issue);
         MeasureListIssueDetailIssueInfoVo rsp = new MeasureListIssueDetailIssueInfoVo();
         rsp.setTask_name(info.getTaskName());
-        rsp.setCategory_path_names(info.getAreaPathNames());
+        rsp.setCategory_path_names(info.getCategoryPathNames());
         rsp.setArea_path_names(info.getAreaPathNames());
-        rsp.setCreate_at(info.getIssue().getCreateAt().getTime());
-        rsp.setIssue_type(info.getIssue().getTyp());
+        rsp.setCreate_at(DateUtil.dateToTimestamp(info.getIssue().getCreateAt()));
+        rsp.setIssue_type(info.getIssue().getTyp() == null ? 0 : info.getIssue().getTyp());
         rsp.setClose_status(info.getIssue().getCloseStatus());
         rsp.setPlan_end_on(info.getIssue().getPlanEndOn());
         rsp.setRepairer_id(info.getIssue().getRepairerId());
@@ -116,37 +121,36 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         MeasureListIssueDetailZoneInfoVo vo = new MeasureListIssueDetailZoneInfoVo();
         List<MeasureListIssueDetailSquadVo> squads = new ArrayList<>();
         List<MeasureListIssueDetailSquadResultVo> voResesults = new ArrayList<>();
-        MeasureListIssue issue =null;
+        MeasureListIssue issue = null;
         try {
             issue = measureListIssueService.GetIssueByProjectIdAndUuid(req.getProject_id(), req.getUuid());
-        }catch (Exception e){
+        } catch (Exception e) {
             log.warn("");
         }
-        if (issue!=null) {
+        if (issue != null) {
             MeasureRule rule = measureRuleService.getByCategoryKey(issue.getCategoryKey());
-            if (rule!=null) {
+            if (rule != null) {
                 MeasureRuleVo rulevo = new MeasureRuleVo();
                 rulevo.setId(rule.getId());
                 rulevo.setCategory_key(rule.getCategoryKey());
                 rulevo.setDesc(rule.getDesc());
                 rulevo.setFormula(rule.getFormula());
-                rulevo.setFormula_default(rule.getFormulaDefault());
                 rulevo.setGroup_count_init(rule.getGroupCountInit());
                 rulevo.setGroup_count_max(rule.getGroupCountMax());
                 rulevo.setGroup_count_min(rule.getGroupCountMin());
                 rulevo.setPoint_need(rule.getPointNeed());
-                rulevo.setPoints(rule.getPoints());
+                List<MeasurePointRuleVo> measurePointRuleVos= convertPoint(rule.getPoints());
+                rulevo.setPoints(measurePointRuleVos);
                 rulevo.setRule_type(rule.getRuleType());
                 rulevo.setTeam_id(rule.getTeamId());
                 rulevo.setTextures(rule.getTextures());
-                rulevo.setCreate_at(rule.getCreateAt());
-                rulevo.setUpdate_at(rule.getUpdateAt());
-                rulevo.setDelete_at(rule.getDeleteAt());
+                rulevo.setCreate_at(DateUtil.dateToTimestamp(rule.getCreateAt()));
+                rulevo.setUpdate_at(DateUtil.dateToTimestamp(rule.getUpdateAt()));
                 vo.setRule(rulevo);
             }
         }
 
-        List<MeasureZoneResult> results = measureZoneResultService.SearchZoneResultByProjIdZoneUuid(req.getProject_id(), req.getUuid());
+        List<MeasureZoneResult> results = measureZoneResultService.SearchZoneResultByProjIdZoneUuid(req.getProject_id(), issue.getZoneUuid());
         for (MeasureZoneResult result : results) {
             MeasureListIssueDetailSquadResultVo squadResult = new MeasureListIssueDetailSquadResultVo();
             squadResult.setSquad_id(result.getSquadId());
@@ -154,24 +158,24 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
             voResesults.add(squadResult);
         }
         vo.setResults(voResesults);
-        ProjectBase cur_proj=null;
+        ProjectBase cur_proj = null;
         try {
-            cur_proj= (ProjectBase)sessionInfo.getBaseInfo("cur_proj");
-        }catch (Exception e){
-            throw new LjBaseRuntimeException(-9999,e.getMessage());
+            cur_proj = (ProjectBase) sessionInfo.getBaseInfo("cur_proj");
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
 
         MeasureZone measureZone = null;
         try {
             measureZone = measureZoneService.GetZoneByUuid(cur_proj.getId(), issue.getZoneUuid());
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("");
         }
-        if (measureZone!=null) {
+        if (measureZone != null) {
             // proj_id 同上
             MeasureRegion region = measureRegionService.GetByUuid(cur_proj.getId(), measureZone.getRegionUuid());
             MeasureRegionVo regionvo = new MeasureRegionVo();
-            if (region!=null) {
+            if (region != null) {
                 regionvo.setId(region.getId());
                 regionvo.setProject_id(region.getProjectId());
                 regionvo.setArea_id(region.getAreaId());
@@ -198,47 +202,52 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
             measureSquadUsers = measureSquadUserService.SearchBySquadId(req.getProject_id(), measureSquad.getId());
             measureSquadAndSquadUser.setUsers(measureSquadUsers);
             squals.add(measureSquadAndSquadUser);
-        }
-        if (!squals.isEmpty()) {
-            for (MeasureSquadUser measureSquadUser : measureSquadUsers) {
-                uids.add(measureSquadUser.getUserId());
-            }
-            Map<Integer, User> userMap = GetUsersByIds(uids);
-            for (MeasureSquadAndSquadUser squal : squals) {
-                MeasureListIssueDetailSquadVo squadVo = new MeasureListIssueDetailSquadVo();
-                List<String> users = new ArrayList<>();
-                squadVo.setId(squal.getSquad().getId());
-                squadVo.setName(squal.getSquad().getName());
-                for (MeasureSquadUser user : squal.getUsers()) {
-                    if (userMap.containsKey(user.getUserId())) {
-                        users.add(userMap.get(user.getUserId()).getRealName());
-                    }
+            if (!squals.isEmpty()) {
+                for (MeasureSquadUser measureSquadUser : measureSquadUsers) {
+                    uids.add(measureSquadUser.getUserId());
                 }
-                squadVo.setUsers(users);
+                Map<Integer, User> userMap = GetUsersByIds(uids);
+                MeasureListIssueDetailSquadVo squadVo = new MeasureListIssueDetailSquadVo();
+                for (MeasureSquadAndSquadUser squal : squals) {
+                    List<String> users = new ArrayList<>();
+                    squadVo.setId(squal.getSquad().getId());
+                    squadVo.setName(squal.getSquad().getName());
+                    for (MeasureSquadUser user : squal.getUsers()) {
+                        if (userMap.containsKey(user.getUserId())) {
+                            users.add(userMap.get(user.getUserId()).getRealName());
+                        }
+                    }
+                    squadVo.setUsers(users);
+                }
                 squads.add(squadVo);
             }
-            vo.setSquads(squads);
         }
+        vo.setSquads(squads);
         return vo;
     }
 
+    private List<MeasurePointRuleVo> convertPoint(String points) {
+        return JSONArray.parseArray(points,MeasurePointRuleVo.class);
+    }
+
     @Override
-    public List<MeasureListIssueDetailRepairerVo> repairList(GetMeasureListIssueDetailReq req) {
+    public MeasureListIssueDetailRepairListVo repairList(GetMeasureListIssueDetailReq req) {
+        MeasureListIssueDetailRepairListVo measureListIssueDetailRepairListVo =new MeasureListIssueDetailRepairListVo();
         List<MeasureListIssueDetailRepairerVo> vo = new ArrayList<>();
         MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(req.getProject_id(), req.getUuid());
         List<MeasureRepairerUser> measureRepairerUsers = null;
-        ProjectBase cur_proj=null;
+        ProjectBase cur_proj = null;
         try {
-            cur_proj= (ProjectBase)sessionInfo.getBaseInfo("cur_proj");
-        }catch (Exception e){
-            throw new LjBaseRuntimeException(-9999,e.getMessage());
+            cur_proj = (ProjectBase) sessionInfo.getBaseInfo("cur_proj");
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
-        if (issue!=null) {
+        if (issue != null) {
             measureRepairerUsers = measureRepairerUserService.SearchMeasureReparierUserByListId(cur_proj.getId(), issue.getListId());
         }
         List<Integer> uids = new ArrayList<>();
         for (MeasureRepairerUser repairerUser : measureRepairerUsers) {
-            uids.add(repairerUser.getId());
+            uids.add(repairerUser.getUserId());
         }
         Map<Integer, User> userMap = GetUsersByIds(uids);
         for (MeasureRepairerUser measureRepairerUser : measureRepairerUsers) {
@@ -249,7 +258,8 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
                 vo.add(repairerVo);
             }
         }
-        return vo;
+        measureListIssueDetailRepairListVo.setItems(vo);
+        return measureListIssueDetailRepairListVo;
     }
 
     @Override
@@ -258,15 +268,15 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
          * c *niuhe.Context
          * uId := getCurUid(c)
          */
-        UserBase sessionUser=null;
+        UserBase sessionUser = null;
         try {
             sessionUser = sessionInfo.getSessionUser();
-        }catch (Exception e){
-            throw new LjBaseRuntimeException(-9999,e.getMessage());
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
         boolean isClosed = UpdateIssueRepairInfoByUuid(req.getUuid(), req.getProject_id(), sessionUser.getUserId(), req.getRepairer_id(), -1L);
         if (isClosed) {
-            throw new LjBaseRuntimeException(-1,"问题已被关闭");
+            throw new LjBaseRuntimeException(-1, "问题已被关闭");
         }
     }
 
@@ -276,15 +286,15 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
          * c *niuhe.Context
          * uId := getCurUid(c)
          */
-        UserBase sessionUser=null;
+        UserBase sessionUser = null;
         try {
             sessionUser = sessionInfo.getSessionUser();
-        }catch (Exception e){
-            throw new LjBaseRuntimeException(-9999,e.getMessage());
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
-        boolean isClosed = UpdateIssueTypeByUuid(req.getUuid(), req.getProject_id(),sessionUser.getUserId(), req.getType());
+        boolean isClosed = UpdateIssueTypeByUuid(req.getUuid(), req.getProject_id(), sessionUser.getUserId(), req.getType());
         if (isClosed) {
-            throw new LjBaseRuntimeException(-1,"问题已被关闭");
+            throw new LjBaseRuntimeException(-1, "问题已被关闭");
         }
         return new LjBaseResponse();
 
@@ -296,28 +306,28 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
          * c *niuhe.Context
          * uId := getCurUid(c)
          */
-        UserBase sessionUser=null;
+        UserBase sessionUser = null;
         try {
             sessionUser = sessionInfo.getSessionUser();
-        }catch (Exception e){
-            throw new LjBaseRuntimeException(-9999,e.getMessage());
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
         boolean isClosed = UpdateIssueRepairInfoByUuid(req.getUuid(), req.getProject_id(), sessionUser.getUserId(), -1, req.getPlan_end_on());
         if (isClosed) {
-            throw new LjBaseRuntimeException(-1,"问题已被关闭");
+            throw new LjBaseRuntimeException(-1, "问题已被关闭");
         }
         return new LjBaseResponse();
     }
 
-    public MeasureListIssueInfo FormatMeasureListIssue(Integer projId,MeasureListIssue issue){
+    public MeasureListIssueInfo FormatMeasureListIssue(Integer projId, MeasureListIssue issue) {
         MeasureListIssueInfo info = new MeasureListIssueInfo();
         info.setIssue(issue);
         MeasureList list;
-        if (projId>0) {
+        if (projId > 0) {
             list = measureListService.getMeasureListByProjIdAndId(projId, issue.getListId());
-            if (list!=null) {
+            if (list != null) {
                 info.setTaskName(list.getName());
-            }else {
+            } else {
                 info.setTaskName("");
             }
         }
@@ -326,7 +336,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         List<String> keys = StringSplitToListUtil.removeStartAndEndStrAndSplit(categoryPathAndKey, "/", "/");
         Map<String, List<String>> cateMap = getCategoryPathNamesMap(keys);
         if (cateMap.containsKey(issue.getCategoryKey())) {
-            info.setAreaPathNames(cateMap.get(issue.getCategoryKey()));
+            info.setCategoryPathNames(cateMap.get(issue.getCategoryKey()));
         }
         List<Integer> ids = new ArrayList<>();
         ids.add(issue.getAreaId());
@@ -335,24 +345,24 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
             info.setAreaPathNames(areaMap.get(issue.getAreaId()));
         }
 
-        if (issue.getRepairerId()>0) {
+        if (issue.getRepairerId() > 0) {
             User user = userService.getUserByUserId(issue.getRepairerId());
-            if (user!=null) {
+            if (user != null) {
                 info.setRepairerName(user.getRealName());
-            }else{
+            } else {
                 info.setRepairerName("");
             }
         }
         return info;
     }
 
-    public Map<String,List<String>> getCategoryPathNamesMap(List<String> keys){
-        Map<String,List<String>> cateMap = new HashMap<>();
+    public Map<String, List<String>> getCategoryPathNamesMap(List<String> keys) {
+        Map<String, List<String>> cateMap = new HashMap<>();
         List<CategoryV3> categorys = categoryV3Service.SearchCategoryByKeyIn(keys);
         //cMap中key是category的key, 值为category实例
-        Map<String,CategoryV3> cMap = new HashMap<>();
+        Map<String, CategoryV3> cMap = new HashMap<>();
         for (CategoryV3 category : categorys) {
-            cMap.put(category.getKey(),category);
+            cMap.put(category.getKey(), category);
         }
 
         for (String key : keys) {
@@ -360,22 +370,22 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
             if (cMap.containsKey(key)) {
                 fullNames = getFullNames(cMap, cMap.get(key));
             }
-            cateMap.put(key,fullNames);
+            cateMap.put(key, fullNames);
         }
         return cateMap;
     }
 
-    public Map<Integer,List<String>>GetAreaPathNamesMap(List<Integer> ids){
+    public Map<Integer, List<String>> GetAreaPathNamesMap(List<Integer> ids) {
         AreasMap aMap = coreAreaService.createAreasMapByLeaveIds(ids);
-        Map<Integer,List<String>> r = new HashMap<>();
+        Map<Integer, List<String>> r = new HashMap<>();
         for (Integer id : ids) {
-            r.put(id,GetPathNames(aMap,id));
+            r.put(id, GetPathNames(aMap, id));
         }
 
         return r;
     }
 
-    public List<String> GetPathNames(AreasMap aMap,Integer id){
+    public List<String> GetPathNames(AreasMap aMap, Integer id) {
         List<String> names = new ArrayList<>();
         Area area = aMap.getAreas().get(id);
         if (area == null) {
@@ -393,7 +403,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
 
     }
 
-    public List<Integer> getPathIds(Area area){
+    public List<Integer> getPathIds(Area area) {
         List<Integer> ids = new ArrayList<>();
         String[] idsStr = area.getPath().split("/");
         for (String idStr : idsStr) {
@@ -404,9 +414,9 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         return ids;
     }
 
-    public List<String> getFullNames(Map<String,CategoryV3> cMap,CategoryV3 category){
+    public List<String> getFullNames(Map<String, CategoryV3> cMap, CategoryV3 category) {
         List<String> names = null;
-        if (category!=null) {
+        if (category != null) {
             names = new ArrayList<>();
             String path = category.getPath();
             List<String> paths = StringSplitToListUtil.removeStartAndEndStrAndSplit(path, "/", "/");
@@ -425,16 +435,16 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         return names;
     }
 
-    public Map<Integer,User> GetUsersByIds(List<Integer> uids){
-        Map<Integer,User> userMap = new HashMap<>();
+    public Map<Integer, User> GetUsersByIds(List<Integer> uids) {
+        Map<Integer, User> userMap = new HashMap<>();
         List<User> usersByUserIds = userService.getUserEntitiesByUserIds(uids);
         for (User user : usersByUserIds) {
-            userMap.put(user.getUserId(),user);
+            userMap.put(user.getUserId(), user);
         }
         return userMap;
     }
 
-    public boolean UpdateIssueRepairInfoByUuid(String uuid, Integer projectId, Integer senderId, Integer repairerId ,Long planEndOn) {
+    public boolean UpdateIssueRepairInfoByUuid(String uuid, Integer projectId, Integer senderId, Integer repairerId, Long planEndOn) {
         Integer eInt = -1;
         Long eLong = -1L;
         String eStr = "";
@@ -446,20 +456,20 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
             return isClose;
         }
         Integer status = eInt;
-        if (issue.getStatus() == MeasureListIssueType.NOTENOASSIGN && repairerId >0) {
+        if (issue.getStatus() == MeasureListIssueType.NOTENOASSIGN && repairerId > 0) {
             status = MeasureListIssueType.ASSIGNNOREFORM;
         }
 
         measureListIssueHelper.init(projectId);
         try {
             measureListIssueHelper.start().setNormalField(
-                    UUID.randomUUID().toString().replace("-",""),
+                    UUID.randomUUID().toString().replace("-", ""),
                     issue.getListId(),
                     issue.getUuid(),
                     senderId, eStr, eInt, status, eStr, eStr,
-                    System.currentTimeMillis()/1000L
+                    System.currentTimeMillis() / 1000L
             ).setDatailField(
-                    eStr,planEndOn, eLong, repairerId, eInt, eInt, eStr, eInt, eInt, eInt, eInt, eLong, eInt
+                    eStr, planEndOn, eLong, repairerId, eInt, eInt, eStr, eInt, eInt, eInt, eInt, eLong, eInt
             ).done();
         } catch (ParseException e) {
             log.warn("日期解析异常");
@@ -470,7 +480,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         return isClose;
     }
 
-    public boolean UpdateIssueTypeByUuid(String uuid,Integer projectId,Integer senderId,Integer typ){
+    public boolean UpdateIssueTypeByUuid(String uuid, Integer projectId, Integer senderId, Integer typ) {
         Integer eInt = -1;
         Long eLong = -1L;
         String eStr = "";
@@ -483,11 +493,11 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         measureListIssueHelper.init(projectId);
         try {
             measureListIssueHelper.start().setNormalField(
-                    UUID.randomUUID().toString().replace("-",""),
+                    UUID.randomUUID().toString().replace("-", ""),
                     issue.getListId(),
                     issue.getUuid(),
-                    senderId,eStr,typ,eInt,eStr,eStr,
-                    System.currentTimeMillis()/1000L
+                    senderId, eStr, typ, eInt, eStr, eStr,
+                    System.currentTimeMillis() / 1000L
             ).setDatailField(
                     eStr, eLong, eLong, eInt, eInt, eInt, eStr, eInt, eInt, eInt, eInt, eLong, eInt
             ).done();

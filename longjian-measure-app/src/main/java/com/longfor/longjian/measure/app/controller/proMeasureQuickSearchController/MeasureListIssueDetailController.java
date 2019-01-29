@@ -9,10 +9,7 @@ import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.
 import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.IProMeasureListIssueService;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.*;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
-import com.longfor.longjian.measure.app.vo.proMeasureQuickSearchVo.MeasureListIssueDetailIssueInfoVo;
-import com.longfor.longjian.measure.app.vo.proMeasureQuickSearchVo.MeasureListIssueDetailRepairerVo;
-import com.longfor.longjian.measure.app.vo.proMeasureQuickSearchVo.MeasureListIssueDetailZoneInfoVo;
-import com.longfor.longjian.measure.app.vo.proMeasureQuickSearchVo.MeasureListIssueHistoryRepairLogVo;
+import com.longfor.longjian.measure.app.vo.proMeasureQuickSearchVo.*;
 import com.longfor.longjian.measure.consts.Enum.MeasureListCloseStatusEnum;
 import com.longfor.longjian.measure.domain.externalService.IMeasureListIssueService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListIssue;
@@ -95,7 +92,7 @@ public class MeasureListIssueDetailController {
      * @date 2019/1/14 14:59
      **/
     @GetMapping(value = "repair_list/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<List<MeasureListIssueDetailRepairerVo>> repairList(@Valid GetMeasureListIssueDetailReq req,HttpServletRequest request) throws Exception {
+    public LjBaseResponse<MeasureListIssueDetailRepairListVo> repairList(@Valid GetMeasureListIssueDetailReq req, HttpServletRequest request) throws Exception {
         try {
             ctrlTool.projPerm(request,"项目.实测实量.爆点管理.查看");
         }catch (Exception e){

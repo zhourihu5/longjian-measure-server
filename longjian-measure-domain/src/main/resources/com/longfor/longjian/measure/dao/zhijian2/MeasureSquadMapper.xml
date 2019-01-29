@@ -50,5 +50,7 @@
     project_id = #{projId}
     AND
     list_id = #{listId}
+    and
+    delete_at is null
   </select>
 </mapper>

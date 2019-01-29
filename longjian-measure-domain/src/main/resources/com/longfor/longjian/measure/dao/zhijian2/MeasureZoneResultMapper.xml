@@ -329,6 +329,7 @@ WHERE
     project_id = #{ProjectId}
     AND
     zone_uuid = #{uuid}
+    and  delete_at is null
   </select>
 
 </mapper>

@@ -6,6 +6,7 @@ import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.MeasureList
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.PostMeasureListDetailUpdateIssuePlanEndOnReq;
 import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.PostMeasureListDetailUpdateIssueTypeReq;
 import com.longfor.longjian.measure.app.vo.proMeasureQuickSearchVo.MeasureListIssueDetailIssueInfoVo;
+import com.longfor.longjian.measure.app.vo.proMeasureQuickSearchVo.MeasureListIssueDetailRepairListVo;
 import com.longfor.longjian.measure.app.vo.proMeasureQuickSearchVo.MeasureListIssueDetailRepairerVo;
 import com.longfor.longjian.measure.app.vo.proMeasureQuickSearchVo.MeasureListIssueDetailZoneInfoVo;
 
@@ -17,7 +18,7 @@ public interface IMeasureListIssueDetailService {
 
     MeasureListIssueDetailZoneInfoVo zoneInfo(GetMeasureListIssueDetailReq req);
 
-    List<MeasureListIssueDetailRepairerVo> repairList(GetMeasureListIssueDetailReq req);
+    MeasureListIssueDetailRepairListVo repairList(GetMeasureListIssueDetailReq req);
 
     void updateRepairer(MeasureListDetailUpdateIssueRepairerReq req);
 
