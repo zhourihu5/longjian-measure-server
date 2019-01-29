@@ -9,21 +9,18 @@ import com.longfor.longjian.common.util.CtrlTool;
 import com.longfor.longjian.common.util.DateUtil;
 import com.longfor.longjian.common.util.SessionInfo;
 import com.longfor.longjian.measure.app.appService.MeasureListIssueService.IMeasureListIssueAppService;
-import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.IMeasureListIssueDetailService;
-import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.impl.MeasureListIssueDetailImple;
 import com.longfor.longjian.measure.app.commonEntity.MeasureListIssueHelper;
-import com.longfor.longjian.measure.app.req.MeasureList.MeasureIssueCloseStatusReq;
-import com.longfor.longjian.measure.app.req.MeasureList.MeasureIssueDeleteReq;
-import com.longfor.longjian.measure.app.req.MeasureList.MeasureIssueEdiReq;
 import com.longfor.longjian.measure.app.req.MeasureList.MeasureIssueQueryReq;
-import com.longfor.longjian.measure.app.vo.measureListVo.*;
+import com.longfor.longjian.measure.app.vo.measureListVo.MeasureIssueQueryItemVo;
+import com.longfor.longjian.measure.app.vo.measureListVo.MeasureIssueQueryVo;
+import com.longfor.longjian.measure.app.vo.measureListVo.MeasureListSearchResultVo;
+import com.longfor.longjian.measure.app.vo.measureListVo.UserInfoVo;
 import com.longfor.longjian.measure.consts.Enum.MeasureListCloseStatusEnum;
 import com.longfor.longjian.measure.consts.constant.MeasureListIssueType;
 import com.longfor.longjian.measure.domain.externalService.IMeasureListIssueService;
 import com.longfor.longjian.measure.domain.externalService.IMeasureRegionService;
 import com.longfor.longjian.measure.domain.externalService.IMeasureZoneService;
 import com.longfor.longjian.measure.domain.externalService.IUserService;
-import com.longfor.longjian.measure.util.AreaUtils;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListIssue;
 import com.longfor.longjian.measure.po.zhijian2.MeasureRegion;
 import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
@@ -31,11 +28,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.text.ParseException;
 import java.util.*;
 
 /**
@@ -58,18 +53,19 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
     private IUserService userService;
     @Resource
     private SessionInfo sessionInfo;
+
     @Override
     public LjBaseResponse<MeasureIssueQueryVo> issueQueryJson(MeasureIssueQueryReq req, HttpServletRequest request) throws Exception {
         LjBaseResponse<MeasureIssueQueryVo> ljBaseResponse = new LjBaseResponse<>();
         MeasureIssueQueryVo measureIssueQueryVo = new MeasureIssueQueryVo();
         List<MeasureIssueQueryItemVo> measureIssueQueryItemVos = Lists.newArrayList();
-        ProjectBase projectBase =null;
+        ProjectBase projectBase = null;
         try {
             ctrlTool.projPerm(request, "项目.实测实量.爆点管理.查看");
-            projectBase = (ProjectBase)sessionInfo.getBaseInfo("cur_proj");
+            projectBase = (ProjectBase) sessionInfo.getBaseInfo("cur_proj");
         } catch (Exception e) {
             log.error("error:" + e);
-            throw new LjBaseRuntimeException(-9999,e.getMessage());
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
         Integer projectId = projectBase.getId();
         String[] areaIdArr = StringUtils.split(req.getArea_ids(), ",");
@@ -171,11 +167,11 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
         for (MeasureListIssue item : items) {
             MeasureIssueQueryItemVo r = new MeasureIssueQueryItemVo();
             MeasureListSearchResultVo measureList = new MeasureListSearchResultVo();
-            measureList.setId(item.getListId());
-            measureList.setName(mMeasureListName.get(item.getListId()));
+            measureList.setId(item.getListId() == null ? 0 :item.getListId());
+            measureList.setName(mMeasureListName.get(item.getListId()) == null ? "" :mMeasureListName.get(item.getListId()));
             UserInfoVo repairer = new UserInfoVo();
-            repairer.setId(item.getRepairerId());
-            repairer.setReal_name(mUserName.get(item.getRepairerId()));
+            repairer.setId(item.getRepairerId() == null ? 0 :item.getRepairerId());
+            repairer.setReal_name(mUserName.get(item.getRepairerId())== null ? "" :mUserName.get(item.getRepairerId()));
             r.setMeasure_list(measureList);
             r.setRepairer(repairer);
             r.setArea_path_names(mAreaName.get(item.getAreaId()));
@@ -193,8 +189,12 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
                     MeasureRegion region = mRegion.get(zone.getRegionUuid());
                     if (region != null) {
                         if (item.getAreaId().equals(region.getAreaId())) {
-                            r.setArea_info(StringUtils.join(r.getArea_path_names(), "-") + " " + region.getRegionIndex());
-                            r.setRegion_id(region.getId());
+                            if (r.getArea_path_names() == null) {
+                                r.setArea_info("");
+                            } else {
+                                r.setArea_info(StringUtils.join(r.getArea_path_names(), "-") + " " + region.getRegionIndex());
+                            }
+                            r.setRegion_id(region.getId() == null ? 0 : region.getId());
                         }
                     }
                 }

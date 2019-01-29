@@ -185,14 +185,13 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
             criteria.andBetween("createAt", t1, t2);
         }
         if (!areaIdList.isEmpty() && areaIdList.size() > 0) {
-            AreaUtils areaUtils = null;
             try {
-                areaUtils = this.createAreasMapByLeaveIds(areaIdList);
+                this.createAreasMapByLeaveIds(areaIdList);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
             for (Integer s : areaIdList) {
-                String pathAndId = areaUtils.getPathAndId(s);
+                String pathAndId = AreaUtils.getPathAndId(s);
                 if (!pathAndId.equals("")) {
                     criteria.andLike("areaPathAndId", this.startswith(pathAndId));
                     criteria.andEqualTo("areaId", s);
@@ -239,14 +238,13 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
         return map;
     }
 
-    private AreaUtils createAreasMapByLeaveIds(List<Integer> areaIdList) throws Exception {
-        List<Area> areas = null;
+    private void createAreasMapByLeaveIds(List<Integer> areaIdList) throws Exception {
         try {
-            areas = this.selectAllByLeaveIds(areaIdList);
+            List<Area> areas = this.selectAllByLeaveIds(areaIdList);
+            this.createAreasMapByAreaList(areas);
         } catch (Exception e) {
             throw new Exception(e);
         }
-        return this.createAreasMapByAreaList(areas);
     }
 
     private List<Area> selectAllByLeaveIds(List<Integer> areaIdList) {
@@ -264,14 +262,13 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
         return areaMapper.selectByIds(StringUtils.join(ids.toArray(), ","));
     }
 
-    private AreaUtils createAreasMapByAreaList(List<Area> areas) {
-        AreaUtils areaUtils = new AreaUtils();
+    private void createAreasMapByAreaList(List<Area> areas) {
         Map<Integer, Area> maps = AreaUtils.getAreas();
         areas.forEach(area -> {
-            maps.put(area.getId(), area);
+            AreaUtils.getAreas().put(area.getId(), area);
         });
-        areaUtils.setList(areas);
-        return areaUtils;
+        AreaUtils.setAreas(maps);
+        AreaUtils.setList(areas);
     }
 
     private String startswith(String pathAndId) {
@@ -285,7 +282,8 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     @Override
     public Map<String, List<String>> getCategoryPathNamesMap(List<String> categoryKeys) {
         Example example = new Example(CategoryV3.class);
-        example.createCriteria().andIn("key", categoryKeys);
+        example.createCriteria().andIn("key", categoryKeys).andIsNull("deleteAt");
+
         List<CategoryV3> categories = categoryV3Mapper.selectByExample(example);
         Map<String, CategoryV3> cMap = this.newCategoryMap(categories);
         CategoryUtils.setM(cMap);
@@ -320,12 +318,13 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
         });
         return r;
     }
+
     @Override
     public Map<Integer, List<String>> getAreaPathNamesMap(List<Integer> areaIdLists) throws Exception {
-        AreaUtils areaUtils = this.createAreasMapByLeaveIds(areaIdLists);
+        this.createAreasMapByLeaveIds(areaIdLists);
         Map<Integer, List<String>> mAreaName = Maps.newHashMap();
         areaIdLists.forEach(id -> {
-            mAreaName.put(id, areaUtils.getPathNames(id));
+            mAreaName.put(id, AreaUtils.getPathNames(id));
         });
         return mAreaName;
     }

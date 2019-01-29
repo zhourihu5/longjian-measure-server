@@ -50,6 +50,7 @@ public class CategoryUtils {
                 nameList.add(CategoryUtils.m.get(key).getName());
             }
         }
+        nameList.add(categoryV3.getName());
         return nameList;
     }
 }

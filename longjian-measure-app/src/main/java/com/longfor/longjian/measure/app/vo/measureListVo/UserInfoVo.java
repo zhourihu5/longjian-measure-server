@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 public class UserInfoVo {
     private Integer id;
     private String real_name;
-    private String text;
+    private String text = "";
 }

@@ -15,8 +15,8 @@ public class MeasureIssueQueryItemVo {
     private Integer id; // 编号
     private String uuid;// 唯一编号
     private Integer project_id;// 项目id
-    private String area_info; // 区域信息
-    private Integer region_id; // 描画区域id
+    private String area_info = ""; // 区域信息
+    private Integer region_id = 0; // 描画区域id
     private List<String> category_path_names;// 检查项名称路径
     private List<String> area_path_names; // 区域名称路径
     private Integer create_at; // 创建时间戳

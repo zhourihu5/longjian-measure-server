@@ -79,6 +79,7 @@ public class AreaUtils {
         if (area == null) {
             return names;
         }
+        names.add(area.getName());
         List<Integer> pathIds =getPathIds(area);
         if (!pathIds.isEmpty()) {
             pathIds.forEach(areaId -> {
