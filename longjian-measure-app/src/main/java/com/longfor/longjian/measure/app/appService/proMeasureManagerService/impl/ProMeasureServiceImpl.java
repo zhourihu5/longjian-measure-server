@@ -354,7 +354,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             ctrlTool.projPerm(RequestContextHolderUtil.getRequest(),"项目.实测实量.统计.查看");
             projectBase =(ProjectBase)sessionInfo.getBaseInfo("cur_proj");
         }catch (Exception e){
-
+            throw new LjBaseRuntimeException(-9999,e.getMessage());
         }
         LjBaseResponse<ItemsVo<List<AreaPOPVo>>> ljBaseResponse = new LjBaseResponse<>();
         ItemsVo<List<AreaPOPVo>> itemsVo = new ItemsVo<>();
