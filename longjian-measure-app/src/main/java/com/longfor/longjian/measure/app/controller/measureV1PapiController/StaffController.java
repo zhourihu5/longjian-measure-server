@@ -29,7 +29,7 @@ public class StaffController {
      * @return
      * @throws CommonException
      */
-    @GetMapping(value = "squad_search" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "squad_search" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse squadSearch(@Valid SquadSearchReq squadSearchReq) throws CommonException {
         return new LjBaseResponse(iStaffService.squadSearch(squadSearchReq));
     }
@@ -40,12 +40,12 @@ public class StaffController {
      * @return
      * @throws CommonException
      */
-    @GetMapping(value = "allow_user_search" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "allow_user_search" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse allowUserSearch(@Valid AllowUserSearchReq allowUserSearchReq) throws CommonException {
         return new LjBaseResponse(iStaffService.allowUserSearch(allowUserSearchReq));
     }
 
-    @GetMapping(value = "repairer_list_search" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "repairer_list_search" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse repairerListSearch( @Valid RepairerListSearchReq repairerListSearchReq) throws CommonException {
         return new LjBaseResponse(iStaffService.repairerListSearch(repairerListSearchReq));
     }
@@ -57,7 +57,7 @@ public class StaffController {
      * @param squadAddReq
      * @return
      */
-    @PostMapping(value = "squad_add" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "squad_add" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse squadAdd(@Valid @RequestBody SquadAddReq squadAddReq) {
         iStaffService.squadAdd(squadAddReq);
         return new LjBaseResponse();
@@ -69,7 +69,7 @@ public class StaffController {
      * @param squadUpdateReq
      * @return
      */
-    @PostMapping(value = "squad_update" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "squad_update" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse squadUpdate(@Valid @RequestBody SquadUpdateReq squadUpdateReq) {
         iStaffService.squadUpdate(squadUpdateReq);
         return new LjBaseResponse();
@@ -80,7 +80,7 @@ public class StaffController {
      * @param squadDeleteReq
      * @return
      */
-    @PostMapping(value = "squad_delete" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "squad_delete" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse squadDelete(@Valid @RequestBody SquadDeleteReq squadDeleteReq) {
         iStaffService.squadDelete(squadDeleteReq);
         return new LjBaseResponse();
@@ -91,7 +91,7 @@ public class StaffController {
      * @param repairerListUpdateReq
      * @return
      */
-    @PostMapping(value = "repairer_list_update" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "repairer_list_update" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse repairerListUpdate(@Valid @RequestBody RepairerListUpdateReq repairerListUpdateReq) {
         iStaffService.repairerListUpdate(repairerListUpdateReq);
         return new LjBaseResponse();

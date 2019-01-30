@@ -33,7 +33,7 @@ public class CheckItemMeasureController {
      *
      * @return
      */
-    @GetMapping(value = "file/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "file/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<Object> file(FileReq fileReq, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LjBaseResponse<Object> ljBaseResponse = oapiCheckItemMeasureService.file(fileReq,request,response);
         return ljBaseResponse;

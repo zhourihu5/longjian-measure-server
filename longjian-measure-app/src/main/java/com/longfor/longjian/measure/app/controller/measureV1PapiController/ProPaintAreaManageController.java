@@ -48,7 +48,7 @@ public class ProPaintAreaManageController {
      * @param getProjMeasureRegionReq
      * @return
      */
-    @GetMapping(value = "search_by_area_id/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "search_by_area_id/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<AreaRegionTagVo> getAreaRegionList(@Valid GetProjMeasureRegionReq getProjMeasureRegionReq) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
         LjBaseResponse<AreaRegionTagVo> ljBaseResponse =  proPaintAreaManageService.getProjMeasureRegionByAreaId(getProjMeasureRegionReq);
         return ljBaseResponse;
@@ -59,7 +59,7 @@ public class ProPaintAreaManageController {
      *添加描画区域
      * @return
      */
-    @PostMapping(value = "add/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "add/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse add(@Valid AddReq addReq) {
         regionService.add(addReq.getProject_id(),addReq.getRegion_list(), RegionSrcTypeEnum.BackEnd.getId());
         return new LjBaseResponse();
@@ -70,7 +70,7 @@ public class ProPaintAreaManageController {
      * 删除描画区域
      * @return
      */
-    @PostMapping(value = "delete/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "delete/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse delete(@Valid DeleteReq deleteReq) {
         List<String> list = Arrays.asList(deleteReq.getRegion_id_list().split(","));
         regionService.delete(deleteReq.getProject_id(),list.stream().map(Integer::parseInt).collect(Collectors.toList()));
@@ -82,7 +82,7 @@ public class ProPaintAreaManageController {
      * 编辑描画区域
      * @return
      */
-    @PostMapping(value = "edit/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "edit/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse edit(@Valid EditReq editReq ) {
         regionService.edit(editReq.getProject_id(),editReq.getRegion_info_list());
         return new LjBaseResponse();

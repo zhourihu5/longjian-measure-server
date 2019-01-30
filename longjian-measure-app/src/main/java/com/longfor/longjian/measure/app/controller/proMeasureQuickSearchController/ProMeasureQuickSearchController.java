@@ -52,7 +52,7 @@ public class ProMeasureQuickSearchController {
      * @param getQuickSearchPlanListReq
      * @return
      */
-    @GetMapping(value = "measure/measure_statistic/measure_list_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "measure/measure_statistic/measure_list_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<ItemsVo<List<QuickSearchPlanVo>>> getQuickSearchPlanList(@Valid GetQuickSearchPlanListReq getQuickSearchPlanListReq, HttpServletRequest request){
         LjBaseResponse<ItemsVo<List<QuickSearchPlanVo>>> ljBaseResponse = proMeasureQuickSearchService.getQuickSearchPlanList(getQuickSearchPlanListReq,request);
         return ljBaseResponse;
@@ -64,7 +64,7 @@ public class ProMeasureQuickSearchController {
      * @param getAreaPOPCheckItemList
      * @return
      */
-    @GetMapping(value = "measure/ajax_json/get_root_category/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "measure/ajax_json/get_root_category/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<CategoryListVo> getAreaPOPCheckItemList(@Valid GetAreaPOPCheckItemListReq getAreaPOPCheckItemList, HttpServletRequest request){
         LjBaseResponse<CategoryListVo> ljBaseResponse = proMeasureQuickSearchService.getAreaPOPCheckItemList(getAreaPOPCheckItemList,request);
         return ljBaseResponse;
@@ -76,7 +76,7 @@ public class ProMeasureQuickSearchController {
      * @param getCheckerListReq
      * @return
      */
-    @GetMapping(value = "project/user/simple_list/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "project/user/simple_list/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<ItemsVo<List<CheckerVo>>> getBlisterReformer(@Valid GetCheckerListReq getCheckerListReq){
         LjBaseResponse<ItemsVo<List<CheckerVo>>> ljBaseResponse = proMeasureService.getCheckerList(getCheckerListReq);
         return ljBaseResponse;
@@ -90,7 +90,7 @@ public class ProMeasureQuickSearchController {
      * @param getProMeasureAreaListReq
      * @return
      */
-    @GetMapping(value = "area/area/subs/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "area/area/subs/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<AreaInfoVo> getBlisterAreaList(GetProMeasureAreaListReq getProMeasureAreaListReq) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
         return proMeasureService.getProMeasureAreaList(getProMeasureAreaListReq);
     }
@@ -101,7 +101,7 @@ public class ProMeasureQuickSearchController {
      * @param getProMeasureCheckItemsReq
      * @return
      */
-    @GetMapping(value = "measure/measure_list/sub_categorys/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "measure/measure_list/sub_categorys/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<ItemsVo<List<ProMeasureCheckIteamVo>>> getBlisterCheckItems(@Valid GetProMeasureCheckItemsReq getProMeasureCheckItemsReq,HttpServletRequest request) throws Exception {
         return proMeasureService.getProMeasureCheckItems(getProMeasureCheckItemsReq,request);
     }
@@ -112,7 +112,7 @@ public class ProMeasureQuickSearchController {
      * @param getCompareBetweenGroupReq
      * @return
      */
-    @GetMapping(value = "measure/measure_statistic/squad_completeness_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "measure/measure_statistic/squad_completeness_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<SquadsAndPassVo> getCompareBetweenGroup(@Valid GetCompareBetweenGroupReq getCompareBetweenGroupReq) throws Exception {
         return  proMeasureService.getCompareBetweenGroup(getCompareBetweenGroupReq);
     }
@@ -124,7 +124,7 @@ public class ProMeasureQuickSearchController {
      * @param getLoserCompareBetweenGroupReq
      * @return
      */
-    @GetMapping(value = "measure/measure_statistic/squad_special_point_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "measure/measure_statistic/squad_special_point_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<PassDiffVo> getLoserCompareBetweenGroup(@Valid GetLoserCompareBetweenGroupReq getLoserCompareBetweenGroupReq) throws Exception {
         return proMeasureService.getLoserCompareBetweenGroup(getLoserCompareBetweenGroupReq);
     }
@@ -135,7 +135,7 @@ public class ProMeasureQuickSearchController {
      * @param getCompareItemBetweenSquadsReq
      * @return
      */
-    @GetMapping(value = "measure/measure_statistic/category_details_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "measure/measure_statistic/category_details_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<CompareItemBetweenSquadsVo> getCompareItemBetweenSquads(@Valid GetCompareItemBetweenSquadsReq getCompareItemBetweenSquadsReq) throws Exception {
         return proMeasureService.getCompareItemBetweenSquads(getCompareItemBetweenSquadsReq);
     }
@@ -146,7 +146,7 @@ public class ProMeasureQuickSearchController {
      * @param getBlisterRateInfoReq
      * @return
      */
-    @GetMapping(value = "measure/measure_statistic/issue_brief_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "measure/measure_statistic/issue_brief_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<BlisterRateInfoVo> getBlisterRateInfo(@Valid GetBlisterRateInfoReq getBlisterRateInfoReq) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
         return proMeasureService.getBlisterRateInfo(getBlisterRateInfoReq);
     }
@@ -158,7 +158,7 @@ public class ProMeasureQuickSearchController {
      * @param getBlisterRateInfoTimeNotesReq
      * @return
      */
-    @GetMapping(value = "measure/measure_statistic/issue_trend_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "measure/measure_statistic/issue_trend_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<ItemsVo<List<BlisterTimeNotesVo>>> getBlisterRateInfoTimeNotes(@Valid GetBlisterRateInfoTimeNotesReq getBlisterRateInfoTimeNotesReq) throws ParseException {
         return proMeasureService.getBlisterRateInfoTimeNotes(getBlisterRateInfoTimeNotesReq);
     }
@@ -169,7 +169,7 @@ public class ProMeasureQuickSearchController {
      * @param getBlisterRateCheckItemsReq
      * @return
      */
-    @GetMapping(value = "measure/measure_statistic/issue_distribution_category_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "measure/measure_statistic/issue_distribution_category_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<BlisterCheckItemsVo> getBlisterRateCheckItems(@Valid GetBlisterRateCheckItemsReq getBlisterRateCheckItemsReq){
         return proMeasureService.getBlisterRateCheckItems(getBlisterRateCheckItemsReq);
     }
@@ -179,7 +179,7 @@ public class ProMeasureQuickSearchController {
      * http://192.168.37.159:3000/project/8/interface/api/270
      * @return
      */
-    @GetMapping(value = "measure/measure_statistic/sub_category_area_percentage/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "measure/measure_statistic/sub_category_area_percentage/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<ItemsVo<List<AreaPOPVo>>> getAreaPOP(@Valid GetAreaPOPReq getAreaPOPreq) throws Exception {
         return proMeasureService.getAreaPOP(getAreaPOPreq);
     }

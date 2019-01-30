@@ -27,7 +27,7 @@ public class ZoneController {
      * @param paginationSearchReq
      * @return
      */
-    @GetMapping(value = "pagination_search" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "pagination_search" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse paginationSearch(@Valid PaginationSearchReq paginationSearchReq)throws CommonException {
         return new LjBaseResponse(zoneService.paginationSearch(paginationSearchReq));
     }
@@ -37,7 +37,7 @@ public class ZoneController {
      * @param getResultReq
      * @return
      */
-    @GetMapping(value = "get_result" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "get_result" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse getResult( @Valid GetResultReq getResultReq) {
         return new LjBaseResponse(zoneService.getResult(getResultReq));
     }
@@ -47,7 +47,7 @@ public class ZoneController {
      * @param updateStatusReq
      * @return
      */
-    @PostMapping(value = "update_status" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "update_status" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse updateStatus(@Valid @RequestBody UpdateStatusReq updateStatusReq) {
         zoneService.updateStatus(updateStatusReq);
         return new LjBaseResponse();
@@ -58,7 +58,7 @@ public class ZoneController {
      * @param delByUuidListReq
      * @return
      */
-    @PostMapping(value = "del_by_uuid_list" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "del_by_uuid_list" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse delByUuidList(@Valid @RequestBody DelByUuidListReq delByUuidListReq) {
         zoneService.delByUuidList(delByUuidListReq);
         return new LjBaseResponse();
@@ -69,7 +69,7 @@ public class ZoneController {
      * @param delBySquadIdUuidReq
      * @return
      */
-    @PostMapping(value = "del_result_by_squad_id_zone_uuid_list" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "del_result_by_squad_id_zone_uuid_list" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse delBySquadIdUuid(@Valid @RequestBody DelBySquadIdUuidReq delBySquadIdUuidReq) {
         zoneService.delBySquadIdUuid(delBySquadIdUuidReq);
         return new LjBaseResponse();
@@ -80,7 +80,7 @@ public class ZoneController {
      * @param delByZoneUuidReq
      * @return
      */
-    @PostMapping(value = "del_result_by_zone_uuid_list" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "del_result_by_zone_uuid_list" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse delByZoneUuid(@Valid @RequestBody DelByZoneUuidReq delByZoneUuidReq) {
         zoneService.delByZoneUuid(delByZoneUuidReq);
         return new LjBaseResponse();

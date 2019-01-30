@@ -39,7 +39,7 @@ public class APPMeasureSyncController {
      * @param apiMeasureRuleReq
      * @return
      */
-    @GetMapping(value = "info/measure_rule/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "info/measure_rule/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<RuleListVo> getMeasureRule(@Valid ApiMeasureRuleReq apiMeasureRuleReq) throws Exception {
         return appMeasureSyncService.getMeasureRule(apiMeasureRuleReq);
     }
@@ -50,7 +50,7 @@ public class APPMeasureSyncController {
      * @param apiMeasureRegionReq
      * @return
      */
-    @GetMapping(value = "info/measure_region/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "info/measure_region/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<MeasureRegionVo> getMeasureRegion(@Valid ApiMeasureRegionReq apiMeasureRegionReq) throws Exception {
         LjBaseResponse<MeasureRegionVo> ljBaseResponse = appMeasureService.getMeasureRegion(apiMeasureRegionReq);
         return ljBaseResponse;
@@ -63,7 +63,7 @@ public class APPMeasureSyncController {
      * @param apiMeasureRegionReqV2
      * @return
      */
-    @GetMapping(value = "info/measure_region_v2/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "info/measure_region_v2/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<MeasureRegionV2Vo> getMeasureRegionV2(@Valid ApiMeasureRegionReqV2 apiMeasureRegionReqV2) throws Exception {
         LjBaseResponse<MeasureRegionV2Vo> ljBaseResponse = appMeasureService.getMeasureRegionV2(apiMeasureRegionReqV2);
         return ljBaseResponse;
@@ -77,7 +77,7 @@ public class APPMeasureSyncController {
      * @param apiMeasureRegionTotalReqV2
      * @return
      */
-    @GetMapping(value = "info/measure_region_v2_total/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "info/measure_region_v2_total/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<TotalVo> getMeasureRegionV2Total(@Valid ApiMeasureRegionTotalReqV2 apiMeasureRegionTotalReqV2) throws Exception {
         return appMeasureService.getMeasureRegionV2Total(apiMeasureRegionTotalReqV2);
     }
@@ -89,7 +89,7 @@ public class APPMeasureSyncController {
      * @param apiMeasureRegionRelReqV2
      * @return
      */
-    @GetMapping(value = "info/measure_region_rel_v2/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "info/measure_region_rel_v2/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<MeasureRegionRelV2Vo> getMeasureRegionRelV2(@Valid ApiMeasureRegionRelReqV2 apiMeasureRegionRelReqV2) throws Exception {
         return appMeasureService.getMeasureRegionRelV2(apiMeasureRegionRelReqV2);
     }
@@ -102,7 +102,7 @@ public class APPMeasureSyncController {
      * @param apiMyTaskReq
      * @return
      */
-    @GetMapping(value = "measure/my_task/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "measure/my_task/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<MyTaskVo> getMyTask(@Valid ApiMyTaskReq apiMyTaskReq, HttpServletRequest request) throws Exception {
         return appMeasureSyncService.getMyTask(apiMyTaskReq,request);
     }
@@ -113,7 +113,7 @@ public class APPMeasureSyncController {
      * @param apiMeasureZoneReq
      * @return
      */
-    @GetMapping(value = "measure/measure_zone/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "measure/measure_zone/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<MeasureZoneVo> getMeasureZone(@Valid ApiMeasureZoneReq apiMeasureZoneReq) throws Exception {
 
         return appMeasureSyncService.getMeasureZone(apiMeasureZoneReq);
@@ -127,7 +127,7 @@ public class APPMeasureSyncController {
      * @param apiMeasureZoneReqV2
      * @return
      */
-    @GetMapping(value = "measure/measure_zone_v2/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "measure/measure_zone_v2/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<MeasureZoneVo> getMeasureZoneV2(@Valid ApiMeasureZoneReqV2 apiMeasureZoneReqV2) throws Exception {
         return appMeasureSyncService.getMeasureZoneV2(apiMeasureZoneReqV2);
     }
@@ -141,7 +141,7 @@ public class APPMeasureSyncController {
      * @param apiMeasureZoneTotalReqV2
      * @return
      */
-    @GetMapping(value = "measure/measure_zone_v2_total/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "measure/measure_zone_v2_total/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<TotalVo> getMeasureZoneV2Total(@Valid ApiMeasureZoneTotalReqV2 apiMeasureZoneTotalReqV2) throws Exception {
         return appMeasureSyncService.getMeasureZoneV2Total(apiMeasureZoneTotalReqV2);
     }
@@ -154,7 +154,7 @@ public class APPMeasureSyncController {
      * @param apiMeasureSquadAndRepairerReq
      * @return
      */
-    @GetMapping(value = "measure/measure_squad_and_repairer/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "measure/measure_squad_and_repairer/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<MeasureSquadAndRepairerVo> measureSquadAndRepairer(@Valid ApiMeasureSquadAndRepairerReq apiMeasureSquadAndRepairerReq) throws Exception {
         return appMeasureService.measureSquadAndRepairer(apiMeasureSquadAndRepairerReq);
     }
@@ -165,7 +165,7 @@ public class APPMeasureSyncController {
      * @param apiMeasureZoneResultReq
      * @return
      */
-    @GetMapping(value = "measure/measure_zone_result/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "measure/measure_zone_result/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<MeasureZoneResultVo> measureZoneResult(@Valid ApiMeasureZoneResultReq apiMeasureZoneResultReq) throws Exception {
         return appMeasureService.measureZoneResult(apiMeasureZoneResultReq);
     }
@@ -177,7 +177,7 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/644
      * @return
      */
-    @GetMapping(value = "measure/measure_zone_result_v2/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "measure/measure_zone_result_v2/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<MeasureZoneResultVo> measureZoneResultV2(@Valid ApiMeasureZoneResultReqV2 apiMeasureZoneResultReqV2) throws Exception {
         return appMeasureService.measureZoneResultV2(apiMeasureZoneResultReqV2);
     }
@@ -189,7 +189,7 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/580
      * @return
      */
-    @GetMapping(value = "measure/measure_zone_result_v2_total/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "measure/measure_zone_result_v2_total/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<TotalVo> measureZoneResultV2Total(@Valid ApiMeasureZoneResultTotalReqV2 apiMeasureZoneResultTotalReqV2) throws Exception {
         return appMeasureService.measureZoneResultV2Total(apiMeasureZoneResultTotalReqV2);
     }
@@ -201,7 +201,7 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/652
      * @return
      */
-    @GetMapping(value = "measure/issue/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "measure/issue/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<IssueVo> issue(@Valid ApiMeasureIssueReq apiMeasureIssueReq) throws Exception {
         return appMeasureSyncService.issue(apiMeasureIssueReq);
     }
@@ -213,7 +213,7 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/650
      * @return
      */
-    @GetMapping(value = "measure/issue_log/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "measure/issue_log/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<IssueLogVo> issueLog(@Valid ApiMeasureIssueLogReq apiMeasureIssueLogReq) throws Exception {
         return appMeasureSyncService.issueLog(apiMeasureIssueLogReq);
     }
@@ -225,7 +225,7 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/1436
      * @return
      */
-    @PostMapping(value = "measure/report_region/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "measure/report_region/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<DroppedInfoVo> reportRegion(@Valid ApiMeasureReportRegionReq apiMeasureReportRegionReq,HttpServletRequest request) throws Exception {
         return appMeasureSyncService.reportRegion(apiMeasureReportRegionReq,request);
     }
@@ -237,7 +237,7 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/1460
      * @return
      */
-    @PostMapping(value = "measure/report_zone/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "measure/report_zone/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<DroppedInfoVo> reportZone(@Valid ApiMeasureReportZoneReq apiMeasureReportZoneReq,HttpServletRequest request) throws Exception{
         return appMeasureSyncService.reportZone(apiMeasureReportZoneReq,request );
     }
@@ -247,7 +247,7 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/444
      * @return
      */
-    @GetMapping(value = "measure/report_zone_result/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "measure/report_zone_result/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<DroppedInfoVo> reportZoneResult(@Valid ApiMeasureReportZoneResultReq apiMeasureReportZoneResultReq, HttpServletRequest request) throws Exception {
         return appMeasureService.reportZoneResult(apiMeasureReportZoneResultReq,request);
     }
@@ -259,7 +259,7 @@ public class APPMeasureSyncController {
      * http://192.168.37.159:3000/project/8/interface/api/1468
      * @return
      */
-    @PostMapping(value = "measure/report_issue/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "measure/report_issue/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<DroppedInfoVo> reportIssue(@Valid ApiMeasureReportIssueReq apiMeasureReportIssueReq, HttpServletRequest request) throws Exception {
         return appMeasureService.reportIssue(apiMeasureReportIssueReq,request);
     }

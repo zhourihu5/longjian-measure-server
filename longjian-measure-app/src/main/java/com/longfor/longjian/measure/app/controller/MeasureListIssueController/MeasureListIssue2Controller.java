@@ -47,7 +47,7 @@ public class MeasureListIssue2Controller {
      * http://192.168.37.159:3000/mock/8/longjian.longhu.net/oapi/v3/measure/measure_list_issue/issue_query_json/?_ct=json&project_id=930&page_level=project&group_id=4&team_id=25&limit=10&page=1&category_key=&area_ids=&measure_list_ids
      * @return
      */
-    @GetMapping(value = "issue_query_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "issue_query_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<MeasureIssueQueryVo> issueQueryJson(@Valid MeasureIssueQueryReq measureIssueQueryReq, HttpServletRequest request) throws Exception {
         LjBaseResponse<MeasureIssueQueryVo> ljBaseResponse = measureListIssueService.issueQueryJson(measureIssueQueryReq,request);
         return ljBaseResponse;
@@ -61,7 +61,7 @@ public class MeasureListIssue2Controller {
      * @param request
      * @return
      */
-    @PostMapping(value = "issue_edit/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "issue_edit/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<UpdateVo> issueEdit(@Valid MeasureIssueEdiReq req, HttpServletRequest request) throws Exception {
         UserBase userBase =null;
         try {
@@ -91,7 +91,7 @@ public class MeasureListIssue2Controller {
      * @param request
      * @return
      */
-    @PostMapping(value = "issue_close_status/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "issue_close_status/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<UpdateVo> issueCloseStatus(@Valid MeasureIssueCloseStatusReq req, HttpServletRequest request) throws Exception {
         UserBase userBase =null;
         try {
@@ -117,7 +117,7 @@ public class MeasureListIssue2Controller {
      * @param request
      * @return
      */
-    @PostMapping(value = "issue_del/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "issue_del/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<UpdateVo> issueDel(@Valid MeasureIssueDeleteReq req, HttpServletRequest request) throws Exception {
         try {
             ctrlTool.projPerm(request,"项目.实测实量.爆点管理.删除");

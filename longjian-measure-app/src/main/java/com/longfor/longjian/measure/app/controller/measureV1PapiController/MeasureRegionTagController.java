@@ -41,7 +41,7 @@ public class MeasureRegionTagController {
      * @param getGroupMeasureRegionTagReq
      * @return
      */
-    @GetMapping(value = "search_by_group_id/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "search_by_group_id/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<GroupRegionTagVo> getGroupMeasureRegionTag(@Valid GetGroupMeasureRegionTagReq getGroupMeasureRegionTagReq) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
         LjBaseResponse<GroupRegionTagVo> ljBaseResponse = proPaintAreaManageService.getGroupMeasureRegionTag(getGroupMeasureRegionTagReq);
         return ljBaseResponse;
@@ -53,7 +53,7 @@ public class MeasureRegionTagController {
      * @param getProjMeasureRegionTagReq
      * @return
      */
-    @GetMapping(value = "search_by_proj_id/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "search_by_proj_id/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<GroupRegionTagVo> getGroupMeasureRegionTag(@Valid GetProjMeasureRegionTagReq getProjMeasureRegionTagReq) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
         LjBaseResponse<GroupRegionTagVo> ljBaseResponse = proPaintAreaManageService.getProjMeasureRegionTag(getProjMeasureRegionTagReq);
         return ljBaseResponse;
@@ -64,7 +64,7 @@ public class MeasureRegionTagController {
      * http://192.168.37.159:3000/mock/8/longjian.longhu.net/measure/v1/papi/measure_region_tag/edit_by_group_id/?_ct=json
      * @return
      */
-    @PostMapping(value = "edit_by_group_id/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "edit_by_group_id/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<Object> editByGroupId(@Valid EditOnGroupReq editOnGroupReq) {
         LjBaseResponse<Object> ljBaseResponse = proPaintAreaManageService.editOnGroup(editOnGroupReq);
         return ljBaseResponse;
@@ -77,7 +77,7 @@ public class MeasureRegionTagController {
      * http://192.168.37.159:3000/mock/8/longjian.longhu.net/measure/v1/papi/measure_region_tag/add_on_group/?_ct=json
      * @return
      */
-    @PostMapping(value = "add_on_group/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "add_on_group/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<Object> addOnGroup(@Valid AddOnGroupReq addOnGroupReq) {
         LjBaseResponse<Object> ljBaseResponse = proPaintAreaManageService.addOnGroup(addOnGroupReq);
         return ljBaseResponse;
@@ -89,7 +89,7 @@ public class MeasureRegionTagController {
      * http://192.168.37.159:3000/mock/8/longjian.longhu.net/measure/v1/papi/measure_region_tag/add_on_proj/?_ct=json
      * @return
      */
-    @PostMapping(value = "add_on_proj/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "add_on_proj/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<Object> addOnProj(@Valid AddOnProjReq addOnProjReq) {
         LjBaseResponse<Object> ljBaseResponse = proPaintAreaManageService.addOnProj(addOnProjReq);
         return ljBaseResponse;
@@ -102,7 +102,7 @@ public class MeasureRegionTagController {
      * http://192.168.37.159:3000/mock/8/longjian.longhu.net/measure/v1/papi/measure_region_tag/edit_by_proj_id/?_ct=json
      * @return
      */
-    @PostMapping(value = "edit_by_proj_id/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "edit_by_proj_id/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<Object> editByProjId(@Valid EditByProjIdReq editByProjId) {
         LjBaseResponse<Object> ljBaseResponse = proPaintAreaManageService.editByProjId(editByProjId);
         return ljBaseResponse;

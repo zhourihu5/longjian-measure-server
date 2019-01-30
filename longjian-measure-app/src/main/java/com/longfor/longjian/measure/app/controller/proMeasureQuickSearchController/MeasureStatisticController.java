@@ -39,7 +39,7 @@ public class MeasureStatisticController {
      * @author DDC
      * @date 2019/1/8 11:19
      **/
-    @GetMapping(value = "squad_measure_stats_json/" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "squad_measure_stats_json/" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse SquadMeasureStatsJson(@Valid GetMeasureStatisticTaskReq getMeasureStatisticTaskReq,HttpServletRequest request) throws Exception {
         try {
             ctrlTool.projPerm(request,"项目.实测实量.统计.查看");

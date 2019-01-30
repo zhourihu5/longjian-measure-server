@@ -30,7 +30,7 @@ public class MeasureListController {
      * @param setStatusReq
      * @return
      */
-    @PostMapping(value = "set_status" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "set_status" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse setStatus(@Valid @RequestBody SetStatusReq setStatusReq) {
         return new LjBaseResponse(measureListService.setStatus(setStatusReq));
     }
@@ -40,7 +40,7 @@ public class MeasureListController {
      * @param updateNameReq
      * @return
      */
-    @PostMapping(value = "update_name" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "update_name" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse updateName(@Valid @RequestBody UpdateNameReq updateNameReq) {
         return new LjBaseResponse(measureListService.updateName(updateNameReq));
     }
@@ -50,7 +50,7 @@ public class MeasureListController {
      * @param deleteReq
      * @return
      */
-    @PostMapping(value = "delete" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "delete" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse delete(@Valid @RequestBody DeleteReq deleteReq) {
         measureListService.delete(deleteReq);
         return new LjBaseResponse();
@@ -61,7 +61,7 @@ public class MeasureListController {
      * @param updateFinishStatusReq
      * @return
      */
-    @PostMapping(value = "update_finish_status" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "update_finish_status" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse updateFinishStatus(@Valid @RequestBody UpdateFinishStatusReq updateFinishStatusReq) {
         measureListService.updateFinishStatus(updateFinishStatusReq);
         return new LjBaseResponse();
@@ -72,14 +72,14 @@ public class MeasureListController {
      * @param updateCloseStatusReq
      * @return
      */
-    @PostMapping(value = "update_close_status" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "update_close_status" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse updateCloseStatus(@Valid @RequestBody UpdateCloseStatusReq updateCloseStatusReq) {
         measureListService.updateCloseStatus(updateCloseStatusReq);
         return new LjBaseResponse();
     }
 
 
-    @PostMapping(value = "bg_add" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "bg_add" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse bgAdd(@Valid @RequestBody UpdateCloseStatusReq updateCloseStatusReq) {
         measureListService.updateCloseStatus(updateCloseStatusReq);
         return new LjBaseResponse();
@@ -92,7 +92,7 @@ public class MeasureListController {
      * @return
      * @throws Exception
      */
-    @GetMapping(value = "condition_search",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "condition_search",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<MeasureListInfoVo> conditionSearch(@Valid ConditionSearchReq req) throws Exception {
         return measureListService.conditionSearch(req);
     }

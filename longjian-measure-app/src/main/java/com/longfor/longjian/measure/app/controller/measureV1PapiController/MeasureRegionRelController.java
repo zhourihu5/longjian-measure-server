@@ -36,7 +36,7 @@ public class MeasureRegionRelController {
      *
      * @return
      */
-    @GetMapping(value = "search_by_region_uuid/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "search_by_region_uuid/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<MeasureRegionRelVo> searchByRegionUuid(@Valid MeasureRegionRelReq measureRegionRelReq) {
         LjBaseResponse<MeasureRegionRelVo> ljBaseResponse = measureRegionRelSearchService.searchByRegionUuid(measureRegionRelReq);
         return ljBaseResponse;

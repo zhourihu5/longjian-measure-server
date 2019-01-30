@@ -35,7 +35,7 @@ public class ProOapiMeasureController {
      * @param getCheckerListReq
      * @return
      */
-    @GetMapping(value = "ajax_json/user_list/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "ajax_json/user_list/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<ItemsVo<List<CheckerVo>>> getCheckerList(@Valid GetCheckerListReq getCheckerListReq){
         LjBaseResponse<ItemsVo<List<CheckerVo>>> ljBaseResponse = proMeasureService.getCheckerList(getCheckerListReq);
         return ljBaseResponse;

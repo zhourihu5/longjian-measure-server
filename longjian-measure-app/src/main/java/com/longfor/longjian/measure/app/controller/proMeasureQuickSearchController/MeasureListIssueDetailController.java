@@ -56,7 +56,7 @@ public class MeasureListIssueDetailController {
      * @author DDC
      * @date 2019/1/14 14:31
      **/
-    @GetMapping(value = "issue_info/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "issue_info/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<MeasureListIssueDetailIssueInfoVo> IssueInfo(@Valid GetMeasureListIssueDetailReq req,HttpServletRequest request) throws Exception {
         try {
             ctrlTool.projPerm(request,"项目.实测实量.爆点管理.查看");
@@ -73,7 +73,7 @@ public class MeasureListIssueDetailController {
      * @author DDC
      * @date 2019/1/14 14:34
      **/
-    @GetMapping(value = "zone_info/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "zone_info/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<MeasureListIssueDetailZoneInfoVo> zoneInfo(@Valid GetMeasureListIssueDetailReq req,HttpServletRequest request) throws Exception {
         try {
             ctrlTool.projPerm(request,"项目.实测实量.爆点管理.查看");
@@ -91,7 +91,7 @@ public class MeasureListIssueDetailController {
      * @author DDC
      * @date 2019/1/14 14:59
      **/
-    @GetMapping(value = "repair_list/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "repair_list/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<MeasureListIssueDetailRepairListVo> repairList(@Valid GetMeasureListIssueDetailReq req, HttpServletRequest request) throws Exception {
         try {
             ctrlTool.projPerm(request,"项目.实测实量.爆点管理.查看");
@@ -108,7 +108,7 @@ public class MeasureListIssueDetailController {
      * @author DDC
      * @date 2019/1/14 20:32
      **/
-    @PostMapping(value = "update_repairer/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "update_repairer/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse updateRepairer(@Valid MeasureListDetailUpdateIssueRepairerReq req, HttpServletRequest request) throws Exception {
         try {
             ctrlTool.projPerm(request, "项目.实测实量.爆点管理.编辑");
@@ -126,7 +126,7 @@ public class MeasureListIssueDetailController {
      *
      * @return
      */
-    @PostMapping(value = "delete/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "delete/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse delete(@Valid MeasureListDetailDeleteReq measureListDetailDeleteReq, HttpServletRequest request) throws Exception {
         //鉴权
         try {
@@ -144,7 +144,7 @@ public class MeasureListIssueDetailController {
      *
      * @return
      */
-    @PostMapping(value = "update_approve_issue/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "update_approve_issue/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse updateApproveIssue(@Valid MeasureListDetailUpdateApproveIssueReq measureListDetailUpdateApproveIssueReq, HttpServletRequest request) throws Exception {
         //鉴权
         Integer uid =null;
@@ -169,7 +169,7 @@ public class MeasureListIssueDetailController {
      *
      * @return
      */
-    @GetMapping(value = "history_logs/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "history_logs/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<ItemsVo<List<MeasureListIssueHistoryRepairLogVo>>> historyLogs(@Valid GetMeasureListIssueDetailReq measureListIssueDetailReq, HttpServletRequest request) throws Exception {
         LjBaseResponse<ItemsVo<List<MeasureListIssueHistoryRepairLogVo>>> ljBaseResponse = new LjBaseResponse<>();
         ItemsVo<List<MeasureListIssueHistoryRepairLogVo>> itemsVo = new ItemsVo<>();
@@ -195,7 +195,7 @@ public class MeasureListIssueDetailController {
      *
      * @return
      */
-    @PostMapping(value = "update_close_status/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "update_close_status/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse updateCloseStatus(@Valid MeasureListDetailUpdateCloseStatusReq measureListDetailUpdateCloseStatusReq, HttpServletRequest request) throws Exception {
         //鉴权
         Integer uid =null;
@@ -220,7 +220,7 @@ public class MeasureListIssueDetailController {
      * @author DDC
      * @date 2019/1/15 11:12
      **/
-    @PostMapping(value = "update_issue_type/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "update_issue_type/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse updateIssueType(@Valid PostMeasureListDetailUpdateIssueTypeReq req,HttpServletRequest request) throws Exception {
         try {
             ctrlTool.projPerm(request,"项目.实测实量.爆点管理.编辑");
@@ -230,7 +230,7 @@ public class MeasureListIssueDetailController {
         return measureListIssueDetailService.updateIssueType(req);
     }
 
-    @PostMapping(value = "update_plan_end_on/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "update_plan_end_on/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse UpdatePlanEndOn(@Valid PostMeasureListDetailUpdateIssuePlanEndOnReq req,HttpServletRequest request) throws Exception {
         try {
             ctrlTool.projPerm(request,"项目.实测实量.爆点管理.编辑");
