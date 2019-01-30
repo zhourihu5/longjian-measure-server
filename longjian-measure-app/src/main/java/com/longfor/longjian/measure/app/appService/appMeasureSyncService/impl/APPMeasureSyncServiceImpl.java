@@ -164,7 +164,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         Integer start = 0;
         Integer limit = MEASURE_API_GET_PER_TIME;
         List<MeasureZone> measureZones = measureZoneService.searchZoneUnscopedByListIdLastIdUpdateAtGt2(measureList.getProjectId(), apiMeasureZoneReqV2.getList_id(), apiMeasureZoneReqV2.getLast_id(), apiMeasureZoneReqV2.getTimestamp(), start, limit);
-        if ((measureZones.size() - 1) > 0) {
+        if ((measureZones.size()) > 0) {
             lastId = measureZones.get(measureZones.size() - 1).getId();
         }
         measureZones.forEach(measureZone -> {
