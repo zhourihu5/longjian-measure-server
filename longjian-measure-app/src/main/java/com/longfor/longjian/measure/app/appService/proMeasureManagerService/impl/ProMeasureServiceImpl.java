@@ -359,13 +359,13 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         LjBaseResponse<ItemsVo<List<AreaPOPVo>>> ljBaseResponse = new LjBaseResponse<>();
         ItemsVo<List<AreaPOPVo>> itemsVo = new ItemsVo<>();
         List<AreaPOPVo> areaPOPVos = new ArrayList<>();
-        //鉴权 todo 获取prod.id 暂时从前端获取
+        int projectId = projectBase.getId();
         String[] listIds = getAreaPOPreq.getList_ids().split(",");
         String[] areaIds = getAreaPOPreq.getArea_ids().split(",");
         if (listIds.length == 0 || areaIds.length == 0 || getAreaPOPreq.getParent_category_key().length() == 0) {
             throw new Exception("参数不完整");
         }
-        List<Map<String, Object>> list = searchMeasureCategoryAreaStatByProjectIdAndListIdsAndParentCategoryKeyAndAreaIds(projectBase.getId(), listIds, getAreaPOPreq.getParent_category_key(), areaIds);
+        List<Map<String, Object>> list = searchMeasureCategoryAreaStatByProjectIdAndListIdsAndParentCategoryKeyAndAreaIds(projectId, listIds, getAreaPOPreq.getParent_category_key(), areaIds);
         list.forEach(LambdaExceptionUtil.throwingConsumerWrapper(map -> {
             AreaPOPVo areaPOPVo = (AreaPOPVo) ConvertUtil.convertMap(AreaPOPVo.class, map);
             List<MeasureStatisticAreaDistributeVo> area_dist = new ArrayList<>();
