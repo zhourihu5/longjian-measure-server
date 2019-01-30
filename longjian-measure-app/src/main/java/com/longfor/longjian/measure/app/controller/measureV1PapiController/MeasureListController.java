@@ -80,7 +80,7 @@ public class MeasureListController {
 
 
     @RequestMapping(value = "bg_add" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse bgAdd(@Valid @RequestBody UpdateCloseStatusReq updateCloseStatusReq) {
+    public LjBaseResponse bgAdd(@Valid UpdateCloseStatusReq updateCloseStatusReq) {
         measureListService.updateCloseStatus(updateCloseStatusReq);
         return new LjBaseResponse();
     }
