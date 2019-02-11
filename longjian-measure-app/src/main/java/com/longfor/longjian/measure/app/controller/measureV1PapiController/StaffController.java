@@ -58,7 +58,7 @@ public class StaffController {
      * @return
      */
     @RequestMapping(value = "squad_add" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse squadAdd(@Valid @RequestBody SquadAddReq squadAddReq) {
+    public LjBaseResponse squadAdd(@Valid SquadAddReq squadAddReq) {
         iStaffService.squadAdd(squadAddReq);
         return new LjBaseResponse();
     }
@@ -70,7 +70,7 @@ public class StaffController {
      * @return
      */
     @RequestMapping(value = "squad_update" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse squadUpdate(@Valid @RequestBody SquadUpdateReq squadUpdateReq) {
+    public LjBaseResponse squadUpdate(@Valid SquadUpdateReq squadUpdateReq) {
         iStaffService.squadUpdate(squadUpdateReq);
         return new LjBaseResponse();
     }
@@ -81,7 +81,7 @@ public class StaffController {
      * @return
      */
     @RequestMapping(value = "squad_delete" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse squadDelete(@Valid @RequestBody SquadDeleteReq squadDeleteReq) {
+    public LjBaseResponse squadDelete(@Valid SquadDeleteReq squadDeleteReq) {
         iStaffService.squadDelete(squadDeleteReq);
         return new LjBaseResponse();
     }
@@ -92,7 +92,7 @@ public class StaffController {
      * @return
      */
     @RequestMapping(value = "repairer_list_update" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse repairerListUpdate(@Valid @RequestBody RepairerListUpdateReq repairerListUpdateReq) {
+    public LjBaseResponse repairerListUpdate(@Valid RepairerListUpdateReq repairerListUpdateReq) {
         iStaffService.repairerListUpdate(repairerListUpdateReq);
         return new LjBaseResponse();
     }

@@ -45,13 +45,13 @@ public class PaginationSearchReq {
     /**
      * 区域id列表
      */
-    @NotBlank(message = ReqParamCheckErrors.PARAM_IS_NULL)
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private  String area_id_list;
 
     /**
      * 检查项key列表
      */
-    @NotBlank(message = ReqParamCheckErrors.PARAM_IS_NULL)
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private  String category_key_list;
 
 
