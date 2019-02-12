@@ -28,7 +28,7 @@ public class RepairerListUpdateReq {
     /**
      * 用户id以逗号分隔
      */
-    @NotBlank(message = ReqParamCheckErrors.PARAM_IS_NULL)
+    @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private String user_id_list;
 
     /**

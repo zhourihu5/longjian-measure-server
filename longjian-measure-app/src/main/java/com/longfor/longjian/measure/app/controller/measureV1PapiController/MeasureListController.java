@@ -40,7 +40,7 @@ public class MeasureListController {
      * @return
      */
     @RequestMapping(value = "set_status" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse setStatus(@Valid @RequestBody SetStatusReq setStatusReq) {
+    public LjBaseResponse setStatus(@Valid SetStatusReq setStatusReq) {
         return new LjBaseResponse(measureListService.setStatus(setStatusReq));
     }
 
@@ -50,7 +50,7 @@ public class MeasureListController {
      * @return
      */
     @RequestMapping(value = "update_name" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse updateName(@Valid @RequestBody UpdateNameReq updateNameReq) {
+    public LjBaseResponse updateName(@Valid UpdateNameReq updateNameReq) {
         return new LjBaseResponse(measureListService.updateName(updateNameReq));
     }
 
@@ -60,7 +60,7 @@ public class MeasureListController {
      * @return
      */
     @RequestMapping(value = "delete" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse delete(@Valid @RequestBody DeleteReq deleteReq) {
+    public LjBaseResponse delete(@Valid DeleteReq deleteReq) {
         measureListService.delete(deleteReq);
         return new LjBaseResponse();
     }
@@ -71,7 +71,7 @@ public class MeasureListController {
      * @return
      */
     @RequestMapping(value = "update_finish_status" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse updateFinishStatus(@Valid @RequestBody UpdateFinishStatusReq updateFinishStatusReq) {
+    public LjBaseResponse updateFinishStatus(@Valid UpdateFinishStatusReq updateFinishStatusReq) {
         measureListService.updateFinishStatus(updateFinishStatusReq);
         return new LjBaseResponse();
     }
@@ -82,7 +82,7 @@ public class MeasureListController {
      * @return
      */
     @RequestMapping(value = "update_close_status" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse updateCloseStatus(@Valid @RequestBody UpdateCloseStatusReq updateCloseStatusReq) {
+    public LjBaseResponse updateCloseStatus(@Valid UpdateCloseStatusReq updateCloseStatusReq) {
         measureListService.updateCloseStatus(updateCloseStatusReq);
         return new LjBaseResponse();
     }

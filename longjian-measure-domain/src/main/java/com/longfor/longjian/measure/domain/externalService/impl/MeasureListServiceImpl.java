@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.domain.externalService.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -220,12 +221,13 @@ public class MeasureListServiceImpl implements IMeasureListService {
             criteria.andEqualTo("rootCategoryKey", category_key);
         }
         if (!list_id_set.isEmpty()) {
-            criteria.andIn("id", list_id_set2);
+            criteria.andIn("id", list_id_set);
         }
         criteria.andIsNull("deleteAt");
         example.setOrderByClause("create_at");
-        //criteria.andCondition("delete_at is null order by create_at limit " + (page - 1) * page_size + "," + page_size);
         List<MeasureList> measureLists = measureListMapper.selectByExampleAndRowBounds(example,new RowBounds((page - 1) * page_size,page_size));
+        //List<MeasureList> measureLists = measureListMapper.selectByExample(example);
+        //PageHelper.startPage((page - 1) * page_size,page_size);
         int total_num = measureListMapper.selectCountByExample(example);
         List<Map<String,Object>> return_list =Lists.newArrayList();
         for (MeasureList list_model : measureLists) {

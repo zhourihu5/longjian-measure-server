@@ -62,7 +62,7 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
         measureList.setProjectId(setStatusReq.getProject_id());
         measureList.setCloseStatus(setStatusReq.getClose_status());
         measureList.setFinishStatus(setStatusReq.getFinish_status());
-
+        measureList.setUpdateAt(new Date());
         iMeasureListService.updateMeasureList(measureList);
 
         SetStatusVo setStatusVo = new SetStatusVo();
@@ -149,7 +149,7 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
             listInfoVo.setId((Integer) map.get("id"));
             listInfoVo.setName(map.get("name").toString());
             listInfoVo.setProj_id((Integer) map.get("projectId"));
-            listInfoVo.setArea_type(map.get("areaType").toString());
+            listInfoVo.setArea_type(map.get("areaType") == null ? "" : map.get("areaType").toString());
             listInfoVo.setClose_status((Integer) map.get("closeStatus"));
             listInfoVo.setFinish_status((Integer) map.get("finishStatus"));
             listInfoVo.setTop_areas((List<String>) map.get("top_areas"));
