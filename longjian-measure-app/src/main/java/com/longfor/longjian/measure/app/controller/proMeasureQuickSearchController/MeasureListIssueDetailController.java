@@ -1,8 +1,11 @@
 package com.longfor.longjian.measure.app.controller.proMeasureQuickSearchController;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.util.CtrlTool;
+import com.longfor.longjian.common.util.DateUtil;
 import com.longfor.longjian.common.util.SessionInfo;
 import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.IMeasureListIssueDetailService;
 import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.IProMeasureListIssueLogService;
@@ -11,21 +14,24 @@ import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.*;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
 import com.longfor.longjian.measure.app.vo.proMeasureQuickSearchVo.*;
 import com.longfor.longjian.measure.consts.Enum.MeasureListCloseStatusEnum;
+import com.longfor.longjian.measure.consts.constant.MeasureListIssueType;
 import com.longfor.longjian.measure.domain.externalService.IMeasureListIssueService;
+import com.longfor.longjian.measure.domain.externalService.IUserService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListIssue;
+import com.longfor.longjian.measure.po.zhijian2.MeasureListIssueLog;
+import com.longfor.longjian.measure.po.zhijian2_apisvr.User;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.List;
+import java.util.*;
 
 /**
  * @description: go服务
@@ -46,9 +52,12 @@ public class MeasureListIssueDetailController {
     @Resource
     private IProMeasureListIssueLogService proMeasureListIssueLogService;
     @Resource
+    private IUserService userService;
+    @Resource
     private CtrlTool ctrlTool;
     @Resource
     private SessionInfo sessionInfo;
+
     /**
      * @return com.longfor.longjian.common.base.LjBaseResponse<com.longfor.longjian.measure.app.vo.proMeasureQuickSearchVo.MeasureListIssueDetailIssueInfoVo>
      * @Description: go项目实测爆点详情
@@ -57,11 +66,11 @@ public class MeasureListIssueDetailController {
      * @date 2019/1/14 14:31
      **/
     @RequestMapping(value = "issue_info/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureListIssueDetailIssueInfoVo> IssueInfo(@Valid GetMeasureListIssueDetailReq req,HttpServletRequest request) throws Exception {
+    public LjBaseResponse<MeasureListIssueDetailIssueInfoVo> IssueInfo(@Valid GetMeasureListIssueDetailReq req, HttpServletRequest request) throws Exception {
         try {
-            ctrlTool.projPerm(request,"项目.实测实量.爆点管理.查看");
-        }catch (Exception e){
-            throw new LjBaseRuntimeException(-9999,e.getMessage());
+            ctrlTool.projPerm(request, "项目.实测实量.爆点管理.查看");
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
         return new LjBaseResponse<>(measureListIssueDetailService.IssueInfo(req));
     }
@@ -74,18 +83,18 @@ public class MeasureListIssueDetailController {
      * @date 2019/1/14 14:34
      **/
     @RequestMapping(value = "zone_info/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureListIssueDetailZoneInfoVo> zoneInfo(@Valid GetMeasureListIssueDetailReq req,HttpServletRequest request) throws Exception {
+    public LjBaseResponse<MeasureListIssueDetailZoneInfoVo> zoneInfo(@Valid GetMeasureListIssueDetailReq req, HttpServletRequest request) throws Exception {
         try {
-            ctrlTool.projPerm(request,"项目.实测实量.爆点管理.查看");
-        }catch (Exception e){
-            throw new LjBaseRuntimeException(-9999,e.getMessage());
+            ctrlTool.projPerm(request, "项目.实测实量.爆点管理.查看");
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
         return new LjBaseResponse<>(measureListIssueDetailService.zoneInfo(req));
     }
 
 
     /**
-     * @return com.longfor.longjian.common.base.LjBaseResponse<java.util.List   <   com.longfor.longjian.measure.app.vo.proMeasureQuickSearchVo.MeasureListIssueDetailRepairerVo>>
+     * @return com.longfor.longjian.common.base.LjBaseResponse<java.util.List                               <                               com.longfor.longjian.measure.app.vo.proMeasureQuickSearchVo.MeasureListIssueDetailRepairerVo>>
      * @Description: go项目实测爆点整改测区详情
      * http://192.168.37.159:3000/project/8/interface/api/2992
      * @author DDC
@@ -94,9 +103,9 @@ public class MeasureListIssueDetailController {
     @RequestMapping(value = "repair_list/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<MeasureListIssueDetailRepairListVo> repairList(@Valid GetMeasureListIssueDetailReq req, HttpServletRequest request) throws Exception {
         try {
-            ctrlTool.projPerm(request,"项目.实测实量.爆点管理.查看");
-        }catch (Exception e){
-            throw new LjBaseRuntimeException(-9999,e.getMessage());
+            ctrlTool.projPerm(request, "项目.实测实量.爆点管理.查看");
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
         return new LjBaseResponse<>(measureListIssueDetailService.repairList(req));
     }
@@ -112,8 +121,8 @@ public class MeasureListIssueDetailController {
     public LjBaseResponse updateRepairer(@Valid MeasureListDetailUpdateIssueRepairerReq req, HttpServletRequest request) throws Exception {
         try {
             ctrlTool.projPerm(request, "项目.实测实量.爆点管理.编辑");
-        }catch (Exception e){
-            throw new LjBaseRuntimeException(-9999,e.getMessage());
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
         measureListIssueDetailService.updateRepairer(req);
         return new LjBaseResponse();
@@ -131,8 +140,8 @@ public class MeasureListIssueDetailController {
         //鉴权
         try {
             ctrlTool.projPerm(request, "项目.实测实量.爆点管理.删除");
-        }catch (Exception e){
-            throw new LjBaseRuntimeException(-9999,e.getMessage());
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
         proMeasureListIssueService.measureListIssueDeleteByProjUuid(measureListDetailDeleteReq.getProject_id(), measureListDetailDeleteReq.getUuid());
         return new LjBaseResponse();
@@ -147,12 +156,12 @@ public class MeasureListIssueDetailController {
     @RequestMapping(value = "update_approve_issue/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse updateApproveIssue(@Valid MeasureListDetailUpdateApproveIssueReq measureListDetailUpdateApproveIssueReq, HttpServletRequest request) throws Exception {
         //鉴权
-        Integer uid =null;
+        Integer uid = null;
         try {
             ctrlTool.projPerm(request, "项目.实测实量.爆点管理.编辑");
             uid = sessionInfo.getSessionUser().getUserId();
-        }catch (Exception e){
-            throw new LjBaseRuntimeException(-9999,e.getMessage());
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
 
         boolean isClosed = proMeasureListIssueService.updateIssueApproveStatusByUuid(measureListDetailUpdateApproveIssueReq.getUuid(), measureListDetailUpdateApproveIssueReq.getProject_id(), uid, measureListDetailUpdateApproveIssueReq.getStatus(), measureListDetailUpdateApproveIssueReq.getContent(), "");
@@ -176,8 +185,8 @@ public class MeasureListIssueDetailController {
         //鉴权
         try {
             ctrlTool.projPerm(request, "项目.实测实量.爆点管理.查看");
-        }catch (Exception e){
-            throw new LjBaseRuntimeException(-9999,e.getMessage());
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
 
         MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(measureListIssueDetailReq.getProject_id(), measureListIssueDetailReq.getUuid());
@@ -198,12 +207,12 @@ public class MeasureListIssueDetailController {
     @RequestMapping(value = "update_close_status/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse updateCloseStatus(@Valid MeasureListDetailUpdateCloseStatusReq measureListDetailUpdateCloseStatusReq, HttpServletRequest request) throws Exception {
         //鉴权
-        Integer uid =null;
+        Integer uid = null;
         try {
-            ctrlTool.projPerm(request,"项目.实测实量.爆点管理.编辑");
-            uid=sessionInfo.getSessionUser().getUserId();
-        }catch (Exception e){
-            throw new LjBaseRuntimeException(-9999,e.getMessage());
+            ctrlTool.projPerm(request, "项目.实测实量.爆点管理.编辑");
+            uid = sessionInfo.getSessionUser().getUserId();
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
         Integer status = MeasureListCloseStatusEnum.UnClose.getId();
         if (measureListDetailUpdateCloseStatusReq.getClose_status()) {
@@ -221,25 +230,70 @@ public class MeasureListIssueDetailController {
      * @date 2019/1/15 11:12
      **/
     @RequestMapping(value = "update_issue_type/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse updateIssueType(@Valid PostMeasureListDetailUpdateIssueTypeReq req,HttpServletRequest request) throws Exception {
+    public LjBaseResponse updateIssueType(@Valid PostMeasureListDetailUpdateIssueTypeReq req, HttpServletRequest request) throws Exception {
         try {
-            ctrlTool.projPerm(request,"项目.实测实量.爆点管理.编辑");
-        }catch (Exception e){
-            throw new LjBaseRuntimeException(-9999,e.getMessage());
+            ctrlTool.projPerm(request, "项目.实测实量.爆点管理.编辑");
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
         return measureListIssueDetailService.updateIssueType(req);
     }
 
     @RequestMapping(value = "update_plan_end_on/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse UpdatePlanEndOn(@Valid PostMeasureListDetailUpdateIssuePlanEndOnReq req,HttpServletRequest request) throws Exception {
+    public LjBaseResponse UpdatePlanEndOn(@Valid PostMeasureListDetailUpdateIssuePlanEndOnReq req, HttpServletRequest request) throws Exception {
         try {
-            ctrlTool.projPerm(request,"项目.实测实量.爆点管理.编辑");
-        }catch (Exception e){
-            throw new LjBaseRuntimeException(-9999,e.getMessage());
+            ctrlTool.projPerm(request, "项目.实测实量.爆点管理.编辑");
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
         return measureListIssueDetailService.UpdatePlanEndOn(req);
     }
 
+    @RequestMapping(value = "issue_status/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public LjBaseResponse<MeasureListIssueGetIssueStatus> issueStatus(@Valid MeasureListIssueDetailReq req, HttpServletRequest request) throws Exception {
+        //鉴权
+        try {
+            ctrlTool.projPerm(request, "项目.实测实量.爆点管理.查看");
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
+        }
+        return measureListIssueDetailService.getIssueByProjectIdAndUuid(req);
+    }
+
+    @RequestMapping(value = "repair_logs/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public LjBaseResponse<MeasureListIssueDetailRepairLogListVo> repairLogs(@Valid MeasureListIssueDetailReq req, HttpServletRequest request) throws Exception {
+        LjBaseResponse<MeasureListIssueDetailRepairLogListVo> ljBaseResponse = new LjBaseResponse<>();
+        MeasureListIssueDetailRepairLogListVo measureListIssueDetailRepairLogListVo = new MeasureListIssueDetailRepairLogListVo();
+        List<MeasureListIssueDetailRepairLogVo> measureListIssueDetailRepairLogVos = Lists.newArrayList();
+        //鉴权
+        try {
+            ctrlTool.projPerm(request, "项目.实测实量.爆点管理.查看");
+            MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(req.getProject_id(), req.getUuid());
+            List<MeasureListIssueLog> measureListIssueLogs = proMeasureListIssueLogService.searchIssueLogByIssueUuidAndStatus(req.getProject_id(), issue.getUuid(), MeasureListIssueType.REFORMNOCHECK);
+            Set<Integer> uids = Sets.newHashSet();
+            measureListIssueLogs.forEach(measureListIssueLog -> {
+                uids.add(measureListIssueLog.getSenderId());
+            });
+            Map<Integer, User> userMap = userService.getUsersByIds(new ArrayList<>(uids));
+            measureListIssueLogs.forEach(measureListIssueLog -> {
+                MeasureListIssueDetailRepairLogVo measureListIssueDetailRepairLogVo = new MeasureListIssueDetailRepairLogVo();
+                measureListIssueDetailRepairLogVo.setContent(measureListIssueLog.getDesc());
+                measureListIssueDetailRepairLogVo.setUser_id(measureListIssueLog.getSenderId());
+                measureListIssueDetailRepairLogVo.setCreate_at(measureListIssueLog.getCreateAt() == null ? 0 : DateUtil.dateToTimestamp(measureListIssueLog.getCreateAt()));
+                measureListIssueDetailRepairLogVo.setAttachment_md5_list(measureListIssueLog.getAttachmentMd5List().length()>0 ? Arrays.asList(StringUtils.split(measureListIssueLog.getAttachmentMd5List(), ",")):Arrays.asList(measureListIssueLog.getAttachmentMd5List()));
+                if (userMap.get(measureListIssueLog.getSenderId()) != null) {
+                    measureListIssueDetailRepairLogVo.setUser_name(userMap.get(measureListIssueLog.getSenderId()).getRealName());
+                }
+                measureListIssueDetailRepairLogVos.add(measureListIssueDetailRepairLogVo);
+            });
+            measureListIssueDetailRepairLogListVo.setItems(measureListIssueDetailRepairLogVos);
+            ljBaseResponse.setData(measureListIssueDetailRepairLogListVo);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
+        }
+        return ljBaseResponse;
+    }
 }
 
 

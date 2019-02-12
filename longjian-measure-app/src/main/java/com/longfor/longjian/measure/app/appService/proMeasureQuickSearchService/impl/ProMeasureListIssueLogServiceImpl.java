@@ -165,4 +165,9 @@ public class ProMeasureListIssueLogServiceImpl implements IProMeasureListIssueLo
         }
         return items;
     }
+
+    @Override
+    public List<MeasureListIssueLog> searchIssueLogByIssueUuidAndStatus(Integer project_id, String uuid, int reformnocheck) {
+        return measureListIssueLogService.searchIssueLogByIssueUuidAndStatus(project_id, uuid, reformnocheck);
+    }
 }

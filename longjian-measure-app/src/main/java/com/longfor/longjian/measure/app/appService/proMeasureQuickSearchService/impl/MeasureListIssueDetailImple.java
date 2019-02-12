@@ -1,12 +1,10 @@
 package com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.impl;
 
 import com.alibaba.fastjson.JSONArray;
-import com.google.gson.JsonArray;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.common.entity.ProjectBase;
 import com.longfor.longjian.common.entity.UserBase;
 import com.longfor.longjian.common.exception.LjBaseRuntimeException;
-import com.longfor.longjian.common.util.CtrlTool;
 import com.longfor.longjian.common.util.DateUtil;
 import com.longfor.longjian.common.util.SessionInfo;
 import com.longfor.longjian.measure.app.appService.areaService.ICoreAreaService;
@@ -14,20 +12,15 @@ import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.
 import com.longfor.longjian.measure.app.commonEntity.AreasMap;
 import com.longfor.longjian.measure.app.commonEntity.MeasureListIssueHelper;
 import com.longfor.longjian.measure.app.commonEntity.MeasureSquadAndSquadUser;
-import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.MeasureListDetailUpdateIssueRepairerReq;
-import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.PostMeasureListDetailUpdateIssuePlanEndOnReq;
-import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.PostMeasureListDetailUpdateIssueTypeReq;
+import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.*;
 import com.longfor.longjian.measure.app.vo.proMeasureQuickSearchVo.*;
 import com.longfor.longjian.measure.app.commonEntity.MeasureListIssueInfo;
-import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.GetMeasureListIssueDetailReq;
 import com.longfor.longjian.measure.consts.constant.MeasureListIssueType;
 import com.longfor.longjian.measure.domain.externalService.*;
 import com.longfor.longjian.measure.po.zhijian2.*;
 import com.longfor.longjian.measure.po.zhijian2_apisvr.User;
-import com.longfor.longjian.measure.util.ConvertUtil;
 import com.longfor.longjian.measure.util.StringSplitToListUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -292,7 +285,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
-        boolean isClosed = UpdateIssueTypeByUuid(req.getUuid(), req.getProject_id(), sessionUser.getUserId(), req.getType());
+        boolean isClosed = UpdateIssueTypeByUuid(req.getUuid(), req.getProject_id(), sessionUser.getUserId(), req.getTyp());
         if (isClosed) {
             throw new LjBaseRuntimeException(-1, "问题已被关闭");
         }
@@ -507,6 +500,17 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         }
         measureListIssueHelper.execute();
         return isClose;
+    }
+
+    @Override
+    public LjBaseResponse<MeasureListIssueGetIssueStatus> getIssueByProjectIdAndUuid(MeasureListIssueDetailReq req) {
+        LjBaseResponse<MeasureListIssueGetIssueStatus> ljBaseResponse =new LjBaseResponse<>();
+        MeasureListIssue measureListIssue = measureListIssueService.getByConditionNoFoundErr(req.getProject_id(), req.getUuid());
+        MeasureListIssueGetIssueStatus measureListIssueGetIssueStatus =new MeasureListIssueGetIssueStatus();
+        measureListIssueGetIssueStatus.setStatus(measureListIssue.getStatus());
+        measureListIssueGetIssueStatus.setClose_status(measureListIssue.getCloseStatus());
+        ljBaseResponse.setData(measureListIssueGetIssueStatus);
+        return ljBaseResponse;
     }
 }
 
