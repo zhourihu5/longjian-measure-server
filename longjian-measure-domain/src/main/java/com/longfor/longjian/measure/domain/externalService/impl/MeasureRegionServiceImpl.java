@@ -5,6 +5,7 @@ import com.google.common.collect.Sets;
 import com.longfor.longjian.measure.dao.zhijian2.MeasureRegionMapper;
 import com.longfor.longjian.measure.domain.externalService.IMeasureRegionService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureRegion;
+import com.longfor.longjian.measure.util.ExampleUtil;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
@@ -192,6 +193,17 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("projectId", projId);
         criteria.andGreaterThan("updateAt", timeFmt);
+        return measureRegionMapper.selectByExample(example);
+    }
+
+    @Override
+    public List<MeasureRegion> searchByIdAndAreaIdAndProjectIdNoDeleted(List<String> region_id_list, List<String> copy_area_id_list, int proj_id) {
+        Example example = new Example(MeasureRegion.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId", proj_id);
+        criteria.andIn("id", region_id_list);
+        criteria.andIn("areaId", copy_area_id_list);
+        ExampleUtil.addDeleteAtJudge(example);
         return measureRegionMapper.selectByExample(example);
     }
 }

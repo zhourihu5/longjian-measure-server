@@ -212,6 +212,22 @@ public class DateUtil {
         return d;
     }
 
+    /**
+     * 返回短时间格式
+     *
+     * @return返回短时间格式 yyyy-MM-dd
+     */
+    public static Date getDateShortFromString(String dateString)  {
+        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd");
+        Date dd= null;
+        try {
+            dd = format.parse(dateString);
+        } catch (ParseException e) {
+            logger.error(e.getMessage());
+        }
+        return dd;
+    }
+
 //    public static void main(String[] args) throws ParseException {
 ////        String category_key = "1605";
 ////        String categoryPathAndKey = "/1605/1605_21_0/1605_55_0/";

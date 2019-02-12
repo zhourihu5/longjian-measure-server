@@ -27,4 +27,5 @@ public interface IMeasureRepairerUserService {
 
     List<MeasureRepairerUser> SearchMeasureReparierUserByListId(Integer projId,Integer listId);
 
+    void create(int proj_id, Integer id, String role_type, Integer user_id);
 }

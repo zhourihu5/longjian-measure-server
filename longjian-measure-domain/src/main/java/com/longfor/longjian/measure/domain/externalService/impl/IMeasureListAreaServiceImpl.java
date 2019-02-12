@@ -5,12 +5,14 @@ import com.longfor.longjian.measure.domain.externalService.IMeasureListAreaServi
 import com.longfor.longjian.measure.po.zhijian2.Area;
 import com.longfor.longjian.measure.po.zhijian2.MeasureList;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListArea;
+import com.longfor.longjian.measure.po.zhijian2.MeasureListIssue;
 import com.longfor.longjian.measure.util.ExampleUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +23,7 @@ import java.util.List;
 @Service
 public class IMeasureListAreaServiceImpl implements IMeasureListAreaService {
 
-    @Autowired
+    @Resource
     private MeasureListAreaMapper measureListAreaMapper;
 
     @Override
@@ -56,5 +58,15 @@ public class IMeasureListAreaServiceImpl implements IMeasureListAreaService {
         criteria.andEqualTo("listId",id);
         ExampleUtil.addDeleteAtJudge(example);
         return measureListAreaMapper.selectByExample(example);
+    }
+
+    @Override
+    public void create(int proj_id, Integer areaId, String s, Integer listId) {
+        MeasureListArea measureListArea = new MeasureListArea();
+        measureListArea.setProjectId(proj_id);
+        measureListArea.setAreaId(areaId);
+        measureListArea.setAreaPathAndId(s);
+        measureListArea.setListId(listId);
+        measureListAreaMapper.insertSelective(measureListArea);
     }
 }

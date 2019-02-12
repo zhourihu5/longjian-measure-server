@@ -8,6 +8,7 @@ import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.dao.zhijian2.*;
 import com.longfor.longjian.measure.domain.externalService.IMeasureListService;
 import com.longfor.longjian.measure.po.zhijian2.*;
+import com.longfor.longjian.measure.util.DateUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.bouncycastle.cms.PasswordRecipientId;
@@ -262,6 +263,21 @@ public class MeasureListServiceImpl implements IMeasureListService {
         map.put("total_num",total_num);
         map.put("return_list",return_list);
         return map;
+    }
+
+    @Override
+    public MeasureList createMeasureList(int proj_id, String name, String area_type, Integer closeStatusCode, Integer finishStatusCode, String root_category_key, String plan_begin_on, String plan_end_on) {
+        MeasureList measureList = new MeasureList();
+        measureList.setProjectId(proj_id);
+        measureList.setName(name);
+        measureList.setAreaType(area_type);
+        measureList.setCloseStatus(closeStatusCode);
+        measureList.setFinishStatus(closeStatusCode);
+        measureList.setRootCategoryKey(root_category_key);
+        measureList.setPlanBeginOn(DateUtil.getDateShortFromString(plan_begin_on));
+        measureList.setPlanEndOn(DateUtil.getDateShortFromString(plan_end_on));
+        measureListMapper.insertSelective(measureList);
+        return measureList;
     }
 
     private List<Area> search_by_id_list(Integer project_id, Set<Integer> area_id_list) {

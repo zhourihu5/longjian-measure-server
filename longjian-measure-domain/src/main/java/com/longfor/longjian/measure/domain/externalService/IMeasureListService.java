@@ -180,4 +180,6 @@ public interface IMeasureListService {
      * @return
      */
     Map<String, Object> conditionSearch(Integer group_id, Integer project_id, Integer page, Integer page_size, String area_id, String user_id_list, Integer finish_status, String name, String category_key) throws Exception;
+
+    MeasureList createMeasureList(int proj_id, String name, String area_type, Integer id, Integer id1, String root_category_key, String plan_begin_on, String plan_end_on);
 }

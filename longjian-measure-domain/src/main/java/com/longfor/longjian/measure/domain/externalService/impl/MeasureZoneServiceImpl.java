@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,7 @@ import java.util.Set;
 @Service
 public class MeasureZoneServiceImpl implements IMeasureZoneService {
 
-    @Autowired
+    @Resource
     private MeasureZoneMapper measureZoneMapper;
 
     @Override
@@ -129,5 +130,10 @@ public class MeasureZoneServiceImpl implements IMeasureZoneService {
         Example example =new Example(MeasureZone.class);
         example.createCriteria().andEqualTo("projectId",projId).andEqualTo("listId",list_id);
         return measureZoneMapper.selectByExample(example);
+    }
+
+    @Override
+    public void insertMany(List<MeasureZone> insert_zone_list) {
+        measureZoneMapper.insertList(insert_zone_list);
     }
 }

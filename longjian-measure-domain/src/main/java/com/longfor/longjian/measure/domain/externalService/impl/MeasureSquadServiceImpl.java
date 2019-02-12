@@ -68,4 +68,10 @@ public class MeasureSquadServiceImpl implements IMeasureSquadService {
     public List<MeasureSquad> SearchSquadByProjIdListId(Integer projId, Integer listId) {
         return measureSquadMapper.SearchSquadByProjIdListId(projId,listId);
     }
+
+    @Override
+    public MeasureSquad createReturnSuqad(MeasureSquad measureSquad) {
+        measureSquadMapper.insertSelective(measureSquad);
+        return measureSquad;
+    }
 }

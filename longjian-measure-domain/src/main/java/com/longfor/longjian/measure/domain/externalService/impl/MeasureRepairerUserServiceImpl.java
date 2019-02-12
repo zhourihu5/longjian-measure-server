@@ -45,4 +45,14 @@ public class MeasureRepairerUserServiceImpl implements IMeasureRepairerUserServi
     public List<MeasureRepairerUser> SearchMeasureReparierUserByListId(Integer projId, Integer listId) {
         return measureRepairerUserMapper.SearchMeasureReparierUserByListId(projId,listId);
     }
+
+    @Override
+    public void create(int proj_id, Integer listId, String role_type, Integer user_id) {
+        MeasureRepairerUser measureRepairerUser = new MeasureRepairerUser();
+        measureRepairerUser.setProjectId(proj_id);
+        measureRepairerUser.setListId(listId);
+        measureRepairerUser.setRoleType(Integer.getInteger(role_type));
+        measureRepairerUser.setUserId(user_id);
+        measureRepairerUserMapper.insertSelective(measureRepairerUser);
+    }
 }

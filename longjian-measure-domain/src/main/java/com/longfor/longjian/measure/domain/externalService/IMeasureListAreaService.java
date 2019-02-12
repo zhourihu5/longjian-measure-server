@@ -21,4 +21,6 @@ public interface IMeasureListAreaService {
      * @return
      */
     List<MeasureListArea> searchByListId(String projectId, Integer id);
+
+    void create(int proj_id, Integer id, String s, Integer id1);
 }

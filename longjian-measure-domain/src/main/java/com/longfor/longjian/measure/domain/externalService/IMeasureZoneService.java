@@ -109,4 +109,6 @@ public interface IMeasureZoneService {
      * @return
      */
     List<MeasureZone> searchByListId(Integer projId, Integer list_id);
+
+    void insertMany(List<MeasureZone> insert_zone_list);
 }

@@ -37,7 +37,7 @@ public class MeasureSquadUserServiceImpl implements IMeasureSquadUserService{
 
     @Override
     public void create(MeasureSquadUser measureSquadUser) {
-        measureSquadUserMapper.insert(measureSquadUser);
+        measureSquadUserMapper.insertSelective(measureSquadUser);
     }
 
     @Override

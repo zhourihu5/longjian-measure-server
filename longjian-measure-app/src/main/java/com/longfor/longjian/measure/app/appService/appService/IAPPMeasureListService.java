@@ -41,4 +41,9 @@ public interface IAPPMeasureListService {
      * @return
      */
     LjBaseResponse<MeasureListInfoVo> conditionSearch(ConditionSearchReq req) throws Exception;
+
+    /**
+     * bgtask --- bgAdd
+     */
+    void add(Map params);
 }

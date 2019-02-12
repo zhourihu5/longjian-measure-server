@@ -135,4 +135,6 @@ public interface IMeasureRegionService {
      * @return
      */
     List<MeasureRegion> searchUnscopedByProjIdUpdateAtGt2(Integer projId, String timeFmt);
+
+    List<MeasureRegion> searchByIdAndAreaIdAndProjectIdNoDeleted(List<String> region_id_list, List<String> copy_area_id_list, int proj_id);
 }

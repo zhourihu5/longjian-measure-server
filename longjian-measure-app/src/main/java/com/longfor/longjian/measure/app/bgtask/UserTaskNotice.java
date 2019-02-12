@@ -11,7 +11,7 @@ import java.util.Map;
 public class UserTaskNotice extends Productor{
 
     public String send(Integer userId, String item, String s, Map params,String task_cls_name) {
-        super.send(item,params,task_cls_name);
+//        super.send(item,params,task_cls_name);
         return "";
     }
 }
