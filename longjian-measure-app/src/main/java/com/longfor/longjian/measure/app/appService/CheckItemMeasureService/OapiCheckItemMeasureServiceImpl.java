@@ -32,12 +32,10 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.Map;
 
 /**
@@ -194,48 +192,33 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
             mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
         }
         if (StringUtils.isNotBlank(name)) {
-            response.addHeader("Content-Disposition", String.format("attachment; filename=/%s/", name));
+            response.addHeader("Content-Disposition", String.format("attachment; filename=%s", name));
         }
         StoreUrlVo storeUrlVo = FileUtil.fileResourceGetStoreUrl(fileResource.getStoreKey());
         Map<String, Object> map = Maps.newHashMap();
         map.put("schema", storeUrlVo.getSchema());
         map.put("uri", storeUrlVo.getUri());
         map.put("fileName", fileResource.getFileName());
-        download(200, mimeType, content, map);
-        return ljBaseResponse;
-    }
-
-
-    private void download(int code, String contentType, byte[] data, Map<String, Object> map) throws IOException {
-        BufferedOutputStream bos = null;
-        FileOutputStream fos = null;
-        File file = null;
+        byte[] buff = new byte[1024];
+        BufferedInputStream bis = null;
+        OutputStream os = null;
         try {
-            File dir = new File(map.get("schema").toString());
-            if (!dir.exists() && dir.isDirectory()) {//判断文件目录是否存在
-                dir.mkdirs();
+            os = response.getOutputStream();
+            bis = new BufferedInputStream(new FileInputStream(map.get("schema").toString() + "/" + map.get("uri").toString()));
+            int i = 0;
+            while ((i = bis.read(buff)) != -1) {
+                os.write(buff, 0, i);
+                os.flush();
             }
-            file = new File(map.get("schema").toString() + "\\" + map.get("uri").toString());
-            fos = new FileOutputStream(file);
-            bos = new BufferedOutputStream(fos);
-            bos.write(data);
-        } catch (Exception e) {
-            throw new IOException(e);
+        } catch (IOException e) {
+            e.printStackTrace();
         } finally {
-            if (bos != null) {
-                try {
-                    bos.close();
-                } catch (IOException e1) {
-                    throw new IOException(e1);
-                }
-            }
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e1) {
-                    throw new IOException(e1);
-                }
+            try {
+                bis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
+        return ljBaseResponse;
     }
 }
