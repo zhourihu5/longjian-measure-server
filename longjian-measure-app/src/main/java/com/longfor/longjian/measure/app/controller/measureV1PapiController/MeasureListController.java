@@ -1,17 +1,22 @@
 package com.longfor.longjian.measure.app.controller.measureV1PapiController;
 
+import com.alibaba.fastjson.JSONObject;
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.util.SessionInfo;
 import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureListService;
+import com.longfor.longjian.measure.app.bgtask.UserTaskNotice;
 import com.longfor.longjian.measure.app.req.MeasureList.*;
-import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.MeasureListVo;
+import com.longfor.longjian.measure.app.vo.measureListVo.BgAddVo;
 import com.longfor.longjian.measure.app.vo.measureListVo.MeasureListInfoVo;
-import com.longfor.longjian.measure.po.zhijian2.MeasureList;
+import com.longfor.longjian.measure.consts.Enum.BgtaskEnum;
+import com.longfor.longjian.measure.util.ConvertUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Map;
 
 /**
  * Created by Wang on 2019/1/7.
@@ -24,6 +29,10 @@ public class MeasureListController {
 
     @Autowired
     private IAPPMeasureListService measureListService;
+    @Autowired
+    private UserTaskNotice userTaskNotice;
+    @Autowired
+    private SessionInfo sessionInfo;
 
     /**
      *修改 任务状态
@@ -79,10 +88,22 @@ public class MeasureListController {
     }
 
 
+    /**
+     * 异步添加实测任务
+     * @param bgAddReq
+     * @return
+     */
     @RequestMapping(value = "bg_add" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse bgAdd(@Valid UpdateCloseStatusReq updateCloseStatusReq) {
-        measureListService.updateCloseStatus(updateCloseStatusReq);
-        return new LjBaseResponse();
+    public LjBaseResponse<BgAddVo> bgAdd(@Valid BgAddReq bgAddReq) throws Exception {
+        LjBaseResponse<BgAddVo> ljBaseResponse = new LjBaseResponse<>();
+        BgAddVo bgAddVo = new BgAddVo();
+        Map params = ConvertUtil.convertBean(bgAddReq);
+        params.put("area_id_list", JSONObject.parseArray(params.get("area_id_list").toString(),Integer.class));
+        Integer userId = sessionInfo.getSessionUser().getUserId();
+        String r = userTaskNotice.send(userId, BgtaskEnum.MEASURE_LIST_CREATE.getValue(),"",params, null);
+        bgAddVo.setId(r);
+        ljBaseResponse.setData(bgAddVo);
+        return ljBaseResponse;
     }
 
     /**
