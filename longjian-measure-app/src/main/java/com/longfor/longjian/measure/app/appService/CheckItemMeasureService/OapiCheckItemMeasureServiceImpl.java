@@ -164,7 +164,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
         if (formVo.getRootCategoryId() > 0) {
             try {
                 rc = checkItemV3Service.getRootCategoryNoFoundErr(formVo.getRootCategoryId());
-                if (rc.getTeamId().equals(teamBase.getTeamId())) {
+                if (!rc.getTeamId().equals(teamBase.getTeamId())) {
                     ljBaseResponse.setMessage(LoginEnum.NO_PERMISSION.getName());
                     return ljBaseResponse;
                 }
