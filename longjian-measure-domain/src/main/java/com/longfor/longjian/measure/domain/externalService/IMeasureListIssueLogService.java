@@ -39,4 +39,13 @@ public interface IMeasureListIssueLogService {
      * @return
      */
     List<MeasureListIssueLog> searchByIssueUuid(Integer project_id, String uuid);
+
+    /**
+     * 
+     * @param project_id
+     * @param uuid
+     * @param reformnocheck
+     * @return
+     */
+    List<MeasureListIssueLog> searchIssueLogByIssueUuidAndStatus(Integer project_id, String uuid, int reformnocheck);
 }

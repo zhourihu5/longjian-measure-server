@@ -40,4 +40,15 @@ public class MeasureListIssueLogServiceImpl implements IMeasureListIssueLogServi
         ExampleUtil.addDeleteAtJudge(example);
         return measureListIssueLogMapper.selectByExample(example);
     }
+
+    @Override
+    public List<MeasureListIssueLog> searchIssueLogByIssueUuidAndStatus(Integer project_id, String uuid, int reformnocheck) {
+        Example example = new Example(MeasureListIssueLog.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId",project_id);
+        criteria.andEqualTo("issueUuid",uuid);
+        criteria.andEqualTo("status",reformnocheck);
+        ExampleUtil.addDeleteAtJudge(example);
+        return measureListIssueLogMapper.selectByExample(example);
+    }
 }

@@ -16,24 +16,8 @@ import java.util.List;
 public class FileUtil {
     //将文件转换成byte数组
     public static byte[] urlTobyte(String filePath) throws IOException {
-        byte[] buffer = null;
-        try {
-            File file = new File(filePath);
-            FileInputStream fis = new FileInputStream(file);
-            ByteArrayOutputStream bos = new ByteArrayOutputStream(1000);
-            byte[] b = new byte[1000];
-            int n;
-            while ((n = fis.read(b)) != -1) {
-                bos.write(b, 0, n);
-            }
-            fis.close();
-            bos.close();
-            buffer = bos.toByteArray();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        InputStream fis = new BufferedInputStream(new FileInputStream(filePath));
+        byte[] buffer = new byte[fis.available()];
         return buffer;
     }
     public static StoreUrlVo fileResourceGetStoreUrl(String storeKey) {
@@ -57,8 +41,8 @@ public class FileUtil {
         }
         return storeUrlVo;
     }
-     /*public static void main(String[] args) {
-        StoreUrlVo urlVo = fileResourceGetStoreUrl("pictures/452699f53a5d42c3ad81878ab4bd5a0b.png");
-        System.out.println(urlVo.getUri());
+    /* public static void main(String[] args) throws IOException {
+         byte[] bytes = urlTobyte("pictures/2019-01-17/1547721951652018806.xlsx");
+         System.out.println(bytes);
     }*/
 }
