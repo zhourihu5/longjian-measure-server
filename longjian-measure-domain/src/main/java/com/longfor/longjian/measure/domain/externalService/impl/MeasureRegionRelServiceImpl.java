@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -47,6 +48,9 @@ public class MeasureRegionRelServiceImpl implements IMeasureRegionRelService {
 
     @Override
     public List<MeasureRegionRel> selectByProjectIdAndIdNoDeleted(Integer project_id, List<Integer> rel_id_list) {
+        if (rel_id_list == null || rel_id_list.size() <= 0){
+            return new ArrayList<>();
+        }
         Example example = new Example(MeasureRegionRel.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("projectId",project_id);

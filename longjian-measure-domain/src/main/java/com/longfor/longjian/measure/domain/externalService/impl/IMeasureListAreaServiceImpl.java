@@ -67,6 +67,8 @@ public class IMeasureListAreaServiceImpl implements IMeasureListAreaService {
         measureListArea.setAreaId(areaId);
         measureListArea.setAreaPathAndId(s);
         measureListArea.setListId(listId);
+        measureListArea.setCreateAt(new Date());
+        measureListArea.setUpdateAt(new Date());
         measureListAreaMapper.insertSelective(measureListArea);
     }
 }

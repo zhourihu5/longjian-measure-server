@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -51,8 +52,10 @@ public class MeasureRepairerUserServiceImpl implements IMeasureRepairerUserServi
         MeasureRepairerUser measureRepairerUser = new MeasureRepairerUser();
         measureRepairerUser.setProjectId(proj_id);
         measureRepairerUser.setListId(listId);
-        measureRepairerUser.setRoleType(Integer.getInteger(role_type));
+        measureRepairerUser.setRoleType(Integer.parseInt(role_type));
         measureRepairerUser.setUserId(user_id);
+        measureRepairerUser.setCreateAt(new Date());
+        measureRepairerUser.setUpdateAt(new Date());
         measureRepairerUserMapper.insertSelective(measureRepairerUser);
     }
 }

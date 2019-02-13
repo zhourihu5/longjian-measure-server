@@ -10,6 +10,7 @@ import com.longfor.longjian.measure.domain.externalService.IMeasureListService;
 import com.longfor.longjian.measure.po.zhijian2.*;
 import com.longfor.longjian.measure.util.DateUtil;
 import org.apache.commons.lang.StringUtils;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.session.RowBounds;
 import org.bouncycastle.cms.PasswordRecipientId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -276,6 +277,8 @@ public class MeasureListServiceImpl implements IMeasureListService {
         measureList.setRootCategoryKey(root_category_key);
         measureList.setPlanBeginOn(DateUtil.getDateShortFromString(plan_begin_on));
         measureList.setPlanEndOn(DateUtil.getDateShortFromString(plan_end_on));
+        measureList.setCreateAt(new Date());
+        measureList.setUpdateAt(new Date());
         measureListMapper.insertSelective(measureList);
         return measureList;
     }

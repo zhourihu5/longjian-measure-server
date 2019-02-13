@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.app.controller.measureV1PapiController;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.common.util.SessionInfo;
@@ -94,14 +95,17 @@ public class MeasureListController {
      * @return
      */
     @RequestMapping(value = "bg_add" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<BgAddVo> bgAdd(@Valid BgAddReq bgAddReq) throws Exception {
+    public LjBaseResponse<BgAddVo> bgAdd(@Valid @RequestBody BgAddReq bgAddReq) throws Exception {
         LjBaseResponse<BgAddVo> ljBaseResponse = new LjBaseResponse<>();
         BgAddVo bgAddVo = new BgAddVo();
         Map params = ConvertUtil.convertBean(bgAddReq);
-        params.put("area_id_list", JSONObject.parseArray(params.get("area_id_list").toString(),Integer.class));
+//        params.put("area_id_list", JSONObject.parseArray(params.get("area_id_list").toString(),Integer.class));
+        log.info(JSON.toJSONString(params));
         Integer userId = sessionInfo.getSessionUser().getUserId();
-        String r = userTaskNotice.send(userId, BgtaskEnum.MEASURE_LIST_CREATE.getValue(),"",params, null);
-        bgAddVo.setId(r);
+//        String r = userTaskNotice.send(userId, BgtaskEnum.MEASURE_LIST_CREATE.getValue(),"",params, null);
+//        bgAddVo.setId(r);
+        measureListService.add(params);
+        bgAddVo.setId("1111");
         ljBaseResponse.setData(bgAddVo);
         return ljBaseResponse;
     }

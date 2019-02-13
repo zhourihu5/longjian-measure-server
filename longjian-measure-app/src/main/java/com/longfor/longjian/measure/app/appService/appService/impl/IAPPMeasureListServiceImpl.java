@@ -205,7 +205,7 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
         List<Integer> areaIdListInt = new ArrayList<>();
         for (String id:areaIdList
              ) {
-            areaIdListInt.add(Integer.getInteger(id));
+            areaIdListInt.add(Integer.parseInt(id));
         }
         List<Area> area_list = areaService.searchByIdList(proj_id, areaIdListInt);
         List<Integer> full_area_id_list = new ArrayList<>();
@@ -213,7 +213,7 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
             full_area_id_list.add(area.getId());
             String [] paths = area.getPath().split(",");
             for(int i = 1;i<paths.length - 1;i++){
-                full_area_id_list.add(Integer.getInteger(paths[i]));
+                full_area_id_list.add(Integer.parseInt(paths[i]));
             }
         });
         List<Area> full_area_list = areaService.searchByIdList(proj_id, full_area_id_list);
@@ -244,8 +244,10 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
             measureSquad.setProjectId(proj_id);
             measureSquad.setListId(list_model.getId());
             measureSquad.setName(squad.get("name").toString());
-            measureSquad.setPlanRate(Integer.getInteger(squad.get("plan_rate").toString()));
+            measureSquad.setPlanRate(Integer.parseInt(squad.get("plan_rate").toString()));
             measureSquad.setRate(0);
+            measureSquad.setCreateAt(new Date());
+            measureSquad.setUpdateAt(new Date());
             MeasureSquad squad_model = measureSquadService.createReturnSuqad(measureSquad);
             List<String> squadUserIds = JSONArray.parseArray(squad.get("user_id_list").toString(),String.class);
             squadUserIds.forEach(user_id ->{
@@ -253,7 +255,9 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
                 measureSquadUser.setProjectId(proj_id);
                 measureSquadUser.setListId(list_model.getId());
                 measureSquadUser.setSquadId(squad_model.getId());
-                measureSquadUser.setUserId(Integer.getInteger(user_id));
+                measureSquadUser.setUserId(Integer.parseInt(user_id));
+                measureSquadUser.setCreateAt(new Date());
+                measureSquadUser.setUpdateAt(new Date());
                 measureSquadUserService.create(measureSquadUser);
             });
         }
@@ -261,9 +265,9 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
         //整改小组创建
         List<Map> repairerGroup = JSONArray.parseArray(repairer_group,Map.class);
         for (Map group : repairerGroup) {
-            List<Integer> user_id_list =JSONArray.parseArray(group.get("user_ids").toString(),Integer.class);
-            for (Integer user_id : user_id_list) {
-                measureRepairerUserService.create(proj_id,list_model.getId(),group.get("role_type").toString(),user_id);
+            List<String> user_id_list = Arrays.asList(group.get("user_ids").toString().split(","));
+            for (String user_id : user_id_list) {
+                measureRepairerUserService.create(proj_id,list_model.getId(),group.get("role_type").toString(),Integer.parseInt(user_id));
             }
         }
 
@@ -322,6 +326,8 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
                     String area_path_and_id = area == null?"":area.getPath() + area.getId() + "/";
                     new_dict.put("area_path_and_id",area_path_and_id);
                     MeasureZone measureZone = (MeasureZone)ConvertUtil.convertMap(MeasureZone.class,new_dict);
+                    measureZone.setCreateAt(new Date());
+                    measureZone.setUpdateAt(new Date());
                     insert_zone_list.add(measureZone);
                 }));
             }

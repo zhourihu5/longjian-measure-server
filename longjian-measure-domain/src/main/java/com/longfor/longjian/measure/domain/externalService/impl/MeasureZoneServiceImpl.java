@@ -134,6 +134,9 @@ public class MeasureZoneServiceImpl implements IMeasureZoneService {
 
     @Override
     public void insertMany(List<MeasureZone> insert_zone_list) {
+        if (insert_zone_list == null|| insert_zone_list.size() <= 0){
+            return;
+        }
         measureZoneMapper.insertList(insert_zone_list);
     }
 }

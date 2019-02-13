@@ -1,11 +1,15 @@
 package com.longfor.longjian.measure.po.zhijian2;
 
+import org.apache.ibatis.annotations.Options;
+import tk.mybatis.mapper.annotation.KeySql;
+
 import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "measure_list")
 public class MeasureList {
     @Id
+    @KeySql(useGeneratedKeys = true)
     private Integer id;
 
     /**
