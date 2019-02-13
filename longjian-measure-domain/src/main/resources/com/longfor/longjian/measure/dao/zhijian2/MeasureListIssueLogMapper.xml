@@ -33,11 +33,12 @@
     <select id="searchIssueLogListByListIdLastIdTimestampGt" resultMap="BaseResultMap">
         select
         id, attachment_md5_list, category_key, `desc`, issue_uuid, list_id, project_id, sender_id,
-        status, typ, uuid, client_create_at, create_at, update_at, delete_at
+        status, typ, uuid, client_create_at, create_at, update_at, delete_at,detail
         from measure_list_issue_log
         where
         project_id=#{projectId}
         and list_id=#{list_id}
+        and id > #{last_id}
         <if test="timestamp != null and timestamp >= 0">
             AND update_at > FROM_UNIXTIME( #{timestamp} )
         </if>

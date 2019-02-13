@@ -214,8 +214,10 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         });
         try {
             issueVo.setIssue_list(issueListVos);
-            IssueListVo issueListVo = issueListVos.get(issueListVos.size() - 1);
-            issueVo.setLast_id(issueListVo.getId());
+            if (issueListVos.size() > 0) {
+                IssueListVo issueListVo = issueListVos.get(issueListVos.size() - 1);
+                issueVo.setLast_id(issueListVo.getId());
+            }
             ljBaseResponse.setData(issueVo);
         } catch (Exception e) {
             log.error("SearchIssueListByListIdLastIdTimestampGt +[" + apiMeasureIssueReq.getList_id() + "],error:" + e);
@@ -240,8 +242,10 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         });
         try {
             issueLogVo.setIssue_log_list(measureIssueLogVos);
-            IssueLogListVo measureIssueLogVoEnt = measureIssueLogVos.get(measureIssueLogVos.size() - 1);
-            issueLogVo.setLast_id(measureIssueLogVoEnt.getId());
+            if (measureIssueLogVos.size() > 0) {
+                IssueLogListVo measureIssueLogVoEnt = measureIssueLogVos.get(measureIssueLogVos.size() - 1);
+                issueLogVo.setLast_id(measureIssueLogVoEnt.getId());
+            }
             ljBaseResponse.setData(issueLogVo);
         } catch (Exception e) {
             log.error("SearchIssueListByListIdLastIdTimestampGt +[" + apiMeasureIssueLogReq.getList_id() + "],error:" + e);
@@ -563,19 +567,29 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         IssueLogListVo issueLogListVo = new IssueLogListVo();
         issueLogListVo.setId(measureListIssueLog.getId());
         issueLogListVo.setUuid(measureListIssueLog.getUuid());
-        issueLogListVo.setProject_id(measureListIssueLog.getProjectId());
-        issueLogListVo.setCategory_key(measureListIssueLog.getCategoryKey());
-        issueLogListVo.setAttachment_md5_list(measureListIssueLog.getAttachmentMd5List());
-        issueLogListVo.setDesc(measureListIssueLog.getDesc());
-        issueLogListVo.setIssue_uuid(measureListIssueLog.getIssueUuid());
         issueLogListVo.setList_id(measureListIssueLog.getListId());
+        JSONObject detail = JSON.parseObject(measureListIssueLog.getDetail());
+        issueLogListVo.setZone_uuid(detail.getString("ZoneUuid"));
+        issueLogListVo.setIssue_uuid(measureListIssueLog.getIssueUuid());
         issueLogListVo.setSender_id(measureListIssueLog.getSenderId());
-        issueLogListVo.setStatus(measureListIssueLog.getStatus());
+        issueLogListVo.setDesc(measureListIssueLog.getDesc());
         issueLogListVo.setTyp(measureListIssueLog.getTyp());
+        issueLogListVo.setStatus(measureListIssueLog.getStatus());
+        issueLogListVo.setAttachment_md5_list(measureListIssueLog.getAttachmentMd5List());
+        issueLogListVo.setPlan_end_on(detail.getInteger("PlanEndOn"));
+        issueLogListVo.setEnd_on(detail.getInteger("EndOn"));
+        issueLogListVo.setRepairer_id(detail.getInteger("RepairerId"));
+        issueLogListVo.setCondition(detail.getInteger("Condition"));
+        issueLogListVo.setCategory_key(measureListIssueLog.getCategoryKey());
+        issueLogListVo.setDrawing_md5(detail.getString("DrawingMd5"));
+        issueLogListVo.setPos_x(detail.getInteger("PosX"));
+        issueLogListVo.setPos_y(detail.getInteger("PosY"));
+        issueLogListVo.setArea_id(detail.getInteger("AreaId"));
+        issueLogListVo.setClose_status(detail.getInteger("CloseStatus"));
+        issueLogListVo.setClose_user(detail.getInteger("CloseUser"));
+        issueLogListVo.setClose_time(detail.getInteger("CloseTime"));
         issueLogListVo.setClient_create_at(measureListIssueLog.getClientCreateAt() == null ? 0 : DateUtil.dateToTimestamp(measureListIssueLog.getClientCreateAt()));
-        issueLogListVo.setCreate_at(measureListIssueLog.getCreateAt() == null ? 0 : DateUtil.dateToTimestamp(measureListIssueLog.getCreateAt()));
         issueLogListVo.setUpdate_at(measureListIssueLog.getUpdateAt() == null ? 0 : DateUtil.dateToTimestamp(measureListIssueLog.getUpdateAt()));
-        issueLogListVo.setDelete_at(measureListIssueLog.getDeleteAt() == null ? 0 : DateUtil.dateToTimestamp(measureListIssueLog.getDeleteAt()));
         return issueLogListVo;
     }
 

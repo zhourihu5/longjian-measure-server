@@ -192,7 +192,8 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
             mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
         }
         if (StringUtils.isNotBlank(name)) {
-            response.addHeader("Content-Disposition", String.format("attachment; filename=%s", name));
+            response.addHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", name));
+            response.addHeader("Content-Type", "application/zip");
         }
         StoreUrlVo storeUrlVo = FileUtil.fileResourceGetStoreUrl(fileResource.getStoreKey());
         Map<String, Object> map = Maps.newHashMap();
