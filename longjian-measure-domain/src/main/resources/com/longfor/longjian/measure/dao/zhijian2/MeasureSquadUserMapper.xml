@@ -31,6 +31,7 @@
     <if test="updateAtGt != null and updateAtGt!= ''">
       AND update_at > #{updateAtGt}
     </if>
+    AND delete_at is null
   </select>
 
   <select id="searchMeasureSquadUserByListIds" resultMap="BaseResultMap">
