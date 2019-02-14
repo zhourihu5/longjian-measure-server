@@ -21,7 +21,7 @@ public class MeasureRuleServiceImpl implements IMeasureRuleService {
 
 
     @Override
-    public List<MeasureRule> searchUnscopedByTeamIdUpdateAtGt(Integer teamId, Date updateAtDate) {
+    public List<MeasureRule> searchUnscopedByTeamIdUpdateAtGt(Integer teamId, String updateAtDate) {
         return measureRuleMapper.searchUnscopedByTeamIdUpdateAtGt(teamId, updateAtDate);
     }
 

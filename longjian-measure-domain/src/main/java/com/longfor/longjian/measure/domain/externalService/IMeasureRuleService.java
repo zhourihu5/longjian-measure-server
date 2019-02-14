@@ -15,7 +15,7 @@ public interface IMeasureRuleService {
      * @param teamId
      * @param updateAtDate
      */
-    List<MeasureRule> searchUnscopedByTeamIdUpdateAtGt(Integer teamId, Date updateAtDate);
+    List<MeasureRule> searchUnscopedByTeamIdUpdateAtGt(Integer teamId, String updateAtDate);
 
     /**
      *

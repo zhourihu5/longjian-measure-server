@@ -15,7 +15,7 @@ public interface MeasureRuleMapper extends LFMySQLMapper<MeasureRule> {
      * @param updateAtDate
      * @return
      */
-    List<MeasureRule> searchUnscopedByTeamIdUpdateAtGt(@Param("teamId")Integer teamId, @Param("updateAtDate")Date updateAtDate);
+    List<MeasureRule> searchUnscopedByTeamIdUpdateAtGt(@Param("teamId")Integer teamId, @Param("updateAtDate")String updateAtDate);
 
     /**
      *

@@ -47,10 +47,10 @@
         select
         <include refid="Base_Column_List"/>
         from measure_rule where
-        delete_at IS NULL
-        and
-        team_id=#{teamId} and update_at > #{updateAtDate}
-
+        team_id=#{teamId}
+        <if test="updateAtDate != null and updateAtDate!= ''">
+            AND update_at > #{updateAtDate}
+        </if>
     </select>
 
     <select id="getByCategoryKey" resultMap="BaseResultMap">

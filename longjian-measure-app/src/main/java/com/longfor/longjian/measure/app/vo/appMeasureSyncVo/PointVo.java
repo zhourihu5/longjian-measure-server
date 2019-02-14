@@ -8,13 +8,13 @@ import lombok.Data;
  */
 @Data
 public class PointVo {
-    private String allow_range;
-    private Integer count_init;
-    private Integer count_max;
-    private Integer count_min;
-    private Integer data_type;
-    private boolean design_value_reqd;
     private String key;
     private String name;
     private Integer point_type;
+    private Integer count_min;
+    private Integer count_max;
+    private Integer count_init;
+    private Integer data_type;
+    private boolean design_value_reqd;
+    private String allow_range;
 }
