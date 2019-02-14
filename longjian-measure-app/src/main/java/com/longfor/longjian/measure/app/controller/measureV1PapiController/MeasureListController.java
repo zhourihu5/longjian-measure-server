@@ -95,7 +95,7 @@ public class MeasureListController {
      * @return
      */
     @RequestMapping(value = "bg_add" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<BgAddVo> bgAdd(@Valid @RequestBody BgAddReq bgAddReq) throws Exception {
+    public LjBaseResponse<BgAddVo> bgAdd(@Valid BgAddReq bgAddReq) throws Exception {
         LjBaseResponse<BgAddVo> ljBaseResponse = new LjBaseResponse<>();
         BgAddVo bgAddVo = new BgAddVo();
         Map params = ConvertUtil.convertBean(bgAddReq);
