@@ -15,6 +15,8 @@ import org.springframework.web.util.HtmlUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -44,8 +46,8 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
             inputFilename = String.format("%d%d.%s", randCount, ts, "input");
             outputFilename = String.format("/export/%d%d.%s", randCount, ts, "output");
             String filepath = base_dir + inputFilename;
-            //todo writeInput() 有 bug 不知道列明及长度
-            //this.writeInput(data,exportName,filepath,response);
+            //todo uat环境是异步导出 源码是同步导出。 暂时todo
+            this.writeInput(data,exportName,filepath);
         } catch (Exception e) {
             log.error("error:" + e.getMessage());
             throw new Exception(e);
@@ -56,18 +58,20 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
         return exportFileRecord;
     }
 
-    private void writeInput(byte[] data,String exportName,String[] rowName, HttpServletResponse response) throws Exception {
-        List<byte[]> list = Lists.newArrayList();
-        list.add(data);
-        Object[] array = list.toArray();
-        List<Object[]> listObj =Lists.newArrayList();
-        listObj.add(array);
-        ExportExcelUtil exportExcelUtil =new ExportExcelUtil(exportName,rowName,listObj);
-        exportExcelUtil.export(response);
-    }
+    private void writeInput(byte[] data,String exportName,String filepath) throws Exception {
+        try {
+            File file = new File(String.format("%s/%s",filepath,exportName));
 
-    /*public static void main(String[] args) {
-        System.out.println("http://www.baidu.com?id=123&test=1");
-        System.out.println(HtmlUtils.htmlEscape("http://www.baidu.com?id=123&test=1   <"));
-    }*/
+            if(!file.getParentFile().exists()){
+                file.getParentFile().mkdirs();
+            }
+
+            if(!file.exists()){
+                file.createNewFile();
+            }
+            //todo 导出data数据未处理
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
