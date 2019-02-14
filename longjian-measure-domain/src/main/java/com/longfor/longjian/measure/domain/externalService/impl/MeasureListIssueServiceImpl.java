@@ -180,8 +180,8 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
         }
         if (createAtRangeList.size() == 2 && Integer.parseInt(createAtRangeList.get(1)) > 0) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date t1 = sdf.parse(createAtRangeList.get(0));
-            Date t2 = sdf.parse(createAtRangeList.get(1));
+            String t1 = sdf.format(createAtRangeList.get(0));
+            String t2 = sdf.format(createAtRangeList.get(1));
             criteria.andBetween("createAt", t1, t2);
         }
         if (!areaIdList.isEmpty() && areaIdList.size() > 0) {
