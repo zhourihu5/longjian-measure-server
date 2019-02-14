@@ -13,6 +13,7 @@ import com.longfor.longjian.measure.po.zhijian2.MeasureListIssue;
 import com.longfor.longjian.measure.util.AreaUtils;
 import com.longfor.longjian.measure.util.CategoryUtils;
 import com.longfor.longjian.measure.util.DateTool;
+import com.longfor.longjian.measure.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.lang.StringUtils;
@@ -179,9 +180,9 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
             criteria.andIn("listId", measureListIdList);
         }
         if (createAtRangeList.size() == 2 && Integer.parseInt(createAtRangeList.get(1)) > 0) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String t1 = sdf.format(createAtRangeList.get(0));
-            String t2 = sdf.format(createAtRangeList.get(1));
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String t1 = DateUtil.getLongDateStringByLong(Long.parseLong(createAtRangeList.get(0)));
+            String t2 = DateUtil.getLongDateStringByLong(Long.parseLong(createAtRangeList.get(1)));
             criteria.andBetween("createAt", t1, t2);
         }
         if (!areaIdList.isEmpty() && areaIdList.size() > 0) {

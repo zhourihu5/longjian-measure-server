@@ -213,6 +213,18 @@ public class DateUtil {
     }
 
     /**
+     * Long 转 短时间 字符串
+     * @param dateLong
+     * @return
+     * @throws ParseException
+     */
+    public static String getLongDateStringByLong(Long dateLong) throws ParseException {
+        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String d = format.format(dateLong);
+        return d;
+    }
+
+    /**
      * 返回短时间格式
      *
      * @return返回短时间格式 yyyy-MM-dd
@@ -247,5 +259,6 @@ public class DateUtil {
 ////        String [] subKeys = categoryPathAndKey.substring(index).split("/");
 ////        System.out.print(subKeys[0]);
 ////        System.out.println(getYeasterShortDate(new Date()));
+//        System.out.println(getLongDateStringByLong(Long.parseLong("1550592000")));
 //    }
 }
