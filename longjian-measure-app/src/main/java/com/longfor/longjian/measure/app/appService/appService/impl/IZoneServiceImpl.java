@@ -148,7 +148,7 @@ public class IZoneServiceImpl implements IZoneService {
     criteria.andEqualTo("projectId",paginationSearchReq.getProject_id());
     criteria.andEqualTo("listId",paginationSearchReq.getList_id());
     if(areaIdList.size()>0){
-        criteria.andIn("areaId",categoryKeyList);
+        criteria.andIn("areaId",areaIdList);
     }
     if(categoryKeyList.size()>0){
         criteria.andIn("categoryKey",categoryKeyList);
