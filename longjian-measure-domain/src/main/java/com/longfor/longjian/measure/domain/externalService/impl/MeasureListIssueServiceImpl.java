@@ -155,6 +155,8 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
                 log.warn(err.getMessage());
                 throw err;
             }
+            issue.setCreateAt(new Date());
+            issue.setUpdateAt(new Date());
             measureListIssueMapper.insert(issue);
         } catch (Exception e) {
             log.warn(e.getMessage());
@@ -163,6 +165,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
 
     @Override
     public void updateFullNoAffectedErr(MeasureListIssue issue) {
+        issue.setUpdateAt(new Date());
         measureListIssueMapper.updateByPrimaryKey(issue);
     }
 

@@ -254,10 +254,12 @@ public class MeasureListIssueHelper {
             issue.setTyp(this.currentLog.getTyp());
             issue.setStatus(this.currentLog.getStatus());
             if (detail.getPlanEndOn() != -1) {
-                issue.setPlanEndOn(Integer.parseInt(detail.getPlanEndOn() / 1000 + ""));
+//                issue.setPlanEndOn(Integer.parseInt(detail.getPlanEndOn() / 1000 + ""));
+                issue.setPlanEndOn(Integer.parseInt(detail.getPlanEndOn() + ""));
             }
             if (detail.getEndOn() != -1) {
-                issue.setEndOn(Integer.parseInt(detail.getEndOn() / 1000 + ""));
+//                issue.setEndOn(Integer.parseInt(detail.getEndOn() / 1000 + ""));
+                issue.setEndOn(Integer.parseInt(detail.getEndOn() + ""));
             }
             issue.setDrawingMd5(detail.getDrawingMd5());
             issue.setPosX(detail.getPosX());
@@ -281,7 +283,8 @@ public class MeasureListIssueHelper {
                 issue.setCloseUser(detail.getCloseUser());
             }
             if (detail.getCloseTime() != -1) {
-                issue.setCloseTime(Integer.parseInt(detail.getCloseTime() / 1000 + ""));
+//                issue.setCloseTime(Integer.parseInt(detail.getCloseTime() / 1000 + ""));
+                issue.setCloseTime(Integer.parseInt(detail.getCloseTime() + ""));
             }
             issue.setClientCreateAt(this.currentLog.getClientCreateAt());
         } else if (inOld) {
@@ -383,13 +386,15 @@ public class MeasureListIssueHelper {
         //计划结束时间
         if (detail.getPlanEndOn() != -1) {
             changed = true;
-            issue.setPlanEndOn(Integer.parseInt(detail.getPlanEndOn() / 1000 + ""));
+//            issue.setPlanEndOn(Integer.parseInt(detail.getPlanEndOn() / 1000 + ""));
+            issue.setPlanEndOn(Integer.parseInt(detail.getPlanEndOn() + ""));
         }
 
         //结束时间
         if (detail.getEndOn() != -1) {
             changed = true;
-            issue.setEndOn(Integer.parseInt(detail.getEndOn() / 1000 + ""));
+//            issue.setEndOn(Integer.parseInt(detail.getEndOn() / 1000 + ""));
+            issue.setEndOn(Integer.parseInt(detail.getEndOn() + ""));
         }
 
         //严重程度
