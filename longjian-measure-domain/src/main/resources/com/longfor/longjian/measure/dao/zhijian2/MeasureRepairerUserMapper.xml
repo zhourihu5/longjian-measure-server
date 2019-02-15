@@ -41,7 +41,7 @@
 
     and project_id = #{project_id}
 
-    <if test="deleteUserIds!=null">
+    <if test="deleteUserIds!=null and deleteUserIds.size() > 0">
 
       and user_id in
 
