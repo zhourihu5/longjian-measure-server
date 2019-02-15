@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -28,6 +29,11 @@ public class MeasureListIssueLogServiceImpl implements IMeasureListIssueLogServi
 
     @Override
     public int insertObjects(List<MeasureListIssueLog> needInsertIssueMap) {
+        needInsertIssueMap.forEach(measureListIssueLog -> {
+            measureListIssueLog.setCreateAt(new Date());
+            measureListIssueLog.setUpdateAt(new Date());
+            measureListIssueLog.setClientCreateAt(new Date());
+        });
         return measureListIssueLogMapper.insertList(needInsertIssueMap);
     }
 
