@@ -1,77 +1,76 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.longfor.longjian.measure.dao.zhijian2.MeasureSquadUserMapper" >
-  <resultMap id="BaseResultMap" type="com.longfor.longjian.measure.po.zhijian2.MeasureSquadUser" >
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="list_id" property="listId" jdbcType="INTEGER" />
-    <result column="project_id" property="projectId" jdbcType="INTEGER" />
-    <result column="squad_id" property="squadId" jdbcType="INTEGER" />
-    <result column="user_id" property="userId" jdbcType="INTEGER" />
-    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
-    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
-    <result column="delete_at" property="deleteAt" jdbcType="TIMESTAMP" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    <!--
-      WARNING - @mbg.generated
-    -->
-    id, list_id, project_id, squad_id, user_id, create_at, update_at, delete_at
-  </sql>
-  <select id="searchMeasureSquadUserByListIdTimestampGt" resultMap="BaseResultMap">
-    SELECT
-    <include refid="Base_Column_List"/>
-    FROM
-    measure_squad_user
-    WHERE
-    project_id = #{projectId}
-    AND list_id = #{listId}
-    <if test="updateAtGt != null and updateAtGt!= ''">
-      AND update_at > #{updateAtGt}
-    </if>
-    AND delete_at is null
-  </select>
+<mapper namespace="com.longfor.longjian.measure.dao.zhijian2.MeasureSquadUserMapper">
+    <resultMap id="BaseResultMap" type="com.longfor.longjian.measure.po.zhijian2.MeasureSquadUser">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="list_id" property="listId" jdbcType="INTEGER"/>
+        <result column="project_id" property="projectId" jdbcType="INTEGER"/>
+        <result column="squad_id" property="squadId" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="create_at" property="createAt" jdbcType="TIMESTAMP"/>
+        <result column="update_at" property="updateAt" jdbcType="TIMESTAMP"/>
+        <result column="delete_at" property="deleteAt" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        id, list_id, project_id, squad_id, user_id, create_at, update_at, delete_at
+    </sql>
+    <select id="searchMeasureSquadUserByListIdTimestampGt" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        measure_squad_user
+        WHERE
+        project_id = #{projectId}
+        AND list_id = #{listId}
+        <if test="updateAtGt != null and updateAtGt!= ''">
+            AND update_at > #{updateAtGt}
+        </if>
+        AND delete_at is null
+    </select>
 
-  <select id="searchMeasureSquadUserByListIds" resultMap="BaseResultMap">
-    SELECT
-	<include refid="Base_Column_List"/>
-    FROM
-	measure_squad_user
-    WHERE
-	project_id = #{currentProjectId}
-	AND list_id IN
-    <foreach collection="listIds" index="index" item="item" open="(" separator="," close=")">
-      #{item}
-    </foreach>
-  </select>
+    <select id="searchMeasureSquadUserByListIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        measure_squad_user
+        WHERE
+        project_id = #{currentProjectId}
+        AND list_id IN
+        <foreach collection="listIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
 
-  <update id="deleteOld">
+    <update id="deleteOld">
 
-    update  measure_squad_user set delete_at=#{delete_at} where list_id=#{list_id} and squad_id=#{squad_id}
+        update measure_squad_user set delete_at=#{delete_at} where list_id=#{list_id} and squad_id=#{squad_id}
 
-    and project_id = #{project_id}
+        and project_id = #{project_id}
 
-    <if test="deleteUserIds!=null">
+        <if test="deleteUserIds!=null and deleteUserIds.size()>0">
 
-    and user_id in
+            and user_id in
+            <foreach collection="deleteUserIds" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
 
-    <foreach collection="deleteUserIds" index="index" item="item" open="(" separator="," close=")">
-      #{item}
-    </foreach>
+        </if>
 
-    </if>
-
-  </update>
-  <select id="SearchBySquadId" resultMap="BaseResultMap">
-    SELECT
-    <include refid="Base_Column_List"/>
-    FROM
-    measure_squad_user
-    WHERE
-    project_id = #{projId}
-    AND
-    squad_id = #{squadId}
-  </select>
+    </update>
+    <select id="SearchBySquadId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        measure_squad_user
+        WHERE
+        project_id = #{projId}
+        AND
+        squad_id = #{squadId}
+    </select>
 </mapper>
