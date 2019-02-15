@@ -67,7 +67,7 @@ public class ProMeasureListIssueLogServiceImpl implements IProMeasureListIssueLo
             if (userMap.get(measureListIssueLog.getSenderId()) != null) {
                 item.setUser_name(userMap.get(measureListIssueLog.getSenderId()).getRealName());
             }
-            item.setCreate_at(Integer.parseInt((measureListIssueLog.getCreateAt().getTime()) + ""));
+            item.setCreate_at(Integer.parseInt((measureListIssueLog.getCreateAt().getTime()) / 1000 + ""));
 
             //处理开关变化
             if (MeasureListCloseStatusEnum.Closed.getId().equals(detail.getCloseStatus())) {
