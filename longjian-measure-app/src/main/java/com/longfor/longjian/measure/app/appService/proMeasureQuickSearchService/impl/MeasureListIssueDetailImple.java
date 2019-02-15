@@ -465,7 +465,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
                     UUID.randomUUID().toString().replace("-", ""),
                     issue.getListId(),
                     issue.getUuid(),
-                    senderId, eStr, eInt, status, eStr, eStr,
+                    senderId, eStr, eInt, status, eStr, issue.getCategoryKey(),
                     System.currentTimeMillis() / 1000L
             ).setDatailField(
                     eStr, planEndOn, eLong, repairerId, eInt, eInt, eStr, eInt, eInt, eInt, eInt, eLong, eInt
@@ -495,7 +495,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
                     UUID.randomUUID().toString().replace("-", ""),
                     issue.getListId(),
                     issue.getUuid(),
-                    senderId, eStr, typ, eInt, eStr, eStr,
+                    senderId, eStr, typ, eInt, eStr, issue.getCategoryKey(),
                     System.currentTimeMillis() / 1000L
             ).setDatailField(
                     eStr, eLong, eLong, eInt, eInt, eInt, eStr, eInt, eInt, eInt, eInt, eLong, eInt

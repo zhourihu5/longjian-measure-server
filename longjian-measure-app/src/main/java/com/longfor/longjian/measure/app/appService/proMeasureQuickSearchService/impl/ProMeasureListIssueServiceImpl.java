@@ -45,11 +45,11 @@ public class ProMeasureListIssueServiceImpl implements IProMeasureListIssueServi
 
         if (MeasureListIssueCheckStatusEnum.CheckYes.getId().equals(status)){
             //审核通过
-            helper.start().setNormalField(uuid,issue.getListId(),issue.getUuid(),senderId,eStr,eInt, MeasureListIssueType.CHECKYES,eStr,eStr,new Date().getTime()).
+            helper.start().setNormalField(uuid,issue.getListId(),issue.getUuid(),senderId,eStr,eInt, MeasureListIssueType.CHECKYES,eStr,issue.getCategoryKey(),new Date().getTime()).
                     setDatailField(eStr, eLong, eLong, eInt, eInt, eInt, eStr, eInt, eInt, eInt, eInt, eLong,status).
                     done();
         }else if (MeasureListIssueCheckStatusEnum.CheckNo.getId().equals(status)){
-            helper.start().setNormalField(uuid, issue.getListId(),issue.getUuid(),senderId,desc,eInt,MeasureListIssueType.ASSIGNNOREFORM,attachmentMd5List,eStr,new Date().getTime()).
+            helper.start().setNormalField(uuid, issue.getListId(),issue.getUuid(),senderId,desc,eInt,MeasureListIssueType.ASSIGNNOREFORM,attachmentMd5List,issue.getCategoryKey(),new Date().getTime()).
                     setDatailField(eStr, eLong, eLong, eInt, eInt, eInt, eStr, eInt, eInt, eInt, eInt, eLong,status).
                     done();
         }else {
@@ -71,7 +71,7 @@ public class ProMeasureListIssueServiceImpl implements IProMeasureListIssueServi
         helper.init(project_id);
 
         //审核通过
-        helper.start().setNormalField(uuid,issue.getListId(),issue.getUuid(),senderId,eStr,eInt, eInt,eStr,eStr,new Date().getTime()).
+        helper.start().setNormalField(uuid,issue.getListId(),issue.getUuid(),senderId,eStr,eInt, eInt,eStr,issue.getCategoryKey(),new Date().getTime()).
                 setDatailField(eStr, eLong, eLong, eInt, eInt, eInt, eStr, eInt, eInt, status, senderId, new Date().getTime(), eInt).
                 done();
 

@@ -265,7 +265,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
         helper.init(project_id);
         //变更类型
         helper.start().setNormalField(UUID.randomUUID().toString(), issue.getListId(), issue.getUuid(),
-                issue.getSenderId(), eStr, eInt, status, eStr, eStr, new Date().getTime())
+                issue.getSenderId(), eStr, eInt, status, eStr, issue.getCategoryKey(), new Date().getTime())
                 .setDatailField(eStr, Long.parseLong(plan_end_on.toString()), Long.parseLong(eInt.toString()),
                         repairer_id, eInt, eInt, eStr, eInt, eInt, eInt, eInt, Long.parseLong(eInt.toString()), eInt)
                 .done();
