@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
+import org.bouncycastle.pqc.math.linearalgebra.IntUtils;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
@@ -191,22 +192,27 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
+            Example.Criteria criteria1 = example.createCriteria();
             for (Integer s : areaIdList) {
                 String pathAndId = AreaUtils.getPathAndId(s);
                 if (!pathAndId.equals("")) {
-                    criteria.andLike("areaPathAndId", this.startswith(pathAndId));
-                    criteria.andEqualTo("areaId", s);
+                    //todo bug
+                    //criteria1.andLike("areaPathAndId", this.startswith(pathAndId));
+                    //criteria1.andEqualTo("areaId", s);
+                    criteria1.orCondition("(area_path_and_id like \""+this.startswith(pathAndId)+"\" and area_id = "+s+" )");
                 }
             }
+            example.and(criteria1);
         }
         if (category_key != null && category_key.length() > 0) {
+            Example.Criteria criteria2 = example.createCriteria();
             try {
                 CategoryV3 category = categoryV3Mapper.getCategoryByKeyNoFoundErr(category_key);
                 if (category != null) {
-
-                    criteria.andEqualTo("categoryKey", category.getKey());
-                    criteria.orLike("categoryPathAndKey", this.startswith(this.childPath(category)));
+                    criteria2.andEqualTo("categoryKey", category.getKey());
+                    criteria2.orLike("categoryPathAndKey", this.startswith(this.childPath(category)));
                 }
+                example.and(criteria2);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

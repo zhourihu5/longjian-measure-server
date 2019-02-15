@@ -77,7 +77,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
         List<String> createAtRangeList = Arrays.asList(createAtRangeArr);
         Map<String, Object> issueMap = null;
         try {
-            issueMap = measureListIssueService.searchMeasueListIssueInProj(req.getProject_id(), req.getLimit(), req.getPage(), req.getCategory_key(),
+            issueMap = measureListIssueService.searchMeasueListIssueInProj(projectId, req.getLimit(), req.getPage(), req.getCategory_key(),
                     areaIdList, measureListIdList, createAtRangeList, req.getStatus(),
                     req.getRepairer_id(), req.getIs_overdue());
 
