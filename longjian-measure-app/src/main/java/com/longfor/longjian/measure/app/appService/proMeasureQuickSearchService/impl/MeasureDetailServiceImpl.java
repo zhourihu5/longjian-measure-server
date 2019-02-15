@@ -62,13 +62,16 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
         try {
             Project project = projectService.GetByIdNoFoundErr(projId);
             MeasureList measureList = projectService.getByProjIdAndIdNoFoundErr(projId, list_id);
+            if(measureList==null){
+                measureList = new MeasureList();
+            }
             Map<String, Object> map = this.search4ExportExcel(projId, list_id);
             InputVo input = new InputVo();
-            input.setData((List<CategoryDataVo>) map.get("rootCategoryDatas"));
-            input.setMeasured_data((MeasuredDataVo) map.get("measuredData"));
+            input.setData(map.get("rootCategoryDatas") == null ? new ArrayList<>() : (List<CategoryDataVo>) map.get("rootCategoryDatas"));
+            input.setMeasured_data(map.get("measuredData") == null ? new MeasuredDataVo() : (MeasuredDataVo) map.get("measuredData"));
             Date date = new Date();
             String newTime = new SimpleDateFormat("yyyyMMddHHmmss").format(date);
-            exportFileRecordService.create(curUserId, project.getTeamId(), projId, ExportFileRecordType.MeasureDetail.getValue(), input, String.format("%s-统计.%s.xlsx", measureList.getName(), newTime), date, response);
+            exportFileRecordService.create(curUserId, project.getTeamId(), projId, ExportFileRecordType.MeasureDetail.getValue(), input, String.format("%s-统计.%s.xlsx", measureList.getName() == null ? "llll" : measureList.getName(), newTime), date, response);
         } catch (Exception e) {
             log.error("error:" + e);
             throw new LjBaseRuntimeException(-9999, e.getMessage());
@@ -95,17 +98,21 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
             }
             ;
             //Category
-            List<CategoryV3> categorys = checkItemV3Service.searchCategoryByKeyIn(categoryKeyMap.keySet());
             Map<String, CategoryV3> categoryMap = Maps.newHashMap();
-            categorys.forEach(categoryV3 -> {
-                categoryMap.put(categoryV3.getKey(), categoryV3);
-            });
+            if (categoryKeyMap.keySet().size() > 0) {
+                List<CategoryV3> categorys = checkItemV3Service.searchCategoryByKeyIn(categoryKeyMap.keySet());
+                categorys.forEach(categoryV3 -> {
+                    categoryMap.put(categoryV3.getKey(), categoryV3);
+                });
+            }
             // Rule
-            List<MeasureRule> rules = measureRuleService.searchUnscopedByIds(ruleIdMap.keySet());
             Map<Integer, MeasureRule> ruleMap = Maps.newHashMap();
-            rules.forEach(measureRule -> {
-                ruleMap.put(measureRule.getId(), measureRule);
-            });
+            if (ruleIdMap.keySet().size() > 0) {
+                List<MeasureRule> rules = measureRuleService.searchUnscopedByIds(ruleIdMap.keySet());
+                rules.forEach(measureRule -> {
+                    ruleMap.put(measureRule.getId(), measureRule);
+                });
+            }
             // RegionUuid
             List<MeasureZone> measureZones = measureZoneService.searchByListId(projId, list_id);
             Map<String, String> regionUuidMap = Maps.newHashMap();
@@ -126,22 +133,24 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                     areaIdMap.put(regionMap.get(value), true);
                 }
             });
-            List<Area> areas = areaService.selectByIds(areaIdMap.keySet());
-            List<AreaInfoWithExtendVo> areaExs = areaService.formatAreaInfoWithExtend(areas);
-            Map<Integer, AreaInfoWithExtendVo> areaMap = Maps.newHashMap();
-            areaExs.forEach(areaInfoWithExtendVo -> {
-                areaMap.put(areaInfoWithExtendVo.getArea().getId(), areaInfoWithExtendVo);
-            });
             Map<String, AreaInfoWithExtendVo> regionUuidToAreaMap = Maps.newHashMap();
-            measureZones.forEach(measureZone -> {
-                Integer areaId = regionMap.get(measureZone.getRegionUuid());
-                AreaInfoWithExtendVo areaInfoWithExtendVo = areaMap.get(areaId);
-                if (areaInfoWithExtendVo == null) {
-                    AreaInfoWithExtendVo areaInfoWithExtendVo1 = new AreaInfoWithExtendVo();
-                    areaMap.put(areaId, areaInfoWithExtendVo1);
-                }
-                regionUuidToAreaMap.put(measureZone.getRegionUuid(), areaInfoWithExtendVo);
-            });
+            if (areaIdMap.keySet().size() > 0) {
+                List<Area> areas = areaService.selectByIds(areaIdMap.keySet());
+                List<AreaInfoWithExtendVo> areaExs = areaService.formatAreaInfoWithExtend(areas);
+                Map<Integer, AreaInfoWithExtendVo> areaMap = Maps.newHashMap();
+                areaExs.forEach(areaInfoWithExtendVo -> {
+                    areaMap.put(areaInfoWithExtendVo.getArea().getId(), areaInfoWithExtendVo);
+                });
+                measureZones.forEach(measureZone -> {
+                    Integer areaId = regionMap.get(measureZone.getRegionUuid());
+                    AreaInfoWithExtendVo areaInfoWithExtendVo = areaMap.get(areaId);
+                    if (areaInfoWithExtendVo == null) {
+                        AreaInfoWithExtendVo areaInfoWithExtendVo1 = new AreaInfoWithExtendVo();
+                        areaMap.put(areaId, areaInfoWithExtendVo1);
+                    }
+                    regionUuidToAreaMap.put(measureZone.getRegionUuid(), areaInfoWithExtendVo);
+                });
+            }
             // Squad
             List<MeasureSquad> squads = measureListService.searchOnlyMeasureSquadByProjIdAndListId(projId, list_id);
             Map<Integer, MeasureSquad> squadMap = Maps.newHashMap();
@@ -217,11 +226,14 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
         try {
             MeasuredDataVo md = new MeasuredDataVo();
             MeasureList list = measureListService.getNoFoundErr(projId, list_id);
-            md.setList_name(list.getName());
-            md.setProj_id(list.getProjectId());
-            Project proj = projectService.GetByIdNoFoundErr(md.getProj_id());
-            md.setProj_name(proj.getName());
-            List<MeasureZoneResult> results = measureZoneResultService.searchByProjIdListId(projId, list.getId());
+            Project proj = new Project();
+            if (list != null) {
+                md.setList_name(list.getName());
+                md.setProj_id(list.getProjectId());
+                proj = projectService.GetByIdNoFoundErr(md.getProj_id());
+                md.setProj_name(proj.getName());
+            }
+            List<MeasureZoneResult> results = measureZoneResultService.searchByProjIdListId(projId, list_id);
             Map<String, MeasureZone> zoneMap = Maps.newHashMap();
             Map<Integer, Boolean> squadMap = Maps.newHashMap();
             Map<Integer, MeasureRule> ruleMap = Maps.newHashMap();
@@ -247,54 +259,72 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                     }
                 }
             }
-            List<MeasureZone> zones = measureListService.searchZoneByProjUuids(proj.getId(), zoneMap.keySet());
-            zones.forEach(measureZone -> {
-                zoneMap.put(measureZone.getUuid(), measureZone);
-                regionMap.put(measureZone.getRegionUuid(), null);
-            });
-            List<MeasureSquad> squads = measureListService.searchByProjIdIdIn(proj.getId(), squadMap.keySet());
-            squads.forEach(measureSquad -> {
-                md.getSquad_map().put(measureSquad.getId(), measureSquad.getName());
-            });
-            List<MeasureRule> measureRules = measureRuleService.searchByIds(ruleMap.keySet());
+            if (zoneMap.keySet().size() > 0) {
+                if (proj.getId() != null || proj.getId().equals(0)) {
+                    List<MeasureZone> zones = measureListService.searchZoneByProjUuids(proj.getId(), zoneMap.keySet());
+                    zones.forEach(measureZone -> {
+                        zoneMap.put(measureZone.getUuid(), measureZone);
+                        regionMap.put(measureZone.getRegionUuid(), null);
+                    });
+                }
+            }
+            if (squadMap.keySet().size() > 0) {
+                if (proj.getId() != null || proj.getId().equals(0)) {
+                    List<MeasureSquad> squads = measureListService.searchByProjIdIdIn(proj.getId(), squadMap.keySet());
+                    squads.forEach(measureSquad -> {
+                        md.getSquad_map().put(measureSquad.getId(), measureSquad.getName());
+                    });
+                }
+            }
             Map<Integer, MeasureRule> ruleMap2 = Maps.newHashMap();
-            measureRules.forEach(measureRule -> {
-                ruleMap2.put(measureRule.getId(), measureRule);
-            });
+            if (ruleMap.keySet().size() > 0) {
+                List<MeasureRule> measureRules = measureRuleService.searchByIds(ruleMap.keySet());
+                measureRules.forEach(measureRule -> {
+                    ruleMap2.put(measureRule.getId(), measureRule);
+                });
+            }
             ruleMap.putAll(ruleMap2);
-            List<CategoryV3> categorys = checkItemV3Service.searchCategoryByKeyIn(categoryMap.keySet());
-            categorys.forEach(categoryV3 -> {
-                MeasuredDataCategoryVo measuredDataCategoryVo = new MeasuredDataCategoryVo();
-                measuredDataCategoryVo.setKey(categoryV3.getKey());
-                measuredDataCategoryVo.setName(categoryV3.getName());
-                measuredDataCategoryVo.setOrder(categoryV3.getOrder());
-                md.getCategory_map().put(categoryV3.getKey(), measuredDataCategoryVo);
-            });
-            Map<Integer, User> users = userService.getUsersByIds(new ArrayList<>(userMap.keySet()));
-            users.forEach((id, user) -> {
-                md.getUser_map().put(user.getUserId(), user.getRealName());
-            });
-            List<MeasureRegion> regions = regionSerVice.searchByProjUuids(projId, new ArrayList<>(regionMap.keySet()));
-            regions.forEach(region -> {
-                regionMap.put(region.getUuid(), region);
-                String srcType = null;
-                if (region.getSrcType().equals(MeasureRegionSrcType.Backend.getId())) {
-                    srcType = "A";
-                } else if (region.getSrcType().equals(MeasureRegionSrcType.App.getId())) {
-                    srcType = "B";
-                }
-                md.getRegion_map().put(region.getUuid(), String.format("%s%d", srcType, region.getRegionIndex()));
-                String[] areaIds = StringUtils.split(region.getAreaPathAndId(), "/");
-                Integer[] areaIdsInt = (Integer[]) ConvertUtils.convert(areaIds, Integer.class);
-                for (Integer areaId : areaIdsInt) {
-                    areaMap.put(areaId, null);
-                }
-            });
-            List<Area> areas = areaService.selectByIds(areaMap.keySet());
-            areas.forEach(area -> {
-                areaMap.put(area.getId(), area);
-                md.getArea_name_map().put(area.getId(), area.getName());
-            });
+            if (categoryMap.keySet().size() > 0) {
+                List<CategoryV3> categorys = checkItemV3Service.searchCategoryByKeyIn(categoryMap.keySet());
+                categorys.forEach(categoryV3 -> {
+                    MeasuredDataCategoryVo measuredDataCategoryVo = new MeasuredDataCategoryVo();
+                    measuredDataCategoryVo.setKey(categoryV3.getKey());
+                    measuredDataCategoryVo.setName(categoryV3.getName());
+                    measuredDataCategoryVo.setOrder(categoryV3.getOrder());
+                    md.getCategory_map().put(categoryV3.getKey(), measuredDataCategoryVo);
+                });
+            }
+            if (userMap.keySet().size() > 0) {
+                Map<Integer, User> users = userService.getUsersByIds(new ArrayList<>(userMap.keySet()));
+                users.forEach((id, user) -> {
+                    md.getUser_map().put(user.getUserId(), user.getRealName());
+                });
+            }
+            if (regionMap.keySet().size() > 0) {
+                List<MeasureRegion> regions = regionSerVice.searchByProjUuids(projId, new ArrayList<>(regionMap.keySet()));
+                regions.forEach(region -> {
+                    regionMap.put(region.getUuid(), region);
+                    String srcType = null;
+                    if (region.getSrcType().equals(MeasureRegionSrcType.Backend.getId())) {
+                        srcType = "A";
+                    } else if (region.getSrcType().equals(MeasureRegionSrcType.App.getId())) {
+                        srcType = "B";
+                    }
+                    md.getRegion_map().put(region.getUuid(), String.format("%s%d", srcType, region.getRegionIndex()));
+                    String[] areaIds = StringUtils.split(region.getAreaPathAndId(), "/");
+                    Integer[] areaIdsInt = (Integer[]) ConvertUtils.convert(areaIds, Integer.class);
+                    for (Integer areaId : areaIdsInt) {
+                        areaMap.put(areaId, null);
+                    }
+                });
+            }
+            if (areaMap.keySet().size() > 0) {
+                List<Area> areas = areaService.selectByIds(areaMap.keySet());
+                areas.forEach(area -> {
+                    areaMap.put(area.getId(), area);
+                    md.getArea_name_map().put(area.getId(), area.getName());
+                });
+            }
             for (MeasureZoneResult measureZoneResult : results) {
                 Map<String, MeasurePointRule> pointMap = Maps.newHashMap();
                 if (ruleMap.get(measureZoneResult.getRuleId()) != null) {
