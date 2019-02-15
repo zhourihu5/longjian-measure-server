@@ -67,7 +67,7 @@ public class ProMeasureListIssueLogServiceImpl implements IProMeasureListIssueLo
             if (userMap.get(measureListIssueLog.getSenderId()) != null) {
                 item.setUser_name(userMap.get(measureListIssueLog.getSenderId()).getRealName());
             }
-            item.setCreate_at(Integer.parseInt((measureListIssueLog.getCreateAt().getTime() / 1000) + ""));
+            item.setCreate_at(Integer.parseInt((measureListIssueLog.getCreateAt().getTime()) + ""));
 
             //处理开关变化
             if (MeasureListCloseStatusEnum.Closed.getId().equals(detail.getCloseStatus())) {
@@ -103,7 +103,7 @@ public class ProMeasureListIssueLogServiceImpl implements IProMeasureListIssueLo
                     if (userMap.get(l.getTarget_user_id()) != null) {
                         l.setTarget_user_name(userMap.get(l.getTarget_user_id()).getRealName());
                     }
-                    l.setData(detail.getPlanEndOn() != null && detail.getPlanEndOn() > 0 ? detail.getPlanEndOn() / 1000 + "" : "-1");
+                    l.setData(detail.getPlanEndOn() != null && detail.getPlanEndOn() > 0 ? detail.getPlanEndOn() + "" : "-1");
                     item.getItems().add(l);
                 }
             } else if (measureListIssueLog.getStatus() == MeasureListIssueType.REFORMNOCHECK) {
@@ -123,7 +123,7 @@ public class ProMeasureListIssueLogServiceImpl implements IProMeasureListIssueLo
                     if (userMap.get(l.getTarget_user_id()) != null) {
                         l.setTarget_user_name(userMap.get(l.getTarget_user_id()).getRealName());
                     }
-                    l.setData(detail.getPlanEndOn() != null && detail.getPlanEndOn() > 0 ? detail.getPlanEndOn() / 1000 + "" : "-1");
+                    l.setData(detail.getPlanEndOn() != null && detail.getPlanEndOn() > 0 ? detail.getPlanEndOn() + "" : "-1");
                     item.getItems().add(l);
                 }
                 if (StringUtils.isNotBlank(measureListIssueLog.getDesc())) {
