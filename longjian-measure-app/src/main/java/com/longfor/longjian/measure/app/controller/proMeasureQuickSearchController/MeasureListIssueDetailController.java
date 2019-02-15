@@ -269,6 +269,9 @@ public class MeasureListIssueDetailController {
         try {
             ctrlTool.projPerm(request, "项目.实测实量.爆点管理.查看");
             MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(req.getProject_id(), req.getUuid());
+            if (issue == null) {
+                throw new LjBaseRuntimeException(-1, "该爆点信息不存在");
+            }
             List<MeasureListIssueLog> measureListIssueLogs = proMeasureListIssueLogService.searchIssueLogByIssueUuidAndStatus(req.getProject_id(), issue.getUuid(), MeasureListIssueType.REFORMNOCHECK);
             Set<Integer> uids = Sets.newHashSet();
             measureListIssueLogs.forEach(measureListIssueLog -> {
