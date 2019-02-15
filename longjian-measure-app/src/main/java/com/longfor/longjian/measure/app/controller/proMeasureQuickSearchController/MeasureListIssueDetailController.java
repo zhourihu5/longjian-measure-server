@@ -94,7 +94,7 @@ public class MeasureListIssueDetailController {
 
 
     /**
-     * @return com.longfor.longjian.common.base.LjBaseResponse<java.util.List                               <                               com.longfor.longjian.measure.app.vo.proMeasureQuickSearchVo.MeasureListIssueDetailRepairerVo>>
+     * @return com.longfor.longjian.common.base.LjBaseResponse<java.util.List                                                               <                                                               com.longfor.longjian.measure.app.vo.proMeasureQuickSearchVo.MeasureListIssueDetailRepairerVo>>
      * @Description: go项目实测爆点整改测区详情
      * http://192.168.37.159:3000/project/8/interface/api/2992
      * @author DDC
@@ -277,19 +277,21 @@ public class MeasureListIssueDetailController {
             measureListIssueLogs.forEach(measureListIssueLog -> {
                 uids.add(measureListIssueLog.getSenderId());
             });
-            Map<Integer, User> userMap = userService.getUsersByIds(new ArrayList<>(uids));
-            measureListIssueLogs.forEach(measureListIssueLog -> {
-                MeasureListIssueDetailRepairLogVo measureListIssueDetailRepairLogVo = new MeasureListIssueDetailRepairLogVo();
-                measureListIssueDetailRepairLogVo.setContent(measureListIssueLog.getDesc());
-                measureListIssueDetailRepairLogVo.setUser_id(measureListIssueLog.getSenderId());
-                measureListIssueDetailRepairLogVo.setCreate_at(measureListIssueLog.getCreateAt() == null ? 0 : DateUtil.dateToTimestamp(measureListIssueLog.getCreateAt()));
-                measureListIssueDetailRepairLogVo.setAttachment_md5_list(measureListIssueLog.getAttachmentMd5List().length()>0 ? Arrays.asList(StringUtils.split(measureListIssueLog.getAttachmentMd5List(), ",")):Arrays.asList(measureListIssueLog.getAttachmentMd5List()));
-                if (userMap.get(measureListIssueLog.getSenderId()) != null) {
-                    measureListIssueDetailRepairLogVo.setUser_name(userMap.get(measureListIssueLog.getSenderId()).getRealName());
-                }
-                measureListIssueDetailRepairLogVos.add(measureListIssueDetailRepairLogVo);
-            });
-            measureListIssueDetailRepairLogListVo.setItems(measureListIssueDetailRepairLogVos);
+            if (uids.size() > 0) {
+                Map<Integer, User> userMap = userService.getUsersByIds(new ArrayList<>(uids));
+                measureListIssueLogs.forEach(measureListIssueLog -> {
+                    MeasureListIssueDetailRepairLogVo measureListIssueDetailRepairLogVo = new MeasureListIssueDetailRepairLogVo();
+                    measureListIssueDetailRepairLogVo.setContent(measureListIssueLog.getDesc());
+                    measureListIssueDetailRepairLogVo.setUser_id(measureListIssueLog.getSenderId());
+                    measureListIssueDetailRepairLogVo.setCreate_at(measureListIssueLog.getCreateAt() == null ? 0 : DateUtil.dateToTimestamp(measureListIssueLog.getCreateAt()));
+                    measureListIssueDetailRepairLogVo.setAttachment_md5_list(measureListIssueLog.getAttachmentMd5List().length() > 0 ? Arrays.asList(StringUtils.split(measureListIssueLog.getAttachmentMd5List(), ",")) : Arrays.asList(measureListIssueLog.getAttachmentMd5List()));
+                    if (userMap.get(measureListIssueLog.getSenderId()) != null) {
+                        measureListIssueDetailRepairLogVo.setUser_name(userMap.get(measureListIssueLog.getSenderId()).getRealName());
+                    }
+                    measureListIssueDetailRepairLogVos.add(measureListIssueDetailRepairLogVo);
+                });
+                measureListIssueDetailRepairLogListVo.setItems(measureListIssueDetailRepairLogVos);
+            }
             ljBaseResponse.setData(measureListIssueDetailRepairLogListVo);
         } catch (Exception e) {
             log.error(e.getMessage());
