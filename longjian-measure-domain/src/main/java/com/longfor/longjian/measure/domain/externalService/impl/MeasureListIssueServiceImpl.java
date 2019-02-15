@@ -196,7 +196,6 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
             for (Integer s : areaIdList) {
                 String pathAndId = AreaUtils.getPathAndId(s);
                 if (!pathAndId.equals("")) {
-                    //todo bug
                     //criteria1.andLike("areaPathAndId", this.startswith(pathAndId));
                     //criteria1.andEqualTo("areaId", s);
                     criteria1.orCondition("(area_path_and_id like \""+this.startswith(pathAndId)+"\" and area_id = "+s+" )");
