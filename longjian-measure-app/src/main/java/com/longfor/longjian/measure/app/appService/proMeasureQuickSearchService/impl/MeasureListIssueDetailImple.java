@@ -85,7 +85,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
     public MeasureListIssueDetailIssueInfoVo IssueInfo(GetMeasureListIssueDetailReq req) {
         MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(req.getProject_id(), req.getUuid());
         if (issue == null) {
-            throw new LjBaseRuntimeException(-1, "");
+            throw new LjBaseRuntimeException(-1, "该爆点信息不存在");
         }
         ProjectBase cur_proj = null;
         try {
@@ -119,6 +119,9 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
             issue = measureListIssueService.GetIssueByProjectIdAndUuid(req.getProject_id(), req.getUuid());
         } catch (Exception e) {
             log.warn("");
+        }
+        if (issue == null) {
+            throw new LjBaseRuntimeException(-1, "该爆点信息不存在");
         }
         if (issue != null) {
             MeasureRule rule = measureRuleService.getByCategoryKey(issue.getCategoryKey());
@@ -228,6 +231,9 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         MeasureListIssueDetailRepairListVo measureListIssueDetailRepairListVo =new MeasureListIssueDetailRepairListVo();
         List<MeasureListIssueDetailRepairerVo> vo = new ArrayList<>();
         MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(req.getProject_id(), req.getUuid());
+        if (issue == null) {
+            throw new LjBaseRuntimeException(-1, "该爆点信息不存在");
+        }
         List<MeasureRepairerUser> measureRepairerUsers = null;
         ProjectBase cur_proj = null;
         try {
