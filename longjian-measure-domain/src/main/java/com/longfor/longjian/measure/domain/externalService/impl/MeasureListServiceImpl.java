@@ -257,7 +257,7 @@ public class MeasureListServiceImpl implements IMeasureListService {
                 });
             }
             map.put("top_areas",top_areas);
-            map.put("root_category_name",categoryV3s.get(0).getName());
+            map.put("root_category_name",categoryV3s.size()>0 ? categoryV3s.get(0).getName():new CategoryV3().getName());
             return_list.add(map);
         }
         Map<String,Object> map = Maps.newHashMap();
