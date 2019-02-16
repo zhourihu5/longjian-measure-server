@@ -15,8 +15,7 @@ import org.springframework.web.util.HtmlUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -35,8 +34,8 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
         String inputFilename = null;
         String outputFilename = null;
         try {
-           // String data =JSON.toJSONString(input);
-            byte[] data = JSON.toJSONBytes(input);
+             String data =JSON.toJSONString(input);
+            //byte[] data = ObjectToByte(input);
             //随机一个长度不超过long的最大长度的整数
             Random random = new Random(Long.MAX_VALUE);
             long randCount = Math.abs(random.nextLong());
@@ -46,8 +45,8 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
             inputFilename = String.format("%d%d.%s", randCount, ts, "input");
             outputFilename = String.format("/export/%d%d.%s", randCount, ts, "output");
             String filepath = base_dir + inputFilename;
-            //todo uat环境是异步导出 源码是同步导出。 暂时todo
-            this.writeInput(data,exportName,filepath);
+            //todo 源码数据处理 看未进行对数据的操作暂时 已Json格式写入excel中 方便以后处理数据
+            this.writeInput(data, exportName, filepath);
         } catch (Exception e) {
             log.error("error:" + e.getMessage());
             throw new Exception(e);
@@ -58,20 +57,49 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
         return exportFileRecord;
     }
 
-    private void writeInput(byte[] data,String exportName,String filepath) throws Exception {
+    private void writeInput(String data, String exportName, String filepath) throws Exception {
         try {
             File file = new File(String.format("%s/%s",filepath,exportName));
+            //File file = new File(String.format("D:/%s", exportName));
 
-            if(!file.getParentFile().exists()){
+            if (!file.getParentFile().exists()) {
                 file.getParentFile().mkdirs();
             }
 
-            if(!file.exists()){
+            if (!file.exists()) {
                 file.createNewFile();
             }
-            //todo 导出data数据未处理
+            FileOutputStream out;
+            out = new FileOutputStream(String.format("%s/%s",filepath,exportName));
+            //out = new FileOutputStream(String.format("D:/%s",exportName));
+            //String data1 = new String(data,"utf-8");
+            OutputStreamWriter op = new OutputStreamWriter(out, "utf-8");
+            op.append(data);
+            //out.write(data);
+            op.flush();
+            op.close();
+            /*out.write(data);
+            out.close();*/
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private byte[] ObjectToByte(Object obj) {
+        byte[] bytes = null;
+        try {
+            // object to bytearray
+            ByteArrayOutputStream bo = new ByteArrayOutputStream();
+            ObjectOutputStream oo = new ObjectOutputStream(bo);
+            oo.writeObject(obj);
+
+            bytes = bo.toByteArray();
+
+            bo.close();
+            oo.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bytes;
     }
 }

@@ -6,6 +6,7 @@ import com.longfor.longjian.measure.po.zhijian2.MeasureSquad;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +16,7 @@ import java.util.Map;
  */
 @Data
 @NoArgsConstructor
-public class PointDataVo {
+public class PointDataVo  implements Serializable {
     private String key;
     //材质
     private String texture;

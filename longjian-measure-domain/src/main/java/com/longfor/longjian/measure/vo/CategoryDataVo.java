@@ -7,6 +7,7 @@ import com.longfor.longjian.measure.po.zhijian2.MeasureSquad;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,7 @@ import java.util.Map;
  */
 @Data
 @NoArgsConstructor
-public class CategoryDataVo {
+public class CategoryDataVo implements Serializable {
     /**
      * 检查项（任务类型）Key
      */

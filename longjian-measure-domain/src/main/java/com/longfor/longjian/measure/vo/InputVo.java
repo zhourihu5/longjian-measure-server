@@ -3,6 +3,7 @@ package com.longfor.longjian.measure.vo;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  */
 @Data
 @NoArgsConstructor
-public class InputVo {
+public class InputVo implements Serializable {
     private List<CategoryDataVo> data;
     private MeasuredDataVo measured_data;
 }
