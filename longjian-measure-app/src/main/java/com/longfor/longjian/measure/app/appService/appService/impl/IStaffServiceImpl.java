@@ -25,6 +25,7 @@ import com.longfor.longjian.measure.po.zhijian2.MeasureRepairerUser;
 import com.longfor.longjian.measure.po.zhijian2.MeasureSquad;
 import com.longfor.longjian.measure.po.zhijian2.MeasureSquadUser;
 import com.longfor.longjian.measure.util.ArrayUtil;
+import com.longfor.longjian.measure.util.ExampleUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +68,7 @@ public class IStaffServiceImpl implements IStaffService {
         Example example = new Example(MeasureSquad.class);
         Example.Criteria criteria = example.createCriteria().
                 andEqualTo("listId", squadSearchReq.getList_id());
+        ExampleUtil.addDeleteAtJudge(example);
         if(squadSearchReq.getPage()!=null&&squadSearchReq.getPage_size()!=null) {
             Page result = PageHelper.startPage(squadSearchReq.getPage(), squadSearchReq.getPage_size());
             iMeasureSquadService.selectByExample(example);
