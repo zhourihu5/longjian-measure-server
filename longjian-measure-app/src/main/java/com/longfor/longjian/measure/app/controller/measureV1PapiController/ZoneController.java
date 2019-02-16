@@ -48,7 +48,7 @@ public class ZoneController {
      * @return
      */
     @RequestMapping(value = "update_status" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse updateStatus(@Valid @RequestBody UpdateStatusReq updateStatusReq) {
+    public LjBaseResponse updateStatus(@Valid UpdateStatusReq updateStatusReq) {
         zoneService.updateStatus(updateStatusReq);
         return new LjBaseResponse();
     }
@@ -59,7 +59,7 @@ public class ZoneController {
      * @return
      */
     @RequestMapping(value = "del_by_uuid_list" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse delByUuidList(@Valid @RequestBody DelByUuidListReq delByUuidListReq) {
+    public LjBaseResponse delByUuidList(@Valid DelByUuidListReq delByUuidListReq) {
         zoneService.delByUuidList(delByUuidListReq);
         return new LjBaseResponse();
     }
@@ -70,7 +70,7 @@ public class ZoneController {
      * @return
      */
     @RequestMapping(value = "del_result_by_squad_id_zone_uuid_list" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse delBySquadIdUuid(@Valid @RequestBody DelBySquadIdUuidReq delBySquadIdUuidReq) {
+    public LjBaseResponse delBySquadIdUuid(@Valid DelBySquadIdUuidReq delBySquadIdUuidReq) {
         zoneService.delBySquadIdUuid(delBySquadIdUuidReq);
         return new LjBaseResponse();
     }
@@ -81,7 +81,7 @@ public class ZoneController {
      * @return
      */
     @RequestMapping(value = "del_result_by_zone_uuid_list" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse delByZoneUuid(@Valid @RequestBody DelByZoneUuidReq delByZoneUuidReq) {
+    public LjBaseResponse delByZoneUuid(@Valid DelByZoneUuidReq delByZoneUuidReq) {
         zoneService.delByZoneUuid(delByZoneUuidReq);
         return new LjBaseResponse();
     }
