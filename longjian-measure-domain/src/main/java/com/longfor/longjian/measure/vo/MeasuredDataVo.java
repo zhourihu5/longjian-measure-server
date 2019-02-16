@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ import java.util.Map;
  */
 @Data
 @NoArgsConstructor
-public class MeasuredDataVo {
+public class MeasuredDataVo  implements Serializable {
     private Integer list_id;
     private String list_name;
     private Integer proj_id;

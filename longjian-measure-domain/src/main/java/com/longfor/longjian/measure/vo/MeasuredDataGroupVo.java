@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ import java.util.List;
  */
 @Data
 @NoArgsConstructor
-public class MeasuredDataGroupVo implements Comparable<MeasuredDataGroupVo>{
+public class MeasuredDataGroupVo implements Comparable<MeasuredDataGroupVo>, Serializable {
     private Integer buildingOrder;
     private Integer floorOrder;
     private Integer houseOrder;
