@@ -45,7 +45,7 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
             inputFilename = String.format("%d%d.%s", randCount, ts, "input");
             outputFilename = String.format("/export/%d%d.%s", randCount, ts, "output");
             String filepath = base_dir + inputFilename;
-            //todo uat环境是异步导出 源码是同步导出。 暂时todo
+            //todo 源码数据处理 看未进行对数据的操作暂时 已Json格式写入excel中 方便以后处理数据
             this.writeInput(data, exportName, filepath);
         } catch (Exception e) {
             log.error("error:" + e.getMessage());
@@ -69,7 +69,6 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
             if (!file.exists()) {
                 file.createNewFile();
             }
-            //todo 导出data数据未处理
             FileOutputStream out;
             out = new FileOutputStream(String.format("%s/%s",filepath,exportName));
             //out = new FileOutputStream(String.format("D:/%s",exportName));
