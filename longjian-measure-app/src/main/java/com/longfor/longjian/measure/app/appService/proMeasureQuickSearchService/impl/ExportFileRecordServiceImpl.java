@@ -34,7 +34,7 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
         String inputFilename = null;
         String outputFilename = null;
         try {
-             String data =JSON.toJSONString(input);
+            String data = JSON.toJSONString(input);
             //byte[] data = ObjectToByte(input);
             //随机一个长度不超过long的最大长度的整数
             Random random = new Random(Long.MAX_VALUE);
@@ -44,7 +44,8 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
             String base_uri = exportVo.getMeasure_base_uri();
             inputFilename = String.format("%d%d.%s", randCount, ts, "input");
             outputFilename = String.format("/export/%d%d.%s", randCount, ts, "output");
-            String filepath = base_dir + inputFilename;
+            //String filepath = base_dir +"/"+ inputFilename;
+            String filepath = String.format("%s/%s", base_dir, inputFilename);
             //todo 源码数据处理 看未进行对数据的操作暂时 已Json格式写入excel中 方便以后处理数据
             this.writeInput(data, exportName, filepath);
         } catch (Exception e) {
@@ -59,7 +60,7 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
 
     private void writeInput(String data, String exportName, String filepath) throws Exception {
         try {
-            File file = new File(String.format("%s/%s",filepath,exportName));
+            File file = new File(String.format("%s", filepath));
             //File file = new File(String.format("D:/%s", exportName));
 
             if (!file.getParentFile().exists()) {
@@ -70,7 +71,7 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
                 file.createNewFile();
             }
             FileOutputStream out;
-            out = new FileOutputStream(String.format("%s/%s",filepath,exportName));
+            out = new FileOutputStream(String.format("%s", filepath));
             //out = new FileOutputStream(String.format("D:/%s",exportName));
             //String data1 = new String(data,"utf-8");
             OutputStreamWriter op = new OutputStreamWriter(out, "utf-8");
