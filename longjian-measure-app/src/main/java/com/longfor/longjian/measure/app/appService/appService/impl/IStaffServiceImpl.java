@@ -138,7 +138,7 @@ public class IStaffServiceImpl implements IStaffService {
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("projectId", allowUserSearchReq.getProject_id());
         criteria.andEqualTo("listId", allowUserSearchReq.getList_id());
-
+        ExampleUtil.addDeleteAtJudge(example);
         List<MeasureSquadUser>measureSquadUserList=iMeasureSquadUserService.selectByExample(example);
 
         Integer [] allUserIds=new Integer[measureSquadUserList.size()];
@@ -194,7 +194,7 @@ public class IStaffServiceImpl implements IStaffService {
         criteria.andEqualTo("projectId", repairerListSearchReq.getProject_id());
         criteria.andEqualTo("listId", repairerListSearchReq.getList_id());
         criteria.andEqualTo("roleType", repairerListSearchReq.getRole_type());
-
+        ExampleUtil.addDeleteAtJudge(example);
         List<MeasureRepairerUser>measureRepairerUserList=iMeasureRepairerUserService.selectByExample(example);
 
         List<Integer>repairerIdList=new ArrayList<>();
