@@ -4,6 +4,8 @@ import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.common.exception.CommonException;
 import com.longfor.longjian.measure.app.appService.appService.IStaffService;
 import com.longfor.longjian.measure.app.req.staff.*;
+import com.longfor.longjian.measure.app.vo.staffVo.AllowUserSearchListVo;
+import com.longfor.longjian.measure.app.vo.staffVo.AllowUserSearchVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -41,8 +43,10 @@ public class StaffController {
      * @throws CommonException
      */
     @RequestMapping(value = "allow_user_search" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse allowUserSearch(@Valid AllowUserSearchReq allowUserSearchReq) throws CommonException {
-        return new LjBaseResponse(iStaffService.allowUserSearch(allowUserSearchReq));
+    public LjBaseResponse<AllowUserSearchListVo> allowUserSearch(@Valid AllowUserSearchReq allowUserSearchReq) throws CommonException {
+        AllowUserSearchListVo allowUserSearchListVo = new AllowUserSearchListVo();
+        allowUserSearchListVo.setAllow_user_info(iStaffService.allowUserSearch(allowUserSearchReq));
+        return new LjBaseResponse(allowUserSearchListVo);
     }
 
     @RequestMapping(value = "repairer_list_search" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
