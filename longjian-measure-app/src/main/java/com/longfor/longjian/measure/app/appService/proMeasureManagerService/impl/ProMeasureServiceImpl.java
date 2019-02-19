@@ -76,12 +76,12 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     public LjBaseResponse<ProMeasurePlanListVo> getProMeasurePlanList(GetProMeasurePlanListReq getProMeasurePlanListReq, HttpServletRequest request) throws Exception {
         LjBaseResponse<ProMeasurePlanListVo> ljBaseResponse = new LjBaseResponse<>();
         ProMeasurePlanListVo proMeasurePlanListVo = new ProMeasurePlanListVo();
-        ProjectBase projectBase =null;
+        ProjectBase projectBase = null;
         try {
             ctrlTool.projPerm(request, "项目.实测实量.任务管理.查看");
-            projectBase =(ProjectBase)sessionInfo.getBaseInfo("cur_proj");
-        }catch (Exception e){
-            throw new LjBaseRuntimeException(-9999,e.getMessage());
+            projectBase = (ProjectBase) sessionInfo.getBaseInfo("cur_proj");
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
         Integer projectId = projectBase.getId();
         String[] userIds = null;
@@ -93,7 +93,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         //areaPathAndId 参数赋值
         String areaPathAndId = getAreaPathAndId(getProMeasurePlanListReq);
         //获取measureList
-        List<ProMeasurePlanVo> list = SearchByProjIdCategoryKeyAreaIdStatusUserIdInPage(projectId,getProMeasurePlanListReq, userIds, categoryPathAndKey, areaPathAndId);
+        List<ProMeasurePlanVo> list = SearchByProjIdCategoryKeyAreaIdStatusUserIdInPage(projectId, getProMeasurePlanListReq, userIds, categoryPathAndKey, areaPathAndId);
         //获取total
         Integer total = measureListService.getTotalMeasure(getProMeasurePlanListReq.getFinish_status(), getProMeasurePlanListReq.getQ(), getProMeasurePlanListReq.getProject_id(), categoryPathAndKey, areaPathAndId, userIds);
         proMeasurePlanListVo.setItems(list);
@@ -172,20 +172,22 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     @Override
     public LjBaseResponse<ItemsVo<List<CheckerVo>>> getCheckerList(GetCheckerListReq getCheckerListReq) {
         try {
-            ctrlTool.projPerm(RequestContextHolderUtil.getRequest(),"项目.实测实量.描画区域管理.查看");
-        }catch (Exception e){
+            ctrlTool.projPerm(RequestContextHolderUtil.getRequest(), "项目.实测实量.描画区域管理.查看");
+        } catch (Exception e) {
             log.error(e.getMessage());
-            throw new LjBaseRuntimeException(-9999,e.getMessage());
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
         LjBaseResponse<ItemsVo<List<CheckerVo>>> ljBaseResponse = new LjBaseResponse<>();
         ItemsVo<List<CheckerVo>> itemsVo = new ItemsVo<>();
         List<CheckerVo> checkerVos = new ArrayList<>();
         List<Integer> userIds = userInProjectService.getUserIdByProjectIds(new int[]{getCheckerListReq.getProject_id()});
-        List<Map<String, Object>> users = userService.getUserByUserIds(userIds);
-        users.forEach(LambdaExceptionUtil.throwingConsumerWrapper(user -> {
-            CheckerVo checkerVo = (CheckerVo) ConvertUtil.convertMap(CheckerVo.class, user);
-            checkerVos.add(checkerVo);
-        }));
+        if (userIds.size() > 0) {
+            List<Map<String, Object>> users = userService.getUserByUserIds(userIds);
+            users.forEach(LambdaExceptionUtil.throwingConsumerWrapper(user -> {
+                CheckerVo checkerVo = (CheckerVo) ConvertUtil.convertMap(CheckerVo.class, user);
+                checkerVos.add(checkerVo);
+            }));
+        }
         itemsVo.setItems(checkerVos);
         ljBaseResponse.setData(itemsVo);
         return ljBaseResponse;
@@ -195,12 +197,12 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     public LjBaseResponse<SquadsAndPassVo> getCompareBetweenGroup(GetCompareBetweenGroupReq getCompareBetweenGroupReq) throws Exception {
         LjBaseResponse<SquadsAndPassVo> ljBaseResponse = new LjBaseResponse<>();
         SquadsAndPassVo squadsAndPassVo = new SquadsAndPassVo();
-        ProjectBase projectBase= null;
+        ProjectBase projectBase = null;
         try {
             ctrlTool.projPerm(RequestContextHolderUtil.getRequest(), "项目.实测实量.统计.查看");
-            projectBase =(ProjectBase)sessionInfo.getBaseInfo("cur_proj");
-        }catch (Exception e){
-            throw  new LjBaseRuntimeException(-9999,e.getMessage());
+            projectBase = (ProjectBase) sessionInfo.getBaseInfo("cur_proj");
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
         //验证任务是否属于这个项目
         boolean existPlan = measureListService.searchByProjectIdAndMeasureListId(getCompareBetweenGroupReq.getProject_id(), getCompareBetweenGroupReq.getMeasure_list_id()) != null;
@@ -234,8 +236,8 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         PassDiffVo passDiffVo = new PassDiffVo();
         try {
             ctrlTool.projPerm(RequestContextHolderUtil.getRequest(), "项目.实测实量.统计.查看");
-        }catch (Exception e){
-            throw  new LjBaseRuntimeException(-9999,e.getMessage());
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
         //验证任务是否属于这个项目
         boolean existPlan = measureListService.searchByProjectIdAndMeasureListId(getLoserCompareBetweenGroupReq.getProject_id(), getLoserCompareBetweenGroupReq.getMeasure_list_id()) != null;
@@ -267,13 +269,13 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     public LjBaseResponse<CompareItemBetweenSquadsVo> getCompareItemBetweenSquads(GetCompareItemBetweenSquadsReq getCompareItemBetweenSquadsReq) throws Exception {
         LjBaseResponse<CompareItemBetweenSquadsVo> ljBaseResponse = new LjBaseResponse<>();
         CompareItemBetweenSquadsVo compareItemBetweenSquadsVo = new CompareItemBetweenSquadsVo();
-        ProjectBase projectBase =null;
-      try {
-          ctrlTool.projPerm(RequestContextHolderUtil.getRequest(), "项目.实测实量.统计.查看");
-          projectBase = (ProjectBase)sessionInfo.getBaseInfo("cur_proj");
-      }catch (Exception e){
-          throw new LjBaseRuntimeException(-9999,e.getMessage());
-      }
+        ProjectBase projectBase = null;
+        try {
+            ctrlTool.projPerm(RequestContextHolderUtil.getRequest(), "项目.实测实量.统计.查看");
+            projectBase = (ProjectBase) sessionInfo.getBaseInfo("cur_proj");
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
+        }
         //验证任务是否属于这个项目
         MeasureList measureList = measureListService.searchByProjectIdAndMeasureListId(getCompareItemBetweenSquadsReq.getProject_id(), getCompareItemBetweenSquadsReq.getMeasure_list_id());
         if (measureList == null) {
@@ -290,7 +292,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             squadsPassVo.setRate(measureSquad.getPlanRate() + "");
             squads_rate.add(squadsPassVo);
         });
-        List<CategoryDetailsVo> category_details = getCategoryDetails(getCompareItemBetweenSquadsReq, measureList,projectBase);
+        List<CategoryDetailsVo> category_details = getCategoryDetails(getCompareItemBetweenSquadsReq, measureList, projectBase);
         compareItemBetweenSquadsVo.setCategory_details(category_details);
         compareItemBetweenSquadsVo.setSquads_rate(squads_rate);
         ljBaseResponse.setData(compareItemBetweenSquadsVo);
@@ -349,12 +351,12 @@ public class ProMeasureServiceImpl implements IProMeasureService {
 
     @Override
     public LjBaseResponse<ItemsVo<List<AreaPOPVo>>> getAreaPOP(GetAreaPOPReq getAreaPOPreq) throws Exception {
-        ProjectBase projectBase =null;
+        ProjectBase projectBase = null;
         try {
-            ctrlTool.projPerm(RequestContextHolderUtil.getRequest(),"项目.实测实量.统计.查看");
-            projectBase =(ProjectBase)sessionInfo.getBaseInfo("cur_proj");
-        }catch (Exception e){
-            throw new LjBaseRuntimeException(-9999,e.getMessage());
+            ctrlTool.projPerm(RequestContextHolderUtil.getRequest(), "项目.实测实量.统计.查看");
+            projectBase = (ProjectBase) sessionInfo.getBaseInfo("cur_proj");
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
         LjBaseResponse<ItemsVo<List<AreaPOPVo>>> ljBaseResponse = new LjBaseResponse<>();
         ItemsVo<List<AreaPOPVo>> itemsVo = new ItemsVo<>();
@@ -644,7 +646,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
      * @param measureList
      * @return
      */
-    private List<CategoryDetailsVo> getCategoryDetails(GetCompareItemBetweenSquadsReq getCompareItemBetweenSquadsReq, MeasureList measureList,ProjectBase projectBase) {
+    private List<CategoryDetailsVo> getCategoryDetails(GetCompareItemBetweenSquadsReq getCompareItemBetweenSquadsReq, MeasureList measureList, ProjectBase projectBase) {
         List<CategoryDetailsVo> categoryDetailsVos = new ArrayList<>();
         if (StringUtils.isBlank(getCompareItemBetweenSquadsReq.getCategory_key())) {
             //没传CategoryKey，取最顶级
@@ -913,10 +915,10 @@ public class ProMeasureServiceImpl implements IProMeasureService {
      * @param areaPathAndId
      * @return
      */
-    private List<ProMeasurePlanVo> SearchByProjIdCategoryKeyAreaIdStatusUserIdInPage(Integer projectId,GetProMeasurePlanListReq getProMeasurePlanListReq, String[] userIds, String categoryPathAndKey, String areaPathAndId) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException, ParseException {
+    private List<ProMeasurePlanVo> SearchByProjIdCategoryKeyAreaIdStatusUserIdInPage(Integer projectId, GetProMeasurePlanListReq getProMeasurePlanListReq, String[] userIds, String categoryPathAndKey, String areaPathAndId) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException, ParseException {
         List<ProMeasurePlanVo> measurePlanVoList = new ArrayList<>();
         //查询 MeasureList
-        List<Map<String, Object>> list = measureListService.getMeasureList(getProMeasurePlanListReq.getFinish_status(), getProMeasurePlanListReq.getQ(),projectId, categoryPathAndKey, areaPathAndId, userIds, getProMeasurePlanListReq.getPage(), getProMeasurePlanListReq.getPage_size());
+        List<Map<String, Object>> list = measureListService.getMeasureList(getProMeasurePlanListReq.getFinish_status(), getProMeasurePlanListReq.getQ(), projectId, categoryPathAndKey, areaPathAndId, userIds, getProMeasurePlanListReq.getPage(), getProMeasurePlanListReq.getPage_size());
         list2SearchResult(getProMeasurePlanListReq.getProject_id(), list);
         for (Map<String, Object> map : list
         ) {
@@ -935,7 +937,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             measurePlanVo.setIssue_count(measureListIssueService.countByMeasureListId(map.get("id").toString()));
             measurePlanVo.setCreate_at(DateTool.getLongFromString(map.get("createAt").toString()) / 1000);
             System.out.println(JSON.toJSONString(map.get("topAreas")));
-            List<Area> areas = JSONArray.parseArray(JSON.toJSONString(map.get("topAreas")),Area.class);
+            List<Area> areas = JSONArray.parseArray(JSON.toJSONString(map.get("topAreas")), Area.class);
             measurePlanVo.setTop_areas(areas.stream().map(Area::getName).collect(Collectors.joining("、")));
             measurePlanVoList.add(measurePlanVo);
         }
@@ -943,33 +945,33 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     }
 
     private void list2SearchResult(Integer project_id, List<Map<String, Object>> list) {
-        Map<String,String> mapCategoryName = new HashMap<>();
+        Map<String, String> mapCategoryName = new HashMap<>();
         List<Integer> listIds = new ArrayList<>(list.size());
         List<String> rootCategoryKeys = list.stream().filter(item -> {
-            listIds.add((int)item.get("id"));
+            listIds.add((int) item.get("id"));
             String key = item.get("rootCategoryKey").toString();
-            if (mapCategoryName.get(key) != null){
+            if (mapCategoryName.get(key) != null) {
                 return false;
             }
-            mapCategoryName.put(key,"");
+            mapCategoryName.put(key, "");
             return true;
         }).map(iteam -> iteam.get("rootCategoryKey").toString()).collect(Collectors.toList());
         List<CategoryV3> categorys = categoryV3Service.SearchCategoryByKeyIn(rootCategoryKeys);
 
         categorys.forEach(category -> {
-            mapCategoryName.put(category.getKey(),category.getName());
+            mapCategoryName.put(category.getKey(), category.getName());
         });
 
         list.forEach(item -> {
             String key = item.get("rootCategoryKey").toString();
-            if (mapCategoryName.get(key) != null){
-                item.put("rootCategory",mapCategoryName.get(key));
+            if (mapCategoryName.get(key) != null) {
+                item.put("rootCategory", mapCategoryName.get(key));
             }
         });
 
-        List<MeasureListArea> listAreas = measureListAreaService.searchListAreaByListIdIn(project_id,listIds);
-        Map<Integer,Boolean> mapTopAreaId = new HashMap<>();
-        Map<Integer,List<Integer>> mapListTopAreaId = new HashMap<>();
+        List<MeasureListArea> listAreas = measureListAreaService.searchListAreaByListIdIn(project_id, listIds);
+        Map<Integer, Boolean> mapTopAreaId = new HashMap<>();
+        Map<Integer, List<Integer>> mapListTopAreaId = new HashMap<>();
         for (MeasureListArea area : listAreas) {
             List<Integer> ids = StringUtil.splitToIdsSlash(area.getAreaPathAndId(), false);
             if (ids.size() == 0) {
@@ -977,19 +979,19 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             }
             int topId = ids.get(0);
             List<Integer> listTopAreaId = mapListTopAreaId.get(area.getListId());
-            if (listTopAreaId == null){
+            if (listTopAreaId == null) {
                 listTopAreaId = new ArrayList<>();
-                mapListTopAreaId.put(area.getListId(),listTopAreaId);
+                mapListTopAreaId.put(area.getListId(), listTopAreaId);
             }
             mapListTopAreaId.get(area.getListId()).add(topId);
-            if (mapTopAreaId.get(topId) != null && mapTopAreaId.get(topId)){
+            if (mapTopAreaId.get(topId) != null && mapTopAreaId.get(topId)) {
                 continue;
             }
-            mapTopAreaId.put(topId,true);
+            mapTopAreaId.put(topId, true);
         }
 
         List<Area> topAreas = areaService.selectByIds(mapTopAreaId.keySet());
-        Map<Integer,Area> mapAreas = topAreas.stream().collect(Collectors.toMap(Area::getId,a -> a));
+        Map<Integer, Area> mapAreas = topAreas.stream().collect(Collectors.toMap(Area::getId, a -> a));
         for (Map<String, Object> item : list) {
 //            item.FinishStatus = zj3_consts.MeasureListFinishStatus.GetName(item.List.FinishStatus)
 //            item.CloseStatus = zj3_consts.MeasureListCloseStatus.GetName(item.List.CloseStatus)
@@ -998,7 +1000,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
                 continue;
             }
             topIds = topIds.stream().distinct().collect(Collectors.toList());
-            item.put("topAreas",topIds.stream().map(id -> {
+            item.put("topAreas", topIds.stream().map(id -> {
                 return mapAreas.get(id);
             }).filter(area -> area != null).collect(Collectors.toList()));
         }
