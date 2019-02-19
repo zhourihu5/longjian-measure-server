@@ -279,12 +279,18 @@ public class IStaffServiceImpl implements IStaffService {
         iMeasureSquadService.update(measureSquad);
 
 
-        MeasureSquadUser measureSquadUser=new MeasureSquadUser();
-        measureSquadUser.setProjectId(squadUpdateReq.getProject_id());
-        measureSquadUser.setListId(squadUpdateReq.getList_id());
-        measureSquadUser.setSquadId(squadUpdateReq.getSquad_id());
+//        MeasureSquadUser measureSquadUser=new MeasureSquadUser();
+//        measureSquadUser.setProjectId(squadUpdateReq.getProject_id());
+//        measureSquadUser.setListId(squadUpdateReq.getList_id());
+//        measureSquadUser.setSquadId(squadUpdateReq.getSquad_id());
+        Example example = new Example(MeasureSquadUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId",squadUpdateReq.getProject_id());
+        criteria.andEqualTo("listId",squadUpdateReq.getList_id());
+        criteria.andEqualTo("squadId",squadUpdateReq.getSquad_id());
+        ExampleUtil.addDeleteAtJudge(example);
 
-        List<MeasureSquadUser> measureSquadUserList=iMeasureSquadUserService.select(measureSquadUser);//找出原有的组员
+        List<MeasureSquadUser> measureSquadUserList=iMeasureSquadUserService.selectByExample(example);//找出原有的组员
 
         Integer [] oldUserIds=new Integer[measureSquadUserList.size()];
 
@@ -355,13 +361,17 @@ public class IStaffServiceImpl implements IStaffService {
 
         String[] userIds=repairerListUpdateReq.getUser_id_list().split(",");
 
-        MeasureRepairerUser measureRepairerUser=new MeasureRepairerUser();
-
-        measureRepairerUser.setProjectId(repairerListUpdateReq.getProject_id());
-        measureRepairerUser.setListId(repairerListUpdateReq.getList_id());
-        measureRepairerUser.setRoleType(repairerListUpdateReq.getRole_type());
-
-       List<MeasureRepairerUser>measureRepairerUserList= iMeasureRepairerUserService.select(measureRepairerUser);
+//        MeasureRepairerUser measureRepairerUser=new MeasureRepairerUser();
+//        measureRepairerUser.setProjectId(repairerListUpdateReq.getProject_id());
+//        measureRepairerUser.setListId(repairerListUpdateReq.getList_id());
+//        measureRepairerUser.setRoleType(repairerListUpdateReq.getRole_type());
+        Example example = new Example(MeasureRepairerUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId",repairerListUpdateReq.getProject_id());
+        criteria.andEqualTo("listId",repairerListUpdateReq.getList_id());
+        criteria.andEqualTo("roleType",repairerListUpdateReq.getRole_type());
+        ExampleUtil.addDeleteAtJudge(example);
+       List<MeasureRepairerUser>measureRepairerUserList= iMeasureRepairerUserService.selectByExample(example);
 
        Integer[] newUseridsArr = (Integer[]) ConvertUtils.convert(userIds, Integer.class);
 
