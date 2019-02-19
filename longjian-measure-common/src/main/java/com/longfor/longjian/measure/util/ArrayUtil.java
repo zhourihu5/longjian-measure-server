@@ -69,6 +69,16 @@ public class ArrayUtil {
     }
 
 
+//    public static void main(String[] args) {
+//        Integer[] A = new Integer[]{1,2,};
+//        Integer[] B = new Integer[]{1,2,3};
+//        for (Integer i: getDiff(A,B,"B-A")
+//             ) {
+//            System.out.println(i);
+//        }
+//
+//    }
+
 
 }
 

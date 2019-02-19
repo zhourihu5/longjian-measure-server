@@ -302,15 +302,17 @@ public class IStaffServiceImpl implements IStaffService {
 
         List<Integer> deleteUserIds= ArrayUtil.getDiff(oldUserIds,newUseridsArr,"A-B");//找出删除组员并删除
 
-        Map<String,Object> deleteMap=new HashMap<>();
+        if (deleteUserIds.size() > 0){
+            Map<String,Object> deleteMap=new HashMap<>();
 
-        deleteMap.put("project_id",squadUpdateReq.getProject_id());
-        deleteMap.put("list_id",squadUpdateReq.getList_id());
-        deleteMap.put("squad_id",squadUpdateReq.getSquad_id());
-        deleteMap.put("deleteUserIds",deleteUserIds);
-        deleteMap.put("delete_at",new Date());
+            deleteMap.put("project_id",squadUpdateReq.getProject_id());
+            deleteMap.put("list_id",squadUpdateReq.getList_id());
+            deleteMap.put("squad_id",squadUpdateReq.getSquad_id());
+            deleteMap.put("deleteUserIds",deleteUserIds);
+            deleteMap.put("delete_at",new Date());
+            iMeasureSquadUserService.deleteOld(deleteMap);
+        }
 
-        iMeasureSquadUserService.deleteOld(deleteMap);
 
         List<Integer> addUserIds= ArrayUtil.getDiff(oldUserIds,newUseridsArr,"B-A");//找出新组员并添加
 
@@ -383,14 +385,15 @@ public class IStaffServiceImpl implements IStaffService {
 
        List<Integer>  delUserId=ArrayUtil.getDiff(prevUserId,newUseridsArr,"A-B");
 
-        Map<String,Object>map=new HashMap<>();
-        map.put("list_id",repairerListUpdateReq.getList_id());
-        map.put("role_type",repairerListUpdateReq.getRole_type());
-        map.put("deleteUserIds",delUserId);
-        map.put("delete_at",new Date());
-        map.put("project_id",repairerListUpdateReq.getProject_id());
-
-        iMeasureRepairerUserService.delOld(map);//删除旧数据
+       if (delUserId.size() > 0){
+           Map<String,Object>map=new HashMap<>();
+           map.put("list_id",repairerListUpdateReq.getList_id());
+           map.put("role_type",repairerListUpdateReq.getRole_type());
+           map.put("deleteUserIds",delUserId);
+           map.put("delete_at",new Date());
+           map.put("project_id",repairerListUpdateReq.getProject_id());
+           iMeasureRepairerUserService.delOld(map);//删除旧数据
+       }
 
         List<Integer>  addUserId=ArrayUtil.getDiff(prevUserId,newUseridsArr,"B-A");
 
