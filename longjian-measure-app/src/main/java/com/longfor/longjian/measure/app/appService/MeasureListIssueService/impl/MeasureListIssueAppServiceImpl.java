@@ -202,9 +202,9 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
                 throw new Exception(e);
             }
             measureIssueQueryItemVos.add(r);
-            measureIssueQueryVo.setItems(measureIssueQueryItemVos);
-            ljBaseResponse.setData(measureIssueQueryVo);
         }
+        measureIssueQueryVo.setItems(measureIssueQueryItemVos);
+        ljBaseResponse.setData(measureIssueQueryVo);
         return ljBaseResponse;
     }
 

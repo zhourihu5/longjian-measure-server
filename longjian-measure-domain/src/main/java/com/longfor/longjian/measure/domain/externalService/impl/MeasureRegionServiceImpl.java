@@ -140,7 +140,7 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
             return Lists.newArrayList();
         }
         Example example = new Example(MeasureRegion.class);
-        example.createCriteria().andEqualTo("projectId", project_id).andIn("uuid", regionUuids);
+        example.createCriteria().andEqualTo("projectId", project_id).andIn("uuid", regionUuids).andIsNull("deleteAt");
         return measureRegionMapper.selectByExample(example);
     }
 

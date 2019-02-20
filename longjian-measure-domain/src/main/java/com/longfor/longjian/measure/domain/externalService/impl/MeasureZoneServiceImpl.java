@@ -89,6 +89,7 @@ public class MeasureZoneServiceImpl implements IMeasureZoneService {
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("projectId",project_id);
         criteria.andIn("uuid",zoneUuids);
+        criteria.andIsNull("deleteAt");
         return measureZoneMapper.selectByExample(example);
     }
 
