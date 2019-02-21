@@ -59,7 +59,15 @@ public class UserTaskNotice extends Productor{
 
 
     public void updateTaskResultStatus(Integer userId, String taskId, BgtaskStatusEnum status){
+        while (!redisUtil.exists(getTaskResultKey(userId, taskId))){
+            try {
+                Thread.sleep(500l);
+            } catch (InterruptedException e) {
+                log.error(Thread.currentThread().getName() + " measure_create sleep error ", e);
+            }
+        }
         TaskInfoVo result = redisUtil.getHashObject(getTaskResultKey(userId, taskId),TaskInfoVo.class);
+//        log.info("result:" + JSON.toJSONString(result));
         if (result == null) {
             log.error(
                     String.format("updateTaskResultStatus error Result not exist,userId:%d taskId:%s", userId, taskId));
