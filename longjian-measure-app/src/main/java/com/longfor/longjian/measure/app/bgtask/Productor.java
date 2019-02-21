@@ -7,6 +7,7 @@ import java.util.Map;
 /**
  * wangxs 2019-2-11
  */
+@Deprecated
 @Data
 public class Productor {
     private String name;

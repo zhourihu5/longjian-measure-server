@@ -99,13 +99,10 @@ public class MeasureListController {
         LjBaseResponse<BgAddVo> ljBaseResponse = new LjBaseResponse<>();
         BgAddVo bgAddVo = new BgAddVo();
         Map params = ConvertUtil.convertBean(bgAddReq);
-//        params.put("area_id_list", JSONObject.parseArray(params.get("area_id_list").toString(),Integer.class));
         log.info(JSON.toJSONString(params));
         Integer userId = sessionInfo.getSessionUser().getUserId();
-//        String r = userTaskNotice.send(userId, BgtaskEnum.MEASURE_LIST_CREATE.getValue(),"",params, null);
-//        bgAddVo.setId(r);
-        measureListService.add(params);
-        bgAddVo.setId("1111");
+        String r = userTaskNotice.sendToRedis(userId, BgtaskEnum.MEASURE_LIST_CREATE,"",params, null);
+        bgAddVo.setId(r);
         ljBaseResponse.setData(bgAddVo);
         return ljBaseResponse;
     }

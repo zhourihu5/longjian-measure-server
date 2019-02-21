@@ -77,6 +77,11 @@ longfor:
             cas:
               connectTimeout: 5000
               readTimeout: 5000
+    logging:
+      kafka:
+        enabled: true
+        broker: kafka01.paas.longhu.net:9092,kafka02.paas.longhu.net:9092,kafka03.paas.longhu.net:9092
+        env: test
 
   data:
     pagehelper:
