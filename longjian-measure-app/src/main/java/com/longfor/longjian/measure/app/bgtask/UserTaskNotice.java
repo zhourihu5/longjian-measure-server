@@ -38,7 +38,7 @@ public class UserTaskNotice extends Productor{
         params.put("id", id);
 //        param.put("fileName", fileName);
         params.put("userId", userId);
-        redisUtil.setHash(taskKey, params, 1L, TimeUnit.HOURS);//写入任务参数
+        redisUtil.setHash(taskKey, params);//写入任务参数
 
         TaskInfoVo result=new TaskInfoVo();
         result.setCreate_at(Long.valueOf(new Date().getTime()/1000).intValue());
@@ -51,7 +51,7 @@ public class UserTaskNotice extends Productor{
         result.setTyp(taskType.getValue());
         result.setTyp_name(taskType.getName());
         redisUtil.rpush(getReultQueueName(userId), getTaskResultKey(userId, id));
-        redisUtil.setHash(getTaskResultKey(userId, id), ConvertUtil.convertBean(result),1L, TimeUnit.HOURS);
+        redisUtil.setHash(getTaskResultKey(userId, id), ConvertUtil.convertBean(result));
         return id;
     }
 
@@ -79,7 +79,7 @@ public class UserTaskNotice extends Productor{
             result.setFinish_at(new Long(new Date().getTime() / 1000).intValue());
         }
         try {
-            redisUtil.setHash(getTaskResultKey(userId, taskId), ConvertUtil.convertBean(result),1L, TimeUnit.HOURS);
+            redisUtil.setHash(getTaskResultKey(userId, taskId), ConvertUtil.convertBean(result));
         } catch (Exception e) {
             log.error("map转换异常");
         }
