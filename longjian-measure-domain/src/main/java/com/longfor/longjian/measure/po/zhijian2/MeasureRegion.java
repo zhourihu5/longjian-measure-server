@@ -5,6 +5,7 @@ import javax.persistence.*;
 
 @Table(name = "measure_region")
 public class MeasureRegion {
+    @GeneratedValue(generator = "JDBC")
     @Id
     private Integer id;
 
