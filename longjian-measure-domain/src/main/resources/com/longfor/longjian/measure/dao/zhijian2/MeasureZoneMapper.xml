@@ -150,7 +150,7 @@
 
     <update id="delByUuidList">
 
-        UPDATE measure_zone set delete_at=#{delete_at}
+        UPDATE measure_zone set delete_at=#{delete_at},update_at=#{update_at}
 
         where  project_id = #{project_id}
 

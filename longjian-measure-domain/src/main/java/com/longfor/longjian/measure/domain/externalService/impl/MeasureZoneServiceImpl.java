@@ -65,6 +65,7 @@ public class MeasureZoneServiceImpl implements IMeasureZoneService {
         MeasureZone measureZone=new MeasureZone();
         measureZone.setListId(id);
         measureZone.setDeleteAt(new Date());
+        measureZone.setUpdateAt(new Date());
         measureZoneMapper.updateByExampleSelective(measureZone,example);
     }
 

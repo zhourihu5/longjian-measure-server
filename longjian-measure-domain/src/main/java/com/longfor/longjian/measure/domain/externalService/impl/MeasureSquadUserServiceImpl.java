@@ -31,6 +31,7 @@ public class MeasureSquadUserServiceImpl implements IMeasureSquadUserService{
 
         MeasureSquadUser measureSquadUser=new MeasureSquadUser();
         measureSquadUser.setListId(id);
+        measureSquadUser.setUpdateAt(new Date());
         measureSquadUser.setDeleteAt(new Date());
         measureSquadUserMapper.updateByExampleSelective(measureSquadUser,example);
     }

@@ -294,7 +294,7 @@ public class IZoneServiceImpl implements IZoneService {
         map.put("project_id",delByUuidListReq.getProject_id());
         map.put("zoneId",zoneId);
         map.put("delete_at",new Date());
-
+        map.put("update_at",new Date());
         measureZoneResultService.delByUuidList(map);
 
         measureZoneService.delByUuidList(map);
@@ -312,6 +312,7 @@ public class IZoneServiceImpl implements IZoneService {
         map.put("zoneId",zoneId);
         map.put("squad_id",delBySquadIdUuidReq.getSquad_id());
         map.put("delete_at",new Date());
+        map.put("update_at",new Date());
 
         measureZoneResultService.delBySquadIdUuid(map);
 
@@ -328,6 +329,7 @@ public class IZoneServiceImpl implements IZoneService {
         map.put("zoneId",zoneId);
         map.put("squad_id",null);
         map.put("delete_at",new Date());
+        map.put("update_at",new Date());
 
         measureZoneResultService.delBySquadIdUuid(map);
 

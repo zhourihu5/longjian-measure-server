@@ -291,7 +291,7 @@ WHERE
 
   <update id="delByUuidList">
 
-    UPDATE measure_zone_result set delete_at=#{delete_at}
+    UPDATE measure_zone_result set delete_at=#{delete_at},update_at=#{update_at}
 
     where  project_id = #{project_id}
 
@@ -305,7 +305,7 @@ WHERE
 
   <update id="delBySquadIdUuid">
 
-    UPDATE measure_zone_result set delete_at=#{delete_at}
+    UPDATE measure_zone_result set delete_at=#{delete_at},update_at=#{update_at}
 
     where  project_id = #{project_id}
 

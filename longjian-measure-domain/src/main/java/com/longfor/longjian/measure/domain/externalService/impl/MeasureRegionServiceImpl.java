@@ -75,9 +75,11 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
                 newMeasureRegion.setAreaPathAndId(measureRegion.getAreaPathAndId());
                 newMeasureRegion.setDrawingMd5(measureRegion.getDrawingMd5());
                 newMeasureRegion.setPolygon(measureRegion.getPolygon());
+                newMeasureRegion.setCreateAt(new Date());
+                newMeasureRegion.setUpdateAt(new Date());
                 measureRegionLists.add(newMeasureRegion);
             });
-            measureRegionMapper.InsertObjectsNoAffectedErr(measureRegionLists);
+            measureRegionMapper.insertMeasureRegion(measureRegionLists);
         } catch (Exception e) {
             throw new Exception(e);
         }
@@ -123,6 +125,7 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
 
     @Override
     public MeasureRegion update(MeasureRegion mode) {
+        mode.setUpdateAt(new Date());
         measureRegionMapper.updateByPrimaryKeySelective(mode);
         return null;
     }
@@ -173,7 +176,7 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
     public void delete(Integer project_id, List<Integer> region_id_list) {
         MeasureRegion measureRegion = new MeasureRegion();
         measureRegion.setDeleteAt(new Date());
-
+        measureRegion.setUpdateAt(new Date());
         Example example = new Example(MeasureRegion.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("projectId", project_id);

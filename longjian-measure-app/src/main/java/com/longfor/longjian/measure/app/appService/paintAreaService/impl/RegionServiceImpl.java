@@ -114,6 +114,8 @@ public class RegionServiceImpl implements IRegionService {
                 log.info("region_dict : " + JSON.toJSONString(region_dict));
                 log.info("true_index_dict : " + JSON.toJSONString(true_index_dict));
                 MeasureRegion model = JSONObject.toJavaObject((JSON)JSON.toJSON(region_dict),MeasureRegion.class);
+                model.setCreateAt(new Date());
+                model.setUpdateAt(new Date());
                 MeasureRegion region_model = measureRegionService.save(model);
                 model_list.add(region_model);
             });
@@ -125,6 +127,8 @@ public class RegionServiceImpl implements IRegionService {
                 rel_dict.put("project_id",project_id);
                 rel_dict.put("region_ids",region_ids);
                 MeasureRegionRel model = JSONObject.toJavaObject((JSON)JSON.toJSON(rel_dict),MeasureRegionRel.class);
+                model.setCreateAt(new Date());
+                model.setUpdateAt(new Date());
                 MeasureRegionRel rel_model = measureRegionRelService.save(model);
 
                 //关系写回measure_region
@@ -188,6 +192,7 @@ public class RegionServiceImpl implements IRegionService {
             rel_model_list.forEach(rel_model -> {
                 String region_ids = String.join(",", rel_model_dict.get(rel_model.getId()).stream().map(x -> x + "").collect(Collectors.toList()).toArray(new String[rel_model_dict.get(rel_model.getId()).size()]));
                 rel_model.setRegionIds(region_ids);
+                rel_model.setUpdateAt(new Date());
                 measureRegionRelService.update(rel_model);
             });
         }

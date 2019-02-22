@@ -101,6 +101,8 @@ public class MeasureListServiceImpl implements IMeasureListService {
         measureZone.setCategoryPathAndKey(categoryPathAndKey);
         measureZone.setFinishStatus(finishId);
         measureZone.setCloseStatus(closeId);
+        measureZone.setCreateAt(new Date());
+        measureZone.setUpdateAt(new Date());
         measureZoneMapper.insert(measureZone);
     }
 
@@ -126,6 +128,7 @@ public class MeasureListServiceImpl implements IMeasureListService {
 
         MeasureList measureList = new MeasureList();
         measureList.setId(id);
+        measureList.setUpdateAt(new Date());
         measureList.setDeleteAt(new Date());
 
         measureListMapper.updateByExampleSelective(measureList, example);

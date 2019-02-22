@@ -310,6 +310,7 @@ public class IStaffServiceImpl implements IStaffService {
             deleteMap.put("squad_id",squadUpdateReq.getSquad_id());
             deleteMap.put("deleteUserIds",deleteUserIds);
             deleteMap.put("delete_at",new Date());
+            deleteMap.put("update_at",new Date());
             iMeasureSquadUserService.deleteOld(deleteMap);
         }
 
@@ -345,7 +346,7 @@ public class IStaffServiceImpl implements IStaffService {
         measureSquadUser.setListId(squadDeleteReq.getList_id());
         measureSquadUser.setSquadId(squadDeleteReq.getSquad_id());
         measureSquadUser.setDeleteAt(new Date());
-
+        measureSquadUser.setUpdateAt(new Date());
         iMeasureSquadUserService.deleteMeasureSquadUser(measureSquadUser);
 
         MeasureSquad measureSquad=new MeasureSquad();
@@ -392,6 +393,7 @@ public class IStaffServiceImpl implements IStaffService {
            map.put("deleteUserIds",delUserId);
            map.put("delete_at",new Date());
            map.put("project_id",repairerListUpdateReq.getProject_id());
+           map.put("update_at",new Date());
            iMeasureRepairerUserService.delOld(map);//删除旧数据
        }
 

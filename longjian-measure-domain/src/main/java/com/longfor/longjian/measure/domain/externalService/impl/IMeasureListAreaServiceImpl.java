@@ -36,7 +36,7 @@ public class IMeasureListAreaServiceImpl implements IMeasureListAreaService {
         MeasureListArea measureListArea=new MeasureListArea();
         measureListArea.setListId(id);
         measureListArea.setDeleteAt(new Date());
-
+        measureListArea.setUpdateAt(new Date());
         measureListAreaMapper.updateByExampleSelective(measureListArea,example);
     }
 

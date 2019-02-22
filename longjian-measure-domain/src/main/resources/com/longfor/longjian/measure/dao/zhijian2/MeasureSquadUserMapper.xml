@@ -49,7 +49,7 @@
 
     <update id="deleteOld">
 
-        update measure_squad_user set delete_at=#{delete_at} where list_id=#{list_id} and squad_id=#{squad_id}
+        update measure_squad_user set delete_at=#{delete_at},update_at=#{update_at} where list_id=#{list_id} and squad_id=#{squad_id}
 
         and project_id = #{project_id}
 

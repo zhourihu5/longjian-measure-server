@@ -17,6 +17,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -58,12 +59,15 @@ public class KeyProcedureTaskAppServiceImpl implements IKeyProcedureTaskAppServi
                 throw new CommonException("已上报成功，请不要重复上报");
             }
             item.setStatus(ReportStatusEnum.PADDING.getValue());
+            item.setUpdateAt(new Date());
             reportResultService.updateByPrimaryKey(item);
         } else {
             ReportResult reportResult = new ReportResult();
             reportResult.setReportUuid(report_uuid);
             reportResult.setUserId(uid);
             reportResult.setStatus(ReportStatusEnum.PADDING.getValue());
+            reportResult.setCreateAt(new Date());
+            reportResult.setUpdateAt(new Date());
             reportResultService.insertSelective(reportResult);
         }
     }
@@ -72,6 +76,7 @@ public class KeyProcedureTaskAppServiceImpl implements IKeyProcedureTaskAppServi
     public void updateReportStatus(String report_uuid, String reportUuidStatus) {
         ReportResult item = reportResultService.getByReportUuid(report_uuid);
         item.setStatus(Integer.parseInt(reportUuidStatus));
+        item.setUpdateAt(new Date());
         reportResultService.updateByPrimaryKey(item);
     }
 
