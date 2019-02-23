@@ -318,14 +318,26 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
                 //找出复制到其他区域的描点
                 List<MeasureRegion> region_model_list = measureRegionService.searchByIdAndAreaIdAndProjectIdNoDeleted(region_id_list, copy_area_id_list, proj_id);
                 region_model_list.forEach(LambdaExceptionUtil.throwingConsumerWrapper(region_model -> {
+                    MeasureZone measureZone = new MeasureZone();
                     Area area = area_dict.get(region_model.getAreaId());
-                    Map new_dict = zone_dict;
-                    new_dict.put("region_uuid", region_model.getUuid());
-                    new_dict.put("uuid", UUID.randomUUID().toString().replaceAll("-", ""));
-                    new_dict.put("area_id", area == null ? 0 : area.getId());
                     String area_path_and_id = area == null ? "" : area.getPath() + area.getId() + "/";
-                    new_dict.put("area_path_and_id", area_path_and_id);
-                    MeasureZone measureZone = (MeasureZone) ConvertUtil.convertMap(MeasureZone.class, new_dict);
+//                    Map new_dict = zone_dict;
+                    measureZone.setRegionUuid(region_model.getUuid());
+                    measureZone.setUuid(UUID.randomUUID().toString().replaceAll("-", ""));
+                    measureZone.setAreaId(area == null ? 0 : area.getId());
+                    measureZone.setAreaPathAndId(area_path_and_id);
+//                    new_dict.put("region_uuid", region_model.getUuid());
+//                    new_dict.put("uuid", UUID.randomUUID().toString().replaceAll("-", ""));
+//                    new_dict.put("area_id", area == null ? 0 : area.getId());
+
+//                    new_dict.put("area_path_and_id", area_path_and_id);
+                    measureZone.setCategoryKey(zone_dict.get("category_key").toString());
+                    measureZone.setCategoryPathAndKey(zone_dict.get("category_path_and_key").toString());
+                    measureZone.setProjectId(proj_id);
+                    measureZone.setListId(list_model.getId());
+                    measureZone.setSrcType(RegionSrcTypeEnum.BackEnd.getId());
+                    measureZone.setFinishStatus(MeasureFinishStatusEnum.Processing.getId());
+                    measureZone.setCloseStatus(MeasureCloseStatusEnum.Open.getId());
                     measureZone.setCreateAt(new Date());
                     measureZone.setUpdateAt(new Date());
                     insert_zone_list.add(measureZone);
