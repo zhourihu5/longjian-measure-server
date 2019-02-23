@@ -11,7 +11,7 @@ public class MeasureRegionRel {
     /**
      * 关联关系描述
      */
-    @Column(name="desc")
+    @Column(name="`desc`")
     private String desc;
 
     /**
