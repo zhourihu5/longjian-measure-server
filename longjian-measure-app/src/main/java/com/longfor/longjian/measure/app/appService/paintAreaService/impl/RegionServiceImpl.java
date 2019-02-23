@@ -121,7 +121,9 @@ public class RegionServiceImpl implements IRegionService {
             });
             //数量大于一个的时候创立关联关系
             if (model_list.size() > 1){
-                String region_ids = String.join(",",model_list.stream().map(MeasureRegion::getId).collect(Collectors.toList()).toArray(new String[model_list.size()]));
+                String region_ids = String.join(",",model_list.stream().map(measureRegion -> {
+                    return measureRegion.getId() + "";
+                }).collect(Collectors.toList()).toArray(new String[model_list.size()]));
                 Map<String,Object> rel_dict = new HashMap<>();
                 rel_dict.put("desc","");
                 rel_dict.put("project_id",project_id);
