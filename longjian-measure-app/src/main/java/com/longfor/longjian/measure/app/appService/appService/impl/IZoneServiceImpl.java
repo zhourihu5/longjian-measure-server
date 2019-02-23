@@ -24,6 +24,7 @@ import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
 import com.longfor.longjian.measure.po.zhijian2.MeasureZoneResult;
 import com.longfor.longjian.measure.util.ArrayUtil;
 import com.longfor.longjian.measure.util.ConvertUtil;
+import com.longfor.longjian.measure.util.ExampleUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -154,8 +155,8 @@ public class IZoneServiceImpl implements IZoneService {
         criteria.andIn("categoryKey",categoryKeyList);
     }
     Page result = PageHelper.startPage(paginationSearchReq.getPage(), paginationSearchReq.getPage_size());
-
-        measureZoneService.selectByExample(example);
+        ExampleUtil.addDeleteAtJudge(example);
+    measureZoneService.selectByExample(example);
 
     List<MeasureZone>measureZoneList=result.getResult();
 
