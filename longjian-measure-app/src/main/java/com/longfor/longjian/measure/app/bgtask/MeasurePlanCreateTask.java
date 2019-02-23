@@ -28,7 +28,8 @@ public class MeasurePlanCreateTask implements ExportTask{
     @Override
     public void run() {
         while(true) {
-            String queueName="zj_bgtask_create_measure:"+BgtaskEnum.MEASURE_LIST_CREATE.getValue();
+            try {
+                String queueName = "zj_bgtask_create_measure:" + BgtaskEnum.MEASURE_LIST_CREATE.getValue();
                 if (redisUtil.exists(queueName)) {
                     String taskKey = (String) redisUtil.lpop(queueName);
                     Map params = redisUtil.getHashObject(taskKey, Map.class);
@@ -43,6 +44,9 @@ public class MeasurePlanCreateTask implements ExportTask{
                         log.error(Thread.currentThread().getName() + " measure_create error ", e);
                     }
                 }
+            }catch (Exception e){
+                log.error("measure_create error ,thread destory,",e);
+            }
         }
     }
 }
