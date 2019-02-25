@@ -73,11 +73,10 @@ public class CoreAreaServiceImpl implements ICoreAreaService {
         List<Integer> ids = new ArrayList<>();
         for (String idStr : idsStr.split("/")) {
             idStr.trim();
-            if ("".equals(idsStr)) {
-                continue;
+            if (!"".equals(idStr)) {
+                int id = Integer.parseInt(idStr);
+                ids.add(id);
             }
-            int id = Integer.parseInt(idStr);
-            ids.add(id);
         }
         return ids;
     }

@@ -406,8 +406,11 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         List<Integer> ids = new ArrayList<>();
         String[] idsStr = area.getPath().split("/");
         for (String idStr : idsStr) {
-            int id = Integer.parseInt(idStr);
-            ids.add(id);
+            idStr.trim();
+            if(!"".equals(idStr)) {
+                int id = Integer.parseInt(idStr);
+                ids.add(id);
+            }
         }
         ids.add(area.getId());
         return ids;
