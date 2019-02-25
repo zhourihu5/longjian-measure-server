@@ -78,6 +78,7 @@
         where
         project_id = #{projectId}
         and list_id=#{list_id}
+        and id > #{last_id}
         <if test="timestamp != null and timestamp >= 0">
             AND update_at > FROM_UNIXTIME( #{timestamp} )
         </if>
