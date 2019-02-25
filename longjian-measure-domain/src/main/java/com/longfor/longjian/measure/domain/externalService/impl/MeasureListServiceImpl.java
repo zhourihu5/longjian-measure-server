@@ -246,7 +246,8 @@ public class MeasureListServiceImpl implements IMeasureListService {
             List<CategoryV3> categoryV3s = this.searchbykeylist(group_id, key_list);
             Example example5 = new Example(MeasureListArea.class);
             Example.Criteria criteria1 = example5.createCriteria();
-            criteria1.andEqualTo("listId",list_model.getId()).andCondition("area_path_and_id  REGEXP '^/[1-9][0-9]*/$'");
+            //todo 源码上的为'^/[1-9][0-9]*/$' 但是匹配不到三级目录
+            criteria1.andEqualTo("listId",list_model.getId()).andCondition("area_path_and_id  REGEXP '^/[1-9][0-9]*/[1-9][0-9]*/$'");
             List<MeasureListArea> area_list = measureListAreaMapper.selectByExample(example5);
             Set<Integer> area_id_list = Sets.newHashSet();
             List<String> top_areas =Lists.newArrayList();
