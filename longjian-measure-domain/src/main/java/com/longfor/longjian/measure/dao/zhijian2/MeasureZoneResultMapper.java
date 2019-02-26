@@ -103,7 +103,7 @@ public interface MeasureZoneResultMapper extends LFMySQLMapper<MeasureZoneResult
      * @param timestamp
      * @return
      */
-    Integer getCountResultUnscopedByListIdLastIdUpdateAtGt(@Param("projectId") Integer projectId, @Param("listId") Integer listId, @Param("timestamp")Integer timestamp);
+    Integer getCountResultUnscopedByListIdLastIdUpdateAtGt(@Param("projectId") Integer projectId, @Param("listId") Integer listId, @Param("timestamp")String timestamp);
 
     /**
      *

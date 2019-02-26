@@ -67,7 +67,7 @@ public class MeasureZoneResultServiceImpl implements IMeasureZoneResultService {
         return measureZoneResultMapper.searchResultUnscopedByListIdLastIdUpdateAtGt(projectId, listId, lastId, timestamp, limit, start);
     }
     @Override
-    public Integer getCountResultUnscopedByListIdLastIdUpdateAtGt(Integer projectId, Integer list_id, Integer timestamp) {
+    public Integer getCountResultUnscopedByListIdLastIdUpdateAtGt(Integer projectId, Integer list_id, String timestamp) {
         return measureZoneResultMapper.getCountResultUnscopedByListIdLastIdUpdateAtGt(projectId,list_id,timestamp);
     }
 

@@ -20,5 +20,5 @@ public class ApiMeasureZoneResultTotalReqV2 {
      * 上次更新时间
      */
     @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
-    private Integer timestamp;
+    private String timestamp;
 }
