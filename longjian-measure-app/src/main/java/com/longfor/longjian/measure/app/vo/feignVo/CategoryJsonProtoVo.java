@@ -22,7 +22,7 @@ public class CategoryJsonProtoVo {
     private Integer cls ;
     private String father_key ;
     private String order ;
-    private Integer custom_key ;
+    private String custom_key ;
     private String   name ;
     private String desc ;
     private Integer node_status ;

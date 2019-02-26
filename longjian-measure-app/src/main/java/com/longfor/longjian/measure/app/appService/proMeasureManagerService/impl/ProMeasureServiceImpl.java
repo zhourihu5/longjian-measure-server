@@ -321,8 +321,8 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             startTime = DateTool.getBeforeWeekShortDate(new Date());
             endTime = DateTool.getShortDateStringByLong(new Date().getTime());
         } else {
-            startTime = DateTool.getShortDateStringByLong(getBlisterRateInfoTimeNotesReq.getBegin_on());
-            endTime = DateTool.getShortDateStringByLong(getBlisterRateInfoTimeNotesReq.getEnd_on());
+            startTime = DateTool.getShortDateStringByLong(getBlisterRateInfoTimeNotesReq.getBegin_on() * 1000);
+            endTime = DateTool.getShortDateStringByLong(getBlisterRateInfoTimeNotesReq.getEnd_on() * 1000);
         }
         List<Map<String, Object>> blisterTimeNotesList = measureListIssueService.searchMeasureListIssueTrend(getBlisterRateInfoTimeNotesReq.getProject_id(), getBlisterRateInfoTimeNotesReq.getMeasure_list_id(), startTime, endTime, MeasureListConstant.UNCLOSECODE);
         blisterTimeNotesList.forEach(LambdaExceptionUtil.throwingConsumerWrapper(blisterTimeNote -> {

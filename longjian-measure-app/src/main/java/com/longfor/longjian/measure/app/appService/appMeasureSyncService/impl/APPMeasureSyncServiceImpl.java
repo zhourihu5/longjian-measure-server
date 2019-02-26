@@ -396,8 +396,8 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
             } catch (Exception e) {
                 DroppedVo droppedVo = new DroppedVo();
                 droppedVo.setUuid(reportZoneVo.getUuid());
-                droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonConstant.MEASUREREGIONNOTFOUND));
-                droppedVo.setReason(ApiDropDataReasonConstant.MEASUREREGIONNOTFOUND);
+                droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonEnum.MEASUREREGIONNOTFOUND.getValue()));
+                droppedVo.setReason(ApiDropDataReasonEnum.MEASUREREGIONNOTFOUND.getName());
                 droppedVos.add(droppedVo);
             }
             CategoryV3 category = null;
@@ -407,8 +407,8 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
                 log.error("error:" + e);
                 DroppedVo droppedVo = new DroppedVo();
                 droppedVo.setUuid(reportZoneVo.getUuid());
-                droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonConstant.CATEGORYNOTFOUND));
-                droppedVo.setReason(ApiDropDataReasonConstant.CATEGORYNOTFOUND);
+                droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonEnum.CATEGORYNOTFOUND.getValue()));
+                droppedVo.setReason(ApiDropDataReasonEnum.CATEGORYNOTFOUND.getName());
                 droppedVos.add(droppedVo);
             }
             try {
@@ -418,14 +418,14 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
                     if (measureZone == null) {
                         DroppedVo droppedVo = new DroppedVo();
                         droppedVo.setUuid(reportZoneVo.getUuid());
-                        droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonConstant.MEASUREZONEUUIDEXISTS));
-                        droppedVo.setReason(ApiDropDataReasonConstant.MEASUREZONEUUIDEXISTS);
+                        droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonEnum.MEASUREZONEUUIDEXISTS.getValue()));
+                        droppedVo.setReason(ApiDropDataReasonEnum.MEASUREZONEUUIDEXISTS.getName());
                         droppedVos.add(droppedVo);
                     }
                     DroppedVo droppedVo = new DroppedVo();
                     droppedVo.setUuid(reportZoneVo.getUuid());
-                    droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonConstant.MEASUREZONEEXISTS));
-                    droppedVo.setReason(ApiDropDataReasonConstant.MEASUREZONEEXISTS);
+                    droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonEnum.MEASUREZONEEXISTS.getValue()));
+                    droppedVo.setReason(ApiDropDataReasonEnum.MEASUREZONEEXISTS.getName());
                     droppedVos.add(droppedVo);
                 }
             } catch (Exception e) {
@@ -437,12 +437,12 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
                 log.error("create zone fail, error:" + e);
                 DroppedVo droppedVo = new DroppedVo();
                 droppedVo.setUuid(reportZoneVo.getUuid());
-                String measureregionnotfound = ApiDropDataReasonConstant.MEASUREREGIONNOTFOUND;
-                JSONObject jsonObject = JSON.parseObject(measureregionnotfound);
-                int value = jsonObject.getIntValue("value");
-                String name = jsonObject.getString("name");
-                droppedVo.setReason_type(value);
-                droppedVo.setReason(name);
+                //String measureregionnotfound = ApiDropDataReasonConstant.MEASUREREGIONNOTFOUND;
+                //JSONObject jsonObject = JSON.parseObject(measureregionnotfound);
+                //int value = jsonObject.getIntValue("value");
+                //String name = jsonObject.getString("name");
+                droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonEnum.MEASUREREGIONNOTFOUND.getValue()));
+                droppedVo.setReason(ApiDropDataReasonEnum.MEASUREREGIONNOTFOUND.getName());
                 droppedVos.add(droppedVo);
             }
         });
