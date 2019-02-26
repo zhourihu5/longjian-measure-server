@@ -196,7 +196,7 @@
     WHERE
     list_id = #{listId}
     <if test="categoryKey != null and categoryKey != ''">
-      AND category_key like concat('%',#{categoryKey},'%')
+      AND category_path_and_key like concat('%',#{categoryKey},'%')
     </if>
     AND delete_at IS NULL
   </select>
