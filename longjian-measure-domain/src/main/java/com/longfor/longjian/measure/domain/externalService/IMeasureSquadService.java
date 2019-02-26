@@ -44,4 +44,11 @@ public interface IMeasureSquadService {
     List<MeasureSquad> SearchSquadByProjIdListId(Integer projId , Integer listId);
 
     MeasureSquad createReturnSuqad(MeasureSquad measureSquad);
+
+    /**
+     *
+     * @param example
+     * @return
+     */
+    Integer selectByCount(Example example);
 }

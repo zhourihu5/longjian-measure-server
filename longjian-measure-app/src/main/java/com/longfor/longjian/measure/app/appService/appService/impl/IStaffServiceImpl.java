@@ -69,6 +69,7 @@ public class IStaffServiceImpl implements IStaffService {
         Example.Criteria criteria = example.createCriteria().
                 andEqualTo("listId", squadSearchReq.getList_id());
         ExampleUtil.addDeleteAtJudge(example);
+        Integer count = 0;
         if(squadSearchReq.getPage()!=null&&squadSearchReq.getPage_size()!=null) {
             Page result = PageHelper.startPage(squadSearchReq.getPage(), squadSearchReq.getPage_size());
             iMeasureSquadService.selectByExample(example);
@@ -76,6 +77,7 @@ public class IStaffServiceImpl implements IStaffService {
         }else if(squadSearchReq.getPage()==null&&squadSearchReq.getPage_size()==null) {
 
             measureSquadList = iMeasureSquadService.selectByExample(example);
+            //count = iMeasureSquadService.selectByCount(example);
         }else{
             throw new CommonException("参数错误");
         }
@@ -126,7 +128,7 @@ public class IStaffServiceImpl implements IStaffService {
         }
 
         totalObject.put("squad_info",jsonArray);
-        totalObject.put("total",measureSquadList.size());
+        totalObject.put("total",measureSquadUserList.size());
 
         return totalObject;
     }
