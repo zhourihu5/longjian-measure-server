@@ -59,6 +59,10 @@ public class ZoneInfoVo {
      */
     private Integer close_status;
     /**
+     * 创建时间
+     */
+    private Integer create_at;
+    /**
      * 更新时间
      */
     private Integer update_at;
