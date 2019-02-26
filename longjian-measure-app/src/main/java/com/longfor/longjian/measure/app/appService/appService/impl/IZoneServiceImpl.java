@@ -155,8 +155,10 @@ public class IZoneServiceImpl implements IZoneService {
         criteria.andIn("categoryKey",categoryKeyList);
     }
     Page result = PageHelper.startPage(paginationSearchReq.getPage(), paginationSearchReq.getPage_size());
-        ExampleUtil.addDeleteAtJudge(example);
+    ExampleUtil.addDeleteAtJudge(example);
     measureZoneService.selectByExample(example);
+    int count = measureZoneService.selectCountByExample(example);
+
 
     List<MeasureZone>measureZoneList=result.getResult();
 
@@ -263,7 +265,7 @@ public class IZoneServiceImpl implements IZoneService {
             jsonArray.add(innerJb);
         }
         jb.put("zone_info_list",jsonArray);
-        jb.put("total",measureZoneList.size());
+        jb.put("total",count);
     }
         return jb;
     }

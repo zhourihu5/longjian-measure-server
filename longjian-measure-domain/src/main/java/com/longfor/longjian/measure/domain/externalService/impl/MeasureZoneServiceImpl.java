@@ -141,4 +141,9 @@ public class MeasureZoneServiceImpl implements IMeasureZoneService {
         }
         measureZoneMapper.insertList(insert_zone_list);
     }
+
+    @Override
+    public int selectCountByExample(Example example) {
+        return measureZoneMapper.selectCountByExample(example);
+    }
 }
