@@ -7,12 +7,15 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.common.exception.CommonException;
+import com.longfor.longjian.common.util.DateUtil;
 import com.longfor.longjian.measure.app.appService.appService.IZoneService;
 import com.longfor.longjian.measure.app.feignClient.ICoreAreaFeignService;
 import com.longfor.longjian.measure.app.feignClient.ICoreCategoryItemFeignService;
 import com.longfor.longjian.measure.app.req.feignReq.CategoriesInfoReq;
 import com.longfor.longjian.measure.app.req.feignReq.SearchByIdListReq;
 import com.longfor.longjian.measure.app.req.zone.*;
+import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.MeasureZoneVo;
+import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.ZoneInfoVo;
 import com.longfor.longjian.measure.app.vo.feignVo.AreaRetrieveVo;
 import com.longfor.longjian.measure.app.vo.feignVo.CategoryJsonProtoItemVo;
 import com.longfor.longjian.measure.app.vo.feignVo.CategoryJsonProtoVo;
@@ -26,6 +29,7 @@ import com.longfor.longjian.measure.util.ArrayUtil;
 import com.longfor.longjian.measure.util.ConvertUtil;
 import com.longfor.longjian.measure.util.ExampleUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -223,7 +227,6 @@ public class IZoneServiceImpl implements IZoneService {
         }
 
         for(MeasureZone measureZone:measureZoneList){
-
             Example zoneExample = new Example(MeasureRegion.class);
             Example.Criteria zoneCriteria = zoneExample.createCriteria();
             zoneCriteria.andEqualTo("projectId",paginationSearchReq.getProject_id());
@@ -260,7 +263,8 @@ public class IZoneServiceImpl implements IZoneService {
             innerJb.put("area_full_name",areaDict.get(measureRegion.getAreaId()).getFull_name());
             innerJb.put("category_full_name",categoryFullName);
             innerJb.put("region",regionDict);
-            innerJb.put("zone",measureZone);
+            ZoneInfoVo zoneInfoVo = conversionType(measureZone);
+            innerJb.put("zone",zoneInfoVo);
 
             jsonArray.add(innerJb);
         }
@@ -268,6 +272,26 @@ public class IZoneServiceImpl implements IZoneService {
         jb.put("total",count);
     }
         return jb;
+    }
+
+    private ZoneInfoVo conversionType(MeasureZone measureZone) {
+        ZoneInfoVo zoneInfoVo = new ZoneInfoVo();
+        zoneInfoVo.setId(measureZone.getId());
+        zoneInfoVo.setProject_id(measureZone.getProjectId());
+        zoneInfoVo.setArea_id(measureZone.getAreaId());
+        zoneInfoVo.setArea_path_and_id(measureZone.getAreaPathAndId());
+        zoneInfoVo.setUuid(measureZone.getUuid());
+        zoneInfoVo.setCategory_key(measureZone.getCategoryKey());
+        zoneInfoVo.setCategory_path_and_key(measureZone.getCategoryPathAndKey());
+        zoneInfoVo.setClose_status(measureZone.getCloseStatus());
+        zoneInfoVo.setFinish_status(measureZone.getFinishStatus());
+        zoneInfoVo.setList_id(measureZone.getListId());
+        zoneInfoVo.setRegion_uuid(measureZone.getRegionUuid());
+        zoneInfoVo.setSrc_type(measureZone.getSrcType());
+        zoneInfoVo.setUpdate_at(DateUtil.dateToTimestamp(measureZone.getUpdateAt()));
+        zoneInfoVo.setCreate_at(DateUtil.dateToTimestamp(measureZone.getCreateAt()));
+        zoneInfoVo.setDelete_at(DateUtil.dateToTimestamp(measureZone.getDeleteAt()));
+        return  zoneInfoVo;
     }
 
     @Override
