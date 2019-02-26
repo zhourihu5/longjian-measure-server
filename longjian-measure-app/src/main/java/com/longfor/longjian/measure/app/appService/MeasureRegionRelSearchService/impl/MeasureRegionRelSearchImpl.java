@@ -73,7 +73,7 @@ public class MeasureRegionRelSearchImpl implements IMeasureRegionRelSearchServic
         areaRetrieveVoList.forEach(areaRetrieveVo -> {
             areaMap.put(areaRetrieveVo.getId(),areaRetrieveVo);
         });
-        areaRetrieveVoList.forEach(areaRetrieveVo -> {
+        /*areaRetrieveVoList.forEach(areaRetrieveVo -> {
             String[] areaPathIds = StringUtils.split(areaRetrieveVo.getPath(), "/");
             List<String> joinList =Lists.newArrayList();
             for (String areaPathId : areaPathIds) {
@@ -85,7 +85,7 @@ public class MeasureRegionRelSearchImpl implements IMeasureRegionRelSearchServic
                 }
             }
             areaRetrieveVo.setFull_name(StringUtils.join(joinList,"/"));
-        });
+        });*/
         for (MeasureRegion measureRegion : measureRegionList) {
             if (!areaMap.containsKey(measureRegion.getAreaId())) {
                 continue;

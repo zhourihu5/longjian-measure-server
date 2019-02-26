@@ -660,7 +660,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             String[] subKeys = getSubKeyByKeyPathAndKey(measureZoneResult.getCategoryPathAndKey(), getCompareItemBetweenSquadsReq.getCategory_key());
             String subKey = subKeys[0];
             //是否是叶子节点
-            boolean isLeaf = subKey.length() == 1;
+            boolean isLeaf = subKeys.length == 1;
             CategoryV3 categoryV3 = categoryV3Service.getCategoryByKey(subKey);
             if (categoryV3 == null) {
                 return;
