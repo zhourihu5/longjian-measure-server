@@ -24,6 +24,6 @@ public class ApiMeasureReportZoneReq {
      * 要上传的数据
      */
     @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
-    private String Data;
+    private String data;
 
 }

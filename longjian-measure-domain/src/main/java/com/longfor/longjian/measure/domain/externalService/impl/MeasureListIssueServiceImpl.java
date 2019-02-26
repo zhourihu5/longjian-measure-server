@@ -185,8 +185,8 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
         }
         if (createAtRangeList.size() == 2 && Integer.parseInt(createAtRangeList.get(1)) > 0) {
 //            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String t1 = DateUtil.getLongDateStringByLong(Long.parseLong(createAtRangeList.get(0)));
-            String t2 = DateUtil.getLongDateStringByLong(Long.parseLong(createAtRangeList.get(1)));
+            String t1 = DateUtil.getLongDateStringByLong(Long.parseLong(createAtRangeList.get(0)) * 1000);
+            String t2 = DateUtil.getLongDateStringByLong(Long.parseLong(createAtRangeList.get(1)) * 1000);
             criteria.andBetween("createAt", t1, t2);
         }
         if (!areaIdList.isEmpty() && areaIdList.size() > 0) {

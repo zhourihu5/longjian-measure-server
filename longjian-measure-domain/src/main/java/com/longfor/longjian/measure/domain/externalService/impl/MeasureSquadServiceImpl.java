@@ -74,4 +74,9 @@ public class MeasureSquadServiceImpl implements IMeasureSquadService {
         measureSquadMapper.insertSelective(measureSquad);
         return measureSquad;
     }
+
+    @Override
+    public Integer selectByCount(Example example) {
+        return measureSquadMapper.selectCountByExample(example);
+    }
 }
