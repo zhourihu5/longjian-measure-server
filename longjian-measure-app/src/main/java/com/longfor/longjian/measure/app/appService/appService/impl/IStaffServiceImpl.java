@@ -77,10 +77,10 @@ public class IStaffServiceImpl implements IStaffService {
         }else if(squadSearchReq.getPage()==null&&squadSearchReq.getPage_size()==null) {
 
             measureSquadList = iMeasureSquadService.selectByExample(example);
-            //count = iMeasureSquadService.selectByCount(example);
         }else{
             throw new CommonException("参数错误");
         }
+        count = iMeasureSquadService.selectByCount(example);
 
         List<MeasureSquadUser> measureSquadUserList=new ArrayList<>();
 
@@ -128,7 +128,7 @@ public class IStaffServiceImpl implements IStaffService {
         }
 
         totalObject.put("squad_info",jsonArray);
-        totalObject.put("total",measureSquadUserList.size());
+        totalObject.put("total",count);
 
         return totalObject;
     }
