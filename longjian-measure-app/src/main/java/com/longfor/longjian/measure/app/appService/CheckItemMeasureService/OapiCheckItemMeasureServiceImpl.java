@@ -36,6 +36,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
@@ -192,9 +193,9 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
             mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
         }
         if (StringUtils.isNotBlank(name)) {
-            response.addHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", name));
-            response.addHeader("Content-Type", "application/zip");
+            response.addHeader("Content-Disposition", String.format("attachment; filename=\"%s\"",  new String(name.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1)));
         }
+        response.addHeader("Content-Type", mimeType);
         StoreUrlVo storeUrlVo = FileUtil.fileResourceGetStoreUrl(fileResource.getStoreKey());
         Map<String, Object> map = Maps.newHashMap();
         map.put("schema", storeUrlVo.getSchema());
@@ -209,6 +210,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
             int i = 0;
             while ((i = bis.read(buff)) != -1) {
                 os.write(buff, 0, i);
+
                 os.flush();
             }
         } catch (IOException e) {
