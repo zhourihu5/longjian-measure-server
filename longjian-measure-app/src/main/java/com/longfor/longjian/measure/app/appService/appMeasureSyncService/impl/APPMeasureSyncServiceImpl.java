@@ -308,6 +308,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
             measureRegionStructReq.setUuid(reportRegionDataVo.getUuid());
             measureRegionStructReq.setProject_id(reportRegionDataVo.getProject_id());
             measureRegionStructReq.setArea_id(reportRegionDataVo.getArea_id());
+            measureRegionStructReq.setDrawing_md5(reportRegionDataVo.getDrawing_md5());
             measureRegionStructReq.setSrc_type(MeasureRegionSrcType.App.getId());
             measureRegionStructReq.setPolygon_x(polygons.get(0));
             measureRegionStructReq.setPolygon_y(polygons.get(1));
@@ -321,13 +322,20 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         });
         //k-areaId value-Region
         Map<Integer, List<MeasureRegionStructReq>> measureRegionStructReqMap = new HashMap<>();
-        measureRegionStructReqs.forEach(measureRegionStructReq -> {
+        List<MeasureRegionStructReq> measureRegionStructReqs2 = null;
+        for (MeasureRegionStructReq measureRegionStructReq : measureRegionStructReqs) {
+            if (measureRegionStructReqMap.get(measureRegionStructReq.getArea_id()) == null) {
+                measureRegionStructReqs2 = new ArrayList<>();
+                measureRegionStructReqMap.put(measureRegionStructReq.getArea_id(), measureRegionStructReqs2);
+            }
             measureRegionStructReqMap.get(measureRegionStructReq.getArea_id()).add(measureRegionStructReq);
-        });
+        }
+        ;
         Set<Map.Entry<Integer, List<MeasureRegionStructReq>>> entrySet = measureRegionStructReqMap.entrySet();
         List<MeasureRegionStructReq> measureRegionStructReqList = new ArrayList<>();
-        entrySet.forEach(areaId -> {
-            Area area = areaMap.get(areaId);
+        for (Map.Entry<Integer, List<MeasureRegionStructReq>> areaId : entrySet) {
+
+            Area area = areaMap.get(areaId.getKey());
             if (area == null) {
                 log.error("not fount area.");
                 List<MeasureRegionStructReq> measureRegionStructReqList1 = areaId.getValue();
@@ -338,26 +346,31 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
                     droppedVo.setReason("未找到相关的区域id。");
                     droppedVos.add(droppedVo);
                 });
+            }else{
+                List<MeasureRegionStructReq> measureRegionStructReqs1 = measureRegionStructReqMap.get(areaId.getKey());
+                if (measureRegionStructReqs1 != null) {
+                    measureRegionStructReqs1.forEach(measureRegionStructReq -> {
+                        measureRegionStructReq.setArea_path_and_id(area.getPath() + areaId.getKey() + "/");
+                    });
+                }
+                List<MeasureRegion> measureRegions = converMeasureRegionStructReqToMeasureRegion(measureRegionStructReqs1);
+                try {
+                    List<MeasureRegion> measureRegionList = measureRegionService.createRegionsFromRegionStructList(area.getProjectId(), measureRegions);
+                } catch (Exception e) {
+                    log.error("error:" + e);
+                    measureRegionStructReqList.addAll(measureRegionStructReqMap.get(areaId.getKey()));
+                }
             }
-            List<MeasureRegionStructReq> measureRegionStructReqs1 = measureRegionStructReqMap.get(areaId);
-            measureRegionStructReqs1.forEach(measureRegionStructReq -> {
-                measureRegionStructReq.setArea_path_and_id(area.getPath() + areaId + "/");
+        }
+        if (measureRegionStructReqList != null) {
+            measureRegionStructReqList.forEach(measureRegionStructReq -> {
+                DroppedVo droppedVo = new DroppedVo();
+                droppedVo.setUuid(measureRegionStructReq.getUuid());
+                droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonEnum.OTHER.getValue()));
+                droppedVo.setReason("添加失败。");
+                droppedVos.add(droppedVo);
             });
-            List<MeasureRegion> measureRegions = converMeasureRegionStructReqToMeasureRegion(measureRegionStructReqList);
-            try {
-                List<MeasureRegion> measureRegionList = measureRegionService.createRegionsFromRegionStructList(area.getProjectId(), measureRegions);
-            } catch (Exception e) {
-                log.error("error:" + e);
-                measureRegionStructReqList.addAll(measureRegionStructReqMap.get(areaId));
-            }
-        });
-        measureRegionStructReqList.forEach(measureRegionStructReq -> {
-            DroppedVo droppedVo = new DroppedVo();
-            droppedVo.setUuid(measureRegionStructReq.getUuid());
-            droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonEnum.OTHER.getValue()));
-            droppedVo.setReason("添加失败。");
-            droppedVos.add(droppedVo);
-        });
+        }
         droppedInfoVo.setDropped(droppedVos);
         ljBaseResponse.setData(droppedInfoVo);
         return ljBaseResponse;

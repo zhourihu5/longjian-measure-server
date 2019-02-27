@@ -1,6 +1,7 @@
 package com.longfor.longjian.measure.domain.externalService.impl;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.longfor.longjian.measure.dao.zhijian2.MeasureRegionMapper;
 import com.longfor.longjian.measure.domain.externalService.IMeasureRegionService;
@@ -58,30 +59,39 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
             areaIds.add(measureRegion.getAreaId());
         });
         List<MeasureRegion> measureRegionLists = new ArrayList<>();
-        try {
-            Map<Integer, Integer> indexMap = measureRegionMapper.searchMeasureRegionAreaMaxIndexByAreaIdList(projectId, areaIds);
-            measureRegions.forEach(measureRegion -> {
-                if (indexMap.get(measureRegion.getAreaId()) == null) {
-                    Integer maxIndex = indexMap.get(measureRegion.getAreaId());
-                    maxIndex = 0;
-                }
-            });
-            measureRegions.forEach(measureRegion -> {
-                MeasureRegion newMeasureRegion = new MeasureRegion();
-                newMeasureRegion.setUuid(measureRegion.getUuid());
-                newMeasureRegion.setRegionIndex(indexMap.get(measureRegion.getAreaId()));
-                newMeasureRegion.setAreaId(measureRegion.getAreaId());
-                newMeasureRegion.setSrcType(measureRegion.getSrcType());
-                newMeasureRegion.setAreaPathAndId(measureRegion.getAreaPathAndId());
-                newMeasureRegion.setDrawingMd5(measureRegion.getDrawingMd5());
-                newMeasureRegion.setPolygon(measureRegion.getPolygon());
-                newMeasureRegion.setCreateAt(new Date());
-                newMeasureRegion.setUpdateAt(new Date());
-                measureRegionLists.add(newMeasureRegion);
-            });
-            measureRegionMapper.insertMeasureRegion(measureRegionLists);
-        } catch (Exception e) {
-            throw new Exception(e);
+        if(areaIds.size()>0){
+            try {
+                Map<String, Integer> indexMap = measureRegionMapper.searchMeasureRegionAreaMaxIndexByAreaIdList(projectId, areaIds);
+                Integer area_id = indexMap.get("area_id");
+                Integer max_index = indexMap.get("max_index");
+                Map<Integer, Integer> indexMap2 = Maps.newHashMap();
+                indexMap2.put(area_id,max_index);
+                measureRegions.forEach(measureRegion -> {
+                    if (indexMap2.get(measureRegion.getAreaId()) == null) {
+                        Integer maxIndex = indexMap2.get(measureRegion.getAreaId());
+                        maxIndex = 0;
+                    }
+                });
+                measureRegions.forEach(measureRegion -> {
+                    MeasureRegion newMeasureRegion = new MeasureRegion();
+                    newMeasureRegion.setUuid(measureRegion.getUuid());
+                    newMeasureRegion.setRegionIndex(indexMap2.get(measureRegion.getAreaId()));
+                    newMeasureRegion.setProjectId(measureRegion.getProjectId());
+                    newMeasureRegion.setAreaId(measureRegion.getAreaId());
+                    newMeasureRegion.setRelId(measureRegion.getRelId() == null ? 0 :measureRegion.getRelId());
+                    newMeasureRegion.setSrcType(measureRegion.getSrcType());
+                    newMeasureRegion.setTagIdList(measureRegion.getTagIdList() == null ? "": measureRegion.getTagIdList());
+                    newMeasureRegion.setAreaPathAndId(measureRegion.getAreaPathAndId());
+                    newMeasureRegion.setDrawingMd5(measureRegion.getDrawingMd5());
+                    newMeasureRegion.setPolygon(measureRegion.getPolygon());
+                    newMeasureRegion.setCreateAt(new Date());
+                    newMeasureRegion.setUpdateAt(new Date());
+                    measureRegionLists.add(newMeasureRegion);
+                });
+                measureRegionMapper.insertList(measureRegionLists);
+            } catch (Exception e) {
+                throw new Exception(e);
+            }
         }
         return measureRegionLists;
     }

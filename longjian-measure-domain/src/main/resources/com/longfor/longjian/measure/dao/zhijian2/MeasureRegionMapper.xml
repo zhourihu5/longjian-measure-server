@@ -121,14 +121,12 @@ WHERE
   </select>
   <!--List<MeasureRegion> searchMeasureRegionAreaMaxIndexByAreaIdList(@Param("projectId")Integer projectId, @Param("areaIds")Set<Integer> areaIds);-->
   <select id="searchMeasureRegionAreaMaxIndexByAreaIdList" resultType="map">
-    select max(region_index) AS max_index
-    from  measure_region where region_index
-    in
+    select area_id,max(region_index) AS max_index
+    from  measure_region where area_id in
         <foreach collection="areaIds" index="index" item="item" open="(" separator="," close=")">
            #{item}
         </foreach>
-    and delete_at is null
-    group by area_id
+    and delete_at is NULL GROUP BY area_id
 
   </select>
   <insert id="insertMeasureRegion" parameterType="java.util.List">
