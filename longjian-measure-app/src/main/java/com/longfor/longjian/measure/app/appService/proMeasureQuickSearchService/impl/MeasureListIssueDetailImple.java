@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.common.entity.ProjectBase;
@@ -176,7 +177,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
                 regionvo.setProject_id(region.getProjectId());
                 regionvo.setArea_id(region.getAreaId());
                 regionvo.setDrawing_md5(region.getDrawingMd5());
-                regionvo.setPolygon(region.getPolygon());
+                regionvo.setPolygon(JSON.parse(region.getPolygon()));
                 regionvo.setRegion_index(region.getRegionIndex());
                 regionvo.setRel_id(region.getRelId());
                 regionvo.setSrc_type(region.getSrcType());
