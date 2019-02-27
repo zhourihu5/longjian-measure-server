@@ -97,7 +97,7 @@ public interface IMeasureZoneResultService {
      * @param timestamp
      * @return
      */
-    Integer getCountResultUnscopedByListIdLastIdUpdateAtGt(Integer projectId, Integer list_id, Integer timestamp);
+    Integer getCountResultUnscopedByListIdLastIdUpdateAtGt(Integer projectId, Integer list_id, String timestamp);
 
     /**
      *
