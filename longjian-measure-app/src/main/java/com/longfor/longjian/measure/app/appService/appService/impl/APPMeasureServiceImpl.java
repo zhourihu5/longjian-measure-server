@@ -91,6 +91,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         log.debug(apiMeasureReportIssueReq.getData());
         datas = JSONArray.parseArray(apiMeasureReportIssueReq.getData(), MeasureListIssueStruct.class);
 //        MeasureListIssueHelper helper = new MeasureListIssueHelper();
+        helper.init(apiMeasureReportIssueReq.getProject_id());
         for (MeasureListIssueStruct v : datas
         ) {
             helper.start().
@@ -98,7 +99,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                             v.getTyp(), v.getStatus(), v.getAttachment_md5_list(), v.getCategory_key(), Long.parseLong(v.getClient_create_at().toString())).
                     setDatailField(v.getZone_uuid(), Long.parseLong(v.getPlan_end_on().toString()), Long.parseLong(v.getEnd_on().toString()), v.getRepairer_id(),
                             v.getCondition(), v.getArea_id(), v.getDrawing_md5(), v.getPos_x(), v.getPos_y(),
-                            v.getClose_status(), v.getClose_user(), Long.parseLong(v.getClose_time().toString()), v.getCheck_status())
+                            v.getClose_status(), v.getClose_user(),v.getClose_time() == null ? 0 : Long.parseLong(v.getClose_time().toString()), v.getCheck_status())
                     .done();
         }
         try {

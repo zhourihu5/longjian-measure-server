@@ -279,10 +279,10 @@ public class MeasureListIssueHelper {
             if (detail.getCloseStatus() != -1) {
                 issue.setCloseStatus(detail.getCloseStatus());
             }
-            if (detail.getCloseUser() != -1) {
+            if (detail.getCloseUser() != null && detail.getCloseUser() != -1) {
                 issue.setCloseUser(detail.getCloseUser());
             }
-            if (detail.getCloseTime() != -1) {
+            if (detail.getCloseTime() != null && detail.getCloseTime() > 0) {
 //                issue.setCloseTime(Integer.parseInt(detail.getCloseTime() / 1000 + ""));
                 issue.setCloseTime(Integer.parseInt(detail.getCloseTime() + ""));
             }
@@ -348,7 +348,7 @@ public class MeasureListIssueHelper {
         boolean changed = false;
 
         //问题类型
-        if (this.currentLog.getTyp() == null ||this.currentLog.getTyp() != -1) {
+        if (this.currentLog.getTyp() == null || this.currentLog.getTyp() != -1) {
             changed = true;
             issue.setTyp(this.currentLog.getTyp());
         }
@@ -591,7 +591,7 @@ public class MeasureListIssueHelper {
             }
             //issue log
             int affected;
-            if(!needInsertIssueLog.isEmpty()){
+            if (!needInsertIssueLog.isEmpty()) {
                 affected = measureListIssueLogService.insertObjects(this.needInsertIssueLog);
                 if (this.needInsertIssueLog.size() != affected) {
                     String msg = "insert affected not match, len[" + this.needInsertIssueLog.size() + "] affected[" + affected + "]";
@@ -661,7 +661,7 @@ public class MeasureListIssueHelper {
      * @return
      */
     public MeasureListIssueHelper initSquadId(Set<Integer> listIds) {
-        if (listIds.size() <= 0){
+        if (listIds.size() <= 0) {
             return this;
         }
         this.listIdAndUserIdToSquadIdMap = new HashMap<>();
@@ -672,7 +672,7 @@ public class MeasureListIssueHelper {
                 this.listIdAndUserIdToSquadIdMap.put(key, measureSquadUser.getSquadId());
             });
         } catch (Exception e) {
-            log.warn("helper init squadId error: " +  e.getMessage());
+            log.warn("helper init squadId error: " + e.getMessage());
             return this;
         }
         return this;
@@ -776,7 +776,7 @@ public class MeasureListIssueHelper {
      * @return
      */
     public MeasureListIssueHelper initArea(List<Integer> areaIds) {
-        if (areaIds.size() <= 0){
+        if (areaIds.size() <= 0) {
             return this;
         }
         this.areaMap = new HashMap<>();
@@ -800,7 +800,7 @@ public class MeasureListIssueHelper {
      * @return
      */
     public MeasureListIssueHelper initCategory(List<String> categoryKeys) {
-        if (categoryKeys.size() <= 0){
+        if (categoryKeys.size() <= 0) {
             return this;
         }
         this.categoryMap = new HashMap<>();
@@ -810,7 +810,7 @@ public class MeasureListIssueHelper {
                 this.categoryMap.put(categoryV3.getKey(), categoryV3);
             });
         } catch (Exception e) {
-            log.warn("helper init category error: " +  e.getMessage());
+            log.warn("helper init category error: " + e.getMessage());
             return this;
         }
         return this;
@@ -823,7 +823,7 @@ public class MeasureListIssueHelper {
      * @return
      */
     public MeasureListIssueHelper initZone(List<String> zoneUuids) {
-        if (zoneUuids.size() <= 0){
+        if (zoneUuids.size() <= 0) {
             return this;
         }
         this.zoneMap = new HashMap<>();
@@ -833,7 +833,7 @@ public class MeasureListIssueHelper {
                 this.zoneMap.put(zone.getUuid(), zone);
             });
         } catch (Exception e) {
-            log.warn("helper init Zone error: " +  e.getMessage());
+            log.warn("helper init Zone error: " + e.getMessage());
             return this;
         }
         return this;
