@@ -32,6 +32,13 @@ public class MeasurePlanCreateTask implements ExportTask{
                 String queueName = "zj_bgtask_create_measure:" + BgtaskEnum.MEASURE_LIST_CREATE.getValue();
                 if (redisUtil.exists(queueName)) {
                     String taskKey = (String) redisUtil.lpop(queueName);
+                    while (!redisUtil.exists(taskKey)){
+                        try {
+                            Thread.sleep(500l);
+                        } catch (InterruptedException e) {
+                            log.error(Thread.currentThread().getName() + " measure_create sleep error ", e);
+                        }
+                    }
                     Map params = redisUtil.getHashObject(taskKey, Map.class);
 //                    log.info("params: " + JSON.toJSONString(params));
                     userTaskNotice.updateTaskResultStatus(Integer.parseInt(params.get("userId").toString()), params.get("id").toString(), BgtaskStatusEnum.PROCESSING);
