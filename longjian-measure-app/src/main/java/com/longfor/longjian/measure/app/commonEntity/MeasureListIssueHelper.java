@@ -256,10 +256,14 @@ public class MeasureListIssueHelper {
             if (detail.getPlanEndOn() != -1) {
 //                issue.setPlanEndOn(Integer.parseInt(detail.getPlanEndOn() / 1000 + ""));
                 issue.setPlanEndOn(Integer.parseInt(detail.getPlanEndOn() + ""));
+            }else{
+                issue.setPlanEndOn(0);
             }
             if (detail.getEndOn() != -1) {
 //                issue.setEndOn(Integer.parseInt(detail.getEndOn() / 1000 + ""));
                 issue.setEndOn(Integer.parseInt(detail.getEndOn() + ""));
+            }else{
+                issue.setEndOn(0);
             }
             issue.setDrawingMd5(detail.getDrawingMd5());
             issue.setPosX(detail.getPosX());
@@ -267,6 +271,8 @@ public class MeasureListIssueHelper {
             issue.setDesc(this.currentLog.getDesc());
             if (detail.getCondition() != -1) {
                 issue.setCondition(detail.getCondition());
+            }else{
+                issue.setCondition(0);
             }
             issue.setAttachmentMd5List(this.currentLog.getAttachmentMd5List());
             issue.setLastAssigner(0);
