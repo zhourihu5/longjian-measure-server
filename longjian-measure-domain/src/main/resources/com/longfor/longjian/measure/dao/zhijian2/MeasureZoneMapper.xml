@@ -123,9 +123,10 @@
         and
         list_id = #{list_id}
         and
-        uuid= #{uuid}
+        region_uuid= #{uuid}
         and
         category_key = #{category_key}
+        and  delete_at is NULL
     </select>
     <!--MeasureZone getZoneByUuid(@Param("project_id")Integer project_id, @Param("list_id")String uuid);-->
     <select id="getZoneByUuid"  resultMap="BaseResultMap">

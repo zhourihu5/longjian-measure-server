@@ -98,7 +98,9 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
 
     @Override
     public MeasureRegion searchByUuid(Integer project_id, String uuid) {
-        return measureRegionMapper.getByConditionNoFoundErr(project_id, uuid);
+        Example example = new Example(MeasureRegion.class);
+        example.createCriteria().andEqualTo("projectId", project_id).andEqualTo("uuid", uuid);
+        return measureRegionMapper.selectOneByExample(example);
     }
 
     @Override

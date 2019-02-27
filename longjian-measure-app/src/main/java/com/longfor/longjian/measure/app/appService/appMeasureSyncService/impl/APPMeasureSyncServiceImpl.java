@@ -402,7 +402,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         reportZoneVoJsonList.forEach(reportZoneVo -> {
             MeasureRegion measureRegion = null;
             try {
-                measureRegion = measureRegionService.searchByUuid(reportZoneVo.getProject_id(), reportZoneVo.getUuid());
+                measureRegion = measureRegionService.searchByUuid(reportZoneVo.getProject_id(), reportZoneVo.getRegion_uuid());
                 if (measureRegion == null) {
                     log.error("not found region by uuid.");
                 }
@@ -425,10 +425,10 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
                 droppedVos.add(droppedVo);
             }
             try {
-                List<MeasureZone> measureZones = measureListService.searchZoneByMeasureListIdRegionUuidCategoryKey(reportZoneVo.getProject_id(), reportZoneVo.getList_id(), reportZoneVo.getUuid(), reportZoneVo.getCategory_key());
+                List<MeasureZone> measureZones = measureListService.searchZoneByMeasureListIdRegionUuidCategoryKey(reportZoneVo.getProject_id(), reportZoneVo.getList_id(), reportZoneVo.getRegion_uuid(), reportZoneVo.getCategory_key());
                 if (measureZones.size() > 0) {
-                    MeasureZone measureZone = measureListService.getZoneByUuid(reportZoneVo.getProject_id(), reportZoneVo.getUuid());
-                    if (measureZone == null) {
+                    List<MeasureZone> measureZoneList = measureListService.getZoneByUuid(reportZoneVo.getProject_id(), reportZoneVo.getUuid());
+                    if (measureZoneList == null) {
                         DroppedVo droppedVo = new DroppedVo();
                         droppedVo.setUuid(reportZoneVo.getUuid());
                         droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonEnum.MEASUREZONEUUIDEXISTS.getValue()));
@@ -445,7 +445,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
                 log.error("error:" + e + "reportZoneVo.uuid" + reportZoneVo.getUuid());
             }
             try {
-                measureListService.createZoneFromApp(reportZoneVo.getProject_id(), reportZoneVo.getList_id(), reportZoneVo.getUuid(), measureRegion.getUuid(), measureRegion.getAreaId(), measureRegion.getAreaPathAndId(), reportZoneVo.getCategory_key(), category.getPath() + category.getKey() + "/", MeasureListFinishStatusEnum.UnFinish.getId(), MeasureListCloseStatusEnum.UnClose.getId());
+                measureListService.createZoneFromApp(reportZoneVo.getProject_id(), reportZoneVo.getList_id(), reportZoneVo.getUuid(), measureRegion.getUuid(), measureRegion.getAreaId(), measureRegion.getAreaPathAndId(), reportZoneVo.getCategory_key(), String.format("%s%s/",category.getPath(),category.getKey()), MeasureListFinishStatusEnum.UnFinish.getId(), MeasureListCloseStatusEnum.UnClose.getId());
             } catch (Exception e) {
                 log.error("create zone fail, error:" + e);
                 DroppedVo droppedVo = new DroppedVo();

@@ -84,8 +84,13 @@ public class MeasureListServiceImpl implements IMeasureListService {
     }
 
     @Override
-    public MeasureZone getZoneByUuid(Integer project_id, String uuid) {
-        return measureZoneMapper.getZoneByUuid(project_id, uuid);
+    public List<MeasureZone> getZoneByUuid(Integer project_id, String uuid) {
+        Example example = new Example(MeasureZone.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("projectId", project_id);
+        criteria.andEqualTo("uuid",uuid);
+        criteria.andEqualTo("deleteAt");
+        return measureZoneMapper.selectByExample(example);
     }
 
     @Override

@@ -82,7 +82,7 @@ public interface IMeasureListService {
      * @param uuid
      * @return
      */
-    MeasureZone getZoneByUuid(Integer project_id, String uuid);
+    List<MeasureZone> getZoneByUuid(Integer project_id, String uuid);
 
     /**
      *
