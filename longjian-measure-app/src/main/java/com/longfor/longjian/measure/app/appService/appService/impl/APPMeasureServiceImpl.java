@@ -41,6 +41,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -306,7 +307,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                 });
                 zoneResult.setData(JSON.toJSONString(zoneResultData));
                 //计算结果是否合格
-                try {
+               /* try {
                     calcResult(ruleInfo.getFormula(), zoneResult);
                 } catch (Exception e) {
                     log.warn("calc result error:" + e.getMessage());
@@ -316,7 +317,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                     droppedVo.setReason(ApiDropDataReasonEnum.MeasureRuleError.getName());
                     droppedVos.add(droppedVo);
                     continue;
-                }
+                }*/
 //                zoneResult = measureZoneResultService.insertObjectNoAffectedErr(zoneResult);
                 try {
                     measureZoneResultService.insertObjectNoAffectedErr(zoneResult);
@@ -338,7 +339,16 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                         senderId = t.getRecorder_id();
                     }
                     if (t.getUpdate_at() != null && t.getUpdate_at() > DateTool.getLongFromString(clientCreateAt)) {
-                        clientCreateAt = t.getUpdate_at().toString();
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        Date date;
+                        try {
+                            Date parse = sdf.parse(sdf.format(new Date((t.getUpdate_at() * 1000))));
+                            clientCreateAt =  sdf.format(parse);
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     }
                     i++;
                 }
