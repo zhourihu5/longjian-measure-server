@@ -3,16 +3,22 @@ package com.longfor.longjian.measure.app.appService.appService.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.exception.CommonRuntimeException;
 import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.kafka.KafkaProducer;
 import com.longfor.longjian.common.util.DateUtil;
 import com.longfor.longjian.common.util.SessionInfo;
+import com.longfor.longjian.common.util.StringUtil;
 import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureService;
 import com.longfor.longjian.measure.app.appService.appService.IKeyProcedureTaskAppService;
 import com.longfor.longjian.measure.app.commonEntity.MeasureListIssueHelper;
 import com.longfor.longjian.measure.app.commonEntity.MeasureListIssueStruct;
 import com.longfor.longjian.measure.app.commonEntity.MeasureZoneResultCreateMsg;
+import com.longfor.longjian.measure.app.commonEntity.measure.MeasureZoneGroupData;
+import com.longfor.longjian.measure.app.commonEntity.measure.MeasureZonePointData;
 import com.longfor.longjian.measure.app.req.appReq.*;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.*;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.RelVo;
@@ -24,11 +30,15 @@ import com.longfor.longjian.measure.domain.externalService.*;
 import com.longfor.longjian.measure.po.zhijian2.*;
 import com.longfor.longjian.measure.util.DateTool;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.script.Invocable;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.*;
@@ -352,17 +362,91 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
      * 计算结果是否合格
      *
      * @param formula
-     * @param zoneResult
      */
-    private void calcResult(String formula, MeasureZoneResult zoneResult) {
-        //todo
-        // defer func() {
-        //		if errMsg := recover(); errMsg != nil {
-        //			log.Warning(errMsg)
-        //			err = core.ErrorEnum.CALC_RESULT_FAILED
-        //		}
-        //	}()不太懂这段
-        // 计算逻辑较复杂
+    private void calcResult(String formula, MeasureZoneResult result) {
+        List<MeasureZoneGroupData> resultData = Lists.newArrayList();
+        List<Map> dataZone = JSONArray.parseArray(result.getData(), Map.class);
+        for (Map d : dataZone) {
+            MeasureZoneGroupData r = new MeasureZoneGroupData();
+            r.setTexture(MapUtils.getString(d, "Texture", null));
+            r.setData(Maps.newHashMap());
+            r.setScore(0F);
+            List<Map> dataPoint = JSONArray.parseArray(MapUtils.getString(d, "Data", null), Map.class);
+            for (Map pd : dataPoint) {
+                MeasureZonePointData npd = new MeasureZonePointData();
+                npd.setKey(MapUtils.getString(pd, "Key", null));
+                npd.setDataType(MapUtils.getInteger(pd, "DataType", null));
+                npd.setData(JSONArray.parseArray(MapUtils.getString(pd, "Data", null), Long.class));
+                npd.setDesignValueReqd(MapUtils.getBoolean(pd, "Data", null));
+                npd.setDesignValue(MapUtils.getLong(pd, "DesignValue", null));
+                r.getData().put(MapUtils.getString(pd, "Key", null), npd);
+            }
+            resultData.add(r);
+        }
+        ScriptEngineManager sem = new ScriptEngineManager();
+        ScriptEngine se = sem.getEngineByName("js");
+        for (MeasureZoneGroupData r : resultData) {
+            Map<String, Object> args = Maps.newHashMap();
+            args.put("texture", r.getTexture());
+            for (Map.Entry<String, MeasureZonePointData> entry : r.getData().entrySet()) {
+                args.put(entry.getKey(), entry.getValue().toMap());
+            }
+            String res = "";
+            try {
+                se.eval(formula);
+                Invocable inv2 = (Invocable) se;
+                res = (String) inv2.invokeFunction("calc", args);
+                System.out.println(res);
+            } catch (Exception e) {
+                log.error("执行JavaScript错误", e);
+            }
+            Map resultValue = JSONObject.parseObject(res, Map.class);
+            for (Map.Entry<String, MeasureZonePointData> entry : r.getData().entrySet()) {
+                String key = entry.getKey();
+                MeasureZonePointData pd = entry.getValue();
+                boolean ok = resultValue.containsKey(key);
+                if (!ok) {
+                    CommonRuntimeException e = new CommonRuntimeException(String.format("'%s' unfound", key));
+                    log.warn(e.getMessage());
+                    throw e;
+                }
+                Map vpd = JSONObject.parseObject(MapUtils.getString(resultValue, key, null), Map.class);
+                pd.setTotal(MapUtils.getInteger(vpd, "total", null));
+                pd.setOkTotal(MapUtils.getInteger(vpd, "ok_total", null));
+                pd.setSeq(MapUtils.getString(vpd, "seq", null));
+                pd.setDeviation(MapUtils.getString(vpd, "deviation", null));
+            }
+            boolean ok = resultValue.containsKey("score");
+            if (!ok) {
+                CommonRuntimeException e = new CommonRuntimeException("'score' unfound");
+                log.warn(e.getMessage());
+                throw e;
+            }
+            r.setScore(MapUtils.getFloat(resultValue, "score", 0F));
+        }
+        result.setTotal(0);
+        result.setOkTotal(0);
+        result.setScore(0f);
+
+        for (int i = 0; i < resultData.size(); i++) {
+            MeasureZoneGroupData r = resultData.get(i);
+            Map data = dataZone.get(i);
+            data.put("Score", result.getScore());
+            result.setScore(result.getScore() + r.getScore());
+            for (Map v : (List<Map>) data.get("data")) {
+                MeasureZonePointData d = r.getData().get(v.get("Key"));
+                v.put("Total", d.getTotal());
+                result.setTotal(result.getTotal() + d.getTotal());
+                v.put("OkTotal", d.getOkTotal());
+                result.setOkTotal(result.getOkTotal() + d.getOkTotal());
+                v.put("Seq", d.getSeq());
+                v.put("Deviation", StringUtil.strToFloats(d.getDeviation(), ","));
+            }
+        }
+        result.setData(JSON.toJSONString(dataZone));
+        if (result.getTotal() > 0) {
+            result.setScore((float) (result.getOkTotal() * 100 / result.getTotal()));
+        }
     }
 
     @Override
