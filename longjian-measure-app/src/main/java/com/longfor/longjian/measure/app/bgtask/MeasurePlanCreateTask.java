@@ -32,6 +32,9 @@ public class MeasurePlanCreateTask implements ExportTask{
                 String queueName = "zj_bgtask_create_measure:" + BgtaskEnum.MEASURE_LIST_CREATE.getValue();
                 if (redisUtil.exists(queueName)) {
                     String taskKey = (String) redisUtil.lpop(queueName);
+                    if (taskKey == null || "".equals(taskKey)){
+                        return;
+                    }
                     while (!redisUtil.exists(taskKey)){
                         try {
                             Thread.sleep(500l);
