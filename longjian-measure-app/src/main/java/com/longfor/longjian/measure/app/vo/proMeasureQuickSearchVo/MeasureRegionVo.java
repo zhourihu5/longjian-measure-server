@@ -16,7 +16,7 @@ public class MeasureRegionVo {
     private Integer area_id;
     private String area_path_and_id;
     private String drawing_md5;
-    private String polygon;
+    private Object polygon;
     private Integer region_index;
     private Integer rel_id;
     private Integer src_type;
