@@ -287,6 +287,8 @@ public class MeasureListIssueHelper {
                 issue.setCloseTime(Integer.parseInt(detail.getCloseTime() + ""));
             }
             issue.setClientCreateAt(this.currentLog.getClientCreateAt());
+            //添加到需要创建的issue列表中
+            this.needInsertIssueMap.put(issueUuid, issue);
         } else if (inOld) {
             //已存在于数据库中 && 未存在于需要更新的issue列表中
             // 完备方案：
@@ -477,7 +479,7 @@ public class MeasureListIssueHelper {
                 log.debug(JSON.toJSONString(needDropIssueUuidForZone));
 
                 //剔除新建列表中，其zoneUuid已经有issue的数据
-                if (needDropIssueUuidForZone.size() > 0) {
+                if (needDropIssueUuidForZone != null && needDropIssueUuidForZone.size() > 0) {
                     needDropIssueUuidForZone.forEach(tempIssueUuid -> {
                         //记录丢弃的IssueUuid
                         this.settingDroppedIssue(
