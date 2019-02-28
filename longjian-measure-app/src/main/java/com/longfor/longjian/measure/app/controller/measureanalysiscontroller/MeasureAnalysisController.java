@@ -50,11 +50,6 @@ public class MeasureAnalysisController {
      * @param requestParam
      * @return
      */
-//    @MockOperation
-//    @PostMapping(value = "res/category", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    public LjBaseResponse<ResultVo<List<CheckItemVo>>> getAnalysisCheckItems(RequestParam requestParam){
-//        return null;
-//    }
 
     /**
      * 集团统计分析统计指标合格率 + 每天
@@ -88,11 +83,6 @@ public class MeasureAnalysisController {
      * @param requestParam
      * @return
      */
-//    @MockOperation
-//    @PostMapping(value = "res/org", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    public LjBaseResponse<ResultVo<CompanyVo>> getCompanyList(RequestParam requestParam){
-//        return null;
-//    }
 
     /**
      * 集团统计合作伙伴选择组织 ResultVo<List<OrganizationInfoVo>>
@@ -196,9 +186,4 @@ public class MeasureAnalysisController {
      * @param requestParam
      * @return
      */
-//    @MockOperation
-//    @PostMapping(value = "res/area", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    public LjBaseResponse<ResultVo<List<AreaInfoVo>>> getAreaList(RequestParam requestParam){
-//        return null;
-//    }
 }

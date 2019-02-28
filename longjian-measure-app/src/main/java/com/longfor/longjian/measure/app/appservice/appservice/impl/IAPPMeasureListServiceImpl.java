@@ -153,7 +153,7 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
     }
 
     @Override
-    public LjBaseResponse<MeasureListInfoVo> conditionSearch(ConditionSearchReq req) throws Exception {
+    public LjBaseResponse<MeasureListInfoVo> conditionSearch(ConditionSearchReq req) throws LjBaseRuntimeException {
         Map<String, Object> listMap = measureListService.conditionSearch(req.getGroup_id(), req.getProject_id(), req.getPage(), req.getPage_size(), req.getArea_id(), req.getUser_id_list(), req.getFinish_status(), req.getName(), req.getCategory_key());
         LjBaseResponse<MeasureListInfoVo> ljBaseResponse = new LjBaseResponse<>();
         MeasureListInfoVo measureListInfoVo = new MeasureListInfoVo();

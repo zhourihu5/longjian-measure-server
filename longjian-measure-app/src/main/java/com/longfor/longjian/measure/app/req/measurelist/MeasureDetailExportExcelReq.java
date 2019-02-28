@@ -13,10 +13,6 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class MeasureDetailExportExcelReq {
     /**
-     * 语言 取值范围及含义：;1 - 简体中文; ;2 - English;
-     */
-    private Integer lang;
-    /**
      * 所属任务
      */
     @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)

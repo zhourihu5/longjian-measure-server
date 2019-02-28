@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.domain.externalservice;
 
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.po.zhijian2.MeasureList;
 import com.longfor.longjian.measure.po.zhijian2.MeasureSquad;
 import com.longfor.longjian.measure.po.zhijian2.MeasureSquadUser;
@@ -178,7 +179,7 @@ public interface IMeasureListService {
      * @param category_key
      * @return
      */
-    Map<String, Object> conditionSearch(Integer group_id, Integer project_id, Integer page, Integer page_size, String area_id, String user_id_list, Integer finish_status, String name, String category_key) throws Exception;
+    Map<String, Object> conditionSearch(Integer group_id, Integer project_id, Integer page, Integer page_size, String area_id, String user_id_list, Integer finish_status, String name, String category_key) throws LjBaseRuntimeException;
 
     MeasureList createMeasureList(int proj_id, String name, String area_type, Integer id, Integer id1, String root_category_key, String plan_begin_on, String plan_end_on);
 }

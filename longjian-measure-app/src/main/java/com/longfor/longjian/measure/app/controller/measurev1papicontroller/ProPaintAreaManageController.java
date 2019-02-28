@@ -1,6 +1,7 @@
 package com.longfor.longjian.measure.app.controller.measurev1papicontroller;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.app.appservice.paintareaservice.IProPaintAreaManageService;
 import com.longfor.longjian.measure.app.appservice.paintareaservice.IRegionService;
 import com.longfor.longjian.measure.app.req.measureregionreq.AddReq;
@@ -46,7 +47,7 @@ public class ProPaintAreaManageController {
      * @return
      */
     @RequestMapping(value = "search_by_area_id/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<AreaRegionTagVo> getAreaRegionList(@Valid GetProjMeasureRegionReq getProjMeasureRegionReq) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    public LjBaseResponse<AreaRegionTagVo> getAreaRegionList(@Valid GetProjMeasureRegionReq getProjMeasureRegionReq) throws LjBaseRuntimeException {
         LjBaseResponse<AreaRegionTagVo> ljBaseResponse =  proPaintAreaManageService.getProjMeasureRegionByAreaId(getProjMeasureRegionReq);
         return ljBaseResponse;
     }

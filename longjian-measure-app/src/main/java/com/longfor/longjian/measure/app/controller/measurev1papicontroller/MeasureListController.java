@@ -2,6 +2,7 @@ package com.longfor.longjian.measure.app.controller.measurev1papicontroller;
 
 import com.alibaba.fastjson.JSON;
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.util.SessionInfo;
 import com.longfor.longjian.measure.app.appservice.appservice.IAPPMeasureListService;
 import com.longfor.longjian.measure.app.bgtask.UserTaskNotice;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 /**
@@ -95,13 +98,19 @@ public class MeasureListController {
      * @return
      */
     @RequestMapping(value = "bg_add" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<BgAddVo> bgAdd(@Valid BgAddReq bgAddReq) throws Exception {
+    public LjBaseResponse<BgAddVo> bgAdd(@Valid BgAddReq bgAddReq) throws LjBaseRuntimeException, IllegalAccessException, IntrospectionException, InvocationTargetException {
         LjBaseResponse<BgAddVo> ljBaseResponse = new LjBaseResponse<>();
         BgAddVo bgAddVo = new BgAddVo();
-        Map params = ConvertUtil.convertBean(bgAddReq);
+        Map params = null;
+            params = ConvertUtil.convertBean(bgAddReq);
         log.info(JSON.toJSONString(params));
         Integer userId = sessionInfo.getSessionUser().getUserId();
-        String r = userTaskNotice.sendToRedis(userId, BgtaskEnum.MEASURE_LIST_CREATE,"",params, null);
+        String r = null;
+        try {
+            r = userTaskNotice.sendToRedis(userId, BgtaskEnum.MEASURE_LIST_CREATE,"",params, null);
+        } catch (Exception e) {
+           throw new LjBaseRuntimeException(-9999,e+"");
+        }
         bgAddVo.setId(r);
         ljBaseResponse.setData(bgAddVo);
         return ljBaseResponse;
@@ -115,7 +124,7 @@ public class MeasureListController {
      * @throws Exception
      */
     @RequestMapping(value = "condition_search",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureListInfoVo> conditionSearch(@Valid ConditionSearchReq req) throws Exception {
+    public LjBaseResponse<MeasureListInfoVo> conditionSearch(@Valid ConditionSearchReq req) throws LjBaseRuntimeException {
         return measureListService.conditionSearch(req);
     }
 

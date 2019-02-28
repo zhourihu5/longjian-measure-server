@@ -1,6 +1,7 @@
 package com.longfor.longjian.measure.app.appservice.paintareaservice;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.app.req.measureregionreq.AddOnGroupReq;
 import com.longfor.longjian.measure.app.req.measureregionreq.AddOnProjReq;
 import com.longfor.longjian.measure.app.req.measureregionreq.EditByProjIdReq;
@@ -29,21 +30,21 @@ public interface IProPaintAreaManageService {
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    LjBaseResponse<GroupRegionTagVo> getGroupMeasureRegionTag(GetGroupMeasureRegionTagReq getGroupMeasureRegionTagReq) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException;
+    LjBaseResponse<GroupRegionTagVo> getGroupMeasureRegionTag(GetGroupMeasureRegionTagReq getGroupMeasureRegionTagReq) throws LjBaseRuntimeException;
 
     /**
      * 项目描画区域新增加描画区域请求标签
      * @param getProjMeasureRegionTagReq
      * @return
      */
-    LjBaseResponse<GroupRegionTagVo> getProjMeasureRegionTag(GetProjMeasureRegionTagReq getProjMeasureRegionTagReq) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException;
+    LjBaseResponse<GroupRegionTagVo> getProjMeasureRegionTag(GetProjMeasureRegionTagReq getProjMeasureRegionTagReq) throws LjBaseRuntimeException;
 
     /**
      * 项目描画区域管理新增描画区域请求测区
      * @param getProjMeasureRegionReq
      * @return
      */
-    LjBaseResponse<AreaRegionTagVo> getProjMeasureRegionByAreaId(GetProjMeasureRegionReq getProjMeasureRegionReq) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException;
+    LjBaseResponse<AreaRegionTagVo> getProjMeasureRegionByAreaId(GetProjMeasureRegionReq getProjMeasureRegionReq) throws LjBaseRuntimeException;
 
     /**
      * 集团实测描画区域标签管理

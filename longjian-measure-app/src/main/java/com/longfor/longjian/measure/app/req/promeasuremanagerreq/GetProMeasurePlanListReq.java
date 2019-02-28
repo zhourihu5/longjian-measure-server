@@ -12,10 +12,6 @@ import javax.validation.constraints.NotNull;
 @Data
 public class GetProMeasurePlanListReq {
     /**
-     * 语言 取值范围及含义：;1 - 简体中文; ;2 - English;
-     */
-    private  Integer lang;
-    /**
      *  检查项
      */
     private String category_key;

@@ -14,7 +14,6 @@ import java.io.Serializable;
 public class GetGroupMeasureRegionTagReq implements Serializable {
 
 
-    private String _ct;
     @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer group_id;
     private String page_level;

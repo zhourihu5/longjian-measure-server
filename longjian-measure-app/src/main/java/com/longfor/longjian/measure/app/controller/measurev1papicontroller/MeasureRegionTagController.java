@@ -1,6 +1,7 @@
 package com.longfor.longjian.measure.app.controller.measurev1papicontroller;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.app.appservice.paintareaservice.IProPaintAreaManageService;
 import com.longfor.longjian.measure.app.req.measureregionreq.AddOnGroupReq;
 import com.longfor.longjian.measure.app.req.measureregionreq.AddOnProjReq;
@@ -41,7 +42,7 @@ public class MeasureRegionTagController {
      * @return
      */
     @RequestMapping(value = "search_by_group_id/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<GroupRegionTagVo> getGroupMeasureRegionTag(@Valid GetGroupMeasureRegionTagReq getGroupMeasureRegionTagReq) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    public LjBaseResponse<GroupRegionTagVo> getGroupMeasureRegionTag(@Valid GetGroupMeasureRegionTagReq getGroupMeasureRegionTagReq) throws LjBaseRuntimeException {
         LjBaseResponse<GroupRegionTagVo> ljBaseResponse = proPaintAreaManageService.getGroupMeasureRegionTag(getGroupMeasureRegionTagReq);
         return ljBaseResponse;
     }
@@ -53,7 +54,7 @@ public class MeasureRegionTagController {
      * @return
      */
     @RequestMapping(value = "search_by_proj_id/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<GroupRegionTagVo> getGroupMeasureRegionTag(@Valid GetProjMeasureRegionTagReq getProjMeasureRegionTagReq) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    public LjBaseResponse<GroupRegionTagVo> getGroupMeasureRegionTag(@Valid GetProjMeasureRegionTagReq getProjMeasureRegionTagReq) throws LjBaseRuntimeException {
         LjBaseResponse<GroupRegionTagVo> ljBaseResponse = proPaintAreaManageService.getProjMeasureRegionTag(getProjMeasureRegionTagReq);
         return ljBaseResponse;
     }

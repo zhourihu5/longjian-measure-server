@@ -44,14 +44,14 @@ public class StaffController {
      * @throws CommonException
      */
     @RequestMapping(value = "allow_user_search" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<AllowUserSearchListVo> allowUserSearch(@Valid AllowUserSearchReq allowUserSearchReq) throws CommonException {
+    public LjBaseResponse<AllowUserSearchListVo> allowUserSearch(@Valid AllowUserSearchReq allowUserSearchReq) {
         AllowUserSearchListVo allowUserSearchListVo = new AllowUserSearchListVo();
         allowUserSearchListVo.setAllow_user_info(iStaffService.allowUserSearch(allowUserSearchReq));
         return new LjBaseResponse(allowUserSearchListVo);
     }
 
     @RequestMapping(value = "repairer_list_search" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<RepairerListSearchInfoVo> repairerListSearch(@Valid RepairerListSearchReq repairerListSearchReq) throws CommonException {
+    public LjBaseResponse<RepairerListSearchInfoVo> repairerListSearch(@Valid RepairerListSearchReq repairerListSearchReq) {
         RepairerListSearchInfoVo repairerListSearchInfoVo = new RepairerListSearchInfoVo();
         repairerListSearchInfoVo.setRepairer_info(iStaffService.repairerListSearch(repairerListSearchReq));
         return new LjBaseResponse(repairerListSearchInfoVo);

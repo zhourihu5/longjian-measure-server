@@ -10,10 +10,6 @@ public class GetProMeasureCheckItemsReq {
     private Integer project_id;
 
     /**
-     * 语言 取值范围及含义：;1 - 简体中文; ;2 - English;
-     */
-    private Integer lang;
-    /**
      * key
      */
     private String key;
