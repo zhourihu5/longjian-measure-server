@@ -19,6 +19,7 @@ import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.*;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.*;
 import com.longfor.longjian.measure.consts.constant.CategoryClsTypeConstant;
+import com.longfor.longjian.measure.consts.constant.CtrlToolConstant;
 import com.longfor.longjian.measure.consts.constant.MeasureListConstant;
 import com.longfor.longjian.measure.consts.constant.MeasureListIssueType;
 import com.longfor.longjian.measure.domain.externalService.*;
@@ -198,7 +199,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         SquadsAndPassVo squadsAndPassVo = new SquadsAndPassVo();
         ProjectBase projectBase = null;
         try {
-            ctrlTool.projPerm(RequestContextHolderUtil.getRequest(), "项目.实测实量.统计.查看");
+            ctrlTool.projPerm(RequestContextHolderUtil.getRequest(), CtrlToolConstant.PROJECT_MEASURE_STATISTICS_CHECK);
             projectBase = (ProjectBase) sessionInfo.getBaseInfo("cur_proj");
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());

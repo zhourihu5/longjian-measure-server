@@ -58,7 +58,7 @@ public class ProPaintAreaManageController {
      */
     @RequestMapping(value = "add/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse add(@Valid AddReq addReq) {
-        regionService.add(addReq.getProject_id(),addReq.getRegion_list(), RegionSrcTypeEnum.BackEnd.getId());
+        regionService.add(addReq.getProject_id(),addReq.getRegion_list(), RegionSrcTypeEnum.BACKEND.getId());
         return new LjBaseResponse();
     }
 

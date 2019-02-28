@@ -1,7 +1,7 @@
 package com.longfor.longjian.measure.consts.Enum;
 
 public enum MeasureFinishStatusEnum {
-    Processing(1, "未完成"),Done(2, "已完成");
+    PROCESSING(1, "未完成"),DONE(2, "已完成");
 
     private Integer id;
     private String value;

@@ -6,8 +6,7 @@ package com.longfor.longjian.measure.consts.Enum;
  * 2018/12/18 09:58
  */
 public enum ApiDropDataReasonEnum {
-    NotFound("未找到资源", "0"),
-    NOTFOUND("未找到资源", "1"),
+    NOTFOUND("未找到资源", "0"),
     EXISTS("资源已存在", "2"),
     MEASYREZONENOTFOUND("测区不存在", "11"),
     MEASUREZONEISCLOSE("测区已关闭", "12"),
@@ -21,8 +20,7 @@ public enum ApiDropDataReasonEnum {
     MEASSUREISSUEWASDELETED("爆点信息已被删除", "52"),
     MEASUREUSERNOTINSQUAD("人员不存在于测量小组中", "53"),
     OTHER("未知错误", "999"),
-    MeasureRuleNoFound("规则不存在","61"),
-    MeasureRuleError("测量结果计算失败","62");
+    MEASURERULENOFOUND("规则不存在","61");
     private String name;
     private String value;
 

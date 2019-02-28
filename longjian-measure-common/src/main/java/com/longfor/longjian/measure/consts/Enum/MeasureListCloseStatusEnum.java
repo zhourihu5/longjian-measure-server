@@ -4,7 +4,7 @@ package com.longfor.longjian.measure.consts.Enum;
  * 2018/12/18 15:57
  */
 public enum MeasureListCloseStatusEnum {
-    UnClose(1, "打开"),Closed(2, "关闭");
+    UNCLOSE(1, "打开"),CLOSED(2, "关闭");
 
     private Integer id;
     private String value;

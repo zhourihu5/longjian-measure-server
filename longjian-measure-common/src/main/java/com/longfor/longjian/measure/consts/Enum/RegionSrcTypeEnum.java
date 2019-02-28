@@ -5,8 +5,8 @@ package com.longfor.longjian.measure.consts.Enum;
  */
 public enum  RegionSrcTypeEnum {
 
-    BackEnd(1, "后台添加"),
-    Client(2, "客户端添加");
+    BACKEND(1, "后台添加"),
+    CLIENT(2, "客户端添加");
 
     private Integer id;
     private String value;

@@ -195,7 +195,7 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
         String squad_group = params.get("squad_group").toString();
         String repairer_group = params.get("repairer_group").toString();
         //创建任务
-        MeasureList list_model = measureListService.createMeasureList(proj_id, name, area_type, MeasureCloseStatusEnum.Open.getId(), MeasureFinishStatusEnum.Processing.getId(), root_category_key, plan_begin_on, plan_end_on);
+        MeasureList list_model = measureListService.createMeasureList(proj_id, name, area_type, MeasureCloseStatusEnum.OPEN.getId(), MeasureFinishStatusEnum.PROCESSING.getId(), root_category_key, plan_begin_on, plan_end_on);
         //获取区域信息 todo lamada表达式没弄明白😐
         String[] areaIdList = area_id_list.split(",");
         List<Integer> areaIdListInt = new ArrayList<>();
@@ -294,10 +294,10 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
             List<Map> groups = JSONArray.parseArray(pair.get("group").toString(), Map.class);
             for (Map zone_dict : groups) {
                 //定义好复制数据
-                zone_dict.put("close_status", MeasureCloseStatusEnum.Open.getId());
-                zone_dict.put("finish_status", MeasureFinishStatusEnum.Processing.getId());
+                zone_dict.put("close_status", MeasureCloseStatusEnum.OPEN.getId());
+                zone_dict.put("finish_status", MeasureFinishStatusEnum.PROCESSING.getId());
                 zone_dict.put("list_id", list_model.getId());
-                zone_dict.put("src_type", RegionSrcTypeEnum.BackEnd.getId());
+                zone_dict.put("src_type", RegionSrcTypeEnum.BACKEND.getId());
 
                 //找到要复制到其他区域的描点
                 String origin_region_uuid = zone_dict.remove("region_uuid").toString();
@@ -331,9 +331,9 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
                     measureZone.setCategoryPathAndKey(zone_dict.get("category_path_and_key").toString());
                     measureZone.setProjectId(proj_id);
                     measureZone.setListId(list_model.getId());
-                    measureZone.setSrcType(RegionSrcTypeEnum.BackEnd.getId());
-                    measureZone.setFinishStatus(MeasureFinishStatusEnum.Processing.getId());
-                    measureZone.setCloseStatus(MeasureCloseStatusEnum.Open.getId());
+                    measureZone.setSrcType(RegionSrcTypeEnum.BACKEND.getId());
+                    measureZone.setFinishStatus(MeasureFinishStatusEnum.PROCESSING.getId());
+                    measureZone.setCloseStatus(MeasureCloseStatusEnum.OPEN.getId());
                     measureZone.setCreateAt(new Date());
                     measureZone.setUpdateAt(new Date());
                     insert_zone_list.add(measureZone);

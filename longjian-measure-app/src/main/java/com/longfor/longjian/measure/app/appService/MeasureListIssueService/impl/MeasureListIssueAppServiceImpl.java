@@ -253,7 +253,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
         boolean isClosed = false;
         try {
             issue = measureListIssueService.getByConditionNoFoundErr(project_id, uuid);
-            if (issue.getCloseStatus().equals(MeasureListCloseStatusEnum.Closed.getId())) {
+            if (issue.getCloseStatus().equals(MeasureListCloseStatusEnum.CLOSED.getId())) {
                 return isClosed;
             }
             if (issue.getStatus().equals(MeasureListIssueType.NOTENOASSIGN) && repairer_id > 0) {

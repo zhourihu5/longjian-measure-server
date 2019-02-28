@@ -16,6 +16,7 @@ import com.longfor.longjian.measure.app.req.fileReq.FileReq;
 import com.longfor.longjian.measure.app.vo.checkItemsVo.CheckItemListVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.*;
 import com.longfor.longjian.measure.consts.Enum.LoginEnum;
+import com.longfor.longjian.measure.consts.constant.CtrlToolConstant;
 import com.longfor.longjian.measure.domain.externalService.ICategoryV3Service;
 import com.longfor.longjian.measure.domain.externalService.ICheckItemV3Service;
 import com.longfor.longjian.measure.domain.externalService.IFileResourceService;
@@ -64,7 +65,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
     @Override
     public LjBaseResponse<GetCheckItemVo> getCheckItemJson(GetCheckItemReq getCheckItemReq, HttpServletRequest request) throws Exception {
         try {
-            ctrlTool.teamPerm(request, "集团.实测实量.检查项管理.查看");
+            ctrlTool.teamPerm(request, CtrlToolConstant.GROUP_MEASURE_CHECKITEM_CHECK);
         } catch (Exception e) {
             throw new Exception(e);
         }
