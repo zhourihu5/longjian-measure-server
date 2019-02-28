@@ -11,7 +11,6 @@ import com.longfor.longjian.common.util.RequestContextHolderUtil;
 import com.longfor.longjian.common.util.SessionInfo;
 import com.longfor.longjian.common.util.StringUtil;
 import com.longfor.longjian.measure.app.appService.proMeasureManagerService.IProMeasureService;
-import com.longfor.longjian.measure.app.commonEntity.MeasureListSearchResult;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetCheckerListReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureAreaListReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureCheckItemsReq;

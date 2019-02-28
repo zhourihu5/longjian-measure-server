@@ -4,8 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.longfor.longjian.common.exception.CommonException;
 import com.longfor.longjian.measure.app.req.zone.*;
 
-import java.util.List;
-
 /**
  * Created by Wang on 2019/1/8.
  */

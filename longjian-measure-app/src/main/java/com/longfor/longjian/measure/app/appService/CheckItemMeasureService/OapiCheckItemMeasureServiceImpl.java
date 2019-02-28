@@ -22,7 +22,6 @@ import com.longfor.longjian.measure.domain.externalService.IFileResourceService;
 import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
 import com.longfor.longjian.measure.po.zhijian2.CheckItemV3;
 import com.longfor.longjian.measure.po.zhijian2.FileResource;
-import com.longfor.longjian.measure.po.zhijian2_apisvr.Team;
 import com.longfor.longjian.measure.util.FileUtil;
 import com.longfor.longjian.measure.vo.FormVo;
 import com.longfor.longjian.measure.vo.ReadFileVo;
@@ -32,10 +31,12 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
@@ -160,7 +161,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
         String mimeType = null;
         byte[] content = null;
         CategoryV3 rc = new CategoryV3();
-        FileResource fileResource = new FileResource();
+        FileResource fileResource = null;
         if (formVo.getRootCategoryId() > 0) {
             try {
                 rc = checkItemV3Service.getRootCategoryNoFoundErr(formVo.getRootCategoryId());
@@ -197,17 +198,22 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
             response.addHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", new String(name.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1)));
         }
         response.addHeader("Content-Type", mimeType);
-        StoreUrlVo storeUrlVo = FileUtil.fileResourceGetStoreUrl(fileResource.getStoreKey());
+        StoreUrlVo storeUrlVo = null;
+        if (fileResource != null) {
+            storeUrlVo = FileUtil.fileResourceGetStoreUrl(fileResource.getStoreKey());
+        }
         Map<String, Object> map = Maps.newHashMap();
-        map.put("schema", storeUrlVo.getSchema());
-        map.put("uri", storeUrlVo.getUri());
-        map.put("fileName", fileResource.getFileName());
+        if(fileResource!=null &&storeUrlVo !=null){
+            map.put("schema", storeUrlVo.getSchema());
+            map.put("uri", storeUrlVo.getUri());
+            map.put("fileName", fileResource.getFileName());
+        }
         byte[] buff = new byte[1024];
         BufferedInputStream bis = null;
         OutputStream os = null;
         try {
-            os = response.getOutputStream();
             bis = new BufferedInputStream(new FileInputStream(map.get("schema").toString() + "/" + map.get("uri").toString()));
+            os = response.getOutputStream();
             int i = 0;
             while ((i = bis.read(buff)) != -1) {
                 os.write(buff, 0, i);
@@ -218,6 +224,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
             e.printStackTrace();
         } finally {
             bis.close();
+            os.close();
         }
         return ljBaseResponse;
     }

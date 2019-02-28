@@ -4,7 +4,6 @@ import com.longfor.longjian.measure.po.zhijian2.MeasureList;
 import com.longfor.longjian.measure.po.zhijian2.MeasureSquad;
 import com.longfor.longjian.measure.po.zhijian2.MeasureSquadUser;
 import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;

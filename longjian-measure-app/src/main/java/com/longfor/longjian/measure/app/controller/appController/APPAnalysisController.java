@@ -3,7 +3,6 @@ package com.longfor.longjian.measure.app.controller.appController;
 import com.longfor.gaia.gfs.web.mock.MockOperation;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.vo.appAnalysisVo.ApiAreaVo;
-import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.RuleListVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -5,11 +5,8 @@ import com.longfor.longjian.measure.dao.zhijian2.MeasureTagMapper;
 import com.longfor.longjian.measure.domain.externalService.IMeasureTagService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureTag;
 import com.longfor.longjian.measure.vo.EditTagProtoVo;
-import net.bytebuddy.description.modifier.Ownership;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.Date;

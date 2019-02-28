@@ -5,7 +5,6 @@ import com.longfor.longjian.measure.domain.externalService.IMeasureListIssueLogS
 import com.longfor.longjian.measure.po.zhijian2.MeasureListIssue;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListIssueLog;
 import com.longfor.longjian.measure.util.ExampleUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 

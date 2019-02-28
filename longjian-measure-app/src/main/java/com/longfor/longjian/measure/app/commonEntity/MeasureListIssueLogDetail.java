@@ -2,8 +2,6 @@ package com.longfor.longjian.measure.app.commonEntity;
 
 import lombok.Data;
 
-import javax.sql.rowset.spi.SyncResolver;
-
 @Data
 public class MeasureListIssueLogDetail {
     /**

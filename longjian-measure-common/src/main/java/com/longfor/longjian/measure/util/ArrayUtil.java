@@ -1,9 +1,10 @@
 package com.longfor.longjian.measure.util;
 
 
-import io.swagger.models.auth.In;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Wang on 2019/1/7.
@@ -12,47 +13,48 @@ public class ArrayUtil {
 
     /**
      * 根据不同类型  取数组差值
+     *
      * @param arrayA
      * @param arrayB
      * @param type
      * @return
      */
-    public static List<Integer> getDiff(Integer [] arrayA, Integer [] arrayB,String type){
-        arrayA= arrayToDistinct(arrayA);
-        arrayB=arrayToDistinct(arrayB);
-        List newList=new ArrayList<>();
-        if("A-B".equals(type)){//取数组A-B的值
-            List<Integer>  aList = Arrays.asList(arrayA);
+    public static List<Integer> getDiff(Integer[] arrayA, Integer[] arrayB, String type) {
+        arrayA = arrayToDistinct(arrayA);
+        arrayB = arrayToDistinct(arrayB);
+        List newList = new ArrayList<>();
+        if ("A-B".equals(type)) {//取数组A-B的值
+            List<Integer> aList = Arrays.asList(arrayA);
             boolean flag = false;
-            if(arrayB.length>0){
-                for(int i=0;i<arrayB.length;i++){
-                    if(aList.contains(arrayB[i])){
+            if (arrayB != null && arrayB.length > 0) {
+                for (int i = 0; i < arrayB.length; i++) {
+                    if (aList.contains(arrayB[i])) {
                         flag = true;
-                        newList=new ArrayList(aList);
+                        newList = new ArrayList(aList);
                         newList.remove(arrayB[i]);
-                        aList=newList;
+                        aList = newList;
                     }
                 }
             }
-            if (!flag){
+            if (!flag) {
                 return aList;
             }
         }
 
-        if("B-A".equals(type)){//取数组B-A的值
-            List<Integer> bList=Arrays.asList(arrayToDistinct(arrayB));
+        if ("B-A".equals(type)) {//取数组B-A的值
+            List<Integer> bList = Arrays.asList(arrayToDistinct(arrayB));
             boolean flag = false;
-            if(arrayB.length>0){
-                for(int i=0;i<arrayA.length;i++){
-                    if(bList.contains(arrayA[i])){
+            if (arrayA != null && arrayA.length > 0) {
+                for (int i = 0; i < arrayA.length; i++) {
+                    if (bList.contains(arrayA[i])) {
                         flag = true;
-                        newList=new ArrayList(bList);
+                        newList = new ArrayList(bList);
                         newList.remove(arrayA[i]);
-                        bList=newList;
+                        bList = newList;
                     }
                 }
             }
-            if (!flag){
+            if (!flag) {
                 return bList;
             }
         }
@@ -61,22 +63,23 @@ public class ArrayUtil {
 
     /**
      * 比较2个set元素
+     *
      * @param set1
      * @param set2
      * @return
      */
-    public static boolean getSetDiff(Set<Integer> set1,Set<Integer> set2){
+    public static boolean getSetDiff(Set<Integer> set1, Set<Integer> set2) {
         set1.removeAll(set2);
-        if(set1.size()>0){
+        if (set1.size() > 0) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
 
-    public static Integer[] arrayToDistinct(Integer [] arr){
-        if(arr!=null&&arr.length>0) {
+    public static Integer[] arrayToDistinct(Integer[] arr) {
+        if (arr != null && arr.length > 0) {
             List<Integer> tempList = new ArrayList();
             for (Integer i : arr) {
                 if (!tempList.contains(i)) {//判断是否有重复数据，如果没有就将数据装进临时集合
@@ -84,7 +87,7 @@ public class ArrayUtil {
                 }
             }
             return tempList.toArray(new Integer[1]);
-        }else{
+        } else {
             return arr;
         }
     }

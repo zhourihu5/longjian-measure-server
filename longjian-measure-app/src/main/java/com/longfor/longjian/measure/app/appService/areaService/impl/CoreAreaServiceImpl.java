@@ -1,6 +1,5 @@
 package com.longfor.longjian.measure.app.appService.areaService.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.app.appService.areaService.ICoreAreaService;

@@ -5,7 +5,6 @@ import com.longfor.gaia.gfs.data.mybatis.datasource.LFAssignDataSource;
 import com.longfor.longjian.measure.dao.zhijian2_apisvr.UserMapper;
 import com.longfor.longjian.measure.domain.externalService.IUserService;
 import com.longfor.longjian.measure.po.zhijian2_apisvr.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 

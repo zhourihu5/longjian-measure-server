@@ -1,15 +1,10 @@
 package com.longfor.longjian.measure.app.appService.MeasureListIssueService;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
-import com.longfor.longjian.measure.app.req.MeasureList.MeasureIssueCloseStatusReq;
-import com.longfor.longjian.measure.app.req.MeasureList.MeasureIssueDeleteReq;
-import com.longfor.longjian.measure.app.req.MeasureList.MeasureIssueEdiReq;
 import com.longfor.longjian.measure.app.req.MeasureList.MeasureIssueQueryReq;
 import com.longfor.longjian.measure.app.vo.measureListVo.MeasureIssueQueryVo;
-import com.longfor.longjian.measure.app.vo.measureListVo.UpdateVo;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.ParseException;
 
 public interface IMeasureListIssueAppService {
     /**

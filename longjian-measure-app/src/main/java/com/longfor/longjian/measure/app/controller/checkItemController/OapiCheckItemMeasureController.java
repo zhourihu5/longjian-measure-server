@@ -2,19 +2,16 @@ package com.longfor.longjian.measure.app.controller.checkItemController;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.CheckItemMeasureService.IOapiCheckItemMeasureService;
-import com.longfor.longjian.measure.app.feignClient.IMeasureFeignService;
 import com.longfor.longjian.measure.app.req.CheckItemMeasureReq.GetCategoryReq;
+import com.longfor.longjian.measure.app.req.CheckItemMeasureReq.GetCheckItemReq;
 import com.longfor.longjian.measure.app.req.CheckItemMeasureReq.ListTreeJsonReq;
 import com.longfor.longjian.measure.app.req.CheckItemMeasureReq.UpdateReqMeasureReq;
 import com.longfor.longjian.measure.app.vo.checkItemsVo.CheckItemListVo;
-import com.longfor.longjian.measure.app.vo.proMeasureVo.GetCategoryVo;
-import com.longfor.longjian.measure.app.req.CheckItemMeasureReq.GetCheckItemReq;
-import com.longfor.longjian.measure.app.vo.proMeasureVo.GetCheckItemVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.CheckItemUpdateJsonVo;
+import com.longfor.longjian.measure.app.vo.proMeasureVo.GetCategoryVo;
+import com.longfor.longjian.measure.app.vo.proMeasureVo.GetCheckItemVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

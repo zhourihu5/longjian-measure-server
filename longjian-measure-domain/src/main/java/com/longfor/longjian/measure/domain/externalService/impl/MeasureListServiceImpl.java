@@ -1,18 +1,14 @@
 package com.longfor.longjian.measure.domain.externalService.impl;
 
-import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.dao.zhijian2.*;
 import com.longfor.longjian.measure.domain.externalService.IMeasureListService;
 import com.longfor.longjian.measure.po.zhijian2.*;
 import com.longfor.longjian.measure.util.DateUtil;
 import org.apache.commons.lang.StringUtils;
-import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.session.RowBounds;
-import org.bouncycastle.cms.PasswordRecipientId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;

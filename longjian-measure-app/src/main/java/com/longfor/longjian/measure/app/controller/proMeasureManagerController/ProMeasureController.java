@@ -1,6 +1,5 @@
 package com.longfor.longjian.measure.app.controller.proMeasureManagerController;
 
-import com.longfor.gaia.gfs.web.mock.MockOperation;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.proMeasureManagerService.IProMeasureService;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetCheckerListReq;
@@ -8,20 +7,20 @@ import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureAr
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasureCheckItemsReq;
 import com.longfor.longjian.measure.app.req.proMeasureManagerReq.GetProMeasurePlanListReq;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
-import com.longfor.longjian.measure.app.vo.proMeasureVo.*;
+import com.longfor.longjian.measure.app.vo.proMeasureVo.AreaInfoVo;
+import com.longfor.longjian.measure.app.vo.proMeasureVo.CheckerVo;
+import com.longfor.longjian.measure.app.vo.proMeasureVo.ProMeasureCheckIteamVo;
+import com.longfor.longjian.measure.app.vo.proMeasureVo.ProMeasurePlanListVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
-import java.text.ParseException;
 import java.util.List;
 
 /**

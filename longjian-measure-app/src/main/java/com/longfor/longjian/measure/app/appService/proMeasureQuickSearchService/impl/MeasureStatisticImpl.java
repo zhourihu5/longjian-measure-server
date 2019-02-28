@@ -8,7 +8,6 @@ import com.longfor.longjian.measure.app.vo.proMeasureQuickSearchVo.MeasureStatis
 import com.longfor.longjian.measure.domain.externalService.IMeasureListIssueService;
 import com.longfor.longjian.measure.domain.externalService.IMeasureZoneService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureList;
-import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

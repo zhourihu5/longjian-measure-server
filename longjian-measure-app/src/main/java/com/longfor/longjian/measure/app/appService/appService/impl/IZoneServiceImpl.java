@@ -14,7 +14,6 @@ import com.longfor.longjian.measure.app.feignClient.ICoreCategoryItemFeignServic
 import com.longfor.longjian.measure.app.req.feignReq.CategoriesInfoReq;
 import com.longfor.longjian.measure.app.req.feignReq.SearchByIdListReq;
 import com.longfor.longjian.measure.app.req.zone.*;
-import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.MeasureZoneVo;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.ZoneInfoVo;
 import com.longfor.longjian.measure.app.vo.feignVo.AreaRetrieveVo;
 import com.longfor.longjian.measure.app.vo.feignVo.CategoryJsonProtoItemVo;
@@ -29,7 +28,6 @@ import com.longfor.longjian.measure.util.ArrayUtil;
 import com.longfor.longjian.measure.util.ConvertUtil;
 import com.longfor.longjian.measure.util.ExampleUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

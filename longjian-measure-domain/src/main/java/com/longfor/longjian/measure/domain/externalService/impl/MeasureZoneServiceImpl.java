@@ -3,12 +3,8 @@ package com.longfor.longjian.measure.domain.externalService.impl;
 import com.longfor.gaia.gfs.data.mybatis.datasource.LFAssignDataSource;
 import com.longfor.longjian.measure.dao.zhijian2.MeasureZoneMapper;
 import com.longfor.longjian.measure.domain.externalService.IMeasureZoneService;
-import com.longfor.longjian.measure.po.zhijian2.MeasureList;
-import com.longfor.longjian.measure.po.zhijian2.MeasureListArea;
-import com.longfor.longjian.measure.po.zhijian2.MeasureRule;
 import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
 import com.longfor.longjian.measure.util.ExampleUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 

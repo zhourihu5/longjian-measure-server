@@ -12,7 +12,10 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Date;
 import java.util.Map;
 import java.util.Random;
@@ -58,6 +61,8 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
         FileOutputStream out = null;
         OutputStreamWriter op = null;
         try {
+            out = new FileOutputStream(String.format("%s", filepath));
+            op = new OutputStreamWriter(out, "utf-8");
             File file = new File(String.format("%s", filepath));
 
             if (!file.getParentFile().exists()) {
@@ -67,9 +72,6 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
             if (!file.exists()) {
                 file.createNewFile();
             }
-
-            out = new FileOutputStream(String.format("%s", filepath));
-            op = new OutputStreamWriter(out, "utf-8");
             op.append(data);
             op.flush();
         } catch (IOException e) {

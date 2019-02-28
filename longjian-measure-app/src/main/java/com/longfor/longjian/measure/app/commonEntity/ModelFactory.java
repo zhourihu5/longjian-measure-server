@@ -1,9 +1,6 @@
 package com.longfor.longjian.measure.app.commonEntity;
 
-import com.longfor.longjian.measure.po.zhijian2.MeasureList;
 import lombok.Data;
-
-import javax.sql.rowset.spi.SyncResolver;
 
 /**
  * 这个工厂类用来查询数据库使用的

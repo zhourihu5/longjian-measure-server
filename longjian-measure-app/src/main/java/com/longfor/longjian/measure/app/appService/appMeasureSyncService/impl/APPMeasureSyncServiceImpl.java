@@ -14,7 +14,6 @@ import com.longfor.longjian.measure.app.appService.appService.IKeyProcedureTaskA
 import com.longfor.longjian.measure.app.req.apiMeasureRuleReq.*;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.*;
 import com.longfor.longjian.measure.consts.Enum.*;
-import com.longfor.longjian.measure.consts.constant.ApiDropDataReasonConstant;
 import com.longfor.longjian.measure.domain.externalService.*;
 import com.longfor.longjian.measure.po.zhijian2.*;
 import com.longfor.longjian.measure.util.JsonUtil;
@@ -25,7 +24,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service

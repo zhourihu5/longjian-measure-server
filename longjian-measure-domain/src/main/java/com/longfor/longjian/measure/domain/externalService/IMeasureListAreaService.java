@@ -1,6 +1,5 @@
 package com.longfor.longjian.measure.domain.externalService;
 
-import com.longfor.longjian.measure.po.zhijian2.Area;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListArea;
 
 import java.util.List;

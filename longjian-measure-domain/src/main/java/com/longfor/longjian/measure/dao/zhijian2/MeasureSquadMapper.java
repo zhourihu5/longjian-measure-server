@@ -5,7 +5,6 @@ import com.longfor.longjian.measure.po.zhijian2.MeasureSquad;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Map;
 
 public interface MeasureSquadMapper extends LFMySQLMapper<MeasureSquad> {
 

@@ -2,12 +2,9 @@ package com.longfor.longjian.measure.util;
 
 import com.google.common.collect.Lists;
 import com.longfor.longjian.measure.vo.StoreUrlVo;
-import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 /**

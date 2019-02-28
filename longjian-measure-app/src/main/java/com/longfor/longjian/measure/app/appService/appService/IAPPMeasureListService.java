@@ -5,7 +5,6 @@ import com.longfor.longjian.measure.app.req.MeasureList.*;
 import com.longfor.longjian.measure.app.vo.measureListVo.MeasureListInfoVo;
 import com.longfor.longjian.measure.app.vo.measureListVo.SetStatusVo;
 import com.longfor.longjian.measure.po.zhijian2.MeasureList;
-import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
 
 import java.util.Map;
 

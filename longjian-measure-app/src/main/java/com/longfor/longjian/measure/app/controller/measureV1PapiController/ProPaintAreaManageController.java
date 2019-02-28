@@ -1,6 +1,5 @@
 package com.longfor.longjian.measure.app.controller.measureV1PapiController;
 
-import com.alibaba.fastjson.JSONArray;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.appService.paintAreaService.IProPaintAreaManageService;
 import com.longfor.longjian.measure.app.appService.paintAreaService.IRegionService;
@@ -10,11 +9,11 @@ import com.longfor.longjian.measure.app.req.measureRegionReq.EditReq;
 import com.longfor.longjian.measure.app.req.paintAreaReq.GetProjMeasureRegionReq;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.AreaRegionTagVo;
 import com.longfor.longjian.measure.consts.Enum.RegionSrcTypeEnum;
-import com.longfor.longjian.measure.domain.externalService.IMeasureRegionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.beans.IntrospectionException;
@@ -22,8 +21,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.alibaba.druid.sql.ast.SQLPartitionValue.Operator.List;
 
 /**
  * app_measure服务

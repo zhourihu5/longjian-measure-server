@@ -1,21 +1,16 @@
 package com.longfor.longjian.measure.app.controller.checkItemController;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
-import com.longfor.longjian.common.exception.CommonException;
 import com.longfor.longjian.measure.app.appService.CheckItemMeasureService.IOapiCheckItemMeasureService;
 import com.longfor.longjian.measure.app.req.fileReq.FileReq;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * Created by Wang on 2019/1/7.

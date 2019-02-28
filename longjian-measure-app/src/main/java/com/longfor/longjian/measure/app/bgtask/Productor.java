@@ -2,8 +2,6 @@ package com.longfor.longjian.measure.app.bgtask;
 
 import lombok.Data;
 
-import java.util.Map;
-
 /**
  * wangxs 2019-2-11
  */

@@ -5,12 +5,12 @@ import com.longfor.longjian.common.exception.CommonException;
 import com.longfor.longjian.measure.app.appService.appService.IStaffService;
 import com.longfor.longjian.measure.app.req.staff.*;
 import com.longfor.longjian.measure.app.vo.staffVo.AllowUserSearchListVo;
-import com.longfor.longjian.measure.app.vo.staffVo.AllowUserSearchVo;
 import com.longfor.longjian.measure.app.vo.staffVo.RepairerListSearchInfoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 

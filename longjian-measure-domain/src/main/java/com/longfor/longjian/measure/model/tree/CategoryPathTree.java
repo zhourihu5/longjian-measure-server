@@ -5,7 +5,6 @@ import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
 import com.longfor.longjian.measure.util.StringUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import sun.awt.geom.AreaOp;
 
 import java.util.ArrayList;
 import java.util.List;

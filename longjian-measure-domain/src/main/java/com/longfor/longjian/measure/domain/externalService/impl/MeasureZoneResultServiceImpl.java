@@ -2,7 +2,6 @@ package com.longfor.longjian.measure.domain.externalService.impl;
 
 import com.longfor.longjian.measure.dao.zhijian2.MeasureZoneResultMapper;
 import com.longfor.longjian.measure.domain.externalService.IMeasureZoneResultService;
-import com.longfor.longjian.measure.po.zhijian2.MeasureListArea;
 import com.longfor.longjian.measure.po.zhijian2.MeasureZoneResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

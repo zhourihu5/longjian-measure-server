@@ -6,7 +6,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.app.appService.areaService.ICoreAreaService;
 import com.longfor.longjian.measure.app.appService.paintAreaService.IRegionService;
-import com.longfor.longjian.measure.app.commonEntity.MeasureRegionHelper;
 import com.longfor.longjian.measure.app.vo.feignVo.AreaRetrieveVo;
 import com.longfor.longjian.measure.consts.Enum.MeasureErrorEnum;
 import com.longfor.longjian.measure.domain.externalService.IMeasureRegionRelService;

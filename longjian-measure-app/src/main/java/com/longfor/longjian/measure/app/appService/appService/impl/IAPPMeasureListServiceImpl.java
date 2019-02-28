@@ -2,7 +2,6 @@ package com.longfor.longjian.measure.app.appService.appService.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.common.exception.LjBaseRuntimeException;
@@ -15,10 +14,7 @@ import com.longfor.longjian.measure.consts.Enum.MeasureCloseStatusEnum;
 import com.longfor.longjian.measure.consts.Enum.MeasureFinishStatusEnum;
 import com.longfor.longjian.measure.consts.Enum.RegionSrcTypeEnum;
 import com.longfor.longjian.measure.domain.externalService.*;
-import com.longfor.longjian.measure.domain.externalService.impl.AreaServiceImpl;
-import com.longfor.longjian.measure.domain.externalService.impl.MeasureListServiceImpl;
 import com.longfor.longjian.measure.po.zhijian2.*;
-import com.longfor.longjian.measure.util.ConvertUtil;
 import com.longfor.longjian.measure.util.LambdaExceptionUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

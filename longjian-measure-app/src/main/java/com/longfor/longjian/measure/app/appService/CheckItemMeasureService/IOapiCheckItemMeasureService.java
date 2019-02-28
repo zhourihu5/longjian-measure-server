@@ -2,19 +2,17 @@ package com.longfor.longjian.measure.app.appService.CheckItemMeasureService;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.measure.app.req.CheckItemMeasureReq.GetCategoryReq;
+import com.longfor.longjian.measure.app.req.CheckItemMeasureReq.GetCheckItemReq;
 import com.longfor.longjian.measure.app.req.CheckItemMeasureReq.ListTreeJsonReq;
 import com.longfor.longjian.measure.app.req.CheckItemMeasureReq.UpdateReqMeasureReq;
 import com.longfor.longjian.measure.app.req.fileReq.FileReq;
 import com.longfor.longjian.measure.app.vo.checkItemsVo.CheckItemListVo;
-import com.longfor.longjian.measure.app.vo.proMeasureVo.GetCategoryVo;
-import com.longfor.longjian.measure.app.req.CheckItemMeasureReq.GetCheckItemReq;
-import com.longfor.longjian.measure.app.vo.proMeasureVo.GetCheckItemVo;
 import com.longfor.longjian.measure.app.vo.proMeasureVo.CheckItemUpdateJsonVo;
+import com.longfor.longjian.measure.app.vo.proMeasureVo.GetCategoryVo;
+import com.longfor.longjian.measure.app.vo.proMeasureVo.GetCheckItemVo;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 public interface IOapiCheckItemMeasureService {
     /**

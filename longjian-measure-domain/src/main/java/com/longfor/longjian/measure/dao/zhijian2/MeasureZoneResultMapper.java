@@ -1,10 +1,8 @@
 package com.longfor.longjian.measure.dao.zhijian2;
 
 import com.longfor.gaia.gfs.data.mybatis.LFMySQLMapper;
-import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
 import com.longfor.longjian.measure.po.zhijian2.MeasureZoneResult;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.web.bind.annotation.PatchMapping;
 
 import java.util.List;
 import java.util.Map;

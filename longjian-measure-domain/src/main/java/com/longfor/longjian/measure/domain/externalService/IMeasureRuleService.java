@@ -2,11 +2,8 @@ package com.longfor.longjian.measure.domain.externalService;
 
 
 import com.longfor.longjian.measure.po.zhijian2.MeasureRule;
-import tk.mybatis.mapper.entity.Example;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public interface IMeasureRuleService {

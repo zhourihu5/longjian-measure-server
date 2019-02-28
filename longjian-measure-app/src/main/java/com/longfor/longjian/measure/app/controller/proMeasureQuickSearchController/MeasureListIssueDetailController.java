@@ -21,7 +21,6 @@ import com.longfor.longjian.measure.po.zhijian2.MeasureListIssue;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListIssueLog;
 import com.longfor.longjian.measure.po.zhijian2_apisvr.User;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

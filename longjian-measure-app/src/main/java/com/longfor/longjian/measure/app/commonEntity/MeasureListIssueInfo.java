@@ -2,6 +2,7 @@ package com.longfor.longjian.measure.app.commonEntity;
 
 import com.longfor.longjian.measure.po.zhijian2.MeasureListIssue;
 import lombok.Data;
+
 import java.util.List;
 
 /**

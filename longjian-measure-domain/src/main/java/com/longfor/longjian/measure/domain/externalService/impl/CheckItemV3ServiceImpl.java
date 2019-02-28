@@ -1,15 +1,12 @@
 package com.longfor.longjian.measure.domain.externalService.impl;
 
-import com.google.common.collect.Lists;
 import com.longfor.gaia.gfs.data.mybatis.datasource.LFAssignDataSource;
 import com.longfor.longjian.measure.dao.zhijian2.CategoryV3Mapper;
 import com.longfor.longjian.measure.dao.zhijian2.CheckItemV3Mapper;
 import com.longfor.longjian.measure.domain.externalService.ICheckItemV3Service;
 import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
 import com.longfor.longjian.measure.po.zhijian2.CheckItemV3;
-import com.longfor.longjian.measure.vo.StoreUrlVo;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 

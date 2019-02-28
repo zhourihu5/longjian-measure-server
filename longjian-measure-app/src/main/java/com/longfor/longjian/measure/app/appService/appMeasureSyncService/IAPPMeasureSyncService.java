@@ -5,8 +5,6 @@ import com.longfor.longjian.measure.app.req.apiMeasureRuleReq.*;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.beans.IntrospectionException;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * Jiazm

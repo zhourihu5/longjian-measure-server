@@ -1,9 +1,6 @@
 package com.longfor.longjian.measure.domain.externalService;
 
 import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
-import com.longfor.longjian.measure.po.zhijian2.MeasureZoneResult;
-
-import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;

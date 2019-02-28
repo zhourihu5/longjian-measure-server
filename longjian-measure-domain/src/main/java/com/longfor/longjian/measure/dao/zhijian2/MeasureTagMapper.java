@@ -2,9 +2,7 @@ package com.longfor.longjian.measure.dao.zhijian2;
 
 import com.longfor.gaia.gfs.data.mybatis.LFMySQLMapper;
 import com.longfor.longjian.measure.po.zhijian2.MeasureTag;
-import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.web.bind.annotation.PatchMapping;
 
 import java.util.Date;
 import java.util.List;

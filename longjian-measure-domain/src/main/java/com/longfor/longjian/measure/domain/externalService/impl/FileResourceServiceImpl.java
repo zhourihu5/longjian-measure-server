@@ -1,22 +1,17 @@
 package com.longfor.longjian.measure.domain.externalService.impl;
 
-import com.google.common.collect.Lists;
 import com.longfor.longjian.measure.dao.zhijian2.FileResourceMapper;
 import com.longfor.longjian.measure.domain.externalService.IFileResourceService;
 import com.longfor.longjian.measure.po.zhijian2.FileResource;
 import com.longfor.longjian.measure.util.FileUtil;
 import com.longfor.longjian.measure.vo.StoreUrlVo;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
-import sun.misc.IOUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.io.*;
+import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
 
 /**
  * Jiazm 2019/01/10 13:44

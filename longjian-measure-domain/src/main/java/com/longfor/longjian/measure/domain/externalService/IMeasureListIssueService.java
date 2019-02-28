@@ -3,7 +3,6 @@ package com.longfor.longjian.measure.domain.externalService;
 import com.longfor.longjian.measure.po.zhijian2.Area;
 import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListIssue;
-import com.longfor.longjian.measure.util.AreaUtils;
 
 import java.text.ParseException;
 import java.util.List;
