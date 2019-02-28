@@ -23,7 +23,7 @@ public class DateUtil {
 
     //可以精确到秒  2017-4-16 12:43:37
     public static final DateFormat dateFormatter = DateFormat.getDateTimeInstance();
-
+    public static final String YYYY_MM_DD = "yyyy-MM-dd";
 
     private DateUtil(){}
 
@@ -65,7 +65,7 @@ public class DateUtil {
      * @return返回字符串格式 yyyy-MM-dd
      */
     public static String getStringDate(Date date) {
-        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD);
         return format.format(date);
     }
 
@@ -135,7 +135,7 @@ public class DateUtil {
         calendar.setTime(date);
         calendar.add(Calendar.DAY_OF_MONTH, days);
         Date date1 = calendar.getTime();
-        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD);
         Long time = date1.getTime();
         String d = format.format(time);
         Date startDate = format.parse(d);
@@ -150,7 +150,7 @@ public class DateUtil {
         calendar.setTime(date);
         calendar.add(Calendar.DAY_OF_MONTH, -1);
         Date date1 = calendar.getTime();
-        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD);
         Long time = date1.getTime();
         String d = format.format(time);
         Date startDate = format.parse(d);
@@ -174,7 +174,7 @@ public class DateUtil {
         calendar.setTime(date);
         calendar.add(Calendar.DATE, - 7);
         Date date1 = calendar.getTime();
-        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD);
         Long time = date1.getTime();
         String d = format.format(time);
 //        Date startDate = format.parse(d);
@@ -189,7 +189,7 @@ public class DateUtil {
      * @throws ParseException
      */
     public static String getShortDateStringByStringDate(String startDate,int day) throws ParseException {
-        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD);
         Date startTime = format.parse(startDate);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(startTime);
@@ -207,7 +207,7 @@ public class DateUtil {
      * @throws ParseException
      */
     public static String getShortDateStringByLong(Long dateLong) throws ParseException {
-        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD);
         String d = format.format(dateLong);
         return d;
     }
@@ -230,7 +230,7 @@ public class DateUtil {
      * @return返回短时间格式 yyyy-MM-dd
      */
     public static Date getDateShortFromString(String dateString)  {
-        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD);
         Date dd= null;
         try {
             dd = format.parse(dateString);

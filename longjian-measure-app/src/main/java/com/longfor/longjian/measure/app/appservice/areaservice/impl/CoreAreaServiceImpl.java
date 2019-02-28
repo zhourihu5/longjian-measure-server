@@ -8,7 +8,7 @@ import com.longfor.longjian.measure.app.feignclient.ICoreAreaFeignService;
 import com.longfor.longjian.measure.app.req.feignreq.SearchByIdListReq;
 import com.longfor.longjian.measure.app.vo.feignvo.AreaRetrieveVo;
 import com.longfor.longjian.measure.app.vo.feignvo.ProjAreaSearchByIdListVo;
-import com.longfor.longjian.measure.domain.externalService.IAreaService;
+import com.longfor.longjian.measure.domain.externalservice.IAreaService;
 import com.longfor.longjian.measure.po.zhijian2.Area;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

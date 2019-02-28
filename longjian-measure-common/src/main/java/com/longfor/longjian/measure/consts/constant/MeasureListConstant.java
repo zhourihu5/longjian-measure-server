@@ -16,9 +16,9 @@ public class MeasureListConstant {
     /**
      * 通過
      */
-    public static final int CheckYes = 1;
+    public static final int CHECKYES = 1;
     /**
      * 不通过
      */
-    public static final int CheckNo = 1;
+    public static final int CHECKNO = 1;
 }

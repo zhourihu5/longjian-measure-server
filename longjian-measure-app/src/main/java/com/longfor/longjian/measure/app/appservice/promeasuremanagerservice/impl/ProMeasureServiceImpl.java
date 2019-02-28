@@ -22,7 +22,7 @@ import com.longfor.longjian.measure.consts.constant.CategoryClsTypeConstant;
 import com.longfor.longjian.measure.consts.constant.CtrlToolConstant;
 import com.longfor.longjian.measure.consts.constant.MeasureListConstant;
 import com.longfor.longjian.measure.consts.constant.MeasureListIssueType;
-import com.longfor.longjian.measure.domain.externalService.*;
+import com.longfor.longjian.measure.domain.externalservice.*;
 import com.longfor.longjian.measure.model.tree.CategoryPathTree;
 import com.longfor.longjian.measure.model.tree.CategoryPathTreeNode;
 import com.longfor.longjian.measure.po.zhijian2.*;
@@ -71,15 +71,24 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     private CtrlTool ctrlTool;
     @Resource
     private SessionInfo sessionInfo;
-
+    private static final String CUR_PROJ = "cur_proj";
+    private static final String RENWUBUCUNZAI = "任务不存在";
+    private static final String CATEGORY_KEY = "category_key";
+    private static final String ISSUE_COUNT = "issue_count";
+    private static final String COUNT = "count";
+    private static final String SQUADID = "squadId";
+    private static final String PASSPERCENT = "pass_percent";
+    private static final String TOTAL_SUM = "total_sum";
+    private static final String TOPAREAS = "topAreas";
+    private static final String ROOTCATEGORYKEY = "rootCategoryKey";
     @Override
     public LjBaseResponse<ProMeasurePlanListVo> getProMeasurePlanList(GetProMeasurePlanListReq getProMeasurePlanListReq, HttpServletRequest request) throws Exception {
         LjBaseResponse<ProMeasurePlanListVo> ljBaseResponse = new LjBaseResponse<>();
         ProMeasurePlanListVo proMeasurePlanListVo = new ProMeasurePlanListVo();
         ProjectBase projectBase = null;
         try {
-            ctrlTool.projPerm(request, "项目.实测实量.任务管理.查看");
-            projectBase = (ProjectBase) sessionInfo.getBaseInfo("cur_proj");
+            ctrlTool.projPerm(request, CtrlToolConstant.PROJECT_MEASURE_TASKMANAGER_CHECK);
+            projectBase = (ProjectBase) sessionInfo.getBaseInfo(CUR_PROJ);
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
@@ -106,7 +115,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     public LjBaseResponse<ItemsVo<List<ProMeasureCheckIteamVo>>> getProMeasureCheckItems(GetProMeasureCheckItemsReq getProMeasureCheckItemsReq, HttpServletRequest request) throws Exception {
         TeamBase group = null;
         try {
-            ctrlTool.projPerm(request, "项目.实测实量.任务管理.查看");
+            ctrlTool.projPerm(request, CtrlToolConstant.PROJECT_MEASURE_TASKMANAGER_CHECK);
             group = (TeamBase) sessionInfo.getBaseInfo("cur_group");
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
@@ -172,7 +181,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     @Override
     public LjBaseResponse<ItemsVo<List<CheckerVo>>> getCheckerList(GetCheckerListReq getCheckerListReq) {
         try {
-            ctrlTool.projPerm(RequestContextHolderUtil.getRequest(), "项目.实测实量.描画区域管理.查看");
+            ctrlTool.projPerm(RequestContextHolderUtil.getRequest(), CtrlToolConstant.PROJECT_MEASURE_TASKMANAGER_CHECK);
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new LjBaseRuntimeException(-9999, e.getMessage());
@@ -200,7 +209,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         ProjectBase projectBase = null;
         try {
             ctrlTool.projPerm(RequestContextHolderUtil.getRequest(), CtrlToolConstant.PROJECT_MEASURE_STATISTICS_CHECK);
-            projectBase = (ProjectBase) sessionInfo.getBaseInfo("cur_proj");
+            projectBase = (ProjectBase) sessionInfo.getBaseInfo(CUR_PROJ);
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
@@ -208,7 +217,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         boolean existPlan = measureListService.searchByProjectIdAndMeasureListId(getCompareBetweenGroupReq.getProject_id(), getCompareBetweenGroupReq.getMeasure_list_id()) != null;
         if (!existPlan) {
             //任务不存在,抛出异常
-            throw new Exception("任务不存在");
+            throw new Exception(RENWUBUCUNZAI);
         }
         // 获取测区数量
         Integer total = measureZoneService.searchTotalByProjectIdAndMeasureListId(projectBase.getId(), new int[]{getCompareBetweenGroupReq.getMeasure_list_id()});
@@ -235,7 +244,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         LjBaseResponse<PassDiffVo> ljBaseResponse = new LjBaseResponse<>();
         PassDiffVo passDiffVo = new PassDiffVo();
         try {
-            ctrlTool.projPerm(RequestContextHolderUtil.getRequest(), "项目.实测实量.统计.查看");
+            ctrlTool.projPerm(RequestContextHolderUtil.getRequest(), CtrlToolConstant.PROJECT_MEASURE_STATISTICS_CHECK);
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
@@ -243,7 +252,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         boolean existPlan = measureListService.searchByProjectIdAndMeasureListId(getLoserCompareBetweenGroupReq.getProject_id(), getLoserCompareBetweenGroupReq.getMeasure_list_id()) != null;
         if (!existPlan) {
             //任务不存在,抛出异常
-            throw new Exception("任务不存在");
+            throw new Exception(RENWUBUCUNZAI);
         }
         //获取分组信息
         List<MeasureSquad> measureSquadlist = measureSquadService.searchOnlyMeasureSquadByProjIdAndListId(getLoserCompareBetweenGroupReq.getProject_id(), getLoserCompareBetweenGroupReq.getMeasure_list_id());
@@ -271,8 +280,8 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         CompareItemBetweenSquadsVo compareItemBetweenSquadsVo = new CompareItemBetweenSquadsVo();
         ProjectBase projectBase = null;
         try {
-            ctrlTool.projPerm(RequestContextHolderUtil.getRequest(), "项目.实测实量.统计.查看");
-            projectBase = (ProjectBase) sessionInfo.getBaseInfo("cur_proj");
+            ctrlTool.projPerm(RequestContextHolderUtil.getRequest(), CtrlToolConstant.PROJECT_MEASURE_STATISTICS_CHECK);
+            projectBase = (ProjectBase) sessionInfo.getBaseInfo(CUR_PROJ);
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
@@ -280,7 +289,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         MeasureList measureList = measureListService.searchByProjectIdAndMeasureListId(getCompareItemBetweenSquadsReq.getProject_id(), getCompareItemBetweenSquadsReq.getMeasure_list_id());
         if (measureList == null) {
             //任务不存在,抛出异常
-            throw new Exception("任务不存在");
+            throw new Exception(RENWUBUCUNZAI);
         }
         // 获取分组信息，否则不管
         List<MeasureSquad> measureSquadlist = measureSquadService.searchOnlyMeasureSquadByProjIdAndListId(getCompareItemBetweenSquadsReq.getProject_id(), getCompareItemBetweenSquadsReq.getMeasure_list_id());
@@ -353,8 +362,8 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     public LjBaseResponse<ItemsVo<List<AreaPOPVo>>> getAreaPOP(GetAreaPOPReq getAreaPOPreq) throws Exception {
         ProjectBase projectBase = null;
         try {
-            ctrlTool.projPerm(RequestContextHolderUtil.getRequest(), "项目.实测实量.统计.查看");
-            projectBase = (ProjectBase) sessionInfo.getBaseInfo("cur_proj");
+            ctrlTool.projPerm(RequestContextHolderUtil.getRequest(), CtrlToolConstant.PROJECT_MEASURE_STATISTICS_CHECK);
+            projectBase = (ProjectBase) sessionInfo.getBaseInfo(CUR_PROJ);
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
@@ -398,7 +407,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         List<CategoryV3> categoryV3s = categoryV3Service.searchSubCategoryByFatherKey(parent_category_key);
         categoryV3s.forEach(categoryV3 -> {
             Map<String, Object> map = new HashMap<>();
-            map.put("category_key", categoryV3.getKey());
+            map.put(CATEGORY_KEY, categoryV3.getKey());
             map.put("category_name", categoryV3.getName());
             map.put("is_leaf", false);
             Integer count = categoryV3Service.countCategoryByFatherKey(categoryV3.getKey());
@@ -437,7 +446,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         Map<String, Object> areaDist = new HashMap<>();
         areaDist.put("area_id", Integer.parseInt(areaId));
         areaDist.put("checked_issue_count", 0);
-        areaDist.put("issue_count", 0);
+        areaDist.put(ISSUE_COUNT, 0);
         Map<Integer, Integer> statusMap = getMeasureListIssueStatusMapByListIdsAndCategoryKeyAndAreaId(listIds, key, areaId);
         if (statusMap == null) {
             return null;
@@ -446,8 +455,8 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             if (entry.getKey() == MeasureListIssueType.CHECKYES) {
                 areaDist.put("checked_issue_count", entry.getValue());
             }
-            Integer issueCount = Integer.parseInt(areaDist.get("issue_count").toString());
-            areaDist.put("issue_count", issueCount + entry.getValue());
+            Integer issueCount = Integer.parseInt(areaDist.get(ISSUE_COUNT).toString());
+            areaDist.put(ISSUE_COUNT, issueCount + entry.getValue());
         }
         areaDist.put("percentage", getMeasureZoneResultPassPercentageByListIdsAndCategoryKeyAndAreaId(listIds, key, areaId));
         return areaDist;
@@ -493,7 +502,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         }
         Map<Integer, Integer> smap = new HashMap<>();
         items.forEach(map -> {
-            smap.put(Integer.parseInt(map.get("status").toString()), Integer.parseInt(map.get("count").toString()));
+            smap.put(Integer.parseInt(map.get("status").toString()), Integer.parseInt(map.get(COUNT).toString()));
         });
         return smap;
     }
@@ -685,10 +694,10 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             List<SquadsVo> squads = new ArrayList<>();
             squadList.forEach(squad -> {
                 SquadsVo squadsVo = new SquadsVo();
-                squadsVo.setSquad_id(Integer.parseInt(squad.get("squadId").toString()));
-                squadsVo.setPass_percent(String.format("%.2f", Float.parseFloat(squad.get("pass_percent").toString()) * 100));
+                squadsVo.setSquad_id(Integer.parseInt(squad.get(SQUADID).toString()));
+                squadsVo.setPass_percent(String.format("%.2f", Float.parseFloat(squad.get(PASSPERCENT).toString()) * 100));
                 if (isLeaf) {
-                    squadsVo.setChecked_percent(String.format("%.2f", Float.parseFloat(squad.get("count").toString()) / zoneCount * 100.0));
+                    squadsVo.setChecked_percent(String.format("%.2f", Float.parseFloat(squad.get(COUNT).toString()) / zoneCount * 100.0));
                 } else {
                     squadsVo.setChecked_percent("");
                 }
@@ -743,15 +752,15 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             }
             lastSquadId = squadId;
             MeasureStatisticSquadsSmallestPassPercentInfoVo measureStatisticSquadsSmallestPassPercentInfoVo = new MeasureStatisticSquadsSmallestPassPercentInfoVo();
-            CategoryV3 categoryV3 = categoryV3Service.getCategoryByKey(categoryKey.get("category_key").toString());
-            List<Map<String, Object>> sInfos = measureZoneResultService.getSquadsZoneResultPassPercentByListIdAndCategoryKey(measure_list_id, categoryKey.get("category_key").toString(), MeasureListConstant.CLOSEDCODE);
+            CategoryV3 categoryV3 = categoryV3Service.getCategoryByKey(categoryKey.get(CATEGORY_KEY).toString());
+            List<Map<String, Object>> sInfos = measureZoneResultService.getSquadsZoneResultPassPercentByListIdAndCategoryKey(measure_list_id, categoryKey.get(CATEGORY_KEY).toString(), MeasureListConstant.CLOSEDCODE);
             if (sInfos != null && sInfos.size() > 0) {
                 measureStatisticSquadsSmallestPassPercentInfoVo.setCategory_key(categoryV3.getKey());
                 measureStatisticSquadsSmallestPassPercentInfoVo.setCategory_name(categoryV3.getName());
                 List<String> squads = new ArrayList<>();
                 sInfos.forEach(squadsInfo -> {
-//                    if(StringUtils.isNotBlank(String.format("%.2f", Float.parseFloat(squadsInfo.get("pass_percent").toString()) * 100.0))){
-                    squads.add(String.format("%.2f", Float.parseFloat(squadsInfo.get("pass_percent").toString()) * 100.0));
+//                    if(StringUtils.isNotBlank(String.format("%.2f", Float.parseFloat(squadsInfo.get(PASSPERCENT).toString()) * 100.0))){
+                    squads.add(String.format("%.2f", Float.parseFloat(squadsInfo.get(PASSPERCENT).toString()) * 100.0));
 //                    }else {
 //                        squads.add("");
 //                    }
@@ -782,14 +791,14 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             }
             largest = diff;
             MeasureStatisticSquadsPassDiffLargestInfoVo measureStatisticSquadsPassDiffLargestInfoVo = new MeasureStatisticSquadsPassDiffLargestInfoVo();
-            CategoryV3 categoryV3 = categoryV3Service.getCategoryByKey(categoryKey.get("category_key").toString());
-            List<Map<String, Object>> sInfos = measureZoneResultService.getSquadsZoneResultPassPercentByListIdAndCategoryKey(measure_list_id, categoryKey.get("category_key").toString(), MeasureListConstant.CLOSEDCODE);
+            CategoryV3 categoryV3 = categoryV3Service.getCategoryByKey(categoryKey.get(CATEGORY_KEY).toString());
+            List<Map<String, Object>> sInfos = measureZoneResultService.getSquadsZoneResultPassPercentByListIdAndCategoryKey(measure_list_id, categoryKey.get(CATEGORY_KEY).toString(), MeasureListConstant.CLOSEDCODE);
             if (sInfos != null && sInfos.size() > 0) {
                 measureStatisticSquadsPassDiffLargestInfoVo.setCategory_key(categoryV3.getKey());
                 measureStatisticSquadsPassDiffLargestInfoVo.setCategory_name(categoryV3.getName());
                 List<String> squads = new ArrayList<>();
                 sInfos.forEach(squadsInfo -> {
-                    squads.add(String.format("%.2f", Float.parseFloat(squadsInfo.get("pass_percent").toString()) * 100.0));
+                    squads.add(String.format("%.2f", Float.parseFloat(squadsInfo.get(PASSPERCENT).toString()) * 100.0));
                 });
                 measureStatisticSquadsPassDiffLargestInfoVo.setSquads(squads);
                 measureStatisticSquadsPassDiffLargestInfoVos.add(measureStatisticSquadsPassDiffLargestInfoVo);
@@ -817,13 +826,13 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             squadsPassVo.setGte60_count(0);
             squadsPassVo.setGte80_count(0);
             measureZoneResults.forEach(measureZoneResult -> {
-                if (total > 0 && measureSquad.getId().toString().equals(measureZoneResult.get("squadId").toString())) {
-                    squadsPassVo.setAverage_percent(Float.parseFloat(measureZoneResult.get("ok_total_sum").toString()) / Float.parseFloat(measureZoneResult.get("total_sum").toString()) * 100.0 + "");
+                if (total > 0 && measureSquad.getId().toString().equals(measureZoneResult.get(SQUADID).toString())) {
+                    squadsPassVo.setAverage_percent(Float.parseFloat(measureZoneResult.get("ok_total_sum").toString()) / Float.parseFloat(measureZoneResult.get(TOTAL_SUM).toString()) * 100.0 + "");
                 }
             });
             results.forEach(result -> {
-                if (result.get("total_sum") != null && Integer.parseInt(result.get("total_sum").toString()) > 0 && measureSquad.getId().toString().equals(result.get("squadId").toString())) {
-                    float rate = Float.parseFloat(result.get("ok_total_sum").toString()) / Float.parseFloat(result.get("total_sum").toString());
+                if (result.get(TOTAL_SUM) != null && Integer.parseInt(result.get(TOTAL_SUM).toString()) > 0 && measureSquad.getId().toString().equals(result.get(SQUADID).toString())) {
+                    float rate = Float.parseFloat(result.get("ok_total_sum").toString()) / Float.parseFloat(result.get(TOTAL_SUM).toString());
                     if (rate < 0.6) {
                         squadsPassVo.setLt60_count(squadsPassVo.getLt60_count() + 1);
                     }
@@ -858,8 +867,8 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             squadsVo.setRequire_percent(measureSquad.getPlanRate().toString());
             squadsVo.setComplete_percent("0");
             squadCounts.forEach(squadCount -> {
-                if (total > 0 && measureSquad.getId().toString().equals(squadCount.get("squadId").toString())) {
-                    squadsVo.setComplete_percent((squadCount.get("count") == null ? 0.00 : Float.parseFloat(squadCount.get("count").toString())) / Float.parseFloat(total.toString()) * 100.0 * 100.0 / Float.parseFloat(measureSquad.getPlanRate().toString()) + "");
+                if (total > 0 && measureSquad.getId().toString().equals(squadCount.get(SQUADID).toString())) {
+                    squadsVo.setComplete_percent((squadCount.get(COUNT) == null ? 0.00 : Float.parseFloat(squadCount.get(COUNT).toString())) / Float.parseFloat(total.toString()) * 100.0 * 100.0 / Float.parseFloat(measureSquad.getPlanRate().toString()) + "");
                 }
             });
             squadsVo.setComplete_percent(String.format("%.2f", Double.parseDouble(squadsVo.getComplete_percent())));
@@ -936,8 +945,8 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             }
             measurePlanVo.setIssue_count(measureListIssueService.countByMeasureListId(map.get("id").toString()));
             measurePlanVo.setCreate_at(DateTool.getLongFromString(map.get("createAt").toString()) / 1000);
-            System.out.println(JSON.toJSONString(map.get("topAreas")));
-            List<Area> areas = JSONArray.parseArray(JSON.toJSONString(map.get("topAreas")), Area.class);
+            System.out.println(JSON.toJSONString(map.get(TOPAREAS)));
+            List<Area> areas = JSONArray.parseArray(JSON.toJSONString(map.get(TOPAREAS)), Area.class);
             measurePlanVo.setTop_areas(areas.stream().map(Area::getName).collect(Collectors.joining("、")));
             measurePlanVoList.add(measurePlanVo);
         }
@@ -949,13 +958,13 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         List<Integer> listIds = new ArrayList<>(list.size());
         List<String> rootCategoryKeys = list.stream().filter(item -> {
             listIds.add((int) item.get("id"));
-            String key = item.get("rootCategoryKey").toString();
+            String key = item.get(ROOTCATEGORYKEY).toString();
             if (mapCategoryName.get(key) != null) {
                 return false;
             }
             mapCategoryName.put(key, "");
             return true;
-        }).map(iteam -> iteam.get("rootCategoryKey").toString()).collect(Collectors.toList());
+        }).map(iteam -> iteam.get(ROOTCATEGORYKEY).toString()).collect(Collectors.toList());
         List<CategoryV3> categorys = categoryV3Service.SearchCategoryByKeyIn(rootCategoryKeys);
 
         categorys.forEach(category -> {
@@ -963,7 +972,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         });
 
         list.forEach(item -> {
-            String key = item.get("rootCategoryKey").toString();
+            String key = item.get(ROOTCATEGORYKEY).toString();
             if (mapCategoryName.get(key) != null) {
                 item.put("rootCategory", mapCategoryName.get(key));
             }
@@ -1000,7 +1009,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
                 continue;
             }
             topIds = topIds.stream().distinct().collect(Collectors.toList());
-            item.put("topAreas", topIds.stream().map(id -> {
+            item.put(TOPAREAS, topIds.stream().map(id -> {
                 return mapAreas.get(id);
             }).filter(area -> area != null).collect(Collectors.toList()));
         }

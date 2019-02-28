@@ -26,7 +26,7 @@ import com.longfor.longjian.measure.consts.enums.ApiDropDataReasonEnum;
 import com.longfor.longjian.measure.consts.enums.EventQueueEnum;
 import com.longfor.longjian.measure.consts.constant.KeyProcedureTaskConstant;
 import com.longfor.longjian.measure.consts.constant.MeasureListConstant;
-import com.longfor.longjian.measure.domain.externalService.*;
+import com.longfor.longjian.measure.domain.externalservice.*;
 import com.longfor.longjian.measure.po.zhijian2.*;
 import com.longfor.longjian.measure.util.DateTool;
 import lombok.extern.slf4j.Slf4j;
@@ -79,6 +79,9 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     private MeasureListIssueHelper helper;
     @Resource
     private SessionInfo sessionInfo;
+    private static final String SEARCHUNSCOPEDBYPROJIDLASTIDUPDATEATGT = "SearchUnscopedByProjIdLastIdUpdateAtGt";
+    private static final String ERROR = "],error:";
+    private static final String UPDATEAT = "UpdateAt";
 
     @Override
     public LjBaseResponse<DroppedInfoVo> reportIssue(ApiMeasureReportIssueReq apiMeasureReportIssueReq, HttpServletRequest request) throws LjBaseRuntimeException,ParseException {
@@ -110,7 +113,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                             v.getTyp(), v.getStatus(), v.getAttachment_md5_list(), v.getCategory_key(), Long.parseLong(v.getClient_create_at().toString())).
                     setDatailField(v.getZone_uuid(), Long.parseLong(v.getPlan_end_on().toString()), Long.parseLong(v.getEnd_on().toString()), v.getRepairer_id(),
                             v.getCondition(), v.getArea_id(), v.getDrawing_md5(), v.getPos_x(), v.getPos_y(),
-                            v.getClose_status(), v.getClose_user(),v.getClose_time() == null ? 0 : Long.parseLong(v.getClose_time().toString()), v.getCheck_status())
+                            v.getClose_status(), v.getClose_user(), v.getClose_time() == null ? 0 : Long.parseLong(v.getClose_time().toString()), v.getCheck_status())
                     .done();
         }
         try {
@@ -343,11 +346,11 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                         Date date;
                         try {
                             Date parse = sdf.parse(sdf.format(new Date((t.getUpdate_at() * 1000))));
-                            clientCreateAt =  sdf.format(parse);
+                            clientCreateAt = sdf.format(parse);
                         } catch (NumberFormatException e) {
-                            log.error("error:",e);
+                            log.error("error:", e);
                         } catch (ParseException e) {
-                            log.error("error:",e);
+                            log.error("error:", e);
                         }
                     }
                     i++;
@@ -518,7 +521,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             measureRegionV2Vo.setRegion_list(region_list);
             ljBaseResponse.setData(measureRegionV2Vo);
         } catch (Exception e) {
-            log.error("SearchUnscopedByProjIdLastIdUpdateAtGt" + "[" + apiMeasureRegionReqV2.getProject_id() + "],error:" + e);
+            log.error(SEARCHUNSCOPEDBYPROJIDLASTIDUPDATEATGT + "[" + apiMeasureRegionReqV2.getProject_id() + ERROR + e);
             throw new LjBaseRuntimeException(-9999,"读取数据失败，code:region");
         }
         return ljBaseResponse;
@@ -533,7 +536,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             totalVo.setTotal(total);
             ljBaseResponse.setData(totalVo);
         } catch (Exception e) {
-            log.error("GetCountUnscopedByProjIdUpdateAtGt" + "[" + apiMeasureRegionTotalReqV2.getProject_id() + "],error:" + e);
+            log.error("GetCountUnscopedByProjIdUpdateAtGt" + "[" + apiMeasureRegionTotalReqV2.getProject_id() + ERROR + e);
             throw new LjBaseRuntimeException(-9999,"读取数据失败，code:region_total");
         }
         return ljBaseResponse;
@@ -559,7 +562,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             measureRegionRelV2Vo.setRel_list(rel_list);
             ljBaseResponse.setData(measureRegionRelV2Vo);
         } catch (Exception e) {
-            log.error("SearchRelUnscopedByProjIdLastIdUpdateAtGt" + "[" + apiMeasureRegionRelReqV2.getProject_id() + "],error:" + e);
+            log.error("SearchRelUnscopedByProjIdLastIdUpdateAtGt" + "[" + apiMeasureRegionRelReqV2.getProject_id() + ERROR + e);
             throw new LjBaseRuntimeException(-9999,"读取数据失败，code:region_rel");
         }
         return ljBaseResponse;
@@ -657,7 +660,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             });
             measureZoneResultVo.setResult_list(result_list);
         } catch (Exception e) {
-            log.error("SearchUnscopedByProjIdLastIdUpdateAtGt" + "[" + apiMeasureZoneResultReqV2.getList_id() + "],error:" + e.getMessage());
+            log.error(SEARCHUNSCOPEDBYPROJIDLASTIDUPDATEATGT + "[" + apiMeasureZoneResultReqV2.getList_id() + ERROR + e.getMessage());
             throw new LjBaseRuntimeException(-9999,"读取数据失败，code:zone");
         }
         ljBaseResponse.setData(measureZoneResultVo);
@@ -673,7 +676,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             Integer total = measureZoneResultService.getCountResultUnscopedByListIdLastIdUpdateAtGt(measureList.getProjectId(), apiMeasureZoneResultTotalReqV2.getList_id(), apiMeasureZoneResultTotalReqV2.getTimestamp());
             totalVo.setTotal(total);
         } catch (Exception e) {
-            log.error("SearchUnscopedByProjIdLastIdUpdateAtGt" + "[" + apiMeasureZoneResultTotalReqV2.getList_id() + "],error:" + e.getMessage());
+            log.error(SEARCHUNSCOPEDBYPROJIDLASTIDUPDATEATGT + "[" + apiMeasureZoneResultTotalReqV2.getList_id() + ERROR + e.getMessage());
             throw new LjBaseRuntimeException(-9999,"读取数据失败，code:zone_total");
         }
         ljBaseResponse.setData(totalVo);
@@ -727,9 +730,9 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         textResultVo.setRecorder_id(textResult.getInteger("RecorderId"));
         textResultVo.setScore(textResult.getDouble("Score"));
         textResultVo.setTexture(textResult.getString("Texture"));
-        Date update = textResult.getDate("UpdateAt");
+        Date update = textResult.getDate(UPDATEAT);
         //System.out.println(update);
-        textResultVo.setUpdate_at(textResult.getDate("UpdateAt") == null ? 0 : DateUtil.dateToTimestamp(textResult.getDate("UpdateAt")));
+        textResultVo.setUpdate_at(textResult.getDate(UPDATEAT) == null ? 0 : DateUtil.dateToTimestamp(textResult.getDate(UPDATEAT)));
         List<SinglePointTestVo> d = new ArrayList<>();
         String data = textResult.getString("Data");
         if (StringUtils.isNotBlank(data)) {

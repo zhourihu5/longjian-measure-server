@@ -8,9 +8,9 @@ import com.longfor.longjian.measure.app.appservice.areaservice.ICoreAreaService;
 import com.longfor.longjian.measure.app.appservice.paintareaservice.IRegionService;
 import com.longfor.longjian.measure.app.vo.feignvo.AreaRetrieveVo;
 import com.longfor.longjian.measure.consts.enums.MeasureErrorEnum;
-import com.longfor.longjian.measure.domain.externalService.IMeasureRegionRelService;
-import com.longfor.longjian.measure.domain.externalService.IMeasureRegionService;
-import com.longfor.longjian.measure.domain.externalService.IMeasureZoneService;
+import com.longfor.longjian.measure.domain.externalservice.IMeasureRegionRelService;
+import com.longfor.longjian.measure.domain.externalservice.IMeasureRegionService;
+import com.longfor.longjian.measure.domain.externalservice.IMeasureZoneService;
 import com.longfor.longjian.measure.po.zhijian2.Area;
 import com.longfor.longjian.measure.po.zhijian2.MeasureRegion;
 import com.longfor.longjian.measure.po.zhijian2.MeasureRegionRel;
@@ -35,7 +35,8 @@ public class RegionServiceImpl implements IRegionService {
     private IMeasureRegionRelService measureRegionRelService;
     @Resource
     private IMeasureZoneService measureZoneService;
-
+    private static final String POLYGON = "polygon";
+    private static final String TAG_ID_LIST = "tag_id_list";
     @Override
     @Transactional
     public void add(Integer project_id, String region_list, Integer src_type) {
@@ -97,19 +98,19 @@ public class RegionServiceImpl implements IRegionService {
                 String area_path_and_id = area_info.getPath() + area_id + "/";
                 String uuid = UUID.randomUUID().toString();
                 String gen_uuid = uuid.replace("-","");
-                String polygon = region_info.get("polygon").toString();
+                String polygon = region_info.get(POLYGON).toString();
                 true_index_dict.put(area_id.toString(),(int)true_index_dict.get(area_id.toString()) + 1);
                 Map<String,Object> region_dict = new HashMap<>();
                 region_dict.put("project_id",project_id);
                 region_dict.put("area_id",area_id);
                 region_dict.put("area_path_and_id",area_path_and_id);
                 region_dict.put("drawing_md5",area_info.getDrawingMd5());
-                region_dict.put("polygon",polygon);
+                region_dict.put(POLYGON,polygon);
                 region_dict.put("src_type",src_type);
                 region_dict.put("uuid",gen_uuid);
                 region_dict.put("region_index",true_index_dict.get(area_id.toString()));
                 region_dict.put("rel_id",0);
-                region_dict.put("tag_id_list",region_info.get("tag_id_list"));
+                region_dict.put(TAG_ID_LIST,region_info.get(TAG_ID_LIST));
                 log.info("region_dict : " + JSON.toJSONString(region_dict));
                 log.info("true_index_dict : " + JSON.toJSONString(true_index_dict));
                 MeasureRegion model = JSONObject.toJavaObject((JSON)JSON.toJSON(region_dict),MeasureRegion.class);
@@ -147,7 +148,7 @@ public class RegionServiceImpl implements IRegionService {
         List<HashMap> regionInfolist = JSONArray.parseArray(region_info_list,HashMap.class);
         log.info(JSON.toJSONString(regionInfolist));
         regionInfolist.forEach(region_info -> {
-            measureRegionService.updateByProjectIdAndIdInNoDeleted(project_id,(List)region_info.get("region_ids"),region_info.get("polygon").toString(),region_info.get("tag_id_list").toString());
+            measureRegionService.updateByProjectIdAndIdInNoDeleted(project_id,(List)region_info.get("region_ids"),region_info.get(POLYGON).toString(),region_info.get(TAG_ID_LIST).toString());
         });
     }
 

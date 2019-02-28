@@ -5,8 +5,8 @@ import com.longfor.longjian.measure.app.appservice.appservice.IAPPMeasureListSer
 import com.longfor.longjian.measure.app.appservice.promeasurequicksearchservice.IMeasureStatisticService;
 import com.longfor.longjian.measure.app.req.promeasurequicksearchreq.GetMeasureStatisticTaskReq;
 import com.longfor.longjian.measure.app.vo.promeasurequicksearchvo.MeasureStatisticSquadStatsVo;
-import com.longfor.longjian.measure.domain.externalService.IMeasureListIssueService;
-import com.longfor.longjian.measure.domain.externalService.IMeasureZoneService;
+import com.longfor.longjian.measure.domain.externalservice.IMeasureListIssueService;
+import com.longfor.longjian.measure.domain.externalservice.IMeasureZoneService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureList;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

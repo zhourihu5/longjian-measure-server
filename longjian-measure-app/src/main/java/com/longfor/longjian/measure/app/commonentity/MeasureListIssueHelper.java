@@ -9,7 +9,7 @@ import com.longfor.longjian.measure.consts.enums.ApiDropDataReasonEnum;
 import com.longfor.longjian.measure.consts.enums.EventQueueEnum;
 import com.longfor.longjian.measure.consts.constant.MeasureListConstant;
 import com.longfor.longjian.measure.consts.constant.MeasureListIssueType;
-import com.longfor.longjian.measure.domain.externalService.*;
+import com.longfor.longjian.measure.domain.externalservice.*;
 import com.longfor.longjian.measure.po.zhijian2.*;
 import com.longfor.longjian.measure.util.DateTool;
 import lombok.Data;
@@ -429,10 +429,10 @@ public class MeasureListIssueHelper {
         //审核状态
         if (detail.getCheckStatus() != -1) {
             changed = true;
-            if (detail.getCheckStatus() == MeasureListConstant.CheckYes) {
+            if (detail.getCheckStatus() == MeasureListConstant.CHECKYES) {
                 // 审核通过 status -> 消项
                 issue.setStatus(MeasureListIssueType.CHECKYES);
-            } else if (detail.getCheckStatus() == MeasureListConstant.CheckNo) {
+            } else if (detail.getCheckStatus() == MeasureListConstant.CHECKNO) {
                 // 审核不通过 状态 -> 未整改
                 issue.setStatus(MeasureListIssueType.ASSIGNNOREFORM);
             }
@@ -594,7 +594,8 @@ public class MeasureListIssueHelper {
                                 issue.getAreaId(), issue.getAreaPathAndId(), issue.getCategoryKey(),
                                 issue.getCategoryPathAndKey(), issue.getSenderId(), issue.getClientCreateAt());
                         break;
-
+                    default:
+                        log.info("当前状态 :{}",issue.getStatus());
                 }
             }
             //issue log

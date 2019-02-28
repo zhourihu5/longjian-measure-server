@@ -12,7 +12,7 @@ import com.longfor.longjian.measure.app.appservice.promeasurequicksearchservice.
 import com.longfor.longjian.measure.consts.enums.AreaTypeEnum;
 import com.longfor.longjian.measure.consts.enums.MeasureRegionSrcType;
 import com.longfor.longjian.measure.consts.constant.DateConstant;
-import com.longfor.longjian.measure.domain.externalService.*;
+import com.longfor.longjian.measure.domain.externalservice.*;
 import com.longfor.longjian.measure.po.zhijian2.*;
 import com.longfor.longjian.measure.po.zhijian2_apisvr.User;
 import com.longfor.longjian.measure.vo.*;
@@ -56,7 +56,8 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
     private IMeasureRegionService regionSerVice;
     @Resource
     private IExportFileRecordService exportFileRecordService;
-
+    private static final  String  ROOTCATEGORYDATAS= "rootCategoryDatas";
+    private static final  String  MEASUREDDATA= "measuredData";
     @Override
     public void exportExcelAsync(Integer curUserId, Integer projId, Integer list_id, HttpServletResponse response) {
         try {
@@ -67,8 +68,8 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
             }
             Map<String, Object> map = this.search4ExportExcel(projId, list_id);
             InputVo input = new InputVo();
-            input.setData(map.get("rootCategoryDatas") == null ? new ArrayList<>() : (List<CategoryDataVo>) map.get("rootCategoryDatas"));
-            input.setMeasured_data(map.get("measuredData") == null ? new MeasuredDataVo() : (MeasuredDataVo) map.get("measuredData"));
+            input.setData(map.get(ROOTCATEGORYDATAS) == null ? new ArrayList<>() : (List<CategoryDataVo>) map.get(ROOTCATEGORYDATAS));
+            input.setMeasured_data(map.get(MEASUREDDATA) == null ? new MeasuredDataVo() : (MeasuredDataVo) map.get(MEASUREDDATA));
             Date date = new Date();
             String newTime = new SimpleDateFormat("yyyyMMddHHmmss").format(date);
             exportFileRecordService.create(curUserId, project.getTeamId(), projId, ExportFileRecordType.MeasureDetail.getValue(), input, String.format("%s-统计.%s.xlsx", measureList.getName() == null ? "llll" : measureList.getName(), newTime), date, response);
@@ -214,8 +215,8 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                 this.reCalc(categoryDataVo);
             });
             MeasuredDataVo measuredDataVo = this.getMeasuredDataByListId(projId, list_id);
-            map.put("measuredData", measuredDataVo);
-            map.put("rootCategoryDatas", rootCategoryDatas);
+            map.put(MEASUREDDATA, measuredDataVo);
+            map.put(ROOTCATEGORYDATAS, rootCategoryDatas);
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }

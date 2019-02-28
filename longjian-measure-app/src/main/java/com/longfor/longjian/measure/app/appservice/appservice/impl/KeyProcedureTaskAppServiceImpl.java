@@ -2,7 +2,7 @@ package com.longfor.longjian.measure.app.appservice.appservice.impl;
 
 import com.longfor.longjian.measure.app.appservice.appservice.IKeyProcedureTaskAppService;
 import com.longfor.longjian.measure.consts.enums.ReportStatusEnum;
-import com.longfor.longjian.measure.domain.externalService.IReportResultService;
+import com.longfor.longjian.measure.domain.externalservice.IReportResultService;
 import com.longfor.longjian.measure.po.zhijian2.ReportResult;
 import com.longfor.longjian.measure.util.CommonException;
 import lombok.extern.slf4j.Slf4j;

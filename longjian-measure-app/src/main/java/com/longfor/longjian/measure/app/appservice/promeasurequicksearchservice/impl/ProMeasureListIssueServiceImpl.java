@@ -5,7 +5,7 @@ import com.longfor.longjian.measure.app.commonentity.MeasureListIssueHelper;
 import com.longfor.longjian.measure.consts.enums.MeasureListCloseStatusEnum;
 import com.longfor.longjian.measure.consts.enums.MeasureListIssueCheckStatusEnum;
 import com.longfor.longjian.measure.consts.constant.MeasureListIssueType;
-import com.longfor.longjian.measure.domain.externalService.IMeasureListIssueService;
+import com.longfor.longjian.measure.domain.externalservice.IMeasureListIssueService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListIssue;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

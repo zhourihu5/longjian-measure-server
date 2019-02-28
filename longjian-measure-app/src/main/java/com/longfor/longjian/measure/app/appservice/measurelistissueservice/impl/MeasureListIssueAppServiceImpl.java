@@ -17,10 +17,10 @@ import com.longfor.longjian.measure.app.vo.measurelistvo.MeasureListSearchResult
 import com.longfor.longjian.measure.app.vo.measurelistvo.UserInfoVo;
 import com.longfor.longjian.measure.consts.enums.MeasureListCloseStatusEnum;
 import com.longfor.longjian.measure.consts.constant.MeasureListIssueType;
-import com.longfor.longjian.measure.domain.externalService.IMeasureListIssueService;
-import com.longfor.longjian.measure.domain.externalService.IMeasureRegionService;
-import com.longfor.longjian.measure.domain.externalService.IMeasureZoneService;
-import com.longfor.longjian.measure.domain.externalService.IUserService;
+import com.longfor.longjian.measure.domain.externalservice.IMeasureListIssueService;
+import com.longfor.longjian.measure.domain.externalservice.IMeasureRegionService;
+import com.longfor.longjian.measure.domain.externalservice.IMeasureZoneService;
+import com.longfor.longjian.measure.domain.externalservice.IUserService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListIssue;
 import com.longfor.longjian.measure.po.zhijian2.MeasureRegion;
 import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
@@ -53,7 +53,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
     private IUserService userService;
     @Resource
     private SessionInfo sessionInfo;
-
+    public static final String ERROR = "error:";
     @Override
     public LjBaseResponse<MeasureIssueQueryVo> issueQueryJson(MeasureIssueQueryReq req, HttpServletRequest request) throws LjBaseRuntimeException {
         LjBaseResponse<MeasureIssueQueryVo> ljBaseResponse = new LjBaseResponse<>();
@@ -82,7 +82,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
                     req.getRepairer_id(), req.getIs_overdue());
 
         } catch (Exception e) {
-            log.error("error:" + e);
+            log.error(ERROR + e);
             return new LjBaseResponse<>();
         }
         measureIssueQueryVo.setCount((Integer) issueMap.get("count"));
@@ -121,7 +121,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
         try {
             measureZones = measureZoneSerivce.searchZoneByProjUuids(req.getProject_id(), zoneUuids);
         } catch (Exception e) {
-            log.error("error:" + e);
+            log.error(ERROR + e);
             return new LjBaseResponse<>();
         }
         Map<String, MeasureZone> mZone = Maps.newHashMap();
@@ -134,7 +134,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
         try {
             regions = measureRegionService.searchByProjUuids(req.getProject_id(), regionUuids);
         } catch (Exception e) {
-            log.error("error:" + e);
+            log.error(ERROR + e);
             return new LjBaseResponse<>();
         }
         Map<String, MeasureRegion> mRegion = Maps.newHashMap();
@@ -240,7 +240,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
                 throw new RuntimeException("问题已经关闭，不可编辑");
             }
         } catch (Exception e) {
-            log.error("error:" + e);
+            log.error(ERROR + e);
             throw new Exception(e);
         }
     }

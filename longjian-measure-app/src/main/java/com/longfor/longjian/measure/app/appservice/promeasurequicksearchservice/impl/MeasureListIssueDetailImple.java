@@ -17,7 +17,7 @@ import com.longfor.longjian.measure.app.commonentity.MeasureSquadAndSquadUser;
 import com.longfor.longjian.measure.app.req.promeasurequicksearchreq.*;
 import com.longfor.longjian.measure.app.vo.promeasurequicksearchvo.*;
 import com.longfor.longjian.measure.consts.constant.MeasureListIssueType;
-import com.longfor.longjian.measure.domain.externalService.*;
+import com.longfor.longjian.measure.domain.externalservice.*;
 import com.longfor.longjian.measure.po.zhijian2.*;
 import com.longfor.longjian.measure.po.zhijian2_apisvr.User;
 import com.longfor.longjian.measure.util.StringSplitToListUtil;
@@ -81,16 +81,18 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
     private ICoreAreaService coreAreaService;
     @Resource
     private SessionInfo sessionInfo;
-
+    private static final String ISSUEISNO= "该爆点信息不存在";
+    private static final String CUR_PROJ= "cur_proj";
+    private static final String PROBLENISCLOSE= "问题已被关闭";
     @Override
     public MeasureListIssueDetailIssueInfoVo IssueInfo(GetMeasureListIssueDetailReq req) {
         MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(req.getProject_id(), req.getUuid());
         if (issue == null) {
-            throw new LjBaseRuntimeException(-1, "该爆点信息不存在");
+            throw new LjBaseRuntimeException(-1, ISSUEISNO);
         }
         ProjectBase cur_proj = null;
         try {
-            cur_proj = (ProjectBase) sessionInfo.getBaseInfo("cur_proj");
+            cur_proj = (ProjectBase) sessionInfo.getBaseInfo(CUR_PROJ);
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
@@ -122,7 +124,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
             log.warn("");
         }
         if (issue == null) {
-            throw new LjBaseRuntimeException(-1, "该爆点信息不存在");
+            throw new LjBaseRuntimeException(-1, ISSUEISNO);
         }
         if (issue != null) {
             MeasureRule rule = measureRuleService.getByCategoryKey(issue.getCategoryKey());
@@ -157,7 +159,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         vo.setResults(voResesults);
         ProjectBase cur_proj = null;
         try {
-            cur_proj = (ProjectBase) sessionInfo.getBaseInfo("cur_proj");
+            cur_proj = (ProjectBase) sessionInfo.getBaseInfo(CUR_PROJ);
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
@@ -233,12 +235,12 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         List<MeasureListIssueDetailRepairerVo> vo = new ArrayList<>();
         MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(req.getProject_id(), req.getUuid());
         if (issue == null) {
-            throw new LjBaseRuntimeException(-1, "该爆点信息不存在");
+            throw new LjBaseRuntimeException(-1, ISSUEISNO);
         }
         List<MeasureRepairerUser> measureRepairerUsers = null;
         ProjectBase cur_proj = null;
         try {
-            cur_proj = (ProjectBase) sessionInfo.getBaseInfo("cur_proj");
+            cur_proj = (ProjectBase) sessionInfo.getBaseInfo(CUR_PROJ);
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
@@ -276,7 +278,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         }
         boolean isClosed = UpdateIssueRepairInfoByUuid(req.getUuid(), req.getProject_id(), sessionUser.getUserId(), req.getRepairer_id(), -1L);
         if (isClosed) {
-            throw new LjBaseRuntimeException(-1, "问题已被关闭");
+            throw new LjBaseRuntimeException(-1, PROBLENISCLOSE);
         }
     }
 
@@ -294,7 +296,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         }
         boolean isClosed = UpdateIssueTypeByUuid(req.getUuid(), req.getProject_id(), sessionUser.getUserId(), req.getTyp());
         if (isClosed) {
-            throw new LjBaseRuntimeException(-1, "问题已被关闭");
+            throw new LjBaseRuntimeException(-1, PROBLENISCLOSE);
         }
         return new LjBaseResponse();
 
@@ -314,7 +316,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         }
         boolean isClosed = UpdateIssueRepairInfoByUuid(req.getUuid(), req.getProject_id(), sessionUser.getUserId(), -1, req.getPlan_end_on());
         if (isClosed) {
-            throw new LjBaseRuntimeException(-1, "问题已被关闭");
+            throw new LjBaseRuntimeException(-1, PROBLENISCLOSE);
         }
         return new LjBaseResponse();
     }

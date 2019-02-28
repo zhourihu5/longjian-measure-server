@@ -17,9 +17,9 @@ import com.longfor.longjian.measure.app.vo.checkitemsvo.CheckItemListVo;
 import com.longfor.longjian.measure.app.vo.promeasurevo.*;
 import com.longfor.longjian.measure.consts.enums.LoginEnum;
 import com.longfor.longjian.measure.consts.constant.CtrlToolConstant;
-import com.longfor.longjian.measure.domain.externalService.ICategoryV3Service;
-import com.longfor.longjian.measure.domain.externalService.ICheckItemV3Service;
-import com.longfor.longjian.measure.domain.externalService.IFileResourceService;
+import com.longfor.longjian.measure.domain.externalservice.ICategoryV3Service;
+import com.longfor.longjian.measure.domain.externalservice.ICheckItemV3Service;
+import com.longfor.longjian.measure.domain.externalservice.IFileResourceService;
 import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
 import com.longfor.longjian.measure.po.zhijian2.CheckItemV3;
 import com.longfor.longjian.measure.po.zhijian2.FileResource;
@@ -61,6 +61,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
     private ICategoryV3Service categoryV3Service;
     @Resource
     private SessionInfo sessionInfo;
+    public static final String ERROR = "error:";
 
     @Override
     public LjBaseResponse<GetCheckItemVo> getCheckItemJson(GetCheckItemReq getCheckItemReq, HttpServletRequest request) throws LjBaseRuntimeException {
@@ -87,7 +88,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
             getCheckItemVo.setItem(checkItemVo);
             ljBaseResponse.setData(getCheckItemVo);
         } catch (Exception e) {
-            log.error("error:" + e);
+            log.error(ERROR + e);
             throw new RuntimeException(e);
         }
         return ljBaseResponse;
@@ -117,7 +118,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
             getCategoryVo.setItem(categoryVo);
             ljBaseResponse.setData(getCategoryVo);
         } catch (Exception e) {
-            log.error("error:" + e);
+            log.error(ERROR + e);
             throw new RuntimeException(e);
         }
         return ljBaseResponse;
@@ -188,7 +189,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
                 name = "实测实量检查项导入模板.xlsx";
                 content = FileUtil.urlTobyte(filename);
             } catch (IOException e) {
-                ljBaseResponse.setMessage("error:" + e);
+                ljBaseResponse.setMessage(ERROR + e);
                 return ljBaseResponse;
             }
         }
