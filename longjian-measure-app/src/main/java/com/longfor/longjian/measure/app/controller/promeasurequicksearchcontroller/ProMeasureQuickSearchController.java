@@ -1,6 +1,7 @@
 package com.longfor.longjian.measure.app.controller.promeasurequicksearchcontroller;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.app.appservice.promeasuremanagerservice.IProMeasureService;
 import com.longfor.longjian.measure.app.appservice.promeasurequicksearchservice.IProMeasureQuickSearchService;
 import com.longfor.longjian.measure.app.req.promeasuremanagerreq.GetCheckerListReq;
@@ -99,7 +100,7 @@ public class ProMeasureQuickSearchController {
      * @return
      */
     @RequestMapping(value = "measure/measure_list/sub_categorys/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<ItemsVo<List<ProMeasureCheckIteamVo>>> getBlisterCheckItems(@Valid GetProMeasureCheckItemsReq getProMeasureCheckItemsReq,HttpServletRequest request) throws Exception {
+    public LjBaseResponse<ItemsVo<List<ProMeasureCheckIteamVo>>> getBlisterCheckItems(@Valid GetProMeasureCheckItemsReq getProMeasureCheckItemsReq,HttpServletRequest request) throws LjBaseRuntimeException ,InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException{
         return proMeasureService.getProMeasureCheckItems(getProMeasureCheckItemsReq,request);
     }
 
@@ -110,7 +111,7 @@ public class ProMeasureQuickSearchController {
      * @return
      */
     @RequestMapping(value = "measure/measure_statistic/squad_completeness_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<SquadsAndPassVo> getCompareBetweenGroup(@Valid GetCompareBetweenGroupReq getCompareBetweenGroupReq) throws Exception {
+    public LjBaseResponse<SquadsAndPassVo> getCompareBetweenGroup(@Valid GetCompareBetweenGroupReq getCompareBetweenGroupReq) throws LjBaseRuntimeException {
         return  proMeasureService.getCompareBetweenGroup(getCompareBetweenGroupReq);
     }
 
@@ -122,7 +123,7 @@ public class ProMeasureQuickSearchController {
      * @return
      */
     @RequestMapping(value = "measure/measure_statistic/squad_special_point_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<PassDiffVo> getLoserCompareBetweenGroup(@Valid GetLoserCompareBetweenGroupReq getLoserCompareBetweenGroupReq) throws Exception {
+    public LjBaseResponse<PassDiffVo> getLoserCompareBetweenGroup(@Valid GetLoserCompareBetweenGroupReq getLoserCompareBetweenGroupReq) throws LjBaseRuntimeException {
         return proMeasureService.getLoserCompareBetweenGroup(getLoserCompareBetweenGroupReq);
     }
 
@@ -133,7 +134,7 @@ public class ProMeasureQuickSearchController {
      * @return
      */
     @RequestMapping(value = "measure/measure_statistic/category_details_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<CompareItemBetweenSquadsVo> getCompareItemBetweenSquads(@Valid GetCompareItemBetweenSquadsReq getCompareItemBetweenSquadsReq) throws Exception {
+    public LjBaseResponse<CompareItemBetweenSquadsVo> getCompareItemBetweenSquads(@Valid GetCompareItemBetweenSquadsReq getCompareItemBetweenSquadsReq) throws LjBaseRuntimeException {
         return proMeasureService.getCompareItemBetweenSquads(getCompareItemBetweenSquadsReq);
     }
 
@@ -177,7 +178,7 @@ public class ProMeasureQuickSearchController {
      * @return
      */
     @RequestMapping(value = "measure/measure_statistic/sub_category_area_percentage/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<ItemsVo<List<AreaPOPVo>>> getAreaPOP(@Valid GetAreaPOPReq getAreaPOPreq) throws Exception {
+    public LjBaseResponse<ItemsVo<List<AreaPOPVo>>> getAreaPOP(@Valid GetAreaPOPReq getAreaPOPreq) throws LjBaseRuntimeException {
         return proMeasureService.getAreaPOP(getAreaPOPreq);
     }
     

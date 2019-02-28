@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.text.ParseException;
 import java.util.*;
 
 /**
@@ -66,7 +67,7 @@ public class MeasureListIssueDetailController {
      * @date 2019/1/14 14:31
      **/
     @RequestMapping(value = "issue_info/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureListIssueDetailIssueInfoVo> IssueInfo(@Valid GetMeasureListIssueDetailReq req, HttpServletRequest request) throws Exception {
+    public LjBaseResponse<MeasureListIssueDetailIssueInfoVo> IssueInfo(@Valid GetMeasureListIssueDetailReq req, HttpServletRequest request){
         try {
             ctrlTool.projPerm(request, CtrlToolConstant.PROJECT_MEASURE_ISSUEMANAGE_CHECK);
         } catch (Exception e) {
@@ -83,7 +84,7 @@ public class MeasureListIssueDetailController {
      * @date 2019/1/14 14:34
      **/
     @RequestMapping(value = "zone_info/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureListIssueDetailZoneInfoVo> zoneInfo(@Valid GetMeasureListIssueDetailReq req, HttpServletRequest request) throws Exception {
+    public LjBaseResponse<MeasureListIssueDetailZoneInfoVo> zoneInfo(@Valid GetMeasureListIssueDetailReq req, HttpServletRequest request){
         try {
             ctrlTool.projPerm(request, CtrlToolConstant.PROJECT_MEASURE_ISSUEMANAGE_CHECK);
         } catch (Exception e) {
@@ -101,7 +102,7 @@ public class MeasureListIssueDetailController {
      * @date 2019/1/14 14:59
      **/
     @RequestMapping(value = "repair_list/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureListIssueDetailRepairListVo> repairList(@Valid GetMeasureListIssueDetailReq req, HttpServletRequest request) throws Exception {
+    public LjBaseResponse<MeasureListIssueDetailRepairListVo> repairList(@Valid GetMeasureListIssueDetailReq req, HttpServletRequest request){
         try {
             ctrlTool.projPerm(request, CtrlToolConstant.PROJECT_MEASURE_ISSUEMANAGE_CHECK);
         } catch (Exception e) {
@@ -118,7 +119,7 @@ public class MeasureListIssueDetailController {
      * @date 2019/1/14 20:32
      **/
     @RequestMapping(value = "update_repairer/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse updateRepairer(@Valid MeasureListDetailUpdateIssueRepairerReq req, HttpServletRequest request) throws Exception {
+    public LjBaseResponse updateRepairer(@Valid MeasureListDetailUpdateIssueRepairerReq req, HttpServletRequest request){
         try {
             ctrlTool.projPerm(request, CtrlToolConstant.PROJECT_MEASURE_ISSUEMANAGE_COMPILE);
         } catch (Exception e) {
@@ -136,7 +137,7 @@ public class MeasureListIssueDetailController {
      * @return
      */
     @RequestMapping(value = "delete/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse delete(@Valid MeasureListDetailDeleteReq measureListDetailDeleteReq, HttpServletRequest request) throws Exception {
+    public LjBaseResponse delete(@Valid MeasureListDetailDeleteReq measureListDetailDeleteReq, HttpServletRequest request){
         //鉴权
         try {
             ctrlTool.projPerm(request, CtrlToolConstant.PROJECT_MEASURE_ISSUEMANAGE_DELETE);
@@ -154,7 +155,7 @@ public class MeasureListIssueDetailController {
      * @return
      */
     @RequestMapping(value = "update_approve_issue/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse updateApproveIssue(@Valid MeasureListDetailUpdateApproveIssueReq measureListDetailUpdateApproveIssueReq, HttpServletRequest request) throws Exception {
+    public LjBaseResponse updateApproveIssue(@Valid MeasureListDetailUpdateApproveIssueReq measureListDetailUpdateApproveIssueReq, HttpServletRequest request) throws LjBaseRuntimeException, ParseException {
         //鉴权
         Integer uid = null;
         try {
@@ -166,7 +167,7 @@ public class MeasureListIssueDetailController {
 
         boolean isClosed = proMeasureListIssueService.updateIssueApproveStatusByUuid(measureListDetailUpdateApproveIssueReq.getUuid(), measureListDetailUpdateApproveIssueReq.getProject_id(), uid, measureListDetailUpdateApproveIssueReq.getStatus(), measureListDetailUpdateApproveIssueReq.getContent(), "");
         if (isClosed) {
-            throw new Exception("问题已被关闭");
+            throw new LjBaseRuntimeException(-9999,"问题已被关闭");
         }
         return new LjBaseResponse();
     }
@@ -179,7 +180,7 @@ public class MeasureListIssueDetailController {
      * @return
      */
     @RequestMapping(value = "history_logs/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<ItemsVo<List<MeasureListIssueHistoryRepairLogVo>>> historyLogs(@Valid GetMeasureListIssueDetailReq measureListIssueDetailReq, HttpServletRequest request) throws Exception {
+    public LjBaseResponse<ItemsVo<List<MeasureListIssueHistoryRepairLogVo>>> historyLogs(@Valid GetMeasureListIssueDetailReq measureListIssueDetailReq, HttpServletRequest request){
         LjBaseResponse<ItemsVo<List<MeasureListIssueHistoryRepairLogVo>>> ljBaseResponse = new LjBaseResponse<>();
         ItemsVo<List<MeasureListIssueHistoryRepairLogVo>> itemsVo = new ItemsVo<>();
         //鉴权
@@ -205,7 +206,7 @@ public class MeasureListIssueDetailController {
      * @return
      */
     @RequestMapping(value = "update_close_status/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse updateCloseStatus(@Valid MeasureListDetailUpdateCloseStatusReq measureListDetailUpdateCloseStatusReq, HttpServletRequest request) throws Exception {
+    public LjBaseResponse updateCloseStatus(@Valid MeasureListDetailUpdateCloseStatusReq measureListDetailUpdateCloseStatusReq, HttpServletRequest request) throws LjBaseRuntimeException,ParseException {
         //鉴权
         Integer uid = null;
         try {
@@ -230,7 +231,7 @@ public class MeasureListIssueDetailController {
      * @date 2019/1/15 11:12
      **/
     @RequestMapping(value = "update_issue_type/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse updateIssueType(@Valid PostMeasureListDetailUpdateIssueTypeReq req, HttpServletRequest request) throws Exception {
+    public LjBaseResponse updateIssueType(@Valid PostMeasureListDetailUpdateIssueTypeReq req, HttpServletRequest request) {
         try {
             ctrlTool.projPerm(request, CtrlToolConstant.PROJECT_MEASURE_ISSUEMANAGE_COMPILE);
         } catch (Exception e) {
@@ -240,7 +241,7 @@ public class MeasureListIssueDetailController {
     }
 
     @RequestMapping(value = "update_plan_end_on/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse UpdatePlanEndOn(@Valid PostMeasureListDetailUpdateIssuePlanEndOnReq req, HttpServletRequest request) throws Exception {
+    public LjBaseResponse UpdatePlanEndOn(@Valid PostMeasureListDetailUpdateIssuePlanEndOnReq req, HttpServletRequest request){
         try {
             ctrlTool.projPerm(request, CtrlToolConstant.PROJECT_MEASURE_ISSUEMANAGE_COMPILE);
         } catch (Exception e) {
@@ -250,7 +251,7 @@ public class MeasureListIssueDetailController {
     }
 
     @RequestMapping(value = "issue_status/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureListIssueGetIssueStatus> issueStatus(@Valid MeasureListIssueDetailReq req, HttpServletRequest request) throws Exception {
+    public LjBaseResponse<MeasureListIssueGetIssueStatus> issueStatus(@Valid MeasureListIssueDetailReq req, HttpServletRequest request){
         //鉴权
         try {
             ctrlTool.projPerm(request, CtrlToolConstant.PROJECT_MEASURE_ISSUEMANAGE_CHECK);
@@ -261,7 +262,7 @@ public class MeasureListIssueDetailController {
     }
 
     @RequestMapping(value = "repair_logs/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureListIssueDetailRepairLogListVo> repairLogs(@Valid MeasureListIssueDetailReq req, HttpServletRequest request) throws Exception {
+    public LjBaseResponse<MeasureListIssueDetailRepairLogListVo> repairLogs(@Valid MeasureListIssueDetailReq req, HttpServletRequest request){
         LjBaseResponse<MeasureListIssueDetailRepairLogListVo> ljBaseResponse = new LjBaseResponse<>();
         MeasureListIssueDetailRepairLogListVo measureListIssueDetailRepairLogListVo = new MeasureListIssueDetailRepairLogListVo();
         List<MeasureListIssueDetailRepairLogVo> measureListIssueDetailRepairLogVos = Lists.newArrayList();

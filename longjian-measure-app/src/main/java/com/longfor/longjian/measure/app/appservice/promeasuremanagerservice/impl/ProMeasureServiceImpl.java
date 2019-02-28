@@ -83,7 +83,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     private static final String ROOTCATEGORYKEY = "rootCategoryKey";
 
     @Override
-    public LjBaseResponse<ProMeasurePlanListVo> getProMeasurePlanList(GetProMeasurePlanListReq getProMeasurePlanListReq, HttpServletRequest request) throws Exception {
+    public LjBaseResponse<ProMeasurePlanListVo> getProMeasurePlanList(GetProMeasurePlanListReq getProMeasurePlanListReq, HttpServletRequest request) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException, ParseException {
         LjBaseResponse<ProMeasurePlanListVo> ljBaseResponse = new LjBaseResponse<>();
         ProMeasurePlanListVo proMeasurePlanListVo = new ProMeasurePlanListVo();
         ProjectBase projectBase = null;
@@ -113,7 +113,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     }
 
     @Override
-    public LjBaseResponse<ItemsVo<List<ProMeasureCheckIteamVo>>> getProMeasureCheckItems(GetProMeasureCheckItemsReq getProMeasureCheckItemsReq, HttpServletRequest request) throws Exception {
+    public LjBaseResponse<ItemsVo<List<ProMeasureCheckIteamVo>>> getProMeasureCheckItems(GetProMeasureCheckItemsReq getProMeasureCheckItemsReq, HttpServletRequest request) throws LjBaseRuntimeException, InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
         TeamBase group = null;
         try {
             ctrlTool.projPerm(request, CtrlToolConstant.PROJECT_MEASURE_TASKMANAGER_CHECK);
@@ -204,7 +204,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     }
 
     @Override
-    public LjBaseResponse<SquadsAndPassVo> getCompareBetweenGroup(GetCompareBetweenGroupReq getCompareBetweenGroupReq) throws Exception {
+    public LjBaseResponse<SquadsAndPassVo> getCompareBetweenGroup(GetCompareBetweenGroupReq getCompareBetweenGroupReq) throws LjBaseRuntimeException {
         LjBaseResponse<SquadsAndPassVo> ljBaseResponse = new LjBaseResponse<>();
         SquadsAndPassVo squadsAndPassVo = new SquadsAndPassVo();
         ProjectBase projectBase = null;
@@ -218,7 +218,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         boolean existPlan = measureListService.searchByProjectIdAndMeasureListId(getCompareBetweenGroupReq.getProject_id(), getCompareBetweenGroupReq.getMeasure_list_id()) != null;
         if (!existPlan) {
             //任务不存在,抛出异常
-            throw new Exception(RENWUBUCUNZAI);
+            throw new LjBaseRuntimeException(-9999,RENWUBUCUNZAI);
         }
         // 获取测区数量
         Integer total = measureZoneService.searchTotalByProjectIdAndMeasureListId(projectBase.getId(), new int[]{getCompareBetweenGroupReq.getMeasure_list_id()});
@@ -241,7 +241,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     }
 
     @Override
-    public LjBaseResponse<PassDiffVo> getLoserCompareBetweenGroup(GetLoserCompareBetweenGroupReq getLoserCompareBetweenGroupReq) throws Exception {
+    public LjBaseResponse<PassDiffVo> getLoserCompareBetweenGroup(GetLoserCompareBetweenGroupReq getLoserCompareBetweenGroupReq) throws LjBaseRuntimeException {
         LjBaseResponse<PassDiffVo> ljBaseResponse = new LjBaseResponse<>();
         PassDiffVo passDiffVo = new PassDiffVo();
         try {
@@ -253,7 +253,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         boolean existPlan = measureListService.searchByProjectIdAndMeasureListId(getLoserCompareBetweenGroupReq.getProject_id(), getLoserCompareBetweenGroupReq.getMeasure_list_id()) != null;
         if (!existPlan) {
             //任务不存在,抛出异常
-            throw new Exception(RENWUBUCUNZAI);
+            throw new LjBaseRuntimeException(-9999,RENWUBUCUNZAI);
         }
         //获取分组信息
         List<MeasureSquad> measureSquadlist = measureSquadService.searchOnlyMeasureSquadByProjIdAndListId(getLoserCompareBetweenGroupReq.getProject_id(), getLoserCompareBetweenGroupReq.getMeasure_list_id());
@@ -276,7 +276,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     }
 
     @Override
-    public LjBaseResponse<CompareItemBetweenSquadsVo> getCompareItemBetweenSquads(GetCompareItemBetweenSquadsReq getCompareItemBetweenSquadsReq) throws Exception {
+    public LjBaseResponse<CompareItemBetweenSquadsVo> getCompareItemBetweenSquads(GetCompareItemBetweenSquadsReq getCompareItemBetweenSquadsReq) throws LjBaseRuntimeException {
         LjBaseResponse<CompareItemBetweenSquadsVo> ljBaseResponse = new LjBaseResponse<>();
         CompareItemBetweenSquadsVo compareItemBetweenSquadsVo = new CompareItemBetweenSquadsVo();
         ProjectBase projectBase = null;
@@ -290,7 +290,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         MeasureList measureList = measureListService.searchByProjectIdAndMeasureListId(getCompareItemBetweenSquadsReq.getProject_id(), getCompareItemBetweenSquadsReq.getMeasure_list_id());
         if (measureList == null) {
             //任务不存在,抛出异常
-            throw new Exception(RENWUBUCUNZAI);
+            throw new LjBaseRuntimeException(-9999,RENWUBUCUNZAI);
         }
         // 获取分组信息，否则不管
         List<MeasureSquad> measureSquadlist = measureSquadService.searchOnlyMeasureSquadByProjIdAndListId(getCompareItemBetweenSquadsReq.getProject_id(), getCompareItemBetweenSquadsReq.getMeasure_list_id());
@@ -360,7 +360,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     }
 
     @Override
-    public LjBaseResponse<ItemsVo<List<AreaPOPVo>>> getAreaPOP(GetAreaPOPReq getAreaPOPreq) throws Exception {
+    public LjBaseResponse<ItemsVo<List<AreaPOPVo>>> getAreaPOP(GetAreaPOPReq getAreaPOPreq) throws LjBaseRuntimeException {
         ProjectBase projectBase = null;
         try {
             ctrlTool.projPerm(RequestContextHolderUtil.getRequest(), CtrlToolConstant.PROJECT_MEASURE_STATISTICS_CHECK);
@@ -375,7 +375,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         String[] listIds = getAreaPOPreq.getList_ids().split(",");
         String[] areaIds = getAreaPOPreq.getArea_ids().split(",");
         if (listIds.length == 0 || areaIds.length == 0 || getAreaPOPreq.getParent_category_key().length() == 0) {
-            throw new Exception("参数不完整");
+            throw new LjBaseRuntimeException(-9999,"参数不完整");
         }
         List<Map<String, Object>> list = searchMeasureCategoryAreaStatByProjectIdAndListIdsAndParentCategoryKeyAndAreaIds(projectId, listIds, getAreaPOPreq.getParent_category_key(), areaIds);
         list.forEach(LambdaExceptionUtil.throwingConsumerWrapper(map -> {

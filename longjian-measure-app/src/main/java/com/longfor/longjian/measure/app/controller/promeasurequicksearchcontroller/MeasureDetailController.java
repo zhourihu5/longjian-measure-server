@@ -43,7 +43,7 @@ public class MeasureDetailController {
      * @throws Exception
      */
     @RequestMapping(value = "export_excel", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<NullMsgVo> exportExcel(HttpServletRequest request, @Valid MeasureDetailExportExcelReq req, HttpServletResponse response) throws Exception {
+    public LjBaseResponse<NullMsgVo> exportExcel(HttpServletRequest request, @Valid MeasureDetailExportExcelReq req, HttpServletResponse response){
         LjBaseResponse<NullMsgVo> ljBaseResponse = new LjBaseResponse<>();
         try {
             ctrlTool.projPerm(request, "项目.实测实量.任务管理.查看");

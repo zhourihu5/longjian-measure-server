@@ -1,6 +1,7 @@
 package com.longfor.longjian.measure.app.controller.promeasuremanagercontroller;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.app.appservice.promeasuremanagerservice.IProMeasureService;
 import com.longfor.longjian.measure.app.req.promeasuremanagerreq.GetCheckerListReq;
 import com.longfor.longjian.measure.app.req.promeasuremanagerreq.GetProMeasureAreaListReq;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -44,7 +46,7 @@ public class ProMeasureController {
      * @return
      */
     @RequestMapping(value = "measure/measure_list/search_json/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<ProMeasurePlanListVo> getProMeasurePlanList(@Valid GetProMeasurePlanListReq getProMeasurePlanListReq, HttpServletRequest request) throws Exception {
+    public LjBaseResponse<ProMeasurePlanListVo> getProMeasurePlanList(@Valid GetProMeasurePlanListReq getProMeasurePlanListReq, HttpServletRequest request) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException, ParseException {
         LjBaseResponse<ProMeasurePlanListVo> ljBaseResponse = proMeasureService.getProMeasurePlanList(getProMeasurePlanListReq,request);
         return ljBaseResponse;
     }
@@ -56,7 +58,7 @@ public class ProMeasureController {
      * @return
      */
     @RequestMapping(value = "measure/measure_list/sub_categorys/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<ItemsVo<List<ProMeasureCheckIteamVo>>> getProMeasureCheckItems(@Valid GetProMeasureCheckItemsReq getProMeasureCheckItemsReq,HttpServletRequest request) throws Exception {
+    public LjBaseResponse<ItemsVo<List<ProMeasureCheckIteamVo>>> getProMeasureCheckItems(@Valid GetProMeasureCheckItemsReq getProMeasureCheckItemsReq,HttpServletRequest request) throws LjBaseRuntimeException, InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
         LjBaseResponse<ItemsVo<List<ProMeasureCheckIteamVo>>> ljBaseResponse = proMeasureService.getProMeasureCheckItems(getProMeasureCheckItemsReq,request);
         return ljBaseResponse;
     }

@@ -1,6 +1,7 @@
 package com.longfor.longjian.measure.app.appservice.promeasuremanagerservice;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.app.req.promeasuremanagerreq.GetCheckerListReq;
 import com.longfor.longjian.measure.app.req.promeasuremanagerreq.GetProMeasureAreaListReq;
 import com.longfor.longjian.measure.app.req.promeasuremanagerreq.GetProMeasureCheckItemsReq;
@@ -22,14 +23,14 @@ public interface IProMeasureService  {
      * @param request
      * @return
      */
-    LjBaseResponse<ProMeasurePlanListVo> getProMeasurePlanList(GetProMeasurePlanListReq getProMeasurePlanListReq, HttpServletRequest request) throws Exception;
+    LjBaseResponse<ProMeasurePlanListVo> getProMeasurePlanList(GetProMeasurePlanListReq getProMeasurePlanListReq, HttpServletRequest request) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException, ParseException;
 
     /**
      * go项目实测任务列表请求检查项
      * @param getProMeasureCheckItemsReq
      * @return
      */
-    LjBaseResponse<ItemsVo<List<ProMeasureCheckIteamVo>>> getProMeasureCheckItems(GetProMeasureCheckItemsReq getProMeasureCheckItemsReq,HttpServletRequest request) throws Exception;
+    LjBaseResponse<ItemsVo<List<ProMeasureCheckIteamVo>>> getProMeasureCheckItems(GetProMeasureCheckItemsReq getProMeasureCheckItemsReq,HttpServletRequest request) throws LjBaseRuntimeException, InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException;
 
     /**
      * go项目实测任务列表区域
@@ -51,21 +52,21 @@ public interface IProMeasureService  {
      * @param getCompareBetweenGroupReq
      * @return
      */
-    LjBaseResponse<SquadsAndPassVo> getCompareBetweenGroup(GetCompareBetweenGroupReq getCompareBetweenGroupReq) throws Exception;
+    LjBaseResponse<SquadsAndPassVo> getCompareBetweenGroup(GetCompareBetweenGroupReq getCompareBetweenGroupReq) throws LjBaseRuntimeException;
 
     /**
      * go项目实测快查组间对比合格率最低项
      * @param getLoserCompareBetweenGroupReq
      * @return
      */
-    LjBaseResponse<PassDiffVo> getLoserCompareBetweenGroup(GetLoserCompareBetweenGroupReq getLoserCompareBetweenGroupReq) throws Exception;
+    LjBaseResponse<PassDiffVo> getLoserCompareBetweenGroup(GetLoserCompareBetweenGroupReq getLoserCompareBetweenGroupReq) throws LjBaseRuntimeException;
 
     /**
      * go项目实测快查组间对比检查项
      * @param getCompareItemBetweenSquadsReq
      * @return
      */
-    LjBaseResponse<CompareItemBetweenSquadsVo> getCompareItemBetweenSquads(GetCompareItemBetweenSquadsReq getCompareItemBetweenSquadsReq) throws Exception;
+    LjBaseResponse<CompareItemBetweenSquadsVo> getCompareItemBetweenSquads(GetCompareItemBetweenSquadsReq getCompareItemBetweenSquadsReq) throws LjBaseRuntimeException;
 
     /**
      * go项目实测快速查询爆点情况
@@ -93,5 +94,5 @@ public interface IProMeasureService  {
      * @param getAreaPOPreq
      * @return
      */
-    LjBaseResponse<ItemsVo<List<AreaPOPVo>>> getAreaPOP(GetAreaPOPReq getAreaPOPreq) throws Exception;
+    LjBaseResponse<ItemsVo<List<AreaPOPVo>>> getAreaPOP(GetAreaPOPReq getAreaPOPreq) throws LjBaseRuntimeException;
 }
