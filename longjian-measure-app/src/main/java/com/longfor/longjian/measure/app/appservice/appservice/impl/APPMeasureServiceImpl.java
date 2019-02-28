@@ -110,7 +110,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         ) {
             helper.start().
                     setNormalField(v.getUuid(), v.getList_id(), v.getIssue_uuid(), v.getSender_id(), v.getDesc(),
-                            v.getTyp(), v.getStatus(), v.getAttachment_md5_list(), v.getCategory_key(), Long.parseLong(v.getClient_create_at().toString())).
+                            v.getTyp(), v.getStatus(), v.getAttachment_md5_list(), v.getCategory_key(), Long.parseLong(v.getClient_create_at()*1000+"")).
                     setDatailField(v.getZone_uuid(), Long.parseLong(v.getPlan_end_on().toString()), Long.parseLong(v.getEnd_on().toString()), v.getRepairer_id(),
                             v.getCondition(), v.getArea_id(), v.getDrawing_md5(), v.getPos_x(), v.getPos_y(),
                             v.getClose_status(), v.getClose_user(), v.getClose_time() == null ? 0 : Long.parseLong(v.getClose_time().toString()), v.getCheck_status())
