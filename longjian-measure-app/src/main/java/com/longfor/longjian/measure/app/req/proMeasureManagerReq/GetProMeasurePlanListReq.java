@@ -51,8 +51,4 @@ public class GetProMeasurePlanListReq {
      * 前端传值 -- 项目id
      */
     private Integer project_id;
-    /**
-     * 前端传值 -- 暂时不知道干嘛用的
-     */
-    private Integer _;
 }
