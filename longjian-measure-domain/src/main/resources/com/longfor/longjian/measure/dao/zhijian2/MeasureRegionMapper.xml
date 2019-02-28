@@ -83,7 +83,7 @@ WHERE
       LIMIT #{start},#{measureApiGetPerTime}
     </if>
   </select>
-  <!--List<MeasureList> getNoProjNoFoundErr(@Param("listId") String listId);-->
+  <!--List<measurelist> getNoProjNoFoundErr(@Param("listId") String listId);-->
   <select id="getNoProjNoFoundErr" resultType="map">
         select
      id, `name`, project_id, area_type, close_status, finish_status, root_category_key,

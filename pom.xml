@@ -15,6 +15,14 @@
     <packaging>pom</packaging>
     <version>1.0.1-SNAPSHOT</version>
 
+
+    <properties>
+        <sonar.exclusions>
+            src/main/java/com/longfor/longjian/measure/app/req/**/*,
+            src/main/java/com/longfor/longjian/measure/app/vo/**/*
+        </sonar.exclusions>
+    </properties>
+
     <modules>
         <module>longjian-measure-domain</module>
         <module>longjian-measure-api</module>
