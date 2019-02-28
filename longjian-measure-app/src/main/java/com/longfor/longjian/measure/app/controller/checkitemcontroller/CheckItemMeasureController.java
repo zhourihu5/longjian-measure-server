@@ -1,6 +1,7 @@
 package com.longfor.longjian.measure.app.controller.checkitemcontroller;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.app.appservice.checkItemmeasureservice.IOapiCheckItemMeasureService;
 import com.longfor.longjian.measure.app.req.filereq.FileReq;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Created by Wang on 2019/1/7.
@@ -30,7 +32,7 @@ public class CheckItemMeasureController {
      * @return
      */
     @RequestMapping(value = "file/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<Object> file(FileReq fileReq, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public LjBaseResponse<Object> file(FileReq fileReq, HttpServletRequest request, HttpServletResponse response) throws LjBaseRuntimeException, IOException {
         LjBaseResponse<Object> ljBaseResponse = oapiCheckItemMeasureService.file(fileReq,request,response);
         return ljBaseResponse;
     }

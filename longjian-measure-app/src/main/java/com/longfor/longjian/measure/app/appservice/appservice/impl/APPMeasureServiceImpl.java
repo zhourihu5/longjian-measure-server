@@ -84,7 +84,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     private static final String UPDATEAT = "UpdateAt";
 
     @Override
-    public LjBaseResponse<DroppedInfoVo> reportIssue(ApiMeasureReportIssueReq apiMeasureReportIssueReq, HttpServletRequest request) throws Exception {
+    public LjBaseResponse<DroppedInfoVo> reportIssue(ApiMeasureReportIssueReq apiMeasureReportIssueReq, HttpServletRequest request) throws LjBaseRuntimeException,ParseException {
         LjBaseResponse<DroppedInfoVo> ljBaseResponse = new LjBaseResponse<>();
         DroppedInfoVo droppedInfoVo = new DroppedInfoVo();
         // 检查uuid，没有uuid也可以执行以下代码以保存请求内容
@@ -99,7 +99,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             keyProcedureTaskAppService.startReport(apiMeasureReportIssueReq.getReport_uuid(), uid, request);
         } catch (Exception e) {
             keyProcedureTaskAppService.updateReportStatus(apiMeasureReportIssueReq.getReport_uuid(), reportUuidStatus);
-            throw e;
+            throw new LjBaseRuntimeException(-9999,e+"");
         }
         List<MeasureListIssueStruct> datas = new ArrayList<>();
         log.debug(apiMeasureReportIssueReq.getData());
@@ -128,7 +128,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     }
 
     @Override
-    public LjBaseResponse<DroppedInfoVo> reportZoneResult(ApiMeasureReportZoneResultReq apiMeasureReportZoneResultReq, HttpServletRequest request) throws Exception {
+    public LjBaseResponse<DroppedInfoVo> reportZoneResult(ApiMeasureReportZoneResultReq apiMeasureReportZoneResultReq, HttpServletRequest request) throws ParseException,LjBaseRuntimeException{
         LjBaseResponse<DroppedInfoVo> ljBaseResponse = new LjBaseResponse<>();
         DroppedInfoVo droppedInfoVo = new DroppedInfoVo();
         // 检查uuid，没有uuid也可以执行以下代码以保存请求内容
@@ -143,7 +143,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             keyProcedureTaskAppService.startReport(apiMeasureReportZoneResultReq.getReport_uuid(), uid, request);
         } catch (Exception e) {
             keyProcedureTaskAppService.updateReportStatus(apiMeasureReportZoneResultReq.getReport_uuid(), reportUuidStatus);
-            throw e;
+            throw new LjBaseRuntimeException(-9999,e+"");
         }
         List<ResultListVo> zoneResults = JSONArray.parseArray(apiMeasureReportZoneResultReq.getData(), ResultListVo.class);
         List<DroppedVo> dropped = createZoneResultsNoProj(zoneResults);
@@ -463,14 +463,14 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     }
 
     @Override
-    public LjBaseResponse<MeasureRegionVo> getMeasureRegion(ApiMeasureRegionReq apiMeasureRegionReq) throws Exception {
+    public LjBaseResponse<MeasureRegionVo> getMeasureRegion(ApiMeasureRegionReq apiMeasureRegionReq) throws LjBaseRuntimeException {
         LjBaseResponse<MeasureRegionVo> ljBaseResponse = new LjBaseResponse<>();
         MeasureRegionVo measureRegionVo = new MeasureRegionVo();
         List<MeasureRegionListVo> region_list = new ArrayList<>();
         List<RelVo> rel_list = new ArrayList<>();
         String[] projectIds = apiMeasureRegionReq.getProject_ids().split(",");
         if (projectIds.length == 0) {
-            throw new Exception("project ids is empty.");
+            throw new LjBaseRuntimeException(-9999,"project ids is empty.");
         }
         String updateAtGte = "0001-01-01 00:00:00";
         List<MeasureRegion> regionList = new ArrayList<>();
@@ -502,7 +502,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     }
 
     @Override
-    public LjBaseResponse<MeasureRegionV2Vo> getMeasureRegionV2(ApiMeasureRegionReqV2 apiMeasureRegionReqV2) throws Exception {
+    public LjBaseResponse<MeasureRegionV2Vo> getMeasureRegionV2(ApiMeasureRegionReqV2 apiMeasureRegionReqV2) throws LjBaseRuntimeException {
         LjBaseResponse<MeasureRegionV2Vo> ljBaseResponse = new LjBaseResponse<>();
         MeasureRegionV2Vo measureRegionV2Vo = new MeasureRegionV2Vo();
         List<MeasureRegionListVo> region_list = new ArrayList<>();
@@ -522,13 +522,13 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             ljBaseResponse.setData(measureRegionV2Vo);
         } catch (Exception e) {
             log.error(SEARCHUNSCOPEDBYPROJIDLASTIDUPDATEATGT + "[" + apiMeasureRegionReqV2.getProject_id() + ERROR + e);
-            throw new Exception("读取数据失败，code:region");
+            throw new LjBaseRuntimeException(-9999,"读取数据失败，code:region");
         }
         return ljBaseResponse;
     }
 
     @Override
-    public LjBaseResponse<TotalVo> getMeasureRegionV2Total(ApiMeasureRegionTotalReqV2 apiMeasureRegionTotalReqV2) throws Exception {
+    public LjBaseResponse<TotalVo> getMeasureRegionV2Total(ApiMeasureRegionTotalReqV2 apiMeasureRegionTotalReqV2) throws LjBaseRuntimeException {
         LjBaseResponse<TotalVo> ljBaseResponse = new LjBaseResponse<>();
         TotalVo totalVo = new TotalVo();
         try {
@@ -537,13 +537,13 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             ljBaseResponse.setData(totalVo);
         } catch (Exception e) {
             log.error("GetCountUnscopedByProjIdUpdateAtGt" + "[" + apiMeasureRegionTotalReqV2.getProject_id() + ERROR + e);
-            throw new Exception("读取数据失败，code:region_total");
+            throw new LjBaseRuntimeException(-9999,"读取数据失败，code:region_total");
         }
         return ljBaseResponse;
     }
 
     @Override
-    public LjBaseResponse<MeasureRegionRelV2Vo> getMeasureRegionRelV2(ApiMeasureRegionRelReqV2 apiMeasureRegionRelReqV2) throws Exception {
+    public LjBaseResponse<MeasureRegionRelV2Vo> getMeasureRegionRelV2(ApiMeasureRegionRelReqV2 apiMeasureRegionRelReqV2) throws LjBaseRuntimeException {
         LjBaseResponse<MeasureRegionRelV2Vo> ljBaseResponse = new LjBaseResponse<>();
         MeasureRegionRelV2Vo measureRegionRelV2Vo = new MeasureRegionRelV2Vo();
         List<RelVo> rel_list = new ArrayList<>();
@@ -563,13 +563,13 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             ljBaseResponse.setData(measureRegionRelV2Vo);
         } catch (Exception e) {
             log.error("SearchRelUnscopedByProjIdLastIdUpdateAtGt" + "[" + apiMeasureRegionRelReqV2.getProject_id() + ERROR + e);
-            throw new Exception("读取数据失败，code:region_rel");
+            throw new LjBaseRuntimeException(-9999,"读取数据失败，code:region_rel");
         }
         return ljBaseResponse;
     }
 
     @Override
-    public LjBaseResponse<MeasureSquadAndRepairerVo> measureSquadAndRepairer(ApiMeasureSquadAndRepairerReq apiMeasureSquadAndRepairerReq) throws Exception {
+    public LjBaseResponse<MeasureSquadAndRepairerVo> measureSquadAndRepairer(ApiMeasureSquadAndRepairerReq apiMeasureSquadAndRepairerReq) throws LjBaseRuntimeException {
         LjBaseResponse<MeasureSquadAndRepairerVo> ljBaseResponse = new LjBaseResponse<>();
         MeasureSquadAndRepairerVo measureSquadAndRepairerVo = new MeasureSquadAndRepairerVo();
         List<SquadListVo> squad_list = new ArrayList<>();
@@ -602,19 +602,19 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             measureSquadAndRepairerVo.setRepairer_list(repairer_list);
         } catch (Exception e) {
             log.error(e.getMessage());
-            throw e;
+            throw new LjBaseRuntimeException(-9999,e+"");
         }
         ljBaseResponse.setData(measureSquadAndRepairerVo);
         return ljBaseResponse;
     }
 
     @Override
-    public LjBaseResponse<MeasureZoneResultVo> measureZoneResult(ApiMeasureZoneResultReq apiMeasureZoneResultReq) throws Exception {
+    public LjBaseResponse<MeasureZoneResultVo> measureZoneResult(ApiMeasureZoneResultReq apiMeasureZoneResultReq) throws LjBaseRuntimeException {
         LjBaseResponse<MeasureZoneResultVo> ljBaseResponse = new LjBaseResponse<>();
         MeasureZoneResultVo measureZoneResultVo = new MeasureZoneResultVo();
         List<ResultListVo> result_list = new ArrayList<>();
         if (apiMeasureZoneResultReq.getList_ids() == null || apiMeasureZoneResultReq.getList_ids().split(",").length == 0) {
-            throw new Exception("list is empty.");
+            throw new LjBaseRuntimeException(-9999,"list is empty.");
         }
         String[] listIds = apiMeasureZoneResultReq.getList_ids().split(",");
         Integer lastId = 0;
@@ -641,7 +641,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     }
 
     @Override
-    public LjBaseResponse<MeasureZoneResultVo> measureZoneResultV2(ApiMeasureZoneResultReqV2 apiMeasureZoneResultReqV2) throws Exception {
+    public LjBaseResponse<MeasureZoneResultVo> measureZoneResultV2(ApiMeasureZoneResultReqV2 apiMeasureZoneResultReqV2) throws LjBaseRuntimeException {
         LjBaseResponse<MeasureZoneResultVo> ljBaseResponse = new LjBaseResponse<>();
         MeasureZoneResultVo measureZoneResultVo = new MeasureZoneResultVo();
         List<ResultListVo> result_list = new ArrayList<>();
@@ -661,14 +661,14 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             measureZoneResultVo.setResult_list(result_list);
         } catch (Exception e) {
             log.error(SEARCHUNSCOPEDBYPROJIDLASTIDUPDATEATGT + "[" + apiMeasureZoneResultReqV2.getList_id() + ERROR + e.getMessage());
-            throw new Exception("读取数据失败，code:zone");
+            throw new LjBaseRuntimeException(-9999,"读取数据失败，code:zone");
         }
         ljBaseResponse.setData(measureZoneResultVo);
         return ljBaseResponse;
     }
 
     @Override
-    public LjBaseResponse<TotalVo> measureZoneResultV2Total(ApiMeasureZoneResultTotalReqV2 apiMeasureZoneResultTotalReqV2) throws Exception {
+    public LjBaseResponse<TotalVo> measureZoneResultV2Total(ApiMeasureZoneResultTotalReqV2 apiMeasureZoneResultTotalReqV2) throws LjBaseRuntimeException {
         LjBaseResponse<TotalVo> ljBaseResponse = new LjBaseResponse<>();
         TotalVo totalVo = new TotalVo();
         try {
@@ -677,7 +677,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             totalVo.setTotal(total);
         } catch (Exception e) {
             log.error(SEARCHUNSCOPEDBYPROJIDLASTIDUPDATEATGT + "[" + apiMeasureZoneResultTotalReqV2.getList_id() + ERROR + e.getMessage());
-            throw new Exception("读取数据失败，code:zone_total");
+            throw new LjBaseRuntimeException(-9999,"读取数据失败，code:zone_total");
         }
         ljBaseResponse.setData(totalVo);
         return ljBaseResponse;

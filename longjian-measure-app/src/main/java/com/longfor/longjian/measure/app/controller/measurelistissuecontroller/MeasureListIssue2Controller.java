@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.text.ParseException;
 
 /**
  * Jiazm 2019/01/11 17:52
@@ -46,7 +47,7 @@ public class MeasureListIssue2Controller {
      * @return
      */
     @RequestMapping(value = "issue_query_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureIssueQueryVo> issueQueryJson(@Valid MeasureIssueQueryReq measureIssueQueryReq, HttpServletRequest request) throws Exception {
+    public LjBaseResponse<MeasureIssueQueryVo> issueQueryJson(@Valid MeasureIssueQueryReq measureIssueQueryReq, HttpServletRequest request) throws LjBaseRuntimeException {
         LjBaseResponse<MeasureIssueQueryVo> ljBaseResponse = measureListIssueService.issueQueryJson(measureIssueQueryReq,request);
         return ljBaseResponse;
     }
@@ -60,7 +61,7 @@ public class MeasureListIssue2Controller {
      * @return
      */
     @RequestMapping(value = "issue_edit/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<UpdateVo> issueEdit(@Valid MeasureIssueEdiReq req, HttpServletRequest request) throws Exception {
+    public LjBaseResponse<UpdateVo> issueEdit(@Valid MeasureIssueEdiReq req, HttpServletRequest request) throws LjBaseRuntimeException {
         UserBase userBase =null;
         try {
             ctrlTool.projPerm(request, "项目.实测实量.爆点管理.编辑");
@@ -75,7 +76,7 @@ public class MeasureListIssue2Controller {
             measureListIssueService.updateMeasureListIssueByProjUuid(req.getProject_id(), req.getUuid(), req.getRepairer_id(), uid, req.getPlan_end_on());
         } catch (Exception e) {
             log.error("error:" + e);
-            throw new Exception(e);
+            throw new LjBaseRuntimeException(-9999,e+"");
         }
         ljBaseResponse.setData(updateVo);
         return ljBaseResponse;
@@ -90,7 +91,7 @@ public class MeasureListIssue2Controller {
      * @return
      */
     @RequestMapping(value = "issue_close_status/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<UpdateVo> issueCloseStatus(@Valid MeasureIssueCloseStatusReq req, HttpServletRequest request) throws Exception {
+    public LjBaseResponse<UpdateVo> issueCloseStatus(@Valid MeasureIssueCloseStatusReq req, HttpServletRequest request) throws ParseException {
         UserBase userBase =null;
         try {
             ctrlTool.projPerm(request, "项目.实测实量.爆点管理.编辑");
@@ -116,7 +117,7 @@ public class MeasureListIssue2Controller {
      * @return
      */
     @RequestMapping(value = "issue_del/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<UpdateVo> issueDel(@Valid MeasureIssueDeleteReq req, HttpServletRequest request) throws Exception {
+    public LjBaseResponse<UpdateVo> issueDel(@Valid MeasureIssueDeleteReq req, HttpServletRequest request){
         try {
             ctrlTool.projPerm(request,"项目.实测实量.爆点管理.删除");
         }catch (Exception e){

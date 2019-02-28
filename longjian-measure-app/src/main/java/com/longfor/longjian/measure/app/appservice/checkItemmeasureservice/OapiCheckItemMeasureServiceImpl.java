@@ -64,11 +64,11 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
     public static final String ERROR = "error:";
 
     @Override
-    public LjBaseResponse<GetCheckItemVo> getCheckItemJson(GetCheckItemReq getCheckItemReq, HttpServletRequest request) throws Exception {
+    public LjBaseResponse<GetCheckItemVo> getCheckItemJson(GetCheckItemReq getCheckItemReq, HttpServletRequest request) throws LjBaseRuntimeException {
         try {
             ctrlTool.teamPerm(request, CtrlToolConstant.GROUP_MEASURE_CHECKITEM_CHECK);
         } catch (Exception e) {
-            throw new Exception(e);
+            throw new LjBaseRuntimeException(-9999,e+"");
         }
         LjBaseResponse<GetCheckItemVo> ljBaseResponse = new LjBaseResponse<>();
         GetCheckItemVo getCheckItemVo = new GetCheckItemVo();
@@ -95,11 +95,11 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
     }
 
     @Override
-    public LjBaseResponse<GetCategoryVo> getCategoryJson(GetCategoryReq getCategoryReq, HttpServletRequest request) throws Exception {
+    public LjBaseResponse<GetCategoryVo> getCategoryJson(GetCategoryReq getCategoryReq, HttpServletRequest request) throws LjBaseRuntimeException {
         try {
             ctrlTool.teamPerm(request, "集团.实测实量.检查项管理.查看");
         } catch (Exception e) {
-            throw new Exception(e);
+            throw new LjBaseRuntimeException(-9999,e+"");
         }
         LjBaseResponse<GetCategoryVo> ljBaseResponse = new LjBaseResponse<>();
         GetCategoryVo getCategoryVo = new GetCategoryVo();
@@ -147,7 +147,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
     }
 
     @Override
-    public LjBaseResponse<Object> file(FileReq fileReq, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public LjBaseResponse<Object> file(FileReq fileReq, HttpServletRequest request, HttpServletResponse response) throws LjBaseRuntimeException, IOException {
         TeamBase teamBase = null;
         try {
             ctrlTool.teamPerm(request, "集团.实测实量.检查项管理.查看");

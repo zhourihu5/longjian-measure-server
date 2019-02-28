@@ -1,6 +1,7 @@
 package com.longfor.longjian.measure.app.appservice.measurelistissueservice;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.app.req.measurelist.MeasureIssueQueryReq;
 import com.longfor.longjian.measure.app.vo.measurelistvo.MeasureIssueQueryVo;
 
@@ -13,7 +14,7 @@ public interface IMeasureListIssueAppService {
      * @param request
      * @return
      */
-    LjBaseResponse<MeasureIssueQueryVo> issueQueryJson(MeasureIssueQueryReq measureIssueQueryReq, HttpServletRequest request) throws Exception;
+    LjBaseResponse<MeasureIssueQueryVo> issueQueryJson(MeasureIssueQueryReq measureIssueQueryReq, HttpServletRequest request) throws LjBaseRuntimeException;
     /**
      *
      * @param project_id
