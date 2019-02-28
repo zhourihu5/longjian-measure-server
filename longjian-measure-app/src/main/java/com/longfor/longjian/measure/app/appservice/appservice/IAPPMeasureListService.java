@@ -1,6 +1,7 @@
 package com.longfor.longjian.measure.app.appservice.appservice;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.app.req.measurelist.*;
 import com.longfor.longjian.measure.app.vo.measurelistvo.MeasureListInfoVo;
 import com.longfor.longjian.measure.app.vo.measurelistvo.SetStatusVo;
@@ -39,7 +40,7 @@ public interface IAPPMeasureListService {
      * @param req
      * @return
      */
-    LjBaseResponse<MeasureListInfoVo> conditionSearch(ConditionSearchReq req) throws Exception;
+    LjBaseResponse<MeasureListInfoVo> conditionSearch(ConditionSearchReq req) throws LjBaseRuntimeException;
 
     /**
      * bgtask --- bgAdd

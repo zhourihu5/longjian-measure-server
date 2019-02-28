@@ -3,6 +3,7 @@ package com.longfor.longjian.measure.domain.externalservice.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.dao.zhijian2.*;
 import com.longfor.longjian.measure.domain.externalservice.IMeasureListService;
 import com.longfor.longjian.measure.po.zhijian2.*;
@@ -190,7 +191,7 @@ public class MeasureListServiceImpl implements IMeasureListService {
     }
 
     @Override
-    public Map<String, Object> conditionSearch(Integer group_id, Integer project_id, Integer page, Integer page_size, String area_id, String user_id_list, Integer finish_status, String name, String category_key) throws Exception {
+    public Map<String, Object> conditionSearch(Integer group_id, Integer project_id, Integer page, Integer page_size, String area_id, String user_id_list, Integer finish_status, String name, String category_key) throws LjBaseRuntimeException {
         List<Integer> list_id_set = Lists.newArrayList();
         List<Integer> userIdList = Lists.newArrayList();
         List<Integer> list_id_set2 = Lists.newArrayList();
@@ -240,7 +241,12 @@ public class MeasureListServiceImpl implements IMeasureListService {
         int total_num = measureListMapper.selectCountByExample(example);
         List<Map<String,Object>> return_list =Lists.newArrayList();
         for (MeasureList list_model : measureLists) {
-            Map<String, Object> map = objectToMap(list_model);
+            Map<String, Object> map = null;
+            try {
+                map = objectToMap(list_model);
+            } catch (Exception e) {
+               throw new LjBaseRuntimeException(-9999,e+"");
+            }
             Example example4 =new Example(MeasureListIssue.class);
             example4.createCriteria().andEqualTo(LISTID,list_model.getId()).andEqualTo(PROJECTID,project_id).andIsNull(DELETEAT);
             int issue_count = measureListIssueMapper.selectCountByExample(example4);

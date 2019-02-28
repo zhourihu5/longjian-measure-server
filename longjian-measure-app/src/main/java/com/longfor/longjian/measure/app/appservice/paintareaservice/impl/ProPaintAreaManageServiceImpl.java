@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.app.appservice.paintareaservice.IProPaintAreaManageService;
 import com.longfor.longjian.measure.app.req.measureregionreq.AddOnGroupReq;
 import com.longfor.longjian.measure.app.req.measureregionreq.AddOnProjReq;
@@ -43,7 +44,7 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
 
     private static  final String  RELID= "relId";
     @Override
-    public LjBaseResponse<GroupRegionTagVo> getGroupMeasureRegionTag(GetGroupMeasureRegionTagReq getGroupMeasureRegionTagReq) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
+    public LjBaseResponse<GroupRegionTagVo> getGroupMeasureRegionTag(GetGroupMeasureRegionTagReq getGroupMeasureRegionTagReq) throws LjBaseRuntimeException {
         LjBaseResponse<GroupRegionTagVo> ljBaseResponse = new LjBaseResponse<>();
         GroupRegionTagVo groupRegionTagVo = new GroupRegionTagVo();
         List<TagListVo> listVos = new ArrayList<>();
@@ -52,7 +53,18 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
         for (Map<String, Object> map : tagList
         ) {
             //map转换成vo
-            TagListVo tagListVo = (TagListVo) ConvertUtil.convertMap(TagListVo.class, map);
+            TagListVo tagListVo = null;
+            try {
+                tagListVo = (TagListVo) ConvertUtil.convertMap(TagListVo.class, map);
+            } catch (IntrospectionException e) {
+                throw new LjBaseRuntimeException(-9999,e+"");
+            } catch (IllegalAccessException e) {
+                throw new LjBaseRuntimeException(-9999,e+"");
+            } catch (InstantiationException e) {
+                throw new LjBaseRuntimeException(-9999,e+"");
+            } catch (InvocationTargetException e) {
+                throw new LjBaseRuntimeException(-9999,e+"");
+            }
             listVos.add(tagListVo);
         }
         groupRegionTagVo.setTag_list(listVos);
@@ -61,7 +73,7 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
     }
 
     @Override
-    public LjBaseResponse<GroupRegionTagVo> getProjMeasureRegionTag(GetProjMeasureRegionTagReq getProjMeasureRegionTagReq) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
+    public LjBaseResponse<GroupRegionTagVo> getProjMeasureRegionTag(GetProjMeasureRegionTagReq getProjMeasureRegionTagReq) throws LjBaseRuntimeException {
         LjBaseResponse<GroupRegionTagVo> ljBaseResponse = new LjBaseResponse<>();
         GroupRegionTagVo groupRegionTagVo = new GroupRegionTagVo();
         List<TagListVo> listVos = new ArrayList<>();
@@ -70,7 +82,18 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
         for (Map<String, Object> map : tagList
         ) {
             //map转换成vo
-            TagListVo tagListVo = (TagListVo) ConvertUtil.convertMap(TagListVo.class, map);
+            TagListVo tagListVo = null;
+            try {
+                tagListVo = (TagListVo) ConvertUtil.convertMap(TagListVo.class, map);
+            } catch (IntrospectionException e) {
+                throw new LjBaseRuntimeException(-9999,e+"");
+            } catch (IllegalAccessException e) {
+                throw new LjBaseRuntimeException(-9999,e+"");
+            } catch (InstantiationException e) {
+                throw new LjBaseRuntimeException(-9999,e+"");
+            } catch (InvocationTargetException e) {
+                throw new LjBaseRuntimeException(-9999,e+"");
+            }
             listVos.add(tagListVo);
         }
         groupRegionTagVo.setTag_list(listVos);
@@ -79,7 +102,7 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
     }
 
     @Override
-    public LjBaseResponse<AreaRegionTagVo> getProjMeasureRegionByAreaId(GetProjMeasureRegionReq getProjMeasureRegionReq) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
+    public LjBaseResponse<AreaRegionTagVo> getProjMeasureRegionByAreaId(GetProjMeasureRegionReq getProjMeasureRegionReq) throws LjBaseRuntimeException {
         LjBaseResponse<AreaRegionTagVo> ljBaseResponse = new LjBaseResponse<>();
         AreaRegionTagVo areaRegionTagVo = new AreaRegionTagVo();
         List<RegionListVo> listVos = new ArrayList<>();
@@ -88,7 +111,18 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
         for (Map<String, Object> map : regionList
         ) {
             //map转换成vo
-            RegionListVo regionListVo = (RegionListVo) ConvertUtil.convertMap(RegionListVo.class, map);
+            RegionListVo regionListVo = null;
+            try {
+                regionListVo = (RegionListVo) ConvertUtil.convertMap(RegionListVo.class, map);
+            } catch (IntrospectionException e) {
+                throw new LjBaseRuntimeException(-9999,e+"");
+            } catch (IllegalAccessException e) {
+                throw new LjBaseRuntimeException(-9999,e+"");
+            } catch (InstantiationException e) {
+                throw new LjBaseRuntimeException(-9999,e+"");
+            } catch (InvocationTargetException e) {
+                throw new LjBaseRuntimeException(-9999,e+"");
+            }
             PolygonVo polygonVo = new PolygonVo();
             //转换jsonObject
             JSONObject jsonObject = JSON.parseObject(map.get("Polygon").toString());
