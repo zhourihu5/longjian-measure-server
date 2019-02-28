@@ -521,7 +521,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
                 //获取顶级检查项
                 List<CategoryV3> categoryV3s = searchCategoryTopByCategoryKeyIn(categoryKeys);
                 int count = categoryV3s.size();
-                if (count <= 0 || categoryV3s.size() < 0) {
+                if (count <= 0 || categoryV3s.isEmpty()) {
                     return null;
                 }
 

@@ -59,11 +59,12 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
     private ICategoryV3Service categoryV3Service;
     @Resource
     private SessionInfo sessionInfo;
+
     @Override
     public LjBaseResponse<GetCheckItemVo> getCheckItemJson(GetCheckItemReq getCheckItemReq, HttpServletRequest request) throws Exception {
         try {
-            ctrlTool.teamPerm(request,"集团.实测实量.检查项管理.查看");
-        }catch (Exception e){
+            ctrlTool.teamPerm(request, "集团.实测实量.检查项管理.查看");
+        } catch (Exception e) {
             throw new Exception(e);
         }
         LjBaseResponse<GetCheckItemVo> ljBaseResponse = new LjBaseResponse<>();
@@ -93,8 +94,8 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
     @Override
     public LjBaseResponse<GetCategoryVo> getCategoryJson(GetCategoryReq getCategoryReq, HttpServletRequest request) throws Exception {
         try {
-            ctrlTool.teamPerm(request,"集团.实测实量.检查项管理.查看");
-        }catch (Exception e){
+            ctrlTool.teamPerm(request, "集团.实测实量.检查项管理.查看");
+        } catch (Exception e) {
             throw new Exception(e);
         }
         LjBaseResponse<GetCategoryVo> ljBaseResponse = new LjBaseResponse<>();
@@ -144,22 +145,22 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
 
     @Override
     public LjBaseResponse<Object> file(FileReq fileReq, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        TeamBase teamBase =null;
+        TeamBase teamBase = null;
         try {
-            ctrlTool.teamPerm(request,"集团.实测实量.检查项管理.查看");
-            teamBase = (TeamBase)sessionInfo.getBaseInfo("cur_group");
-        }catch (Exception e){
-            throw new LjBaseRuntimeException(-9999,e.getMessage());
+            ctrlTool.teamPerm(request, "集团.实测实量.检查项管理.查看");
+            teamBase = (TeamBase) sessionInfo.getBaseInfo("cur_group");
+        } catch (Exception e) {
+            throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
         LjBaseResponse<Object> ljBaseResponse = new LjBaseResponse<>();
         FormVo formVo = new FormVo();
         formVo.setRootCategoryId(fileReq.getId());
         ReadFileVo readFileVo = new ReadFileVo();
-        String name = null;
+        String name = "";
         String mimeType = null;
         byte[] content = null;
         CategoryV3 rc = new CategoryV3();
-        FileResource fileResource = null;
+        FileResource fileResource = new FileResource();
         if (formVo.getRootCategoryId() > 0) {
             try {
                 rc = checkItemV3Service.getRootCategoryNoFoundErr(formVo.getRootCategoryId());
@@ -193,7 +194,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
             mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
         }
         if (StringUtils.isNotBlank(name)) {
-            response.addHeader("Content-Disposition", String.format("attachment; filename=\"%s\"",  new String(name.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1)));
+            response.addHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", new String(name.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1)));
         }
         response.addHeader("Content-Type", mimeType);
         StoreUrlVo storeUrlVo = FileUtil.fileResourceGetStoreUrl(fileResource.getStoreKey());
@@ -216,11 +217,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            try {
-                bis.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            bis.close();
         }
         return ljBaseResponse;
     }

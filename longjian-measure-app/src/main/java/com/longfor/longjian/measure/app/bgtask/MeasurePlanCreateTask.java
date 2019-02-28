@@ -1,6 +1,5 @@
 package com.longfor.longjian.measure.app.bgtask;
 
-import com.alibaba.fastjson.JSON;
 import com.longfor.longjian.common.util.RedisUtil;
 import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureListService;
 import com.longfor.longjian.measure.consts.Enum.BgtaskEnum;
@@ -13,11 +12,12 @@ import java.util.Map;
 
 /**
  * meause issue消费任务
+ *
  * @author yanglei
  */
 @Slf4j
 @Service
-public class MeasurePlanCreateTask implements ExportTask{
+public class MeasurePlanCreateTask implements ExportTask {
 
     @Resource
     private IAPPMeasureListService measureListService;
@@ -25,21 +25,23 @@ public class MeasurePlanCreateTask implements ExportTask{
     private RedisUtil redisUtil;
     @Resource
     private UserTaskNotice userTaskNotice;
+
     @Override
     public void run() {
-        while(true) {
+        while (true) {
             try {
                 String queueName = "zj_bgtask_create_measure:" + BgtaskEnum.MEASURE_LIST_CREATE.getValue();
                 if (redisUtil.exists(queueName)) {
                     String taskKey = (String) redisUtil.lpop(queueName);
-                    if (taskKey == null || "".equals(taskKey)){
+                    if (taskKey == null || "".equals(taskKey)) {
                         return;
                     }
-                    while (!redisUtil.exists(taskKey)){
+                    while (!redisUtil.exists(taskKey)) {
                         try {
                             Thread.sleep(500l);
                         } catch (InterruptedException e) {
                             log.error(Thread.currentThread().getName() + " measure_create sleep error ", e);
+                            Thread.currentThread().interrupt();
                         }
                     }
                     Map params = redisUtil.getHashObject(taskKey, Map.class);
@@ -54,8 +56,9 @@ public class MeasurePlanCreateTask implements ExportTask{
                         log.error(Thread.currentThread().getName() + " measure_create error ", e);
                     }
                 }
-            }catch (Exception e){
-                log.error("measure_create error ,thread destory,",e);
+            } catch (Exception e) {
+                log.error("measure_create error ,thread destory,", e);
+
             }
         }
     }

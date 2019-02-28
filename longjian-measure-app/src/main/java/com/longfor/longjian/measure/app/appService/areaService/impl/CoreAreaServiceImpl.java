@@ -72,7 +72,6 @@ public class CoreAreaServiceImpl implements ICoreAreaService {
     public List<Integer> splitToIds(String idsStr,String sep){
         List<Integer> ids = new ArrayList<>();
         for (String idStr : idsStr.split("/")) {
-            idStr.trim();
             if (!"".equals(idStr)) {
                 int id = Integer.parseInt(idStr);
                 ids.add(id);

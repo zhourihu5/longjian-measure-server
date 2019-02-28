@@ -1,6 +1,6 @@
 package com.longfor.longjian.measure.app.bgtask;
 
-import com.alibaba.fastjson.JSON;
+import com.longfor.longjian.common.util.DateUtil;
 import com.longfor.longjian.common.util.Md5Util;
 import com.longfor.longjian.common.util.RedisUtil;
 import com.longfor.longjian.measure.app.vo.TaskInfoVo;
@@ -8,15 +8,11 @@ import com.longfor.longjian.measure.consts.Enum.BgtaskEnum;
 import com.longfor.longjian.measure.consts.Enum.BgtaskStatusEnum;
 import com.longfor.longjian.measure.util.ConvertUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.beans.IntrospectionException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * wangxs 2019-2-11
@@ -41,7 +37,7 @@ public class UserTaskNotice extends Productor{
         redisUtil.setHash(taskKey, params);//写入任务参数
 
         TaskInfoVo result=new TaskInfoVo();
-        result.setCreate_at(Long.valueOf(new Date().getTime()/1000).intValue());
+        result.setCreate_at(DateUtil.dateToTimestamp(new Date()));
         result.setId(id);
         result.setName("实测实量:后台创建任务");
         result.setProduct("measure");
@@ -64,6 +60,7 @@ public class UserTaskNotice extends Productor{
                 Thread.sleep(500l);
             } catch (InterruptedException e) {
                 log.error(Thread.currentThread().getName() + " measure_create sleep error ", e);
+                Thread.currentThread().interrupt();
             }
         }
         TaskInfoVo result = redisUtil.getHashObject(getTaskResultKey(userId, taskId),TaskInfoVo.class);
@@ -76,7 +73,7 @@ public class UserTaskNotice extends Productor{
         result.setStatus(status.getValue());
         result.setStatus_msg(status.getName());
         if (!"正在执行".equals(status.getName())) {
-            result.setFinish_at(new Long(new Date().getTime() / 1000).intValue());
+            result.setFinish_at(DateUtil.dateToTimestamp(new Date()));
         }
         try {
             redisUtil.setHash(getTaskResultKey(userId, taskId), ConvertUtil.convertBean(result));

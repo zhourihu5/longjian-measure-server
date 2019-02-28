@@ -353,6 +353,9 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
                         measureRegionStructReq.setArea_path_and_id(area.getPath() + areaId.getKey() + "/");
                     });
                 }
+                if(measureRegionStructReqs1 ==null){
+                    measureRegionStructReqs1 = Lists.newArrayList();
+                }
                 List<MeasureRegion> measureRegions = converMeasureRegionStructReqToMeasureRegion(measureRegionStructReqs1);
                 try {
                     List<MeasureRegion> measureRegionList = measureRegionService.createRegionsFromRegionStructList(area.getProjectId(), measureRegions);

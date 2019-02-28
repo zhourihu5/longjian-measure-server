@@ -16,10 +16,19 @@ import java.util.List;
 public class FileUtil {
     //将文件转换成byte数组
     public static byte[] urlTobyte(String filePath) throws IOException {
-        InputStream fis = new BufferedInputStream(new FileInputStream(filePath));
-        byte[] buffer = new byte[fis.available()];
+        InputStream fis = null;
+        byte[] buffer = null;
+        try {
+            fis = new BufferedInputStream(new FileInputStream(filePath));
+            buffer = new byte[fis.available()];
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            fis.close();
+        }
         return buffer;
     }
+
     public static StoreUrlVo fileResourceGetStoreUrl(String storeKey) {
         StoreUrlVo storeUrlVo = new StoreUrlVo();
         if (storeKey.length() > 0) {

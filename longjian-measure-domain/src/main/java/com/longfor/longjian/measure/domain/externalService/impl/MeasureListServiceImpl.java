@@ -224,7 +224,7 @@ public class MeasureListServiceImpl implements IMeasureListService {
                 }
             });
         }
-        if (finish_status != null && !finish_status.equals("")) {
+        if (finish_status != null) {
             criteria.andEqualTo("finishStatus", finish_status);
         }
         if (category_key != null && !category_key.equals("")) {

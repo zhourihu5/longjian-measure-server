@@ -26,7 +26,6 @@ public class StringSplitToListUtil {
      */
     public static List<Integer> splitToIdsComma(String ids, String sep) {
         List<Integer> list = Lists.newArrayList();
-        ids.trim();
         String[] str = ids.split(sep);
         List<String> areaList = Arrays.asList(str);
         for (String s : areaList) {
