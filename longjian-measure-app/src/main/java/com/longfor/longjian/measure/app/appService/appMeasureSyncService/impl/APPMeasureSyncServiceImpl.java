@@ -55,6 +55,9 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
     @Resource
     private IMeasureListAreaService measureListAreaService;
 
+    private static final String USERID = "userId";
+    private static final String ERROR = "],error:";
+    private static final String ERRORLOG = "error:";
     @Override
     public LjBaseResponse<RuleListVo> getMeasureRule(ApiMeasureRuleReq apiMeasureRuleReq) throws Exception {
         LjBaseResponse<RuleListVo> ljBaseResponse = new LjBaseResponse<>();
@@ -103,7 +106,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         String[] projectIds = apiMyTaskReq.getProject_id().split(",");
         Integer userId = null;
         try {
-            userId = (Integer) sessionInfo.getBaseInfo("userId");
+            userId = (Integer) sessionInfo.getBaseInfo(USERID);
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
@@ -177,7 +180,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
             measureZoneVo.setLast_id(lastId);
             ljBaseResponse.setData(measureZoneVo);
         } catch (Exception e) {
-            log.error("SearchZoneUnscopedByListIdLastIdUpdateAtGt" + "[" + apiMeasureZoneReqV2.getList_id() + "],error:" + e);
+            log.error("SearchZoneUnscopedByListIdLastIdUpdateAtGt" + "[" + apiMeasureZoneReqV2.getList_id() + ERROR + e);
             throw new Exception("读取数据失败，code:zone");
         }
         return ljBaseResponse;
@@ -193,7 +196,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
             totalVo.setTotal(total);
             ljBaseResponse.setData(totalVo);
         } catch (Exception e) {
-            log.error("GetCountUnscopedByProjIdUpdateAtGt" + "[" + apiMeasureZoneTotalReqV2.getList_id() + "],error:" + e);
+            log.error("GetCountUnscopedByProjIdUpdateAtGt" + "[" + apiMeasureZoneTotalReqV2.getList_id() + ERROR + e);
             throw new Exception("读取数据失败，code:zone_total");
         }
         return ljBaseResponse;
@@ -221,7 +224,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
             }
             ljBaseResponse.setData(issueVo);
         } catch (Exception e) {
-            log.error("SearchIssueListByListIdLastIdTimestampGt +[" + apiMeasureIssueReq.getList_id() + "],error:" + e);
+            log.error("SearchIssueListByListIdLastIdTimestampGt +[" + apiMeasureIssueReq.getList_id() + ERROR + e);
             throw new Exception("读取数据失败，code:issue_list");
         }
         return ljBaseResponse;
@@ -249,7 +252,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
             }
             ljBaseResponse.setData(issueLogVo);
         } catch (Exception e) {
-            log.error("SearchIssueListByListIdLastIdTimestampGt +[" + apiMeasureIssueLogReq.getList_id() + "],error:" + e);
+            log.error("SearchIssueListByListIdLastIdTimestampGt +[" + apiMeasureIssueLogReq.getList_id() +ERROR + e);
             throw new Exception("读取数据失败，code:issue_log_list");
         }
 
@@ -266,7 +269,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         //获取uid
         Integer uid = null;
         try {
-            uid = (Integer) sessionInfo.getBaseInfo("userId");
+            uid = (Integer) sessionInfo.getBaseInfo(USERID);
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
@@ -298,7 +301,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
                     }
                 }
                 if (polygonStrings.length != 2) {
-                    log.error("polygons is not validated. polygons:[" + reportRegionDataVo.getPolygon() + "],error:");
+                    log.error("polygons is not validated. polygons:[" + reportRegionDataVo.getPolygon() + ERROR);
                     throw new Exception("polygons is not validated.");
                 }
             }
@@ -358,7 +361,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
                 try {
                     List<MeasureRegion> measureRegionList = measureRegionService.createRegionsFromRegionStructList(area.getProjectId(), measureRegions);
                 } catch (Exception e) {
-                    log.error("error:" + e);
+                    log.error(ERRORLOG + e);
                     measureRegionStructReqList.addAll(measureRegionStructReqMap.get(areaId.getKey()));
                 }
             }
@@ -385,7 +388,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         //获取uid
         Integer uid = null;
         try {
-            uid = (Integer) sessionInfo.getBaseInfo("userId");
+            uid = (Integer) sessionInfo.getBaseInfo(USERID);
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
@@ -418,7 +421,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
             try {
                 category = checkItemService.getCategoryByKeyNoFoundErr(reportZoneVo.getCategory_key());
             } catch (Exception e) {
-                log.error("error:" + e);
+                log.error(ERRORLOG + e);
                 DroppedVo droppedVo = new DroppedVo();
                 droppedVo.setUuid(reportZoneVo.getUuid());
                 droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonEnum.CATEGORYNOTFOUND.getValue()));
@@ -443,12 +446,12 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
                     droppedVos.add(droppedVo);
                 }
             } catch (Exception e) {
-                log.error("error:" + e + "reportZoneVo.uuid" + reportZoneVo.getUuid());
+                log.error(ERRORLOG + e + "reportZoneVo.uuid" + reportZoneVo.getUuid());
             }
             try {
                 measureListService.createZoneFromApp(reportZoneVo.getProject_id(), reportZoneVo.getList_id(), reportZoneVo.getUuid(), measureRegion.getUuid(), measureRegion.getAreaId(), measureRegion.getAreaPathAndId(), reportZoneVo.getCategory_key(), String.format("%s%s/",category.getPath(),category.getKey()), MeasureListFinishStatusEnum.UNFINISH.getId(), MeasureListCloseStatusEnum.UNCLOSE.getId());
             } catch (Exception e) {
-                log.error("create zone fail, error:" + e);
+                log.error("create zone fail, "+ERRORLOG + e);
                 DroppedVo droppedVo = new DroppedVo();
                 droppedVo.setUuid(reportZoneVo.getUuid());
                 //String measureregionnotfound = ApiDropDataReasonConstant.MEASUREREGIONNOTFOUND;

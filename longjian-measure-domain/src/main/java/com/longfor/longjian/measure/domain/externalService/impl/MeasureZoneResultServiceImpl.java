@@ -16,7 +16,7 @@ public class MeasureZoneResultServiceImpl implements IMeasureZoneResultService {
 
     @Autowired
     MeasureZoneResultMapper measureZoneResultMapper;
-
+    private static final String LISTID = "listId";
     @Override
     public List<Map<String,Object>> statMeasureListZoneResultCountByListIdGroupBySquad(Integer measure_list_id) {
         return measureZoneResultMapper.statMeasureListZoneResultCountByListIdGroupBySquad(measure_list_id);
@@ -89,7 +89,7 @@ public class MeasureZoneResultServiceImpl implements IMeasureZoneResultService {
     public void delete(Integer id) {
         Example example = new Example(MeasureZoneResult.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("listId",id);
+        criteria.andEqualTo(LISTID,id);
 
         MeasureZoneResult measureZoneResult=new MeasureZoneResult();
         measureZoneResult.setListId(id);
@@ -121,14 +121,14 @@ public class MeasureZoneResultServiceImpl implements IMeasureZoneResultService {
     @Override
     public List<MeasureZoneResult> searchByListId(Integer projId, Integer list_id) {
         Example example =new Example(MeasureZoneResult.class);
-        example.createCriteria().andEqualTo("projectId",projId).andEqualTo("listId",list_id);
+        example.createCriteria().andEqualTo("projectId",projId).andEqualTo(LISTID,list_id);
         return measureZoneResultMapper.selectByExample(example);
     }
 
     @Override
     public List<MeasureZoneResult> searchByProjIdListId(Integer projId, Integer id) {
         Example example =new Example(MeasureZoneResult.class);
-        example.createCriteria().andEqualTo("projectId",projId).andEqualTo("listId",id);
+        example.createCriteria().andEqualTo("projectId",projId).andEqualTo(LISTID,id);
         return measureZoneResultMapper.selectByExample(example);
     }
 }

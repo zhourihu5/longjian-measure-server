@@ -39,6 +39,9 @@ public class MeasureListServiceImpl implements IMeasureListService {
     private CategoryV3Mapper categoryV3Mapper;
     @Resource
     private AreaMapper areaMapper;
+    private static final String PROJECTID = "projectId";
+    private static final String DELETEAT = "deleteAt";
+    private static final String LISTID = "listId";
     @Override
     public List<Map<String, Object>> getMeasureList(Integer finish_status, String q, Integer project_id, String categoryPathAndKey, String areaPathAndId, String[] userIds, Integer page, Integer page_size) {
         page = page - 1;
@@ -83,9 +86,9 @@ public class MeasureListServiceImpl implements IMeasureListService {
     public List<MeasureZone> getZoneByUuid(Integer project_id, String uuid) {
         Example example = new Example(MeasureZone.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("projectId", project_id);
+        criteria.andEqualTo(PROJECTID, project_id);
         criteria.andEqualTo("uuid",uuid);
-        criteria.andEqualTo("deleteAt");
+        criteria.andIsNull(DELETEAT);
         return measureZoneMapper.selectByExample(example);
     }
 
@@ -117,7 +120,7 @@ public class MeasureListServiceImpl implements IMeasureListService {
         Example example = new Example(MeasureList.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("id", measureList.getId());
-        criteria.andIsNull("deleteAt");
+        criteria.andIsNull(DELETEAT);
         return measureListMapper.updateByExampleSelective(measureList, example);
     }
 
@@ -153,28 +156,28 @@ public class MeasureListServiceImpl implements IMeasureListService {
     @Override
     public List<MeasureSquad> searchOnlyMeasureSquadByProjIdAndListId(Integer projId, Integer list_id) {
         Example example = new Example(MeasureSquad.class);
-        example.createCriteria().andEqualTo("projectId", projId).andEqualTo("listId", list_id);
+        example.createCriteria().andEqualTo(PROJECTID, projId).andEqualTo(LISTID, list_id);
         return measureSquadMapper.selectByExample(example);
     }
 
     @Override
     public MeasureList getNoFoundErr(Integer projId, Integer list_id) {
         Example example = new Example(MeasureList.class);
-        example.createCriteria().andEqualTo("projectId", projId).andEqualTo("id", list_id);
+        example.createCriteria().andEqualTo(PROJECTID, projId).andEqualTo("id", list_id);
         return measureListMapper.selectOneByExample(example);
     }
 
     @Override
     public List<MeasureZone> searchZoneByProjUuids(Integer projectId, Set<String> keySet) {
         Example example = new Example(MeasureZone.class);
-        example.createCriteria().andEqualTo("projectId", projectId).andIn("uuid", keySet);
+        example.createCriteria().andEqualTo(PROJECTID, projectId).andIn("uuid", keySet);
         return measureZoneMapper.selectByExample(example);
     }
 
     @Override
     public List<MeasureSquad> searchByProjIdIdIn(Integer projId, Set<Integer> keySet) {
         Example example = new Example(MeasureSquad.class);
-        example.createCriteria().andEqualTo("projectId", projId).andIn("id", keySet);
+        example.createCriteria().andEqualTo(PROJECTID, projId).andIn("id", keySet);
         return measureSquadMapper.selectByExample(example);
     }
 
@@ -182,7 +185,7 @@ public class MeasureListServiceImpl implements IMeasureListService {
     public MeasureList GetByProjIdAndIdNoFoundErr(Integer projectId, Integer id) {
         Example example = new Example(MeasureList.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("projectId", projectId).andEqualTo("id", id);
+        criteria.andEqualTo(PROJECTID, projectId).andEqualTo("id", id);
         return measureListMapper.selectOneByExample(example);
     }
 
@@ -193,11 +196,11 @@ public class MeasureListServiceImpl implements IMeasureListService {
         List<Integer> list_id_set2 = Lists.newArrayList();
         Example example = new Example(MeasureList.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("projectId", project_id);
+        criteria.andEqualTo(PROJECTID, project_id);
         if (area_id != null && !area_id.equals("")) {
             Example example1 = new Example(MeasureListArea.class);
             Example.Criteria criteria1 = example1.createCriteria();
-            criteria1.andEqualTo("projectId", project_id).andEqualTo("areaId", area_id);
+            criteria1.andEqualTo(PROJECTID, project_id).andEqualTo("areaId", area_id);
             List<MeasureListArea> measureListAreas = measureListAreaMapper.selectByExample(example1);
             measureListAreas.forEach(measureListArea -> {
                 list_id_set.add(measureListArea.getListId());
@@ -212,7 +215,7 @@ public class MeasureListServiceImpl implements IMeasureListService {
             }
             Example example2 = new Example(MeasureSquadUser.class);
             Example.Criteria criteria1 = example2.createCriteria();
-            criteria1.andEqualTo("projectId", project_id).andIn("id", userIdList);
+            criteria1.andEqualTo(PROJECTID, project_id).andIn("id", userIdList);
             List<MeasureSquadUser> measureSquadUsers = measureSquadUserMapper.selectByExample(example2);
             measureSquadUsers.forEach(measureSquadUser -> {
                 if (list_id_set.contains(measureSquadUser.getUserId())) {
@@ -229,7 +232,7 @@ public class MeasureListServiceImpl implements IMeasureListService {
         if (!list_id_set.isEmpty()) {
             criteria.andIn("id", list_id_set);
         }
-        criteria.andIsNull("deleteAt");
+        criteria.andIsNull(DELETEAT);
         example.setOrderByClause("create_at");
         List<MeasureList> measureLists = measureListMapper.selectByExampleAndRowBounds(example,new RowBounds((page - 1) * page_size,page_size));
         //List<MeasureList> measureLists = measureListMapper.selectByExample(example);
@@ -239,7 +242,7 @@ public class MeasureListServiceImpl implements IMeasureListService {
         for (MeasureList list_model : measureLists) {
             Map<String, Object> map = objectToMap(list_model);
             Example example4 =new Example(MeasureListIssue.class);
-            example4.createCriteria().andEqualTo("listId",list_model.getId()).andEqualTo("projectId",project_id).andIsNull("deleteAt");
+            example4.createCriteria().andEqualTo(LISTID,list_model.getId()).andEqualTo(PROJECTID,project_id).andIsNull(DELETEAT);
             int issue_count = measureListIssueMapper.selectCountByExample(example4);
             map.put("issue_count",issue_count);
             List<String> key_list = Lists.newArrayList();
@@ -248,7 +251,7 @@ public class MeasureListServiceImpl implements IMeasureListService {
             Example example5 = new Example(MeasureListArea.class);
             Example.Criteria criteria1 = example5.createCriteria();
             //todo 源码上的为'^/[1-9][0-9]*/$' 但是匹配不到三级目录
-            criteria1.andEqualTo("listId",list_model.getId()).andCondition("area_path_and_id  REGEXP '^/[1-9][0-9]*/[1-9][0-9]*/$'");
+            criteria1.andEqualTo(LISTID,list_model.getId()).andCondition("area_path_and_id  REGEXP '^/[1-9][0-9]*/[1-9][0-9]*/$'");
             List<MeasureListArea> area_list = measureListAreaMapper.selectByExample(example5);
             Set<Integer> area_id_list = Sets.newHashSet();
             List<String> top_areas =Lists.newArrayList();
@@ -290,7 +293,7 @@ public class MeasureListServiceImpl implements IMeasureListService {
 
     private List<Area> search_by_id_list(Integer project_id, Set<Integer> area_id_list) {
         Example example =new Example(Area.class);
-        example.createCriteria().andEqualTo("projectId",project_id).andIn("id",area_id_list);
+        example.createCriteria().andEqualTo(PROJECTID,project_id).andIn("id",area_id_list);
         return areaMapper.selectByExample(example);
     }
 

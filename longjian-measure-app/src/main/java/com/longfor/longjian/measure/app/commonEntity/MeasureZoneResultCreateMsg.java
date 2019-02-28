@@ -10,7 +10,7 @@ import java.util.List;
 public class MeasureZoneResultCreateMsg implements Serializable {
 
     @Data
-    class MeasureZoneResult{
+    class MeasureZoneResult  implements Serializable{
         private String uuid;
         private String zone_uuid;
         private Integer proj_id;

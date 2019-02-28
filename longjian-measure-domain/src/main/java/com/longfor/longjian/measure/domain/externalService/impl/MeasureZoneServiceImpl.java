@@ -19,7 +19,7 @@ public class MeasureZoneServiceImpl implements IMeasureZoneService {
 
     @Resource
     private MeasureZoneMapper measureZoneMapper;
-
+    private static final String PROJECTID = "projectId";
     @Override
     public Integer searchTotalByProjectIdAndMeasureListId(Integer project_id, int[] ints) {
         return measureZoneMapper.searchTotalByProjectIdAndMeasureListId(project_id, ints);
@@ -84,7 +84,7 @@ public class MeasureZoneServiceImpl implements IMeasureZoneService {
     public List<MeasureZone> searchZoneByProjUuids(Integer project_id, List<String> zoneUuids) {
         Example example = new Example(MeasureZone.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("projectId",project_id);
+        criteria.andEqualTo(PROJECTID,project_id);
         criteria.andIn("uuid",zoneUuids);
         criteria.andIsNull("deleteAt");
         return measureZoneMapper.selectByExample(example);
@@ -94,7 +94,7 @@ public class MeasureZoneServiceImpl implements IMeasureZoneService {
     public List<MeasureZone> selectByProjectIdAndRegionUUIdIn(Integer project_id, List<String> region_uuid_list) {
         Example example = new Example(MeasureZone.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("projectId",project_id);
+        criteria.andEqualTo(PROJECTID,project_id);
         criteria.andIn("regionUuid",region_uuid_list);
         ExampleUtil.addDeleteAtJudge(example);
         return measureZoneMapper.selectByExample(example);
@@ -126,7 +126,7 @@ public class MeasureZoneServiceImpl implements IMeasureZoneService {
     @LFAssignDataSource("zhijian2")
     public List<MeasureZone> searchByListId(Integer projId, Integer list_id) {
         Example example =new Example(MeasureZone.class);
-        example.createCriteria().andEqualTo("projectId",projId).andEqualTo("listId",list_id);
+        example.createCriteria().andEqualTo(PROJECTID,projId).andEqualTo("listId",list_id);
         return measureZoneMapper.selectByExample(example);
     }
 

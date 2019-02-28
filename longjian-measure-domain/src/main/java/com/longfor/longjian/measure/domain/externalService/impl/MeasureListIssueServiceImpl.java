@@ -43,13 +43,16 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     private MeasureListMapper measureListMapper;
     @Resource
     private UserMapper userMapper;
-
+    private static final String DELETEAT = "deleteAt";
+    private static final String NEW_COUNT = "new_count";
+    private static final String REFORM_COUNT = "reform_count";
+    private static final String PROJECTID = "projectId";
     @Override
     public Integer countByMeasureListId(String id) {
         Example example = new Example(MeasureListIssue.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("listId", id);
-        criteria.andIsNull("deleteAt");
+        criteria.andIsNull(DELETEAT);
         return measureListIssueMapper.selectCountByExample(example);
     }
 
@@ -88,25 +91,25 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
             for (Map<String, Object> newCount : newCountList
             ) {
                 if (startTime.equals(newCount.get("days").toString())) {
-                    map.put("new_count", Integer.parseInt(newCount.get("new_count").toString()));
+                    map.put(NEW_COUNT, Integer.parseInt(newCount.get(NEW_COUNT).toString()));
                     newCountListFlag = true;
                     break;
                 }
             }
             if (!newCountListFlag) {
-                map.put("new_count", 0);
+                map.put(NEW_COUNT, 0);
             }
             boolean trendReformListFlag = false;
             for (Map<String, Object> trendReform : trendReformList
             ) {
                 if (startTime.equals(trendReform.get("days").toString())) {
-                    map.put("reform_count", Integer.parseInt(trendReform.get("reform_count").toString()));
+                    map.put(REFORM_COUNT, Integer.parseInt(trendReform.get(REFORM_COUNT).toString()));
                     trendReformListFlag = true;
                     break;
                 }
             }
             if (!newCountListFlag) {
-                map.put("reform_count", 0);
+                map.put(REFORM_COUNT, 0);
             }
             result.add(map);
             startTime = DateTool.getShortDateStringByStringDate(startTime, 1);
@@ -178,7 +181,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
         Map<String, Object> map = Maps.newHashMap();
         Example example = new Example(MeasureListIssue.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("projectId", projectId);
+        criteria.andEqualTo(PROJECTID, projectId);
         if (!measureListIdList.isEmpty() && measureListIdList.size() > 0) {
             criteria.andIn("listId", measureListIdList);
         }
@@ -232,7 +235,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
             criteria.andGreaterThan("planEndOn", startTimestamp.intValue());
             criteria.andCondition("( end_on > plan_end_on or ( end_on < " + startTimestamp.intValue() + " and plan_end_on < " + nowTimestamp.intValue() + " ))");
         }
-        criteria.andIsNull("deleteAt");
+        criteria.andIsNull(DELETEAT);
         Integer count = measureListIssueMapper.selectCountByExample(example);
         Integer start = 0;
         if (page > 1) {
@@ -290,7 +293,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     @Override
     public Map<String, List<String>> getCategoryPathNamesMap(List<String> categoryKeys) {
         Example example = new Example(CategoryV3.class);
-        example.createCriteria().andIn("key", categoryKeys).andIsNull("deleteAt");
+        example.createCriteria().andIn("key", categoryKeys).andIsNull(DELETEAT);
 
         List<CategoryV3> categories = categoryV3Mapper.selectByExample(example);
         Map<String, CategoryV3> cMap = this.newCategoryMap(categories);
@@ -315,7 +318,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
         List<MeasureList> measureLists = null;
         try {
             Example example = new Example(MeasureList.class);
-            example.createCriteria().andEqualTo("projectId", projectId).andIn("id", measureListIds);
+            example.createCriteria().andEqualTo(PROJECTID, projectId).andIn("id", measureListIds);
             measureLists = measureListMapper.selectByExample(example);
         } catch (Exception e) {
             return null;
@@ -349,7 +352,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
 
         Example example = new Example(MeasureListIssue.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("projectId", project_id);
+        criteria.andEqualTo(PROJECTID, project_id);
         criteria.andEqualTo("uuid", uuid);
 
         measureListIssueMapper.updateByExampleSelective(measureListIssue, example);
@@ -358,7 +361,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     @Override
     public MeasureListIssue getByConditionNoFoundErr(Integer project_id, String uuid) {
         Example example = new Example(MeasureListIssue.class);
-        example.createCriteria().andEqualTo("uuid", uuid).andEqualTo("projectId", project_id);
+        example.createCriteria().andEqualTo("uuid", uuid).andEqualTo(PROJECTID, project_id);
         return measureListIssueMapper.selectOneByExample(example);
     }
 

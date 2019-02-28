@@ -61,6 +61,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
     private ICategoryV3Service categoryV3Service;
     @Resource
     private SessionInfo sessionInfo;
+    public static final String ERROR = "error:";
 
     @Override
     public LjBaseResponse<GetCheckItemVo> getCheckItemJson(GetCheckItemReq getCheckItemReq, HttpServletRequest request) throws Exception {
@@ -87,7 +88,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
             getCheckItemVo.setItem(checkItemVo);
             ljBaseResponse.setData(getCheckItemVo);
         } catch (Exception e) {
-            log.error("error:" + e);
+            log.error(ERROR + e);
             throw new RuntimeException(e);
         }
         return ljBaseResponse;
@@ -117,7 +118,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
             getCategoryVo.setItem(categoryVo);
             ljBaseResponse.setData(getCategoryVo);
         } catch (Exception e) {
-            log.error("error:" + e);
+            log.error(ERROR + e);
             throw new RuntimeException(e);
         }
         return ljBaseResponse;
@@ -188,7 +189,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
                 name = "实测实量检查项导入模板.xlsx";
                 content = FileUtil.urlTobyte(filename);
             } catch (IOException e) {
-                ljBaseResponse.setMessage("error:" + e);
+                ljBaseResponse.setMessage(ERROR + e);
                 return ljBaseResponse;
             }
         }

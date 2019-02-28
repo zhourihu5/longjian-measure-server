@@ -41,9 +41,8 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
     private IMeasureTagService measureTagService;
     @Autowired
     private IMeasureRegionService measureRegionService;
-    @Autowired
-    private IMeasureRegionRelService measureRegionRelService;
 
+    private static  final String  RELID= "relId";
     @Override
     public LjBaseResponse<GroupRegionTagVo> getGroupMeasureRegionTag(GetGroupMeasureRegionTagReq getGroupMeasureRegionTagReq) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
         LjBaseResponse<GroupRegionTagVo> ljBaseResponse = new LjBaseResponse<>();
@@ -97,9 +96,9 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
             polygonVo.setX(Double.parseDouble(jsonObject.get("X").toString()));
             polygonVo.setY(Double.parseDouble(jsonObject.get("Y").toString()));
             regionListVo.setPolygon(polygonVo);
-            if (map.get("relId") != null && StringUtils.isNotBlank(map.get("relId").toString())) {
+            if (map.get(RELID) != null && StringUtils.isNotBlank(map.get(RELID).toString())) {
                 RelVo relVo = new RelVo();
-                relVo.setId(Integer.parseInt(map.get("relId").toString()));
+                relVo.setId(Integer.parseInt(map.get(RELID).toString()));
                 relVo.setDesc(map.get("desc").toString());
                 relVo.setRegion_ids(map.get("region_ids").toString());
                 regionListVo.setRel(relVo);

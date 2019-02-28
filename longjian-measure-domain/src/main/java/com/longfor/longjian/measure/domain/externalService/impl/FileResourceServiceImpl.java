@@ -21,7 +21,7 @@ import java.net.MalformedURLException;
 public class FileResourceServiceImpl implements IFileResourceService {
     @Resource
     private FileResourceMapper fileResourceMapper;
-
+    private static final String ERROR="error:";
     @Override
     public FileResource getByMd5NoFoundErr(String md5) {
         Example example = new Example(FileResource.class);
@@ -38,7 +38,7 @@ public class FileResourceServiceImpl implements IFileResourceService {
         try {
             fileResource = fileResourceMapper.selectOneByExample(example);
         } catch (Exception e) {
-            log.error("error:" + e);
+            log.error(ERROR + e);
             return new byte[0];
         }
         return readFileAllByte(fileResource);
@@ -53,8 +53,8 @@ public class FileResourceServiceImpl implements IFileResourceService {
         try {
             bytes = FileUtil.urlTobyte(storeUrlVo.getSchema()+"/"+ storeUrlVo.getUri());//文件路径跟名称
         } catch (MalformedURLException e) {
-            log.error("error:" + e);
-            throw new MalformedURLException("error:"+e);
+            log.error(ERROR + e);
+            throw new MalformedURLException(ERROR+e);
         }
         return bytes;
     }

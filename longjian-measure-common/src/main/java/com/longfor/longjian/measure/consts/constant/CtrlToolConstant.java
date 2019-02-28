@@ -11,4 +11,5 @@ public class CtrlToolConstant {
     public static final String PROJECT_MEASURE_ISSUEMANAGE_CHECK = "项目.实测实量.爆点管理.查看";
     public static final String PROJECT_MEASURE_ISSUEMANAGE_COMPILE  = "项目.实测实量.爆点管理.编辑";
     public static final String PROJECT_MEASURE_ISSUEMANAGE_DELETE  = "项目.实测实量.爆点管理.删除";
+    public static final String PROJECT_MEASURE_TASKMANAGER_CHECK  = "项目.实测实量.任务管理.查看";
 }

@@ -63,7 +63,11 @@ public class IZoneServiceImpl implements IZoneService {
 
     @Resource
     private IMeasureRuleService measureRuleService;
-
+    private static  final String  PROJECTID= "projectId";
+    private static  final String  PROJECT_ID= "project_id";
+    private static  final String  ZONEID= "zoneId";
+    private static  final String  UPDATE_AT= "update_at";
+    private static  final String  DELETE_AT= "delete_at";
     @Override
     public JSONObject getResult(GetResultReq getResultReq) {
 
@@ -71,7 +75,7 @@ public class IZoneServiceImpl implements IZoneService {
 
         Example example = new Example(MeasureZoneResult.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("projectId", getResultReq.getProject_id());
+        criteria.andEqualTo(PROJECTID, getResultReq.getProject_id());
         criteria.andEqualTo("zoneUuid", getResultReq.getZone_uuid());
 
         List<MeasureZoneResult> measureZoneResults = measureZoneResultService.selectByExample(example);
@@ -148,7 +152,7 @@ public class IZoneServiceImpl implements IZoneService {
 
         Example example = new Example(MeasureZone.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("projectId", paginationSearchReq.getProject_id());
+        criteria.andEqualTo(PROJECTID, paginationSearchReq.getProject_id());
         criteria.andEqualTo("listId", paginationSearchReq.getList_id());
         if (areaIdList.size() > 0) {
             criteria.andIn("areaId", areaIdList);
@@ -227,7 +231,7 @@ public class IZoneServiceImpl implements IZoneService {
             for (MeasureZone measureZone : measureZoneList) {
                 Example zoneExample = new Example(MeasureRegion.class);
                 Example.Criteria zoneCriteria = zoneExample.createCriteria();
-                zoneCriteria.andEqualTo("projectId", paginationSearchReq.getProject_id());
+                zoneCriteria.andEqualTo(PROJECTID, paginationSearchReq.getProject_id());
                 zoneCriteria.andEqualTo("uuid", measureZone.getRegionUuid());
 
                 List<MeasureRegion> measureRegionList = measureRegionService.selectByExample(zoneExample);
@@ -299,10 +303,10 @@ public class IZoneServiceImpl implements IZoneService {
 
         Map<String, Object> map = new HashMap<>();
 
-        map.put("project_id", updateStatusReq.getProject_id());
+        map.put(PROJECT_ID, updateStatusReq.getProject_id());
         map.put("close_status", updateStatusReq.getClose_status());
-        map.put("zoneId", zoneId);
-        map.put("update_at", new Date());
+        map.put(ZONEID, zoneId);
+        map.put(UPDATE_AT, new Date());
 
         measureZoneService.updateStatus(map);
 
@@ -316,10 +320,10 @@ public class IZoneServiceImpl implements IZoneService {
 
         Map<String, Object> map = new HashMap<>();
 
-        map.put("project_id", delByUuidListReq.getProject_id());
-        map.put("zoneId", zoneId);
-        map.put("delete_at", new Date());
-        map.put("update_at", new Date());
+        map.put(PROJECT_ID, delByUuidListReq.getProject_id());
+        map.put(ZONEID, zoneId);
+        map.put(DELETE_AT, new Date());
+        map.put(UPDATE_AT, new Date());
         measureZoneResultService.delByUuidList(map);
 
         measureZoneService.delByUuidList(map);
@@ -333,11 +337,11 @@ public class IZoneServiceImpl implements IZoneService {
 
         Map<String, Object> map = new HashMap<>();
 
-        map.put("project_id", delBySquadIdUuidReq.getProject_id());
-        map.put("zoneId", zoneId);
+        map.put(PROJECT_ID, delBySquadIdUuidReq.getProject_id());
+        map.put(ZONEID, zoneId);
         map.put("squad_id", delBySquadIdUuidReq.getSquad_id());
-        map.put("delete_at", new Date());
-        map.put("update_at", new Date());
+        map.put(DELETE_AT, new Date());
+        map.put(UPDATE_AT, new Date());
 
         measureZoneResultService.delBySquadIdUuid(map);
 
@@ -350,11 +354,11 @@ public class IZoneServiceImpl implements IZoneService {
 
         Map<String, Object> map = new HashMap<>();
 
-        map.put("project_id", delByZoneUuidReq.getProject_id());
-        map.put("zoneId", zoneId);
+        map.put(PROJECT_ID, delByZoneUuidReq.getProject_id());
+        map.put(ZONEID, zoneId);
         map.put("squad_id", null);
-        map.put("delete_at", new Date());
-        map.put("update_at", new Date());
+        map.put(DELETE_AT, new Date());
+        map.put(UPDATE_AT, new Date());
 
         measureZoneResultService.delBySquadIdUuid(map);
 

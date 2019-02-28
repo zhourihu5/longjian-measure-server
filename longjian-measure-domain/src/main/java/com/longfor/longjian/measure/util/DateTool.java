@@ -23,6 +23,8 @@ public class DateTool {
 
     //可以精确到秒  2017-4-16 12:43:37
     public static final DateFormat dateFormatter = DateFormat.getDateTimeInstance();
+    public static final String YYYY_MM_DD = "yyyy-MM-dd";
+    public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
 
 
     private DateTool(){}
@@ -134,7 +136,7 @@ public class DateTool {
         calendar.setTime(date);
         calendar.add(Calendar.DAY_OF_MONTH, days);
         Date date1 = calendar.getTime();
-        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD);
         Long time = date1.getTime();
         String d = format.format(time);
         Date startDate = format.parse(d);
@@ -149,7 +151,7 @@ public class DateTool {
         calendar.setTime(date);
         calendar.add(Calendar.DAY_OF_MONTH, -1);
         Date date1 = calendar.getTime();
-        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD);
         Long time = date1.getTime();
         String d = format.format(time);
         Date startDate = format.parse(d);
@@ -157,7 +159,7 @@ public class DateTool {
     }
 
     public static Long getLongFromString(String time) throws ParseException {
-        SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf= new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS);
         Date dt2 = sdf.parse(time);
         long lTime = dt2.getTime();
         return lTime;
@@ -173,7 +175,7 @@ public class DateTool {
         calendar.setTime(date);
         calendar.add(Calendar.DATE, - 7);
         Date date1 = calendar.getTime();
-        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD);
         Long time = date1.getTime();
         String d = format.format(time);
 //        Date startDate = format.parse(d);
@@ -187,7 +189,7 @@ public class DateTool {
      * @throws ParseException
      */
     public static String getShortDateStringByLong(Long dateLong) throws ParseException {
-        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD);
         String d = format.format(dateLong);
         return d;
     }
@@ -199,7 +201,7 @@ public class DateTool {
      * @throws ParseException
      */
     public static String getDateStringByLong(Long dateLong) throws ParseException {
-        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS);
         String d = format.format(dateLong);
         return d;
     }
@@ -211,7 +213,7 @@ public class DateTool {
      * @throws ParseException
      */
     public static Date getDateByLong(Long dateLong) throws ParseException {
-        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS);
         String d = format.format(dateLong);
         return format.parse(d);
     }
@@ -224,7 +226,7 @@ public class DateTool {
      * @throws ParseException
      */
     public static String getShortDateStringByStringDate(String startDate,int day) throws ParseException {
-        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD);
         Date startTime = format.parse(startDate);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(startTime);
@@ -236,7 +238,7 @@ public class DateTool {
     }
 
     public static Long getLongFromShortString(String time) throws ParseException {
-        SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf= new SimpleDateFormat(YYYY_MM_DD);
         Date dt2 = sdf.parse(time);
         long lTime = dt2.getTime();
         return lTime;

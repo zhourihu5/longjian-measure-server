@@ -69,7 +69,7 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
     private IMeasureRegionService measureRegionService;
     @Resource
     private IMeasureRegionRelService measureRegionRelService;
-
+    private static final String USER_ID_LIST = "user_id_list";
     @Override
     public SetStatusVo setStatus(SetStatusReq setStatusReq) {
 
@@ -226,9 +226,9 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
         Set<String> user_set = new HashSet<>();
         List<Map> squadGroup = JSONArray.parseArray(squad_group, Map.class);
         for (Map squad : squadGroup) {
-            squad.put("user_id_list", Arrays.asList(squad.get("user_ids").toString().split(",")));
-            user_nums += JSONArray.parseArray(squad.get("user_id_list").toString(), String.class).size();
-            user_set.addAll(new HashSet(JSONArray.parseArray(squad.get("user_id_list").toString(), String.class)));
+            squad.put(USER_ID_LIST, Arrays.asList(squad.get("user_ids").toString().split(",")));
+            user_nums += JSONArray.parseArray(squad.get(USER_ID_LIST).toString(), String.class).size();
+            user_set.addAll(new HashSet(JSONArray.parseArray(squad.get(USER_ID_LIST).toString(), String.class)));
             if (user_nums != user_set.size()) {
                 throw new LjBaseRuntimeException(-9999, "duplicated");
             }
@@ -245,7 +245,7 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
             measureSquad.setCreateAt(new Date());
             measureSquad.setUpdateAt(new Date());
             MeasureSquad squad_model = measureSquadService.createReturnSuqad(measureSquad);
-            List<String> squadUserIds = JSONArray.parseArray(squad.get("user_id_list").toString(), String.class);
+            List<String> squadUserIds = JSONArray.parseArray(squad.get(USER_ID_LIST).toString(), String.class);
             squadUserIds.forEach(user_id -> {
                 MeasureSquadUser measureSquadUser = new MeasureSquadUser();
                 measureSquadUser.setProjectId(proj_id);

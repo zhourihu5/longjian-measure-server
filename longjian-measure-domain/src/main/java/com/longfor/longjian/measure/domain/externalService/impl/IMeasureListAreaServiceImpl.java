@@ -21,13 +21,13 @@ public class IMeasureListAreaServiceImpl implements IMeasureListAreaService {
 
     @Resource
     private MeasureListAreaMapper measureListAreaMapper;
-
+    private static final String LISTID="listId";
     @Override
     public void delete(Integer id) {
 
         Example example = new Example(MeasureListArea.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("listId",id);
+        criteria.andEqualTo(LISTID,id);
 
         MeasureListArea measureListArea=new MeasureListArea();
         measureListArea.setListId(id);
@@ -41,7 +41,7 @@ public class IMeasureListAreaServiceImpl implements IMeasureListAreaService {
         Example example = new Example(MeasureListArea.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("projectId",project_id);
-        criteria.andIn("listId",listIds);
+        criteria.andIn(LISTID,listIds);
         ExampleUtil.addDeleteAtJudge(example);
         return measureListAreaMapper.selectByExample(example);
     }
@@ -51,7 +51,7 @@ public class IMeasureListAreaServiceImpl implements IMeasureListAreaService {
         Example example = new Example(MeasureListArea.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("projectId",projectId);
-        criteria.andEqualTo("listId",id);
+        criteria.andEqualTo(LISTID,id);
         ExampleUtil.addDeleteAtJudge(example);
         return measureListAreaMapper.selectByExample(example);
     }
