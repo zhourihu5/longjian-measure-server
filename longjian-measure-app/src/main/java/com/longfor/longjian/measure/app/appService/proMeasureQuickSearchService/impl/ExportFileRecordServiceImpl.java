@@ -58,8 +58,8 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
     }
 
     private void writeInput(String data, String exportName, String filepath) throws Exception {
-        FileOutputStream out = new FileOutputStream(String.format("%s", filepath));;
-        OutputStreamWriter op = new OutputStreamWriter(out, "utf-8");;
+        FileOutputStream out = null;
+        OutputStreamWriter op = null;
         try {
             out = new FileOutputStream(String.format("%s", filepath));
             op = new OutputStreamWriter(out, "utf-8");
@@ -77,8 +77,12 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            op.close();
-            out.close();
+            if(out !=null){
+                out.close();
+            }
+            if(op!=null){
+                op.close();
+            }
         }
     }
 }

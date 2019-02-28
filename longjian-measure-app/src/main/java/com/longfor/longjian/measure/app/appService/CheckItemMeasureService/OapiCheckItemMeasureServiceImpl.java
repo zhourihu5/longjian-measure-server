@@ -203,14 +203,14 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
             storeUrlVo = FileUtil.fileResourceGetStoreUrl(fileResource.getStoreKey());
         }
         Map<String, Object> map = Maps.newHashMap();
-        if(fileResource!=null &&storeUrlVo !=null){
+        if (fileResource != null && storeUrlVo != null) {
             map.put("schema", storeUrlVo.getSchema());
             map.put("uri", storeUrlVo.getUri());
             map.put("fileName", fileResource.getFileName());
         }
         byte[] buff = new byte[1024];
-        BufferedInputStream bis =  new BufferedInputStream(new FileInputStream(map.get("schema").toString() + "/" + map.get("uri").toString()));
-        OutputStream os = response.getOutputStream();
+        BufferedInputStream bis = null;
+        OutputStream os = null;
         try {
             bis = new BufferedInputStream(new FileInputStream(map.get("schema").toString() + "/" + map.get("uri").toString()));
             os = response.getOutputStream();
@@ -223,8 +223,12 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            bis.close();
-            os.close();
+            if (bis != null) {
+                bis.close();
+            }
+            if (os != null) {
+                os.close();
+            }
         }
         return ljBaseResponse;
     }
