@@ -41,6 +41,22 @@ public class ArrayUtil {
         return new ArrayList<>(setDiff);
     }
 
+    /**
+     * 比较2个set元素
+     *
+     * @param set1
+     * @param set2
+     * @return
+     */
+    public static boolean getSetDiff(Set<Integer> set1, Set<Integer> set2) {
+        set1.removeAll(set2);
+        if (set1.size() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 //    public static void main(String[] args) {
 //        Integer[] arrayA= new Integer[]{12,32};
 //        Integer[] arrayB = new Integer[]{};
