@@ -42,7 +42,7 @@ public class ProgressSearchTest {
 
 
     @Test
-    public void testGetBasicSourceInit() throws Exception {
+    public void testGetBasicSourceInit(){
 //        String json = "{\"companyId\":5,\"searchStartTime\":\"2018-08-14\",\"searchEndTime\":\"2018-08-16\"}";
 //        mockMvc.perform(
 //                post("/v1/api/app/progressSearch/getBasicSourceInit")
@@ -55,7 +55,7 @@ public class ProgressSearchTest {
     }
 
     @Test
-    public void testGetTeamOrProDetails() throws Exception {
+    public void testGetTeamOrProDetails(){
 //        String json = "{\"groupId\":4}";
 //        mockMvc.perform(
 //                post("/v1/api/app/progressSearch/getTeamOrProDetails")

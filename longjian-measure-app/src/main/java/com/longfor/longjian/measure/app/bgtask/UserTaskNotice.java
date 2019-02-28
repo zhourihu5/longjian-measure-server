@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.app.bgtask;
 
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.util.DateUtil;
 import com.longfor.longjian.common.util.Md5Util;
 import com.longfor.longjian.common.util.RedisUtil;
@@ -11,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.Map;
 
@@ -24,7 +27,7 @@ public class UserTaskNotice {
     @Resource
     private RedisUtil redisUtil;
 
-    public String sendToRedis(Integer userId, BgtaskEnum taskType, String s, Map params, String task_cls_name) throws Exception{
+    public String sendToRedis(Integer userId, BgtaskEnum taskType, String s, Map params, String task_cls_name) throws IntrospectionException, IllegalAccessException, InvocationTargetException {
         String taskKey=getTaskKey(userId,taskType);
         redisUtil.rpush(getQueueName(taskType), taskKey);//加入任务队列
         params.put("taskTypeId", taskType.getValue());

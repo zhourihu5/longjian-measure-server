@@ -206,7 +206,7 @@ public class DateUtil {
      * @return
      * @throws ParseException
      */
-    public static String getShortDateStringByLong(Long dateLong) throws ParseException {
+    public static String getShortDateStringByLong(Long dateLong){
         SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD);
         String d = format.format(dateLong);
         return d;
@@ -218,7 +218,7 @@ public class DateUtil {
      * @return
      * @throws ParseException
      */
-    public static String getLongDateStringByLong(Long dateLong) throws ParseException {
+    public static String getLongDateStringByLong(Long dateLong){
         SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String d = format.format(dateLong);
         return d;

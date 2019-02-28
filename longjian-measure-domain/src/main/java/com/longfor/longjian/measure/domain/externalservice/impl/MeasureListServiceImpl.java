@@ -16,8 +16,10 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -309,7 +311,8 @@ public class MeasureListServiceImpl implements IMeasureListService {
         return  categoryV3Mapper.selectByExample(example);
     }
 
-    public static Map<String, Object> objectToMap(Object obj) throws Exception {
+    public static Map<String, Object> objectToMap(Object obj) throws IntrospectionException ,IllegalAccessException, IllegalArgumentException,
+            InvocationTargetException {
         if (obj == null)
             return null;
         Map<String, Object> map = new HashMap<String, Object>();

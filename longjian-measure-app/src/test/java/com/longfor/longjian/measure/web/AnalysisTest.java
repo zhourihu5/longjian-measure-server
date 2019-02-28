@@ -35,7 +35,7 @@ public class AnalysisTest {
     }
 
     @Test
-    public void testAnalysis() throws Exception {
+    public void testAnalysis(){
 
 //        String json ="{\"orgId\":4,\"lhHangDao\":\"c1\",\"endTime\":\"2018-09-09\",\"type\":\"10\",\"query\":\"{proj{constructionDelay,normalConstruction,stopWork,noWrite,reasonDate{laborShortage,materialEquipmentShortage,adverseWeatherEffect,environmentalAirControl},stopReasonDate{materialEquipmentShortage,adverseWeatherEffect}}}\",\"queryTotal\":\"{proTotal{normalSupply,outstandingDelivery,deliveryRisk,deliveryNormal,commercialOpeningRisk,normalBusinessOpening,crownOpeningRisk}}\"}";
 //        mockMvc.perform(

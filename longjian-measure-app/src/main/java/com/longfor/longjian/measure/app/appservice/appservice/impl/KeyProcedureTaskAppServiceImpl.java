@@ -1,16 +1,19 @@
 package com.longfor.longjian.measure.app.appservice.appservice.impl;
 
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.app.appservice.appservice.IKeyProcedureTaskAppService;
 import com.longfor.longjian.measure.consts.enums.ReportStatusEnum;
 import com.longfor.longjian.measure.domain.externalservice.IReportResultService;
 import com.longfor.longjian.measure.po.zhijian2.ReportResult;
 import com.longfor.longjian.measure.util.CommonException;
+import freemarker.core.ParseException;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -30,7 +33,7 @@ public class KeyProcedureTaskAppServiceImpl implements IKeyProcedureTaskAppServi
     private IReportResultService reportResultService;
 
     @Override
-    public void startReport(String report_uuid, Integer uid, HttpServletRequest request) throws Exception {
+    public void startReport(String report_uuid, Integer uid, HttpServletRequest request) throws CommonException {
         // 保存请求内容
         ThreadFactory threadFactory = Executors.defaultThreadFactory();
         threadFactory.newThread(() -> {
@@ -80,7 +83,7 @@ public class KeyProcedureTaskAppServiceImpl implements IKeyProcedureTaskAppServi
         reportResultService.updateByPrimaryKey(item);
     }
 
-    private void writeRequestToFile(String uuid, Integer userId, HttpServletRequest request) throws Exception {
+    private void writeRequestToFile(String uuid, Integer userId, HttpServletRequest request) throws IOException {
         // 记录上报请求的目录
         String requestRecordFileDir = "/data/zhijian/api_request_record";
         String recordFile = String.format("%s/%s-%d-%s.txt", requestRecordFileDir, DateTime.now().toString("yyyyMMddHHmmss"), userId, uuid);

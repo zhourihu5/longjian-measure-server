@@ -40,7 +40,6 @@ public class MeasureDetailController {
      * @param request
      * @param req
      * @return
-     * @throws Exception
      */
     @RequestMapping(value = "export_excel", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<NullMsgVo> exportExcel(HttpServletRequest request, @Valid MeasureDetailExportExcelReq req, HttpServletResponse response){

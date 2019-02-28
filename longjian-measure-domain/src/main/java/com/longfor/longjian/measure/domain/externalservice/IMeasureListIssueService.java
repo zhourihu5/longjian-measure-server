@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.domain.externalservice;
 
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.po.zhijian2.Area;
 import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListIssue;
@@ -125,7 +126,7 @@ public interface IMeasureListIssueService {
      * @param is_overdue
      * @return
      */
-    Map<String, Object> searchMeasueListIssueInProj(Integer projectId, Integer limit, Integer page, String category_key, List<Integer> areaIdList, List<String> measureListIdList, List<String> createAtRangeList, Integer status, Integer repairer_id, Boolean is_overdue) throws Exception;
+    Map<String, Object> searchMeasueListIssueInProj(Integer projectId, Integer limit, Integer page, String category_key, List<Integer> areaIdList, List<String> measureListIdList, List<String> createAtRangeList, Integer status, Integer repairer_id, Boolean is_overdue) throws ParseException;
 
     /**
      *
@@ -146,7 +147,7 @@ public interface IMeasureListIssueService {
      * @param areaIdLists
      * @return
      */
-    Map<Integer, List<String>> getAreaPathNamesMap(List<Integer> areaIdLists) throws Exception;
+    Map<Integer, List<String>> getAreaPathNamesMap(List<Integer> areaIdLists);
 
     /**
      * @Description:

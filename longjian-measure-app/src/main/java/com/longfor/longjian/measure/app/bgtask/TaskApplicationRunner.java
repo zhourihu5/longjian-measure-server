@@ -20,7 +20,7 @@ public class TaskApplicationRunner implements ApplicationRunner{
 	private List<ExportTask> exportTasks;
 	
 	@Override
-	public void run(ApplicationArguments args) throws Exception {
+	public void run(ApplicationArguments args) {
 		if(CollectionUtils.isEmpty(exportTasks)) {
 			log.warn("exportTasks is empty.threadPool not start.");
 			

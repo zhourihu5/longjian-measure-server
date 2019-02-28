@@ -41,7 +41,6 @@ public class HomeTest {
 //
 //    /**
 //     * 测试home接口
-//     * @throws Exception
 //     */
 //    @Test
 //    public void testHome() throws Exception {

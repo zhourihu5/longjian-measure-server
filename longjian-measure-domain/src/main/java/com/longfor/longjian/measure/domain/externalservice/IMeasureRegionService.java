@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.domain.externalservice;
 
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.po.zhijian2.MeasureRegion;
 import tk.mybatis.mapper.entity.Example;
 
@@ -56,7 +57,7 @@ public interface IMeasureRegionService {
      * @param measureRegions
      * @return
      */
-    List<MeasureRegion> createRegionsFromRegionStructList(Integer projectId, List<MeasureRegion> measureRegions) throws Exception;
+    List<MeasureRegion> createRegionsFromRegionStructList(Integer projectId, List<MeasureRegion> measureRegions) throws LjBaseRuntimeException;
 
     /**
      *

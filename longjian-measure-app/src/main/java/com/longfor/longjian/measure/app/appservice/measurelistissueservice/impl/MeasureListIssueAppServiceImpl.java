@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
 import java.util.*;
 
 /**
@@ -226,7 +227,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
     }
 
     @Override
-    public void updateMeasureListIssueByProjUuid(Integer project_id, String uuid, Integer repairer_id, Integer uid, Integer plan_end_on) throws Exception {
+    public void updateMeasureListIssueByProjUuid(Integer project_id, String uuid, Integer repairer_id, Integer uid, Integer plan_end_on) throws LjBaseRuntimeException {
         try {
             MeasureListIssue issue = measureListIssueService.getByConditionNoFoundErr(project_id, uuid);
             if (issue.getRepairerId().equals(repairer_id)) {
@@ -241,11 +242,11 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
             }
         } catch (Exception e) {
             log.error(ERROR + e);
-            throw new Exception(e);
+            throw new LjBaseRuntimeException(-9999,e+"");
         }
     }
 
-    public boolean updateIssueRepairInfoByUuid(String uuid, Integer project_id, Integer senderId, Integer repairer_id, Integer plan_end_on) throws Exception {
+    public boolean updateIssueRepairInfoByUuid(String uuid, Integer project_id, Integer senderId, Integer repairer_id, Integer plan_end_on) throws LjBaseRuntimeException, ParseException {
         MeasureListIssue issue = null;
         Integer eInt = -1;
         String eStr = "";
@@ -260,7 +261,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
                 status = MeasureListIssueType.ASSIGNNOREFORM;
             }
         } catch (Exception e) {
-            throw new Exception(e);
+            throw new LjBaseRuntimeException(-9999,e+"");
         }
         helper.init(project_id);
         //变更类型

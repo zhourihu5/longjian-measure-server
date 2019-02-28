@@ -121,7 +121,7 @@ public class MeasureListController {
      * http://192.168.37.159:3000/mock/8/measure/v1/papi/measure_list/condition_search/?_ct=json&project_id=927&page_level=project&group_id=4&team_id=25&category_key=&area_id=&finish_status=&name=&user_id_list=&page=1&page_size=20
      * @param req
      * @return
-     * @throws Exception
+     * @throws LjBaseRuntimeException
      */
     @RequestMapping(value = "condition_search",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<MeasureListInfoVo> conditionSearch(@Valid ConditionSearchReq req) throws LjBaseRuntimeException {

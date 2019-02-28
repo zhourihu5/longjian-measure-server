@@ -3,6 +3,7 @@ package com.longfor.longjian.measure.domain.externalservice.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.dao.zhijian2.MeasureRegionMapper;
 import com.longfor.longjian.measure.domain.externalservice.IMeasureRegionService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureRegion;
@@ -54,7 +55,7 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
     }
 
     @Override
-    public List<MeasureRegion> createRegionsFromRegionStructList(Integer projectId, List<MeasureRegion> measureRegions) throws Exception {
+    public List<MeasureRegion> createRegionsFromRegionStructList(Integer projectId, List<MeasureRegion> measureRegions) throws LjBaseRuntimeException {
         Set<Integer> areaIds = new HashSet<>();
         measureRegions.forEach(measureRegion -> {
             areaIds.add(measureRegion.getAreaId());
@@ -91,7 +92,7 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
                 });
                 measureRegionMapper.insertList(measureRegionLists);
             } catch (Exception e) {
-                throw new Exception(e);
+                throw new LjBaseRuntimeException(-9999,e+"");
             }
         }
         return measureRegionLists;

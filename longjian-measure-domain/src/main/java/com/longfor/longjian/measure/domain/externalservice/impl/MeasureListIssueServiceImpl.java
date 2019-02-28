@@ -3,6 +3,7 @@ package com.longfor.longjian.measure.domain.externalservice.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.dao.zhijian2.*;
 import com.longfor.longjian.measure.dao.zhijian2_apisvr.UserMapper;
 import com.longfor.longjian.measure.domain.externalservice.IMeasureListIssueService;
@@ -177,7 +178,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     }
 
     @Override
-    public Map<String, Object> searchMeasueListIssueInProj(Integer projectId, Integer limit, Integer page, String category_key, List<Integer> areaIdList, List<String> measureListIdList, List<String> createAtRangeList, Integer status, Integer repairer_id, Boolean is_overdue) throws Exception {
+    public Map<String, Object> searchMeasueListIssueInProj(Integer projectId, Integer limit, Integer page, String category_key, List<Integer> areaIdList, List<String> measureListIdList, List<String> createAtRangeList, Integer status, Integer repairer_id, Boolean is_overdue) throws ParseException {
         Map<String, Object> map = Maps.newHashMap();
         Example example = new Example(MeasureListIssue.class);
         Example.Criteria criteria = example.createCriteria();
@@ -249,12 +250,12 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
         return map;
     }
 
-    private void createAreasMapByLeaveIds(List<Integer> areaIdList) throws Exception {
+    private void createAreasMapByLeaveIds(List<Integer> areaIdList) throws LjBaseRuntimeException {
         try {
             List<Area> areas = this.selectAllByLeaveIds(areaIdList);
             this.createAreasMapByAreaList(areas);
         } catch (Exception e) {
-            throw new Exception(e);
+            throw new LjBaseRuntimeException(-9999,e+"");
         }
     }
 
@@ -331,7 +332,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     }
 
     @Override
-    public Map<Integer, List<String>> getAreaPathNamesMap(List<Integer> areaIdLists) throws Exception {
+    public Map<Integer, List<String>> getAreaPathNamesMap(List<Integer> areaIdLists){
         this.createAreasMapByLeaveIds(areaIdLists);
         Map<Integer, List<String>> mAreaName = Maps.newHashMap();
         areaIdLists.forEach(id -> {

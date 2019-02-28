@@ -22,7 +22,7 @@ public interface IMeasureListIssueAppService {
      * @param repairer_id
      * @param uid
      * @param plan_end_on
-     * @throws Exception
+     * @throws LjBaseRuntimeException
      */
-    void updateMeasureListIssueByProjUuid(Integer project_id, String uuid, Integer repairer_id, Integer uid, Integer plan_end_on) throws Exception;
+    void updateMeasureListIssueByProjUuid(Integer project_id, String uuid, Integer repairer_id, Integer uid, Integer plan_end_on) throws LjBaseRuntimeException;
 }

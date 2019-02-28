@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.domain.externalservice;
 
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.po.zhijian2.Area;
 import com.longfor.longjian.measure.vo.AreaInfoWithExtendVo;
 
@@ -58,5 +59,5 @@ public interface IAreaService {
      * @param areas
      * @return
      */
-    List<AreaInfoWithExtendVo> formatAreaInfoWithExtend(List<Area> areas) throws Exception;
+    List<AreaInfoWithExtendVo> formatAreaInfoWithExtend(List<Area> areas) throws LjBaseRuntimeException;
 }

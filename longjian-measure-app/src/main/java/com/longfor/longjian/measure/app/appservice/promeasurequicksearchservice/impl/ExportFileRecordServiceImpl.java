@@ -1,6 +1,7 @@
 package com.longfor.longjian.measure.app.appservice.promeasurequicksearchservice.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.util.DateUtil;
 import com.longfor.longjian.measure.app.appservice.promeasurequicksearchservice.IExportFileRecordService;
 import com.longfor.longjian.measure.domain.externalservice.IExportFileRecordDomainService;
@@ -39,7 +40,7 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
     }
 
     @Override
-    public ExportFileRecord create(Integer userId, Integer teamId, Integer projectId, Integer exportType, InputVo input, String exportName, Date executeAt, HttpServletResponse response) throws Exception {
+    public ExportFileRecord create(Integer userId, Integer teamId, Integer projectId, Integer exportType, InputVo input, String exportName, Date executeAt, HttpServletResponse response) throws LjBaseRuntimeException {
         String inputFilename = null;
         String outputFilename = null;
         try {
@@ -54,7 +55,7 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
             this.writeInput(data, exportName, filepath);
         } catch (Exception e) {
             log.error("error:" + e.getMessage());
-            throw new Exception(e);
+            throw new LjBaseRuntimeException(-9999,e+"");
         }
         String filepath = exportVo.getMeasure_base_uri() + outputFilename;
         Map<String, Object> map = exportFileRecordDomainService.insertFull(userId, teamId, projectId, exportType, String.format("%s %s", inputFilename, outputFilename), filepath, exportName, 0, "", executeAt);
@@ -62,7 +63,7 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
         return exportFileRecord;
     }
 
-    private void writeInput(String data, String exportName, String filepath) throws Exception {
+    private void writeInput(String data, String exportName, String filepath) throws IOException {
         FileOutputStream out = null;
         OutputStreamWriter op = null;
         try {

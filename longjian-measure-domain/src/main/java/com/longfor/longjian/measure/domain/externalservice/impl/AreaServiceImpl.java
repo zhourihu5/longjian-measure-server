@@ -3,6 +3,7 @@ package com.longfor.longjian.measure.domain.externalservice.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.longfor.gaia.gfs.data.mybatis.datasource.LFAssignDataSource;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.dao.zhijian2.AreaMapper;
 import com.longfor.longjian.measure.domain.externalservice.IAreaService;
 import com.longfor.longjian.measure.po.zhijian2.Area;
@@ -67,7 +68,7 @@ public class AreaServiceImpl implements IAreaService {
 
     //@todo : 后续可以优化，暂时只有subs使用，考虑一次性取出所有数据，而不是遍历
     @Override
-    public List<AreaInfoWithExtendVo> formatAreaInfoWithExtend(List<Area> areas) throws Exception {
+    public List<AreaInfoWithExtendVo> formatAreaInfoWithExtend(List<Area> areas) throws LjBaseRuntimeException {
         try {
             List<AreaInfoWithExtendVo> items = Lists.newArrayList();
             List<Integer> areaIds = Lists.newArrayList();
@@ -89,7 +90,7 @@ public class AreaServiceImpl implements IAreaService {
             }
             return items;
         } catch (Exception e) {
-            throw new Exception(e);
+            throw new LjBaseRuntimeException(-9999,e+"");
         }
     }
 
@@ -99,12 +100,12 @@ public class AreaServiceImpl implements IAreaService {
         return areaMapper.selectCountByExample(example);
     }
 
-    private void createAreasMapByLeaveIds(List<Integer> areaIds) throws Exception {
+    private void createAreasMapByLeaveIds(List<Integer> areaIds) throws LjBaseRuntimeException {
         try {
             List<Area> areas = this.selectAllByLeaveIds(areaIds);
             this.createAreasMapByAreaList(areas);
         } catch (Exception e) {
-            throw new Exception(e);
+            throw new LjBaseRuntimeException(-9999,e+"");
         }
     }
 

@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.app.appservice.promeasurequicksearchservice;
 
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.po.zhijian2.ExportFileRecord;
 import com.longfor.longjian.measure.vo.InputVo;
 
@@ -17,5 +18,5 @@ public interface IExportFileRecordService {
      * @param format
      * @param date
      */
-    ExportFileRecord create(Integer curUserId, Integer teamId, Integer projId, Integer value, InputVo input, String format, Date date, HttpServletResponse response) throws Exception;
+    ExportFileRecord create(Integer curUserId, Integer teamId, Integer projId, Integer value, InputVo input, String format, Date date, HttpServletResponse response) throws LjBaseRuntimeException;
 }
