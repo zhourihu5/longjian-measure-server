@@ -119,7 +119,7 @@ public interface IMeasureListService {
      * @Description:
      * @param projId
      * @param Id
-     * @return com.longfor.longjian.measure.po.zhijian2.measureList
+     * @return com.longfor.longjian.measure.po.zhijian2.measurelist
      * @author DDC
      * @date 2019/1/10 20:54
      **/

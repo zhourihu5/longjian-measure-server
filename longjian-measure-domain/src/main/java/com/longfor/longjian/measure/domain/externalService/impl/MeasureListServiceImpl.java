@@ -232,7 +232,7 @@ public class MeasureListServiceImpl implements IMeasureListService {
         criteria.andIsNull("deleteAt");
         example.setOrderByClause("create_at");
         List<MeasureList> measureLists = measureListMapper.selectByExampleAndRowBounds(example,new RowBounds((page - 1) * page_size,page_size));
-        //List<measureList> measureLists = measureListMapper.selectByExample(example);
+        //List<measurelist> measureLists = measureListMapper.selectByExample(example);
         //PageHelper.startPage((page - 1) * page_size,page_size);
         int total_num = measureListMapper.selectCountByExample(example);
         List<Map<String,Object>> return_list =Lists.newArrayList();
