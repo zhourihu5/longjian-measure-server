@@ -61,9 +61,6 @@ public class MeasureListIssueHelper {
     private Map<String, Integer> listIdAndUserIdToSquadIdMap;
     private List<DroppedVo> droppedIssueLog;
     private List<DroppedVo> droppedIssue;
-
-    private Error error;
-
     /**
      * 初始化
      *
@@ -175,7 +172,7 @@ public class MeasureListIssueHelper {
      */
     public MeasureListIssueHelper done() {
         String issueUuid = this.currentLog.getIssueUuid();
-        MeasureListIssue issue = new MeasureListIssue();
+        MeasureListIssue issue;
         boolean inNew = false;
         boolean inOld = false;
         boolean inUpdate = false;
@@ -254,13 +251,11 @@ public class MeasureListIssueHelper {
             issue.setTyp(this.currentLog.getTyp());
             issue.setStatus(this.currentLog.getStatus());
             if (detail.getPlanEndOn() != -1) {
-//                issue.setPlanEndOn(Integer.parseInt(detail.getPlanEndOn() / 1000 + ""));
                 issue.setPlanEndOn(Integer.parseInt(detail.getPlanEndOn() + ""));
             }else{
                 issue.setPlanEndOn(0);
             }
             if (detail.getEndOn() != -1) {
-//                issue.setEndOn(Integer.parseInt(detail.getEndOn() / 1000 + ""));
                 issue.setEndOn(Integer.parseInt(detail.getEndOn() + ""));
             }else{
                 issue.setEndOn(0);
@@ -289,7 +284,6 @@ public class MeasureListIssueHelper {
                 issue.setCloseUser(detail.getCloseUser());
             }
             if (detail.getCloseTime() != null && detail.getCloseTime() > 0) {
-//                issue.setCloseTime(Integer.parseInt(detail.getCloseTime() / 1000 + ""));
                 issue.setCloseTime(Integer.parseInt(detail.getCloseTime() + ""));
             }
             issue.setClientCreateAt(this.currentLog.getClientCreateAt());
@@ -394,14 +388,12 @@ public class MeasureListIssueHelper {
         //计划结束时间
         if (detail.getPlanEndOn() != -1) {
             changed = true;
-//            issue.setPlanEndOn(Integer.parseInt(detail.getPlanEndOn() / 1000 + ""));
             issue.setPlanEndOn(Integer.parseInt(detail.getPlanEndOn() + ""));
         }
 
         //结束时间
         if (detail.getEndOn() != -1) {
             changed = true;
-//            issue.setEndOn(Integer.parseInt(detail.getEndOn() / 1000 + ""));
             issue.setEndOn(Integer.parseInt(detail.getEndOn() + ""));
         }
 
@@ -544,10 +536,10 @@ public class MeasureListIssueHelper {
             }
         });
 
-        //执行之前判断是否有错误产生了 todo
-        //if nil != helper.Error {
-        //		return helper.Error
-        //	}
+        //todo 执行之前判断是否有错误产生了
+        // if nil != helper.Error {
+        //        		return helper.Error
+
 
         //执行入库
         MeasureIssueReportMsg msgPkg = new MeasureIssueReportMsg();
@@ -746,13 +738,13 @@ public class MeasureListIssueHelper {
             zoneUuids.add(entry.getValue().getZoneUuid());
         }
         if (zoneUuids.size() == 0) {
-            return null;
+            return new ArrayList<>();
         }
         //去重，不用做了 utils.DistinctStringSlice(&zoneUuids)
         try {
             List<MeasureListIssue> issuesInDb = measureListIssueService.searchMeasueListIssueInZoneUuids(zoneUuids);
             if (issuesInDb.size() == 0) {
-                return null;
+                return new ArrayList<>();
             }
 
             Map<String, Boolean> existsZoneUuidSquaIdMap = new HashMap<>();
@@ -796,7 +788,6 @@ public class MeasureListIssueHelper {
             });
         } catch (Exception e) {
             log.warn("helper init area error: " + e.getMessage());
-//            this.settingError(e);
             return this;
         }
         return this;

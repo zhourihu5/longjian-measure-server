@@ -7,7 +7,6 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class ApiMeasureSquadAndRepairerReq {
-    private Integer lang;
     /**
      * 清单ID
      */

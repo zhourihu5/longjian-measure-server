@@ -12,8 +12,6 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 public class MeasureIssueQueryReq {
-
-    private Integer lang;           // 语言 取值范围及含义：;1 - 简体中文; ;2 - English;
     @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer project_id;      // 项目id
     private Integer limit;       // PageSize

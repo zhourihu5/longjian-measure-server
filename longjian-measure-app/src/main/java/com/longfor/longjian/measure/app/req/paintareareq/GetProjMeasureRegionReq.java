@@ -11,7 +11,6 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 public class GetProjMeasureRegionReq {
-    private String _ct;
     @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer group_id;
     private String page_level;

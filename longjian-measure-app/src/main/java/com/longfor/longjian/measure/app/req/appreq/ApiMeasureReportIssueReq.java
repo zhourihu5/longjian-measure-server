@@ -8,10 +8,6 @@ import javax.validation.constraints.NotNull;
 @Data
 public class ApiMeasureReportIssueReq {
     /**
-     *  语言 取值范围及含义：;1 - 简体中文; ;2 - English;
-     */
-    private Integer lang;
-    /**
      * report_uuid
      */
     @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)

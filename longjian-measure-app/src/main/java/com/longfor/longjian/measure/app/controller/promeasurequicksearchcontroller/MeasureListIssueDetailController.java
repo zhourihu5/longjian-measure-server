@@ -189,7 +189,7 @@ public class MeasureListIssueDetailController {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
 
-        MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(measureListIssueDetailReq.getProject_id(), measureListIssueDetailReq.getUuid());
+        measureListIssueService.GetIssueByProjectIdAndUuid(measureListIssueDetailReq.getProject_id(), measureListIssueDetailReq.getUuid());
 
         List<MeasureListIssueHistoryRepairLogVo> actionLogs = proMeasureListIssueLogService.getIssueActionLogByIssueUuid(measureListIssueDetailReq.getProject_id(), measureListIssueDetailReq.getUuid());
         itemsVo.setItems(actionLogs);

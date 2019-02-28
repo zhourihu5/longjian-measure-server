@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 public class MeasureIssueCloseStatusReq {
-    private Integer lang;   // 语言 取值范围及含义：;1 - 简体中文; ;2 - English;
     @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private String uuid;        // 唯一编号
     @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)

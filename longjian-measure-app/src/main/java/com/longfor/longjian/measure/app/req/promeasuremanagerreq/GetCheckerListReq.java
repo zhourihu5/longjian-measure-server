@@ -9,8 +9,4 @@ import javax.validation.constraints.NotNull;
 public class GetCheckerListReq {
     @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private Integer project_id;
-    /**
-     * 语言 取值范围及含义：;1 - 简体中文; ;2 - English
-     */
-    private Integer lang;
 }

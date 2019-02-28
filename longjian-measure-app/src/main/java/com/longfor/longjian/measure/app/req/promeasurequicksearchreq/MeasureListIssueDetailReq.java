@@ -13,7 +13,6 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 public class MeasureListIssueDetailReq {
-    private Integer lang;
     @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
     private String uuid;
     @NotNull(message = ReqParamCheckErrors.PARAM_IS_NULL)
