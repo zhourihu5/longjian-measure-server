@@ -14,10 +14,6 @@
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>
         <kafka.version>1.1.1.RELEASE</kafka.version>
-        <sonar.exclusions>
-            src/main/java/com/longfor/longjian/measure/vo/**/*,
-            src/main/java/com/longfor/longjian/measure/req/**/*,
-        </sonar.exclusions>
     </properties>
 
     <dependencies>
