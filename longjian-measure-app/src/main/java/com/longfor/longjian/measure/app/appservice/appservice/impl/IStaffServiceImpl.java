@@ -66,9 +66,9 @@ public class IStaffServiceImpl implements IStaffService {
 
         JSONObject totalObject = new JSONObject();
 
-        List<MeasureSquad> measureSquadList = new ArrayList<>();
+        List<MeasureSquad> measureSquadList;
         Example example = new Example(MeasureSquad.class);
-        Example.Criteria criteria = example.createCriteria().
+        example.createCriteria().
                 andEqualTo(LISTID, squadSearchReq.getList_id());
         ExampleUtil.addDeleteAtJudge(example);
         Integer count = 0;
@@ -84,7 +84,7 @@ public class IStaffServiceImpl implements IStaffService {
         }
         count = iMeasureSquadService.selectByCount(example);
 
-        List<MeasureSquadUser> measureSquadUserList = new ArrayList<>();
+        List<MeasureSquadUser> measureSquadUserList;
 
         JSONArray jsonArray = new JSONArray();
 
@@ -283,10 +283,6 @@ public class IStaffServiceImpl implements IStaffService {
         iMeasureSquadService.update(measureSquad);
 
 
-//        MeasureSquadUser measureSquadUser=new MeasureSquadUser();
-//        measureSquadUser.setProjectId(squadUpdateReq.getProject_id());
-//        measureSquadUser.setListId(squadUpdateReq.getList_id());
-//        measureSquadUser.setSquadId(squadUpdateReq.getSquad_id());
         Example example = new Example(MeasureSquadUser.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo(PROJECTID, squadUpdateReq.getProject_id());
@@ -368,10 +364,6 @@ public class IStaffServiceImpl implements IStaffService {
 
         String[] userIds = repairerListUpdateReq.getUser_id_list().split(",");
 
-//        MeasureRepairerUser measureRepairerUser=new MeasureRepairerUser();
-//        measureRepairerUser.setProjectId(repairerListUpdateReq.getProject_id());
-//        measureRepairerUser.setListId(repairerListUpdateReq.getList_id());
-//        measureRepairerUser.setRoleType(repairerListUpdateReq.getRole_type());
         Example example = new Example(MeasureRepairerUser.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo(PROJECTID, repairerListUpdateReq.getProject_id());

@@ -84,7 +84,7 @@ public class IZoneServiceImpl implements IZoneService {
 
         for (int i = 0; i < measureZoneResults.size(); i++) {
 
-            JSONObject oneJb = new JSONObject();
+            JSONObject oneJb;
 
             MeasureZoneResult measureZoneResult = measureZoneResults.get(i);
 

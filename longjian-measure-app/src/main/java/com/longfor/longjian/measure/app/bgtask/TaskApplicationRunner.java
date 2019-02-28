@@ -28,7 +28,6 @@ public class TaskApplicationRunner implements ApplicationRunner{
 		log.info("exportTasks threadPool start,size:"+exportTasks.size());
 		for(ExportTask task:exportTasks) {
 			//threadPool.execute(task);
-
 		}
 		log.info("exportTasks threadPool start done,size:"+exportTasks.size());
 	}

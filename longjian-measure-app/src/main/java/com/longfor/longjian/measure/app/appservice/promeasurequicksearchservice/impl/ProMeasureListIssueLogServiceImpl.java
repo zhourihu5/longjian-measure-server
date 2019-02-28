@@ -41,7 +41,7 @@ public class ProMeasureListIssueLogServiceImpl implements IProMeasureListIssueLo
         List<MeasureListIssueLog> logs = measureListIssueLogService.searchByIssueUuid(project_id, uuid);
 
         if (logs == null || logs.size() == 0) {
-            return null;
+            return new ArrayList<>();
         }
 
         List<Integer> uids = new ArrayList<>();

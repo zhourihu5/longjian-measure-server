@@ -101,10 +101,9 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             keyProcedureTaskAppService.updateReportStatus(apiMeasureReportIssueReq.getReport_uuid(), reportUuidStatus);
             throw new LjBaseRuntimeException(-9999,e+"");
         }
-        List<MeasureListIssueStruct> datas = new ArrayList<>();
+        List<MeasureListIssueStruct> datas = null;
         log.debug(apiMeasureReportIssueReq.getData());
         datas = JSONArray.parseArray(apiMeasureReportIssueReq.getData(), MeasureListIssueStruct.class);
-//        MeasureListIssueHelper helper = new MeasureListIssueHelper();
         helper.init(apiMeasureReportIssueReq.getProject_id());
         for (MeasureListIssueStruct v : datas
         ) {
@@ -409,7 +408,6 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                 se.eval(formula);
                 Invocable inv2 = (Invocable) se;
                 res = (String) inv2.invokeFunction("calc", args);
-                System.out.println(res);
             } catch (Exception e) {
                 log.error("执行JavaScript错误", e);
             }
@@ -708,7 +706,6 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         resultListVo.setRule_id(measureZoneResult.getRuleId());
         List<TextResultVo> d = new ArrayList<>();
         String data = measureZoneResult.getData();
-//        System.out.println(data);
         if (StringUtils.isNotBlank(data)) {
             JSONArray jsonArray = JSONArray.parseArray(data);
             jsonArray.forEach(jsa -> {
@@ -730,8 +727,6 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         textResultVo.setRecorder_id(textResult.getInteger("RecorderId"));
         textResultVo.setScore(textResult.getDouble("Score"));
         textResultVo.setTexture(textResult.getString("Texture"));
-        Date update = textResult.getDate(UPDATEAT);
-        //System.out.println(update);
         textResultVo.setUpdate_at(textResult.getDate(UPDATEAT) == null ? 0 : DateUtil.dateToTimestamp(textResult.getDate(UPDATEAT)));
         List<SinglePointTestVo> d = new ArrayList<>();
         String data = textResult.getString("Data");
@@ -771,7 +766,6 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         } else {
             singlePointTestVo.setData("");
         }
-        //singlePointTestVo.setData(singlePointTestVo.getData().substring(1));
         List<Object> deviation = (List<Object>) singlePointTest.get("Deviation");
         if (deviation != null) {
             deviation.forEach(d -> {

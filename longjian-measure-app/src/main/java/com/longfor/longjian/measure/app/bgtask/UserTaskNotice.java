@@ -19,20 +19,18 @@ import java.util.Map;
  */
 @Component
 @Slf4j
-public class UserTaskNotice extends Productor{
+public class UserTaskNotice {
 
     @Resource
     private RedisUtil redisUtil;
 
     public String sendToRedis(Integer userId, BgtaskEnum taskType, String s, Map params, String task_cls_name) throws Exception{
-//        super.send(item,params,task_cls_name);
         String taskKey=getTaskKey(userId,taskType);
         redisUtil.rpush(getQueueName(taskType), taskKey);//加入任务队列
         params.put("taskTypeId", taskType.getValue());
         params.put("taskTypeValue", taskType.getName());
         String id = Md5Util.md5Encode(taskKey.getBytes());
         params.put("id", id);
-//        param.put("fileName", fileName);
         params.put("userId", userId);
         redisUtil.setHash(taskKey, params);//写入任务参数
 
@@ -64,7 +62,6 @@ public class UserTaskNotice extends Productor{
             }
         }
         TaskInfoVo result = redisUtil.getHashObject(getTaskResultKey(userId, taskId),TaskInfoVo.class);
-//        log.info("result:" + JSON.toJSONString(result));
         if (result == null) {
             log.error(
                     String.format("updateTaskResultStatus error Result not exist,userId:%d taskId:%s", userId, taskId));

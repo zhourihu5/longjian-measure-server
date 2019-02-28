@@ -69,19 +69,6 @@ public class MeasureRegionRelSearchImpl implements IMeasureRegionRelSearchServic
         areaRetrieveVoList.forEach(areaRetrieveVo -> {
             areaMap.put(areaRetrieveVo.getId(),areaRetrieveVo);
         });
-        /*areaRetrieveVoList.forEach(areaRetrieveVo -> {
-            String[] areaPathIds = StringUtils.split(areaRetrieveVo.getPath(), "/");
-            List<String> joinList =Lists.newArrayList();
-            for (String areaPathId : areaPathIds) {
-                if(areaMap.containsKey(Integer.parseInt(areaPathId))){
-                    AreaRetrieveVo retrieveVo = (AreaRetrieveVo) areaMap.get(Integer.parseInt(areaPathId));
-                    joinList.add(retrieveVo.getName());
-                }else{
-                    joinList.add("【已删除】");
-                }
-            }
-            areaRetrieveVo.setFull_name(StringUtils.join(joinList,"/"));
-        });*/
         for (MeasureRegion measureRegion : measureRegionList) {
             if (!areaMap.containsKey(measureRegion.getAreaId())) {
                 continue;
