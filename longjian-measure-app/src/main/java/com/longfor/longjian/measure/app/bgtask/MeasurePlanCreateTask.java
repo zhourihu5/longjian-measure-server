@@ -1,9 +1,9 @@
 package com.longfor.longjian.measure.app.bgtask;
 
 import com.longfor.longjian.common.util.RedisUtil;
-import com.longfor.longjian.measure.app.appService.appService.IAPPMeasureListService;
-import com.longfor.longjian.measure.consts.Enum.BgtaskEnum;
-import com.longfor.longjian.measure.consts.Enum.BgtaskStatusEnum;
+import com.longfor.longjian.measure.app.appservice.appservice.IAPPMeasureListService;
+import com.longfor.longjian.measure.consts.enums.BgtaskEnum;
+import com.longfor.longjian.measure.consts.enums.BgtaskStatusEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
