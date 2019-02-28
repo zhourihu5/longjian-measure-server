@@ -13,7 +13,7 @@ import com.longfor.longjian.measure.app.appService.appMeasureSyncService.IAPPMea
 import com.longfor.longjian.measure.app.appService.appService.IKeyProcedureTaskAppService;
 import com.longfor.longjian.measure.app.req.apiMeasureRuleReq.*;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.*;
-import com.longfor.longjian.measure.consts.Enum.*;
+import com.longfor.longjian.measure.consts.enums.*;
 import com.longfor.longjian.measure.domain.externalService.*;
 import com.longfor.longjian.measure.po.zhijian2.*;
 import com.longfor.longjian.measure.util.JsonUtil;

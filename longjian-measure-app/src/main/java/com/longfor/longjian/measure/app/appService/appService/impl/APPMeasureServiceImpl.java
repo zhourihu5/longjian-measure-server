@@ -22,8 +22,8 @@ import com.longfor.longjian.measure.app.commonEntity.measure.MeasureZonePointDat
 import com.longfor.longjian.measure.app.req.appReq.*;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.*;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.RelVo;
-import com.longfor.longjian.measure.consts.Enum.ApiDropDataReasonEnum;
-import com.longfor.longjian.measure.consts.Enum.EventQueueEnum;
+import com.longfor.longjian.measure.consts.enums.ApiDropDataReasonEnum;
+import com.longfor.longjian.measure.consts.enums.EventQueueEnum;
 import com.longfor.longjian.measure.consts.constant.KeyProcedureTaskConstant;
 import com.longfor.longjian.measure.consts.constant.MeasureListConstant;
 import com.longfor.longjian.measure.domain.externalService.*;

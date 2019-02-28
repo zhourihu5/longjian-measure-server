@@ -7,7 +7,7 @@ import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.app.appService.areaService.ICoreAreaService;
 import com.longfor.longjian.measure.app.appService.paintAreaService.IRegionService;
 import com.longfor.longjian.measure.app.vo.feignVo.AreaRetrieveVo;
-import com.longfor.longjian.measure.consts.Enum.MeasureErrorEnum;
+import com.longfor.longjian.measure.consts.enums.MeasureErrorEnum;
 import com.longfor.longjian.measure.domain.externalService.IMeasureRegionRelService;
 import com.longfor.longjian.measure.domain.externalService.IMeasureRegionService;
 import com.longfor.longjian.measure.domain.externalService.IMeasureZoneService;

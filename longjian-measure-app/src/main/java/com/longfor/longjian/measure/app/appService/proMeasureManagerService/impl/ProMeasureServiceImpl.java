@@ -917,7 +917,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
      */
     private List<ProMeasurePlanVo> SearchByProjIdCategoryKeyAreaIdStatusUserIdInPage(Integer projectId, GetProMeasurePlanListReq getProMeasurePlanListReq, String[] userIds, String categoryPathAndKey, String areaPathAndId) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException, ParseException {
         List<ProMeasurePlanVo> measurePlanVoList = new ArrayList<>();
-        //查询 MeasureList
+        //查询 measureList
         List<Map<String, Object>> list = measureListService.getMeasureList(getProMeasurePlanListReq.getFinish_status(), getProMeasurePlanListReq.getQ(), projectId, categoryPathAndKey, areaPathAndId, userIds, getProMeasurePlanListReq.getPage(), getProMeasurePlanListReq.getPage_size());
         list2SearchResult(getProMeasurePlanListReq.getProject_id(), list);
         for (Map<String, Object> map : list

@@ -1,7 +1,7 @@
 package com.longfor.longjian.measure.app.controller.measureV1PapiController;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
-import com.longfor.longjian.measure.app.appService.MeasureRegionRelSearchService.IMeasureRegionRelSearchService;
+import com.longfor.longjian.measure.app.appService.measureRegionRelSearchService.IMeasureRegionRelSearchService;
 import com.longfor.longjian.measure.app.req.measureRegionReq.MeasureRegionRelReq;
 import com.longfor.longjian.measure.app.vo.appMeasureSyncVo.MeasureRegionRelVo;
 import lombok.extern.slf4j.Slf4j;

@@ -8,7 +8,7 @@ import com.longfor.longjian.measure.app.req.measureRegionReq.DeleteReq;
 import com.longfor.longjian.measure.app.req.measureRegionReq.EditReq;
 import com.longfor.longjian.measure.app.req.paintAreaReq.GetProjMeasureRegionReq;
 import com.longfor.longjian.measure.app.vo.proPaintAreaManageVo.AreaRegionTagVo;
-import com.longfor.longjian.measure.consts.Enum.RegionSrcTypeEnum;
+import com.longfor.longjian.measure.consts.enums.RegionSrcTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

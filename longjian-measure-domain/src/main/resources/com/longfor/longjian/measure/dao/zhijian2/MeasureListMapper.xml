@@ -127,7 +127,7 @@
     project_id=#{project_id}
     AND delete_at IS NULL
   </select>
-    <!--List<MeasureList> getNoProjNoFoundErr(@Param("listId") String listId);-->
+    <!--List<measureList> getNoProjNoFoundErr(@Param("listId") String listId);-->
     <select id="getNoProjNoFoundErr" resultMap="BaseResultMap">
         select
      id, `name`, project_id, area_type, close_status, finish_status, root_category_key,
@@ -138,7 +138,7 @@
     id=#{listId}
     AND delete_at IS NULL
     </select>
-    <!--List<MeasureList> searchListByProjIdUserId(@Param("projectId") String projectId,@Param("userId") Integer userId);-->
+    <!--List<measureList> searchListByProjIdUserId(@Param("projectId") String projectId,@Param("userId") Integer userId);-->
     <select id="searchListByProjIdUserId" resultMap="BaseResultMap">
              SELECT
              id, `name`, project_id, area_type, close_status, finish_status, root_category_key,

@@ -1,7 +1,7 @@
 package com.longfor.longjian.measure.app.controller.checkItemController;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
-import com.longfor.longjian.measure.app.appService.CheckItemMeasureService.IOapiCheckItemMeasureService;
+import com.longfor.longjian.measure.app.appService.checkItemMeasureService.IOapiCheckItemMeasureService;
 import com.longfor.longjian.measure.app.req.fileReq.FileReq;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

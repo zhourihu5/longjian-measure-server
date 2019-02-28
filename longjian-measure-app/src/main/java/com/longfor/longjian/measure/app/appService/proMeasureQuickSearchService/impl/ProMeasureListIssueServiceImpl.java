@@ -2,8 +2,8 @@ package com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService
 
 import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.IProMeasureListIssueService;
 import com.longfor.longjian.measure.app.commonEntity.MeasureListIssueHelper;
-import com.longfor.longjian.measure.consts.Enum.MeasureListCloseStatusEnum;
-import com.longfor.longjian.measure.consts.Enum.MeasureListIssueCheckStatusEnum;
+import com.longfor.longjian.measure.consts.enums.MeasureListCloseStatusEnum;
+import com.longfor.longjian.measure.consts.enums.MeasureListIssueCheckStatusEnum;
 import com.longfor.longjian.measure.consts.constant.MeasureListIssueType;
 import com.longfor.longjian.measure.domain.externalService.IMeasureListIssueService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListIssue;

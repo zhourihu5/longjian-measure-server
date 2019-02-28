@@ -7,7 +7,7 @@ import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.util.CtrlTool;
 import com.longfor.longjian.common.util.SessionInfo;
 import com.longfor.longjian.measure.app.appService.proMeasureQuickSearchService.IMeasureDetailService;
-import com.longfor.longjian.measure.app.req.MeasureList.MeasureDetailExportExcelReq;
+import com.longfor.longjian.measure.app.req.measureList.MeasureDetailExportExcelReq;
 import com.longfor.longjian.measure.app.vo.measureListVo.NullMsgVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
