@@ -37,19 +37,19 @@ public class ProMeasureListIssueServiceImpl implements IProMeasureListIssueServi
         MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(projectId,uuid);
 
         boolean isClosed = false;
-        if (MeasureListCloseStatusEnum.Closed.getId().equals(issue.getCloseStatus())){
+        if (MeasureListCloseStatusEnum.CLOSED.getId().equals(issue.getCloseStatus())){
             return true;
         }
 
 //        MeasureListIssueHelper helper = new MeasureListIssueHelper();
         helper.init(projectId);
 
-        if (MeasureListIssueCheckStatusEnum.CheckYes.getId().equals(status)){
+        if (MeasureListIssueCheckStatusEnum.CHECKYES.getId().equals(status)){
             //审核通过
             helper.start().setNormalField(uuid,issue.getListId(),issue.getUuid(),senderId,eStr,eInt, MeasureListIssueType.CHECKYES,eStr,issue.getCategoryKey(),new Date().getTime()).
                     setDatailField(eStr, eLong, eLong, eInt, eInt, eInt, eStr, eInt, eInt, eInt, eInt, eLong,status).
                     done();
-        }else if (MeasureListIssueCheckStatusEnum.CheckNo.getId().equals(status)){
+        }else if (MeasureListIssueCheckStatusEnum.CHECKNO.getId().equals(status)){
             helper.start().setNormalField(uuid, issue.getListId(),issue.getUuid(),senderId,desc,eInt,MeasureListIssueType.ASSIGNNOREFORM,attachmentMd5List,issue.getCategoryKey(),new Date().getTime()).
                     setDatailField(eStr, eLong, eLong, eInt, eInt, eInt, eStr, eInt, eInt, eInt, eInt, eLong,status).
                     done();

@@ -256,8 +256,8 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                         log.warn("ruleInfo not found, zone_uuid:" + resultListVo.getZone_uuid());
                         DroppedVo droppedVo = new DroppedVo();
                         droppedVo.setUuid(resultListVo.getUuid());
-                        droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonEnum.MeasureRuleNoFound.getValue()));
-                        droppedVo.setReason(ApiDropDataReasonEnum.MeasureRuleNoFound.getName());
+                        droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonEnum.MEASURERULENOFOUND.getValue()));
+                        droppedVo.setReason(ApiDropDataReasonEnum.MEASURERULENOFOUND.getName());
                         droppedVos.add(droppedVo);
                         continue;
                     } else {

@@ -307,7 +307,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
             measureRegionStructReq.setProject_id(reportRegionDataVo.getProject_id());
             measureRegionStructReq.setArea_id(reportRegionDataVo.getArea_id());
             measureRegionStructReq.setDrawing_md5(reportRegionDataVo.getDrawing_md5());
-            measureRegionStructReq.setSrc_type(MeasureRegionSrcType.App.getId());
+            measureRegionStructReq.setSrc_type(MeasureRegionSrcType.APP.getId());
             measureRegionStructReq.setPolygon_x(polygons.get(0));
             measureRegionStructReq.setPolygon_y(polygons.get(1));
             measureRegionStructReqs.add(measureRegionStructReq);
@@ -340,7 +340,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
                 measureRegionStructReqList1.forEach(measureRegionStructReq -> {
                     DroppedVo droppedVo = new DroppedVo();
                     droppedVo.setUuid(measureRegionStructReq.getUuid());
-                    droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonEnum.NotFound.getValue()));
+                    droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonEnum.NOTFOUND.getValue()));
                     droppedVo.setReason("未找到相关的区域id。");
                     droppedVos.add(droppedVo);
                 });
@@ -446,7 +446,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
                 log.error("error:" + e + "reportZoneVo.uuid" + reportZoneVo.getUuid());
             }
             try {
-                measureListService.createZoneFromApp(reportZoneVo.getProject_id(), reportZoneVo.getList_id(), reportZoneVo.getUuid(), measureRegion.getUuid(), measureRegion.getAreaId(), measureRegion.getAreaPathAndId(), reportZoneVo.getCategory_key(), String.format("%s%s/",category.getPath(),category.getKey()), MeasureListFinishStatusEnum.UnFinish.getId(), MeasureListCloseStatusEnum.UnClose.getId());
+                measureListService.createZoneFromApp(reportZoneVo.getProject_id(), reportZoneVo.getList_id(), reportZoneVo.getUuid(), measureRegion.getUuid(), measureRegion.getAreaId(), measureRegion.getAreaPathAndId(), reportZoneVo.getCategory_key(), String.format("%s%s/",category.getPath(),category.getKey()), MeasureListFinishStatusEnum.UNFINISH.getId(), MeasureListCloseStatusEnum.UNCLOSE.getId());
             } catch (Exception e) {
                 log.error("create zone fail, error:" + e);
                 DroppedVo droppedVo = new DroppedVo();

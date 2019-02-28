@@ -305,9 +305,9 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                 regions.forEach(region -> {
                     regionMap.put(region.getUuid(), region);
                     String srcType = null;
-                    if (region.getSrcType().equals(MeasureRegionSrcType.Backend.getId())) {
+                    if (region.getSrcType().equals(MeasureRegionSrcType.BACKEND.getId())) {
                         srcType = "A";
-                    } else if (region.getSrcType().equals(MeasureRegionSrcType.App.getId())) {
+                    } else if (region.getSrcType().equals(MeasureRegionSrcType.APP.getId())) {
                         srcType = "B";
                     }
                     md.getRegion_map().put(region.getUuid(), String.format("%s%d", srcType, region.getRegionIndex()));

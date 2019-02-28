@@ -70,13 +70,13 @@ public class ProMeasureListIssueLogServiceImpl implements IProMeasureListIssueLo
             item.setCreate_at(Integer.parseInt((measureListIssueLog.getCreateAt().getTime()) / 1000 + ""));
 
             //处理开关变化
-            if (MeasureListCloseStatusEnum.Closed.getId().equals(detail.getCloseStatus())) {
+            if (MeasureListCloseStatusEnum.CLOSED.getId().equals(detail.getCloseStatus())) {
                 MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
-                l.setLog_type(MeasureListIssueActionLogTypeEnum.Close.getId());
+                l.setLog_type(MeasureListIssueActionLogTypeEnum.CLOSE.getId());
                 item.getItems().add(l);
-            } else if (MeasureListCloseStatusEnum.UnClose.getId().equals(detail.getCloseStatus())) {
+            } else if (MeasureListCloseStatusEnum.UNCLOSE.getId().equals(detail.getCloseStatus())) {
                 MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
-                l.setLog_type(MeasureListIssueActionLogTypeEnum.Open.getId());
+                l.setLog_type(MeasureListIssueActionLogTypeEnum.OPEN.getId());
                 item.getItems().add(l);
             }
 
@@ -86,19 +86,19 @@ public class ProMeasureListIssueLogServiceImpl implements IProMeasureListIssueLo
                 //创建问题
                 hasCreateLog = true;
                 MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
-                l.setLog_type(MeasureListIssueActionLogTypeEnum.Create.getId());
+                l.setLog_type(MeasureListIssueActionLogTypeEnum.CREATE.getId());
                 item.getItems().add(0, l);
             } else if (measureListIssueLog.getStatus() == MeasureListIssueType.ASSIGNNOREFORM) {
                 // 判断是审核驳回的还是分配未整改的
-                if (MeasureListIssueCheckStatusEnum.CheckNo.getId().equals(detail.getCheckStatus())) {
+                if (MeasureListIssueCheckStatusEnum.CHECKNO.getId().equals(detail.getCheckStatus())) {
                     //审核驳回
                     MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
-                    l.setLog_type(MeasureListIssueActionLogTypeEnum.Unapprove.getId());
+                    l.setLog_type(MeasureListIssueActionLogTypeEnum.UNAPPROVE.getId());
                     l.setData(measureListIssueLog.getDesc());
                     item.getItems().add(l);
                 } else {
                     MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
-                    l.setLog_type(MeasureListIssueActionLogTypeEnum.Assign.getId());
+                    l.setLog_type(MeasureListIssueActionLogTypeEnum.ASSIGN.getId());
                     l.setTarget_user_id(detail.getRepairerId());
                     if (userMap.get(l.getTarget_user_id()) != null) {
                         l.setTarget_user_name(userMap.get(l.getTarget_user_id()).getRealName());
@@ -109,16 +109,16 @@ public class ProMeasureListIssueLogServiceImpl implements IProMeasureListIssueLo
             } else if (measureListIssueLog.getStatus() == MeasureListIssueType.REFORMNOCHECK) {
                 //提交整改记录
                 MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
-                l.setLog_type(MeasureListIssueActionLogTypeEnum.Repair.getId());
+                l.setLog_type(MeasureListIssueActionLogTypeEnum.REPAIR.getId());
                 item.getItems().add(l);
             } else if (measureListIssueLog.getStatus() == MeasureListIssueType.CHECKYES) {
                 MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
-                l.setLog_type(MeasureListIssueActionLogTypeEnum.Approve.getId());
+                l.setLog_type(MeasureListIssueActionLogTypeEnum.APPROVE.getId());
                 item.getItems().add(l);
             } else {
                 if ((detail.getPlanEndOn() != null && detail.getPlanEndOn() != -1) || detail.getRepairerId() > 0) {
                     MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
-                    l.setLog_type(MeasureListIssueActionLogTypeEnum.Assign.getId());
+                    l.setLog_type(MeasureListIssueActionLogTypeEnum.ASSIGN.getId());
                     l.setTarget_user_id(detail.getRepairerId());
                     if (userMap.get(l.getTarget_user_id()) != null) {
                         l.setTarget_user_name(userMap.get(l.getTarget_user_id()).getRealName());
@@ -128,12 +128,12 @@ public class ProMeasureListIssueLogServiceImpl implements IProMeasureListIssueLo
                 }
                 if (StringUtils.isNotBlank(measureListIssueLog.getDesc())) {
                     MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
-                    l.setLog_type(MeasureListIssueActionLogTypeEnum.AddDesc.getId());
+                    l.setLog_type(MeasureListIssueActionLogTypeEnum.ADDDESC.getId());
                     item.getItems().add(l);
                 }
                 if (StringUtils.isNotBlank(measureListIssueLog.getAttachmentMd5List())) {
                     MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
-                    l.setLog_type(MeasureListIssueActionLogTypeEnum.AddAttachment.getId());
+                    l.setLog_type(MeasureListIssueActionLogTypeEnum.ADDATTACHMENT.getId());
                     item.getItems().add(l);
                 }
             }
@@ -141,7 +141,7 @@ public class ProMeasureListIssueLogServiceImpl implements IProMeasureListIssueLo
             //处理问题类型变化
             if (MeasureListIssueType.REPAIRABLE == measureListIssueLog.getTyp() || MeasureListIssueType.NOREPAIRABLE == measureListIssueLog.getTyp()) {
                 MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
-                l.setLog_type(MeasureListIssueActionLogTypeEnum.ChangeType.getId());
+                l.setLog_type(MeasureListIssueActionLogTypeEnum.CHANGETYPE.getId());
                 l.setData(measureListIssueLog.getTyp() + "");
                 item.getItems().add(l);
             }
@@ -159,7 +159,7 @@ public class ProMeasureListIssueLogServiceImpl implements IProMeasureListIssueLo
             item.setUser_name(m.getUser_name());
             item.setCreate_at(m.getCreate_at());
             MeasureListIssueHistoryRepairLogItemVo l = new MeasureListIssueHistoryRepairLogItemVo();
-            l.setLog_type(MeasureListIssueActionLogTypeEnum.Create.getId());
+            l.setLog_type(MeasureListIssueActionLogTypeEnum.CREATE.getId());
             item.getItems().add(l);
             items.add(0, item);
         }

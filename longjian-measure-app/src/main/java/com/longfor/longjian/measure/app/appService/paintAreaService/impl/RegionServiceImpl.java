@@ -64,7 +64,7 @@ public class RegionServiceImpl implements IRegionService {
         difference.removeAll(area_map.keySet());
         if (difference.size() > 0){
             log.info("missing area_id: " + JSON.toJSONString(difference));
-            throw new LjBaseRuntimeException(MeasureErrorEnum.AreaMissing.getId(),MeasureErrorEnum.AreaMissing.getValue());
+            throw new LjBaseRuntimeException(MeasureErrorEnum.AREAMISSING.getId(),MeasureErrorEnum.AREAMISSING.getValue());
         }
 
         //todo: 有复杂的选择语句如何处理? 直接在peewee外部加一个固定参数的功能? (python源码也是todo)
@@ -160,7 +160,7 @@ public class RegionServiceImpl implements IRegionService {
         List<MeasureZone> zone_result = measureZoneService.selectByProjectIdAndRegionUUIdIn(project_id,region_uuid_list);
         if (zone_result != null && zone_result.size() > 0){
             log.info(JSON.toJSONString(zone_result));
-            throw new LjBaseRuntimeException(MeasureErrorEnum.MeasureZoneExist.getId(),MeasureErrorEnum.MeasureZoneExist.getValue());
+            throw new LjBaseRuntimeException(MeasureErrorEnum.MEASUREZONEEXIST.getId(),MeasureErrorEnum.MEASUREZONEEXIST.getValue());
         }
 
         //MeasureRegionRel里面的rel_ids去除MeasureRegion.id

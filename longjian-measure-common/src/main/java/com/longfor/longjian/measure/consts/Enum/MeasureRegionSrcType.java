@@ -4,7 +4,7 @@ package com.longfor.longjian.measure.consts.Enum;
  * 2018/12/17 16:53
  */
 public enum MeasureRegionSrcType {
-    Backend(1,"后台添加"),App(2,"客户端添加");
+    BACKEND(1,"后台添加"),APP(2,"客户端添加");
 
     private Integer id;
     private String value;

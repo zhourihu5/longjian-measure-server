@@ -14,6 +14,7 @@ import com.longfor.longjian.measure.app.req.proMeasureQuickSearchReq.*;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
 import com.longfor.longjian.measure.app.vo.proMeasureQuickSearchVo.*;
 import com.longfor.longjian.measure.consts.Enum.MeasureListCloseStatusEnum;
+import com.longfor.longjian.measure.consts.constant.CtrlToolConstant;
 import com.longfor.longjian.measure.consts.constant.MeasureListIssueType;
 import com.longfor.longjian.measure.domain.externalService.IMeasureListIssueService;
 import com.longfor.longjian.measure.domain.externalService.IUserService;
@@ -67,7 +68,7 @@ public class MeasureListIssueDetailController {
     @RequestMapping(value = "issue_info/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<MeasureListIssueDetailIssueInfoVo> IssueInfo(@Valid GetMeasureListIssueDetailReq req, HttpServletRequest request) throws Exception {
         try {
-            ctrlTool.projPerm(request, "项目.实测实量.爆点管理.查看");
+            ctrlTool.projPerm(request, CtrlToolConstant.PROJECT_MEASURE_ISSUEMANAGE_CHECK);
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
@@ -84,7 +85,7 @@ public class MeasureListIssueDetailController {
     @RequestMapping(value = "zone_info/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<MeasureListIssueDetailZoneInfoVo> zoneInfo(@Valid GetMeasureListIssueDetailReq req, HttpServletRequest request) throws Exception {
         try {
-            ctrlTool.projPerm(request, "项目.实测实量.爆点管理.查看");
+            ctrlTool.projPerm(request, CtrlToolConstant.PROJECT_MEASURE_ISSUEMANAGE_CHECK);
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
@@ -102,7 +103,7 @@ public class MeasureListIssueDetailController {
     @RequestMapping(value = "repair_list/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<MeasureListIssueDetailRepairListVo> repairList(@Valid GetMeasureListIssueDetailReq req, HttpServletRequest request) throws Exception {
         try {
-            ctrlTool.projPerm(request, "项目.实测实量.爆点管理.查看");
+            ctrlTool.projPerm(request, CtrlToolConstant.PROJECT_MEASURE_ISSUEMANAGE_CHECK);
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
@@ -119,7 +120,7 @@ public class MeasureListIssueDetailController {
     @RequestMapping(value = "update_repairer/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse updateRepairer(@Valid MeasureListDetailUpdateIssueRepairerReq req, HttpServletRequest request) throws Exception {
         try {
-            ctrlTool.projPerm(request, "项目.实测实量.爆点管理.编辑");
+            ctrlTool.projPerm(request, CtrlToolConstant.PROJECT_MEASURE_ISSUEMANAGE_COMPILE);
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
@@ -138,7 +139,7 @@ public class MeasureListIssueDetailController {
     public LjBaseResponse delete(@Valid MeasureListDetailDeleteReq measureListDetailDeleteReq, HttpServletRequest request) throws Exception {
         //鉴权
         try {
-            ctrlTool.projPerm(request, "项目.实测实量.爆点管理.删除");
+            ctrlTool.projPerm(request, CtrlToolConstant.PROJECT_MEASURE_ISSUEMANAGE_DELETE);
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
@@ -157,7 +158,7 @@ public class MeasureListIssueDetailController {
         //鉴权
         Integer uid = null;
         try {
-            ctrlTool.projPerm(request, "项目.实测实量.爆点管理.编辑");
+            ctrlTool.projPerm(request, CtrlToolConstant.PROJECT_MEASURE_ISSUEMANAGE_COMPILE);
             uid = sessionInfo.getSessionUser().getUserId();
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
@@ -183,7 +184,7 @@ public class MeasureListIssueDetailController {
         ItemsVo<List<MeasureListIssueHistoryRepairLogVo>> itemsVo = new ItemsVo<>();
         //鉴权
         try {
-            ctrlTool.projPerm(request, "项目.实测实量.爆点管理.查看");
+            ctrlTool.projPerm(request, CtrlToolConstant.PROJECT_MEASURE_ISSUEMANAGE_CHECK);
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
@@ -208,14 +209,14 @@ public class MeasureListIssueDetailController {
         //鉴权
         Integer uid = null;
         try {
-            ctrlTool.projPerm(request, "项目.实测实量.爆点管理.编辑");
+            ctrlTool.projPerm(request, CtrlToolConstant.PROJECT_MEASURE_ISSUEMANAGE_COMPILE);
             uid = sessionInfo.getSessionUser().getUserId();
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
-        Integer status = MeasureListCloseStatusEnum.UnClose.getId();
+        Integer status = MeasureListCloseStatusEnum.UNCLOSE.getId();
         if (measureListDetailUpdateCloseStatusReq.getClose_status()) {
-            status = MeasureListCloseStatusEnum.Closed.getId();
+            status = MeasureListCloseStatusEnum.CLOSED.getId();
         }
         proMeasureListIssueService.updateIssueCloseStatusByUuid(measureListDetailUpdateCloseStatusReq.getUuid(), measureListDetailUpdateCloseStatusReq.getProject_id(), uid, status);
         return new LjBaseResponse();
@@ -231,7 +232,7 @@ public class MeasureListIssueDetailController {
     @RequestMapping(value = "update_issue_type/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse updateIssueType(@Valid PostMeasureListDetailUpdateIssueTypeReq req, HttpServletRequest request) throws Exception {
         try {
-            ctrlTool.projPerm(request, "项目.实测实量.爆点管理.编辑");
+            ctrlTool.projPerm(request, CtrlToolConstant.PROJECT_MEASURE_ISSUEMANAGE_COMPILE);
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
@@ -241,7 +242,7 @@ public class MeasureListIssueDetailController {
     @RequestMapping(value = "update_plan_end_on/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse UpdatePlanEndOn(@Valid PostMeasureListDetailUpdateIssuePlanEndOnReq req, HttpServletRequest request) throws Exception {
         try {
-            ctrlTool.projPerm(request, "项目.实测实量.爆点管理.编辑");
+            ctrlTool.projPerm(request, CtrlToolConstant.PROJECT_MEASURE_ISSUEMANAGE_COMPILE);
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
@@ -252,7 +253,7 @@ public class MeasureListIssueDetailController {
     public LjBaseResponse<MeasureListIssueGetIssueStatus> issueStatus(@Valid MeasureListIssueDetailReq req, HttpServletRequest request) throws Exception {
         //鉴权
         try {
-            ctrlTool.projPerm(request, "项目.实测实量.爆点管理.查看");
+            ctrlTool.projPerm(request, CtrlToolConstant.PROJECT_MEASURE_ISSUEMANAGE_CHECK);
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
@@ -266,7 +267,7 @@ public class MeasureListIssueDetailController {
         List<MeasureListIssueDetailRepairLogVo> measureListIssueDetailRepairLogVos = Lists.newArrayList();
         //鉴权
         try {
-            ctrlTool.projPerm(request, "项目.实测实量.爆点管理.查看");
+            ctrlTool.projPerm(request, CtrlToolConstant.PROJECT_MEASURE_ISSUEMANAGE_CHECK);
             MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(req.getProject_id(), req.getUuid());
             if (issue == null) {
                 throw new LjBaseRuntimeException(-1, "该爆点信息不存在");
