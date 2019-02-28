@@ -58,8 +58,8 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
     }
 
     private void writeInput(String data, String exportName, String filepath) throws Exception {
-        FileOutputStream out = null;
-        OutputStreamWriter op = null;
+        FileOutputStream out = new FileOutputStream(String.format("%s", filepath));;
+        OutputStreamWriter op = new OutputStreamWriter(out, "utf-8");;
         try {
             out = new FileOutputStream(String.format("%s", filepath));
             op = new OutputStreamWriter(out, "utf-8");

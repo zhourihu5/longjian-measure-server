@@ -13,7 +13,7 @@ import java.util.List;
 public class FileUtil {
     //将文件转换成byte数组
     public static byte[] urlTobyte(String filePath) throws IOException {
-        InputStream fis = null;
+        InputStream fis = new BufferedInputStream(new FileInputStream(filePath));
         byte[] buffer = null;
         try {
             fis = new BufferedInputStream(new FileInputStream(filePath));

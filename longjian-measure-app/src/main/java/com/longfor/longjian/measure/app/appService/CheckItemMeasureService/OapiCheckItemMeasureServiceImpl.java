@@ -209,8 +209,8 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
             map.put("fileName", fileResource.getFileName());
         }
         byte[] buff = new byte[1024];
-        BufferedInputStream bis = null;
-        OutputStream os = null;
+        BufferedInputStream bis =  new BufferedInputStream(new FileInputStream(map.get("schema").toString() + "/" + map.get("uri").toString()));
+        OutputStream os = response.getOutputStream();
         try {
             bis = new BufferedInputStream(new FileInputStream(map.get("schema").toString() + "/" + map.get("uri").toString()));
             os = response.getOutputStream();
