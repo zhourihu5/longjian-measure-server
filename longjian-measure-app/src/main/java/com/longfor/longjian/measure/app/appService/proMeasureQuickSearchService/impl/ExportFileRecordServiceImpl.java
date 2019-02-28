@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 import java.util.Random;
@@ -38,7 +39,7 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
         try {
             String data = JSON.toJSONString(input);
             //随机一个长度不超过long的最大长度的整数
-            Random random = new Random(Long.MAX_VALUE);
+            Random random = new Random(Long.MAX_VALUE-1);
             long randCount = Math.abs(random.nextLong());
             String base_dir = exportVo.getMeasure_base_dir();
             Integer ts = DateUtil.dateToTimestamp(new Date());
@@ -77,6 +78,9 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
+            if(op !=null){
+                op.close();
+            }
             if(out !=null){
                 out.close();
             }
