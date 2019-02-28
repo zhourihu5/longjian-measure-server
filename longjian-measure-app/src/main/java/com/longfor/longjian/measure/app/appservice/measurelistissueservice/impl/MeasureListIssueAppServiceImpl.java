@@ -55,7 +55,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
     private SessionInfo sessionInfo;
 
     @Override
-    public LjBaseResponse<MeasureIssueQueryVo> issueQueryJson(MeasureIssueQueryReq req, HttpServletRequest request) throws Exception {
+    public LjBaseResponse<MeasureIssueQueryVo> issueQueryJson(MeasureIssueQueryReq req, HttpServletRequest request) throws LjBaseRuntimeException {
         LjBaseResponse<MeasureIssueQueryVo> ljBaseResponse = new LjBaseResponse<>();
         MeasureIssueQueryVo measureIssueQueryVo = new MeasureIssueQueryVo();
         List<MeasureIssueQueryItemVo> measureIssueQueryItemVos = Lists.newArrayList();
@@ -199,7 +199,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
                     }
                 }
             } catch (Exception e) {
-                throw new Exception(e);
+                throw new LjBaseRuntimeException(-9999,e+"");
             }
             measureIssueQueryItemVos.add(r);
         }

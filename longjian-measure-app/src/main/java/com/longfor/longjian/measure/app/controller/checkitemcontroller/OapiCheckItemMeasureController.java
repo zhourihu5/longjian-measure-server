@@ -1,6 +1,7 @@
 package com.longfor.longjian.measure.app.controller.checkitemcontroller;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.app.appservice.checkItemmeasureservice.IOapiCheckItemMeasureService;
 import com.longfor.longjian.measure.app.req.checkitemmeasurereq.GetCategoryReq;
 import com.longfor.longjian.measure.app.req.checkitemmeasurereq.GetCheckItemReq;
@@ -37,7 +38,7 @@ public class OapiCheckItemMeasureController {
      * @return
      */
     @RequestMapping(value = "get_category_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<GetCategoryVo> getCategoryJson(@Valid GetCategoryReq getCategoryReq, HttpServletRequest request) throws Exception {
+    public LjBaseResponse<GetCategoryVo> getCategoryJson(@Valid GetCategoryReq getCategoryReq, HttpServletRequest request) throws LjBaseRuntimeException {
         LjBaseResponse<GetCategoryVo> ljBaseResponse = oapiCheckItemMeasureService.getCategoryJson(getCategoryReq, request);
         return ljBaseResponse;
     }
@@ -47,7 +48,7 @@ public class OapiCheckItemMeasureController {
      * @return
      */
     @RequestMapping(value = "get_check_item_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<GetCheckItemVo> getCheckItemJson(@Valid GetCheckItemReq getCheckItemReq, HttpServletRequest request) throws Exception {
+    public LjBaseResponse<GetCheckItemVo> getCheckItemJson(@Valid GetCheckItemReq getCheckItemReq, HttpServletRequest request) throws LjBaseRuntimeException {
         LjBaseResponse<GetCheckItemVo> ljBaseResponse = oapiCheckItemMeasureService.getCheckItemJson(getCheckItemReq, request);
         return ljBaseResponse;
 

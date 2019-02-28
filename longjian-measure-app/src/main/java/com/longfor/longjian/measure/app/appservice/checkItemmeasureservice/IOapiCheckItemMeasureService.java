@@ -1,6 +1,7 @@
 package com.longfor.longjian.measure.app.appservice.checkItemmeasureservice;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.app.req.checkitemmeasurereq.GetCategoryReq;
 import com.longfor.longjian.measure.app.req.checkitemmeasurereq.GetCheckItemReq;
 import com.longfor.longjian.measure.app.req.checkitemmeasurereq.ListTreeJsonReq;
@@ -13,6 +14,8 @@ import com.longfor.longjian.measure.app.vo.promeasurevo.GetCheckItemVo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.ParseException;
 
 public interface IOapiCheckItemMeasureService {
     /**
@@ -20,7 +23,7 @@ public interface IOapiCheckItemMeasureService {
      * @param getCategoryReq
      * @return
      */
-    LjBaseResponse<GetCategoryVo> getCategoryJson(GetCategoryReq getCategoryReq, HttpServletRequest request) throws Exception;
+    LjBaseResponse<GetCategoryVo> getCategoryJson(GetCategoryReq getCategoryReq, HttpServletRequest request) throws LjBaseRuntimeException;
 
     /**
      *
@@ -28,7 +31,7 @@ public interface IOapiCheckItemMeasureService {
      * @param request
      * @return
      */
-    LjBaseResponse<GetCheckItemVo> getCheckItemJson(GetCheckItemReq getCheckItemReq, HttpServletRequest request) throws Exception;
+    LjBaseResponse<GetCheckItemVo> getCheckItemJson(GetCheckItemReq getCheckItemReq, HttpServletRequest request) throws LjBaseRuntimeException;
 
     /**
      * go集团实测检查项上传
@@ -52,5 +55,5 @@ public interface IOapiCheckItemMeasureService {
      * @param request
      * @return
      */
-    LjBaseResponse<Object> file(FileReq fileReq, HttpServletRequest request, HttpServletResponse response) throws Exception;
+    LjBaseResponse<Object> file(FileReq fileReq, HttpServletRequest request, HttpServletResponse response) throws LjBaseRuntimeException, IOException;
 }
