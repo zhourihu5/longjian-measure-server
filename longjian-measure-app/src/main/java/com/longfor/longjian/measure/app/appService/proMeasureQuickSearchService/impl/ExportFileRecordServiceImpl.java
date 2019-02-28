@@ -80,9 +80,6 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
             if(out !=null){
                 out.close();
             }
-            if(op!=null){
-                op.close();
-            }
         }
     }
 }
