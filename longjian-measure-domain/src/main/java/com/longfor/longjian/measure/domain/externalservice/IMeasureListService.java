@@ -1,4 +1,4 @@
-package com.longfor.longjian.measure.domain.externalService;
+package com.longfor.longjian.measure.domain.externalservice;
 
 import com.longfor.longjian.measure.po.zhijian2.MeasureList;
 import com.longfor.longjian.measure.po.zhijian2.MeasureSquad;

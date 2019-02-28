@@ -1,8 +1,8 @@
-package com.longfor.longjian.measure.domain.externalService.impl;
+package com.longfor.longjian.measure.domain.externalservice.impl;
 
 import com.longfor.gaia.gfs.data.mybatis.datasource.LFAssignDataSource;
 import com.longfor.longjian.measure.dao.zhijian2.MeasureZoneMapper;
-import com.longfor.longjian.measure.domain.externalService.IMeasureZoneService;
+import com.longfor.longjian.measure.domain.externalservice.IMeasureZoneService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
 import com.longfor.longjian.measure.util.ExampleUtil;
 import org.springframework.stereotype.Service;

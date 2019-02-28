@@ -1,10 +1,10 @@
-package com.longfor.longjian.measure.domain.externalService.impl;
+package com.longfor.longjian.measure.domain.externalservice.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.longfor.longjian.measure.dao.zhijian2.*;
-import com.longfor.longjian.measure.domain.externalService.IMeasureListService;
+import com.longfor.longjian.measure.domain.externalservice.IMeasureListService;
 import com.longfor.longjian.measure.po.zhijian2.*;
 import com.longfor.longjian.measure.util.DateUtil;
 import org.apache.commons.lang.StringUtils;
