@@ -317,16 +317,10 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
                     MeasureZone measureZone = new MeasureZone();
                     Area area = area_dict.get(region_model.getAreaId());
                     String area_path_and_id = area == null ? "" : area.getPath() + area.getId() + "/";
-//                    Map new_dict = zone_dict;
                     measureZone.setRegionUuid(region_model.getUuid());
                     measureZone.setUuid(UUID.randomUUID().toString().replaceAll("-", ""));
                     measureZone.setAreaId(area == null ? 0 : area.getId());
                     measureZone.setAreaPathAndId(area_path_and_id);
-//                    new_dict.put("region_uuid", region_model.getUuid());
-//                    new_dict.put("uuid", UUID.randomUUID().toString().replaceAll("-", ""));
-//                    new_dict.put("area_id", area == null ? 0 : area.getId());
-
-//                    new_dict.put("area_path_and_id", area_path_and_id);
                     measureZone.setCategoryKey(zone_dict.get("category_key").toString());
                     measureZone.setCategoryPathAndKey(zone_dict.get("category_path_and_key").toString());
                     measureZone.setProjectId(proj_id);

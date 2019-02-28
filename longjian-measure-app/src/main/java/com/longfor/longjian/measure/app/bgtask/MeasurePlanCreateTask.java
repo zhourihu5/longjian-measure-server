@@ -45,12 +45,10 @@ public class MeasurePlanCreateTask implements ExportTask {
                         }
                     }
                     Map params = redisUtil.getHashObject(taskKey, Map.class);
-//                    log.info("params: " + JSON.toJSONString(params));
                     userTaskNotice.updateTaskResultStatus(Integer.parseInt(params.get(USERID).toString()), params.get("id").toString(), BgtaskStatusEnum.PROCESSING);
                     try {
                         measureListService.add(params);
                         userTaskNotice.updateTaskResultStatus(Integer.parseInt(params.get(USERID).toString()), params.get("id").toString(), BgtaskStatusEnum.DONE);
-//                        Thread.sleep(500l);
                     } catch (Exception e) {
                         userTaskNotice.updateTaskResultStatus(Integer.parseInt(params.get(USERID).toString()), params.get("id").toString(), BgtaskStatusEnum.PROCESSING);
                         log.error(Thread.currentThread().getName() + " measure_create error ", e);

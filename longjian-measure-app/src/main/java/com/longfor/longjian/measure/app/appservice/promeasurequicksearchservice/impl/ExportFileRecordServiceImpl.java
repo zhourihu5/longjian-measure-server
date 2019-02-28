@@ -48,7 +48,6 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
             long randCount = (long) (rand.nextDouble() * Long.MAX_VALUE);
             String base_dir = exportVo.getMeasure_base_dir();
             Integer ts = DateUtil.dateToTimestamp(new Date());
-            String base_uri = exportVo.getMeasure_base_uri();
             inputFilename = String.format("%d%d.%s", randCount, ts, "input");
             outputFilename = String.format("/export/%d%d.%s", randCount, ts, "output");
             String filepath = String.format("%s/%s", base_dir, inputFilename);
@@ -67,6 +66,7 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
         FileOutputStream out = null;
         OutputStreamWriter op = null;
         try {
+            log.info("erxportName :{}",exportName);
             out = new FileOutputStream(String.format("%s", filepath));
             op = new OutputStreamWriter(out, "utf-8");
             File file = new File(String.format("%s", filepath));

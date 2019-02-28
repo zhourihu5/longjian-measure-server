@@ -163,7 +163,6 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
             measureZoneResults.forEach(obj -> {
                 String[] keys = StringUtils.split(StringUtils.trim(obj.getCategoryPathAndKey()), "/");
                 CategoryDataVo tail = new CategoryDataVo();
-                /* Integer[] keysInt = (Integer[]) ConvertUtils.convert(keys, Integer.class);*/
                 for (String k : keys) {
                     CategoryDataVo d = categoryDataMap.get(k);
                     if (d == null) {
@@ -184,10 +183,8 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                     }
                     tail = d;
                 }
-                if (tail.getRule() == null) {
-                    if (ruleMap.get(obj.getRuleId()) != null) {
+                if (tail.getRule() == null && ruleMap.get(obj.getRuleId()) != null) {
                         tail.setRule(ruleMap.get(obj.getRuleId()));
-                    }
                 }
                 MeasureSquad squad = squadMap.get(obj.getSquadId());
                 if (squad == null) {
@@ -260,22 +257,18 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                     }
                 }
             }
-            if (zoneMap.keySet().size() > 0) {
-                if (proj.getId() != null || proj.getId().equals(0)) {
+            if (zoneMap.keySet().size() > 0 && (proj.getId() != null || proj.getId().equals(0))) {
                     List<MeasureZone> zones = measureListService.searchZoneByProjUuids(proj.getId(), zoneMap.keySet());
                     zones.forEach(measureZone -> {
                         zoneMap.put(measureZone.getUuid(), measureZone);
                         regionMap.put(measureZone.getRegionUuid(), null);
                     });
-                }
             }
-            if (squadMap.keySet().size() > 0) {
-                if (proj.getId() != null || proj.getId().equals(0)) {
+            if (squadMap.keySet().size() > 0 && (proj.getId() != null || proj.getId().equals(0))) {
                     List<MeasureSquad> squads = measureListService.searchByProjIdIdIn(proj.getId(), squadMap.keySet());
                     squads.forEach(measureSquad -> {
                         md.getSquad_map().put(measureSquad.getId(), measureSquad.getName());
                     });
-                }
             }
             Map<Integer, MeasureRule> ruleMap2 = Maps.newHashMap();
             if (ruleMap.keySet().size() > 0) {
@@ -372,10 +365,8 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                 }
                 List<String> categoryNames = Lists.newArrayList();
                 for (String key : StringUtils.split(measureZoneResult.getCategoryPathAndKey(), "/")) {
-                    if (md.getCategory_map().get(key) != null) {
-                        if (!md.getCategory_map().get(key).getName().equals("")) {
+                    if (md.getCategory_map().get(key) != null && !md.getCategory_map().get(key).getName().equals("")) {
                             categoryNames.add(md.getCategory_map().get(key).getName());
-                        }
                     }
                 }
                 String categoryOrder = null;
@@ -548,7 +539,6 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
     private void addZoneData2(MeasureZonePointDataVo zoneData, String squadId, MeasureZoneDataVo d) {
         List<MeasureZonePointDataVo> data = d.getData().get(squadId);
         if (data == null || data.isEmpty()) {
-            data = new ArrayList<MeasureZonePointDataVo>();
             d.getSquad_ok_rates().put(squadId, new OkRateVo());
         }
         Map<String, List<MeasureZonePointDataVo>> datamap = d.getData();

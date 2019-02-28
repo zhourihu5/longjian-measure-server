@@ -87,7 +87,6 @@ public class RegionServiceImpl implements IRegionService {
         //插入region
         region_info_list.forEach(region_info -> {
             List<MeasureRegion> model_list = new ArrayList<>();
-//            MeasureRegionHelper region_helper = new MeasureRegionHelper(project_id);
 
             //region
             List<Integer> areaIdList = JSONArray.parseArray(region_info.get("area_id_list").toString(),Integer.class);

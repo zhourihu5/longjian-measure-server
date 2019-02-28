@@ -81,6 +81,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     private static final String TOTAL_SUM = "total_sum";
     private static final String TOPAREAS = "topAreas";
     private static final String ROOTCATEGORYKEY = "rootCategoryKey";
+
     @Override
     public LjBaseResponse<ProMeasurePlanListVo> getProMeasurePlanList(GetProMeasurePlanListReq getProMeasurePlanListReq, HttpServletRequest request) throws Exception {
         LjBaseResponse<ProMeasurePlanListVo> ljBaseResponse = new LjBaseResponse<>();
@@ -125,7 +126,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         List<ProMeasureCheckIteamVo> proMeasureCheckIteamVoArrayList = new ArrayList<>();
         Team team = new Team();
         team.setTeamId(group.getTeamId());
-        List<Map<String, Object>> list = new ArrayList<>();
+        List<Map<String, Object>> list;
         if (StringUtils.isNotBlank(getProMeasureCheckItemsReq.getKey())) {
             //查子集
             list = categoryV3Service.getCategoryByFatherKey(getProMeasureCheckItemsReq.getKey());
@@ -515,7 +516,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         List<BlisterCategoryDetailsVo> r = new ArrayList<>();
         List<MeasureListIssue> issues = measureListIssueService.searchMeasureListIssueDistributionCategory(getBlisterRateCheckItemsReq.getProject_id(), getBlisterRateCheckItemsReq.getMeasure_list_id(), MeasureListConstant.UNCLOSECODE);
         if (issues == null || issues.size() <= 0) {
-            return null;
+            return r;
         }
         //map去重，获取categorys
         List<String> categoryKeys = new ArrayList<>();
@@ -524,14 +525,13 @@ public class ProMeasureServiceImpl implements IProMeasureService {
                 categoryKeys.add(issue.getCategoryKey());
             }
         });
-//        }
         if (StringUtils.isBlank(getBlisterRateCheckItemsReq.getCategory_key())) {
             try {
                 //获取顶级检查项
                 List<CategoryV3> categoryV3s = searchCategoryTopByCategoryKeyIn(categoryKeys);
                 int count = categoryV3s.size();
                 if (count <= 0 || categoryV3s.isEmpty()) {
-                    return null;
+                    return r;
                 }
 
                 categoryV3s.forEach(category -> {
@@ -759,11 +759,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
                 measureStatisticSquadsSmallestPassPercentInfoVo.setCategory_name(categoryV3.getName());
                 List<String> squads = new ArrayList<>();
                 sInfos.forEach(squadsInfo -> {
-//                    if(StringUtils.isNotBlank(String.format("%.2f", Float.parseFloat(squadsInfo.get(PASSPERCENT).toString()) * 100.0))){
                     squads.add(String.format("%.2f", Float.parseFloat(squadsInfo.get(PASSPERCENT).toString()) * 100.0));
-//                    }else {
-//                        squads.add("");
-//                    }
                 });
                 measureStatisticSquadsSmallestPassPercentInfoVo.setSquads(squads);
                 measureStatisticSquadsSmallestPassPercentInfoVo.setSmallest_index(i);
@@ -945,7 +941,6 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             }
             measurePlanVo.setIssue_count(measureListIssueService.countByMeasureListId(map.get("id").toString()));
             measurePlanVo.setCreate_at(DateTool.getLongFromString(map.get("createAt").toString()) / 1000);
-            System.out.println(JSON.toJSONString(map.get(TOPAREAS)));
             List<Area> areas = JSONArray.parseArray(JSON.toJSONString(map.get(TOPAREAS)), Area.class);
             measurePlanVo.setTop_areas(areas.stream().map(Area::getName).collect(Collectors.joining("、")));
             measurePlanVoList.add(measurePlanVo);

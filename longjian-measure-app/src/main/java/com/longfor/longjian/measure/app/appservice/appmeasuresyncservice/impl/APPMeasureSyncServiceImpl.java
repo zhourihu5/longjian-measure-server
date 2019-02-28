@@ -74,8 +74,6 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         List<CategoryV3> categoryList = categoryV3Service.getCategoryByKeys(categoryKeysList);
         //updateAtDate不知道参数什么意思  默认时间0001-01-01 00:00:00  +0000  UTC
         String stringTime = "0001-01-01 00:00:00";
-        /*SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date dateString = formatter.parse(stringTime);*/
         Map<Integer, Integer> mTeamId = Maps.newHashMap();
         for (CategoryV3 category : categoryList
         ) {
@@ -454,10 +452,6 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
                 log.error("create zone fail, "+ERRORLOG + e);
                 DroppedVo droppedVo = new DroppedVo();
                 droppedVo.setUuid(reportZoneVo.getUuid());
-                //String measureregionnotfound = ApiDropDataReasonConstant.MEASUREREGIONNOTFOUND;
-                //JSONObject jsonObject = JSON.parseObject(measureregionnotfound);
-                //int value = jsonObject.getIntValue("value");
-                //String name = jsonObject.getString("name");
                 droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonEnum.MEASUREREGIONNOTFOUND.getValue()));
                 droppedVo.setReason(ApiDropDataReasonEnum.MEASUREREGIONNOTFOUND.getName());
                 droppedVos.add(droppedVo);

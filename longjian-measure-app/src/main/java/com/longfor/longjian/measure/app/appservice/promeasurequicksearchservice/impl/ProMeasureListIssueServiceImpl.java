@@ -41,7 +41,6 @@ public class ProMeasureListIssueServiceImpl implements IProMeasureListIssueServi
             return true;
         }
 
-//        MeasureListIssueHelper helper = new MeasureListIssueHelper();
         helper.init(projectId);
 
         if (MeasureListIssueCheckStatusEnum.CHECKYES.getId().equals(status)){
