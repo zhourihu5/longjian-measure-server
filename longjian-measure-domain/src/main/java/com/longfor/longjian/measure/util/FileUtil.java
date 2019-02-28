@@ -2,6 +2,7 @@ package com.longfor.longjian.measure.util;
 
 import com.google.common.collect.Lists;
 import com.longfor.longjian.measure.vo.StoreUrlVo;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.*;
@@ -10,6 +11,7 @@ import java.util.List;
 /**
  * Jiazm 2019/01/11 16:28
  */
+@Slf4j
 public class FileUtil {
     //将文件转换成byte数组
     public static byte[] urlTobyte(String filePath) throws IOException {
@@ -19,7 +21,7 @@ public class FileUtil {
             fis = new BufferedInputStream(new FileInputStream(filePath));
             buffer = new byte[fis.available()];
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            log.error("error :",e);
         } finally {
             if (fis != null) {
                 fis.close();

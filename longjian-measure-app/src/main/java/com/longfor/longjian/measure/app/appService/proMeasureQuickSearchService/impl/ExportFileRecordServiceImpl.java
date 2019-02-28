@@ -17,6 +17,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Date;
 import java.util.Map;
 import java.util.Random;
@@ -31,6 +33,11 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
     private ExportVo exportVo;
     @Resource
     private IExportFileRecordDomainService exportFileRecordDomainService;
+    private Random rand;
+
+    public ExportFileRecordServiceImpl() throws NoSuchAlgorithmException {
+        rand= SecureRandom.getInstanceStrong();
+    }
 
     @Override
     public ExportFileRecord create(Integer userId, Integer teamId, Integer projectId, Integer exportType, InputVo input, String exportName, Date executeAt, HttpServletResponse response) throws Exception {
@@ -39,8 +46,7 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
         try {
             String data = JSON.toJSONString(input);
             //随机一个长度不超过long的最大长度的整数
-            Random random = new Random();
-            long randCount = (long) (random.nextDouble() * Long.MAX_VALUE);
+            long randCount = (long) (rand.nextDouble() * Long.MAX_VALUE);
             String base_dir = exportVo.getMeasure_base_dir();
             Integer ts = DateUtil.dateToTimestamp(new Date());
             String base_uri = exportVo.getMeasure_base_uri();
@@ -72,6 +78,7 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
 
             if (!file.exists()) {
                 boolean newFile = file.createNewFile();
+                log.info("createNewFile flag{}",newFile);
             }
             op.append(data);
             op.flush();
