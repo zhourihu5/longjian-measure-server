@@ -1,4 +1,4 @@
-package com.longfor.longjian.measure.app.req.appReq;
+package com.longfor.longjian.measure.app.req.appreq;
 
 import com.longfor.longjian.common.consts.ReqParamCheckErrors;
 import lombok.Data;
