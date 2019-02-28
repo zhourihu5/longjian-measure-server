@@ -112,14 +112,12 @@ public class MeasureZoneServiceImpl implements IMeasureZoneService {
 
     @Override
     public Integer GetMeasureListCategoryCountAndCheckItemCount(Integer measureListId) {
-        measureZoneMapper.GetMeasureListCategoryCount(measureListId);
-        return null;
+        return measureZoneMapper.GetMeasureListCategoryCount(measureListId);
     }
 
     @Override
     public Integer GetMeasureListBuildingCountAndRegionCount(Integer measureListId) {
-        measureZoneMapper.GetMeasureListBuildingCount(measureListId);
-        return null;
+        return measureZoneMapper.GetMeasureListBuildingCount(measureListId);
     }
 
     @Override
