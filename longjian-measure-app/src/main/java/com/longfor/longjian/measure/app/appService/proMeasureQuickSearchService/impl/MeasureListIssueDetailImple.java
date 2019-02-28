@@ -475,7 +475,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
             ).done();
         } catch (ParseException e) {
             log.warn("日期解析异常");
-            e.printStackTrace();
+            log.error("error:",e);
 
         }
         measureListIssueHelper.execute();
@@ -505,7 +505,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
             ).done();
         } catch (ParseException e) {
             log.warn("日期解析异常");
-            e.printStackTrace();
+            log.error("error:",e);
         }
         measureListIssueHelper.execute();
         return isClose;

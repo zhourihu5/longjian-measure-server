@@ -611,7 +611,7 @@ public class MeasureListIssueHelper {
         } catch (Exception e) {
             txManager.rollback(status);
             log.warn("執行失敗", e.getMessage());
-            e.printStackTrace();
+            log.error("error:",e);
         } finally {
             LFDataSourceContextHolder.clear();
         }

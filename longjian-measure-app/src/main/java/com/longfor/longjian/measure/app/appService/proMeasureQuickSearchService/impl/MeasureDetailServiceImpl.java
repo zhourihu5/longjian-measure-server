@@ -207,7 +207,7 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                 try {
                     this.addResult(obj, squad, regionUuid, areaInfoWithExtendVo, tail);
                 } catch (ParseException e) {
-                    e.printStackTrace();
+                    log.error("error:",e);
                 }
             });
             rootCategoryDatas.forEach(categoryDataVo -> {

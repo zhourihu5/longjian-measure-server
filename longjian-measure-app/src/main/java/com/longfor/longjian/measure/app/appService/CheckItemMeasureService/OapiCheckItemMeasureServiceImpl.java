@@ -221,7 +221,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
                 os.flush();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             if (bis != null) {
                 bis.close();

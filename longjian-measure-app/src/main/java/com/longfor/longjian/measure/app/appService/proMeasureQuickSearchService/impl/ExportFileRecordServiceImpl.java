@@ -39,8 +39,8 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
         try {
             String data = JSON.toJSONString(input);
             //随机一个长度不超过long的最大长度的整数
-            Random random = new Random(Long.MAX_VALUE-1);
-            long randCount = Math.abs(random.nextLong());
+            Random random = new Random();
+            long randCount = (long) (random.nextDouble() * Long.MAX_VALUE);
             String base_dir = exportVo.getMeasure_base_dir();
             Integer ts = DateUtil.dateToTimestamp(new Date());
             String base_uri = exportVo.getMeasure_base_uri();
@@ -67,21 +67,21 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
             File file = new File(String.format("%s", filepath));
 
             if (!file.getParentFile().exists()) {
-                file.getParentFile().mkdirs();
+                boolean mkdirs = file.getParentFile().mkdirs();
             }
 
             if (!file.exists()) {
-                file.createNewFile();
+                boolean newFile = file.createNewFile();
             }
             op.append(data);
             op.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("error:",e);
         } finally {
-            if(op !=null){
+            if (op != null) {
                 op.close();
             }
-            if(out !=null){
+            if (out != null) {
                 out.close();
             }
         }
