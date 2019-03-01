@@ -11,6 +11,7 @@ import java.util.List;
  * @create: 2019-01-10 18:07
  **/
 @Data
+@SuppressWarnings("squid:S1068")
 public class MeasureListIssueInfo {
 
     private MeasureListIssue Issue;

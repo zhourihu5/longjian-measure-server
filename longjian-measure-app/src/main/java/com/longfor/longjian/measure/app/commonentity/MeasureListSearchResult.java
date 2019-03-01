@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@SuppressWarnings("squid:S1068")
 public class MeasureListSearchResult {
     private MeasureList list;
     private String rootCategory;

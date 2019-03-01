@@ -8,6 +8,7 @@ import java.util.Map;
 
 @Data
 @NoArgsConstructor
+@SuppressWarnings("squid:S1068")
 public class MeasureZoneGroupData implements Serializable {
 
     private String texture;

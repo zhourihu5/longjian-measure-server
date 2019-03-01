@@ -3,6 +3,7 @@ package com.longfor.longjian.measure.app.commonentity;
 import lombok.Data;
 
 @Data
+@SuppressWarnings("squid:S1068")
 public class MeasureListIssueLogDetail {
     /**
      * 测区Uuid
