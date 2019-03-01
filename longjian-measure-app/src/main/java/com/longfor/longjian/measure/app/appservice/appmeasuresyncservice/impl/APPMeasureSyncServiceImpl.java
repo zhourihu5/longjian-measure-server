@@ -58,6 +58,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
     private static final String USERID = "userId";
     private static final String ERROR = "],error:";
     private static final String ERRORLOG = "error:";
+
     @Override
     public LjBaseResponse<RuleListVo> getMeasureRule(ApiMeasureRuleReq apiMeasureRuleReq) throws LjBaseRuntimeException {
         LjBaseResponse<RuleListVo> ljBaseResponse = new LjBaseResponse<>();
@@ -65,7 +66,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         RuleListVo ruleListVo = new RuleListVo();
         //切割categoryKeys
         if (apiMeasureRuleReq.getCategory_keys().length() == 0) {
-            throw new LjBaseRuntimeException(-9999,"category keys is empty.");
+            throw new LjBaseRuntimeException(-9999, "category keys is empty.");
         }
         String[] categoryKeys = apiMeasureRuleReq.getCategory_keys().split(",");
         //数组转换List
@@ -99,7 +100,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         List<TaskInfoVo> taskInfoVos = new ArrayList<>();
         //TaskInfoVo
         if (apiMyTaskReq.getProject_id().length() == 0) {
-            throw new LjBaseRuntimeException(-9999,"project id is empty.");
+            throw new LjBaseRuntimeException(-9999, "project id is empty.");
         }
         String[] projectIds = apiMyTaskReq.getProject_id().split(",");
         Integer userId = null;
@@ -128,7 +129,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         MeasureZoneVo measureZoneVo = new MeasureZoneVo();
         List<ZoneInfoVo> zoneInfoVos = new ArrayList<>();
         if (apiMeasureZoneReq.getList_ids().length() == 0) {
-            throw new LjBaseRuntimeException(-9999,"list is empty.");
+            throw new LjBaseRuntimeException(-9999, "list is empty.");
         }
         String[] listIds = apiMeasureZoneReq.getList_ids().split(",");
         Integer lastId = 0;
@@ -147,7 +148,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
                     zoneInfoVos.add(zoneInfoVo);
                 });
             } catch (Exception e) {
-                throw new LjBaseRuntimeException(-9999,e + "");
+                throw new LjBaseRuntimeException(-9999, e + "");
             }
         }
         measureZoneVo.setZone_list(zoneInfoVos);
@@ -179,7 +180,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
             ljBaseResponse.setData(measureZoneVo);
         } catch (Exception e) {
             log.error("SearchZoneUnscopedByListIdLastIdUpdateAtGt" + "[" + apiMeasureZoneReqV2.getList_id() + ERROR + e);
-            throw new LjBaseRuntimeException(-9999,"读取数据失败，code:zone");
+            throw new LjBaseRuntimeException(-9999, "读取数据失败，code:zone");
         }
         return ljBaseResponse;
     }
@@ -195,7 +196,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
             ljBaseResponse.setData(totalVo);
         } catch (Exception e) {
             log.error("GetCountUnscopedByProjIdUpdateAtGt" + "[" + apiMeasureZoneTotalReqV2.getList_id() + ERROR + e);
-            throw new LjBaseRuntimeException(-9999,"读取数据失败，code:zone_total");
+            throw new LjBaseRuntimeException(-9999, "读取数据失败，code:zone_total");
         }
         return ljBaseResponse;
     }
@@ -223,7 +224,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
             ljBaseResponse.setData(issueVo);
         } catch (Exception e) {
             log.error("SearchIssueListByListIdLastIdTimestampGt +[" + apiMeasureIssueReq.getList_id() + ERROR + e);
-            throw new LjBaseRuntimeException(-9999,"读取数据失败，code:issue_list");
+            throw new LjBaseRuntimeException(-9999, "读取数据失败，code:issue_list");
         }
         return ljBaseResponse;
     }
@@ -250,8 +251,8 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
             }
             ljBaseResponse.setData(issueLogVo);
         } catch (Exception e) {
-            log.error("SearchIssueListByListIdLastIdTimestampGt +[" + apiMeasureIssueLogReq.getList_id() +ERROR + e);
-            throw new LjBaseRuntimeException(-9999,"读取数据失败，code:issue_log_list");
+            log.error("SearchIssueListByListIdLastIdTimestampGt +[" + apiMeasureIssueLogReq.getList_id() + ERROR + e);
+            throw new LjBaseRuntimeException(-9999, "读取数据失败，code:issue_log_list");
         }
 
         return ljBaseResponse;
@@ -274,7 +275,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         try {
             keyProcedureTaskAppService.startReport(apiMeasureReportRegionReq.getReport_uuid(), uid, request);
         } catch (Exception e) {
-            throw new LjBaseRuntimeException(-9999,e+"");
+            throw new LjBaseRuntimeException(-9999, e + "");
         } finally {
             keyProcedureTaskAppService.updateReportStatus(apiMeasureReportRegionReq.getReport_uuid(), reportUuidStatus.getValue().toString());
         }
@@ -295,12 +296,12 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
                         float polygonFloat = Float.parseFloat(polygonStringtrim);//转换成单精度浮点格式
                         polygons.add(polygonFloat);
                     } catch (Exception e) {
-                        throw new LjBaseRuntimeException(-9999,e+"");
+                        throw new LjBaseRuntimeException(-9999, e + "");
                     }
                 }
                 if (polygonStrings.length != 2) {
                     log.error("polygons is not validated. polygons:[" + reportRegionDataVo.getPolygon() + ERROR);
-                    throw new LjBaseRuntimeException(-9999,"polygons is not validated.");
+                    throw new LjBaseRuntimeException(-9999, "polygons is not validated.");
                 }
             }
             MeasureRegionStructReq measureRegionStructReq = new MeasureRegionStructReq();
@@ -316,9 +317,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         }
         List<Area> areaList = areaService.getAreaByIds(areaIds);
         Map<Integer, Area> areaMap = new HashMap<>();
-        areaList.forEach(area -> {
-            areaMap.put(area.getId(), area);
-        });
+        areaList.forEach(area -> areaMap.put(area.getId(), area));
         //k-areaId value-Region
         Map<Integer, List<MeasureRegionStructReq>> measureRegionStructReqMap = new HashMap<>();
         List<MeasureRegionStructReq> measureRegionStructReqs2 = null;
@@ -329,7 +328,6 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
             }
             measureRegionStructReqMap.get(measureRegionStructReq.getArea_id()).add(measureRegionStructReq);
         }
-        ;
         Set<Map.Entry<Integer, List<MeasureRegionStructReq>>> entrySet = measureRegionStructReqMap.entrySet();
         List<MeasureRegionStructReq> measureRegionStructReqList = new ArrayList<>();
         for (Map.Entry<Integer, List<MeasureRegionStructReq>> areaId : entrySet) {
@@ -345,19 +343,17 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
                     droppedVo.setReason("未找到相关的区域id。");
                     droppedVos.add(droppedVo);
                 });
-            }else{
+            } else {
                 List<MeasureRegionStructReq> measureRegionStructReqs1 = measureRegionStructReqMap.get(areaId.getKey());
                 if (measureRegionStructReqs1 != null) {
-                    measureRegionStructReqs1.forEach(measureRegionStructReq -> {
-                        measureRegionStructReq.setArea_path_and_id(area.getPath() + areaId.getKey() + "/");
-                    });
+                    measureRegionStructReqs1.forEach(measureRegionStructReq -> measureRegionStructReq.setArea_path_and_id(area.getPath() + areaId.getKey() + "/"));
                 }
-                if(measureRegionStructReqs1 ==null){
+                if (measureRegionStructReqs1 == null) {
                     measureRegionStructReqs1 = Lists.newArrayList();
                 }
                 List<MeasureRegion> measureRegions = converMeasureRegionStructReqToMeasureRegion(measureRegionStructReqs1);
                 try {
-                    List<MeasureRegion> measureRegionList = measureRegionService.createRegionsFromRegionStructList(area.getProjectId(), measureRegions);
+                    measureRegionService.createRegionsFromRegionStructList(area.getProjectId(), measureRegions);
                 } catch (Exception e) {
                     log.error(ERRORLOG + e);
                     measureRegionStructReqList.addAll(measureRegionStructReqMap.get(areaId.getKey()));
@@ -393,7 +389,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         try {
             keyProcedureTaskAppService.startReport(req.getReport_uuid(), uid, request);
         } catch (Exception e) {
-            throw new LjBaseRuntimeException(-9999,e+"");
+            throw new LjBaseRuntimeException(-9999, e + "");
         } finally {
             keyProcedureTaskAppService.updateReportStatus(req.getReport_uuid(), reportUuidStatus.getValue().toString());
         }
@@ -428,7 +424,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
             }
             try {
                 List<MeasureZone> measureZones = measureListService.searchZoneByMeasureListIdRegionUuidCategoryKey(reportZoneVo.getProject_id(), reportZoneVo.getList_id(), reportZoneVo.getRegion_uuid(), reportZoneVo.getCategory_key());
-                if (measureZones.size() > 0) {
+                if (!measureZones.isEmpty()) {
                     List<MeasureZone> measureZoneList = measureListService.getZoneByUuid(reportZoneVo.getProject_id(), reportZoneVo.getUuid());
                     if (measureZoneList == null) {
                         DroppedVo droppedVo = new DroppedVo();
@@ -447,7 +443,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
                 log.error(ERRORLOG + e + "reportZoneVo.uuid" + reportZoneVo.getUuid());
             }
             try {
-                CreateZoneFromAppVo vo =new CreateZoneFromAppVo();
+                CreateZoneFromAppVo vo = new CreateZoneFromAppVo();
                 vo.setProject_id(reportZoneVo.getProject_id());
                 vo.setList_id(reportZoneVo.getList_id());
                 vo.setUuid(reportZoneVo.getUuid());
@@ -455,12 +451,12 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
                 vo.setAreaId(measureRegion.getAreaId());
                 vo.setAreaPathAndId(measureRegion.getAreaPathAndId());
                 vo.setCategory_key(reportZoneVo.getCategory_key());
-                vo.setS(String.format("%s%s/",category.getPath(),category.getKey()));
+                vo.setS(String.format("%s%s/", category.getPath(), category.getKey()));
                 vo.setId(MeasureListFinishStatusEnum.UNFINISH.getId());
                 vo.setId1(MeasureListCloseStatusEnum.UNCLOSE.getId());
                 measureListService.createZoneFromApp(vo);
             } catch (Exception e) {
-                log.error("create zone fail, "+ERRORLOG + e);
+                log.error("create zone fail, " + ERRORLOG + e);
                 DroppedVo droppedVo = new DroppedVo();
                 droppedVo.setUuid(reportZoneVo.getUuid());
                 droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonEnum.MEASUREREGIONNOTFOUND.getValue()));
@@ -517,9 +513,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         taskInfoVo.setPlan_begin_on(DateUtil.dateToTimestamp(measureList.getPlanBeginOn()));
         taskInfoVo.setPlan_end_on(DateUtil.dateToTimestamp(measureList.getPlanEndOn()));
         List<Integer> idLists = Lists.newArrayList();
-        areas.forEach(measureListArea -> {
-            idLists.add(measureListArea.getAreaId());
-        });
+        areas.forEach(measureListArea -> idLists.add(measureListArea.getAreaId()));
         String s = StringUtils.join(idLists, ",");
         taskInfoVo.setArea_ids(s);
         taskInfoVo.setRoot_category_key(measureList.getRootCategoryKey());

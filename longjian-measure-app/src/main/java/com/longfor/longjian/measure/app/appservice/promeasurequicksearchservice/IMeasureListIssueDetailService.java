@@ -9,7 +9,7 @@ import com.longfor.longjian.measure.app.vo.promeasurequicksearchvo.MeasureListIs
 
 public interface IMeasureListIssueDetailService {
 
-    MeasureListIssueDetailIssueInfoVo IssueInfo(GetMeasureListIssueDetailReq req);
+    MeasureListIssueDetailIssueInfoVo issueInfo(GetMeasureListIssueDetailReq req);
 
     MeasureListIssueDetailZoneInfoVo zoneInfo(GetMeasureListIssueDetailReq req);
 
@@ -19,7 +19,7 @@ public interface IMeasureListIssueDetailService {
 
     LjBaseResponse updateIssueType(PostMeasureListDetailUpdateIssueTypeReq req);
 
-    LjBaseResponse UpdatePlanEndOn(PostMeasureListDetailUpdateIssuePlanEndOnReq req);
+    LjBaseResponse updatePlanEndOn(PostMeasureListDetailUpdateIssuePlanEndOnReq req);
 
     LjBaseResponse<MeasureListIssueGetIssueStatus> getIssueByProjectIdAndUuid(MeasureListIssueDetailReq req);
 }

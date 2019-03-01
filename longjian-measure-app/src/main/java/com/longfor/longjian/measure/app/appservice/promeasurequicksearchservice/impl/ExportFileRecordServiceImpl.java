@@ -36,7 +36,7 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
     private Random rand;
 
     public ExportFileRecordServiceImpl() throws NoSuchAlgorithmException {
-        rand= SecureRandom.getInstanceStrong();
+        rand = SecureRandom.getInstanceStrong();
     }
 
     @Override
@@ -47,18 +47,18 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
             String data = JSON.toJSONString(input);
             //随机一个长度不超过long的最大长度的整数
             long randCount = (long) (rand.nextDouble() * Long.MAX_VALUE);
-            String base_dir = exportVo.getMeasure_base_dir();
+            String baseDir = exportVo.getMeasure_base_dir();
             Integer ts = DateUtil.dateToTimestamp(new Date());
             inputFilename = String.format("%d%d.%s", randCount, ts, "input");
             outputFilename = String.format("/export/%d%d.%s", randCount, ts, "output");
-            String filepath = String.format("%s/%s", base_dir, inputFilename);
+            String filepath = String.format("%s/%s", baseDir, inputFilename);
             this.writeInput(data, exportName, filepath);
         } catch (Exception e) {
             log.error("error:" + e.getMessage());
-            throw new LjBaseRuntimeException(-9999,e+"");
+            throw new LjBaseRuntimeException(-9999, e + "");
         }
         String filepath = exportVo.getMeasure_base_uri() + outputFilename;
-        InsertFullVo insertFullVo =new InsertFullVo();
+        InsertFullVo insertFullVo = new InsertFullVo();
         insertFullVo.setUserId(userId);
         insertFullVo.setTeamId(teamId);
         insertFullVo.setProjectId(projectId);
@@ -70,31 +70,32 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
         insertFullVo.setErrorMsg("");
         insertFullVo.setExecuteAt(executeAt);
         Map<String, Object> map = exportFileRecordDomainService.insertFull(insertFullVo);
-        ExportFileRecord exportFileRecord = (ExportFileRecord) map.get("exportFileRecord");
-        return exportFileRecord;
+        return (ExportFileRecord) map.get("exportFileRecord");
+
     }
 
     private void writeInput(String data, String exportName, String filepath) throws IOException {
         FileOutputStream out = null;
         OutputStreamWriter op = null;
         try {
-            log.info("erxportName :{}",exportName);
+            log.info("erxportName :{}", exportName);
             out = new FileOutputStream(String.format("%s", filepath));
             op = new OutputStreamWriter(out, "utf-8");
             File file = new File(String.format("%s", filepath));
 
             if (!file.getParentFile().exists()) {
                 boolean mkdirs = file.getParentFile().mkdirs();
+                log.info("Mkdirs is {}",mkdirs);
             }
 
             if (!file.exists()) {
                 boolean newFile = file.createNewFile();
-                log.info("createNewFile flag{}",newFile);
+                log.info("createNewFile flag{}", newFile);
             }
             op.append(data);
             op.flush();
         } catch (IOException e) {
-            log.error("error:",e);
+            log.error("error:", e);
         } finally {
             if (op != null) {
                 op.close();

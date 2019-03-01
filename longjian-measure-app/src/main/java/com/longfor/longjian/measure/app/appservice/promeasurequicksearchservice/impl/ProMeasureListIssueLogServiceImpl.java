@@ -35,12 +35,12 @@ public class ProMeasureListIssueLogServiceImpl implements IProMeasureListIssueLo
     private IUserService userService;
 
     @Override
-    public List<MeasureListIssueHistoryRepairLogVo> getIssueActionLogByIssueUuid(Integer project_id, String uuid) {
+    public List<MeasureListIssueHistoryRepairLogVo> getIssueActionLogByIssueUuid(Integer projectId, String uuid) {
         List<MeasureListIssueHistoryRepairLogVo> items = new LinkedList<>();
 
-        List<MeasureListIssueLog> logs = measureListIssueLogService.searchByIssueUuid(project_id, uuid);
+        List<MeasureListIssueLog> logs = measureListIssueLogService.searchByIssueUuid(projectId, uuid);
 
-        if (logs == null || logs.size() == 0) {
+        if (logs == null || !logs.isEmpty()) {
             return new ArrayList<>();
         }
 
@@ -167,7 +167,7 @@ public class ProMeasureListIssueLogServiceImpl implements IProMeasureListIssueLo
     }
 
     @Override
-    public List<MeasureListIssueLog> searchIssueLogByIssueUuidAndStatus(Integer project_id, String uuid, int reformnocheck) {
-        return measureListIssueLogService.searchIssueLogByIssueUuidAndStatus(project_id, uuid, reformnocheck);
+    public List<MeasureListIssueLog> searchIssueLogByIssueUuidAndStatus(Integer projectId, String uuid, int reformnocheck) {
+        return measureListIssueLogService.searchIssueLogByIssueUuidAndStatus(projectId, uuid, reformnocheck);
     }
 }

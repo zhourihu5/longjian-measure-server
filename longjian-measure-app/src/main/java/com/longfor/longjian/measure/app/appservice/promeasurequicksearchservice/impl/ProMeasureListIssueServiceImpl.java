@@ -24,8 +24,8 @@ public class ProMeasureListIssueServiceImpl implements IProMeasureListIssueServi
     private MeasureListIssueHelper helper;
 
     @Override
-    public void measureListIssueDeleteByProjUuid(Integer project_id, String uuid) {
-        measureListIssueService.deletedByUpdateDeletedAt(project_id,uuid);
+    public void measureListIssueDeleteByProjUuid(Integer projectId, String uuid) {
+        measureListIssueService.deletedByUpdateDeletedAt(projectId,uuid);
     }
 
     @Override
@@ -61,14 +61,14 @@ public class ProMeasureListIssueServiceImpl implements IProMeasureListIssueServi
     }
 
     @Override
-    public void updateIssueCloseStatusByUuid(String uuid, Integer project_id, Integer senderId, Integer status) throws ParseException {
+    public void updateIssueCloseStatusByUuid(String uuid, Integer projectId, Integer senderId, Integer status) throws ParseException {
         long eLong = -1;
         int eInt = -1;
         String eStr = "";
 
-        MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(project_id,uuid);
+        MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(projectId,uuid);
 
-        helper.init(project_id);
+        helper.init(projectId);
 
         //审核通过
         helper.start().setNormalField(uuid,issue.getListId(),issue.getUuid(),senderId,eStr,eInt, eInt,eStr,issue.getCategoryKey(),new Date().getTime()).

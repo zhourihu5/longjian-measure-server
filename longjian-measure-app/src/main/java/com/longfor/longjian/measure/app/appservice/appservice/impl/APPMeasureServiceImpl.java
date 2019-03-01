@@ -89,7 +89,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     private static final String DESIGNVALUEREQD = "DesignValueReqd";
 
     @Override
-    public LjBaseResponse<DroppedInfoVo> reportIssue(ApiMeasureReportIssueReq apiMeasureReportIssueReq, HttpServletRequest request) throws LjBaseRuntimeException,ParseException {
+    public LjBaseResponse<DroppedInfoVo> reportIssue(ApiMeasureReportIssueReq apiMeasureReportIssueReq, HttpServletRequest request) throws LjBaseRuntimeException, ParseException {
         LjBaseResponse<DroppedInfoVo> ljBaseResponse = new LjBaseResponse<>();
         DroppedInfoVo droppedInfoVo = new DroppedInfoVo();
         // 检查uuid，没有uuid也可以执行以下代码以保存请求内容
@@ -104,7 +104,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             keyProcedureTaskAppService.startReport(apiMeasureReportIssueReq.getReport_uuid(), uid, request);
         } catch (Exception e) {
             keyProcedureTaskAppService.updateReportStatus(apiMeasureReportIssueReq.getReport_uuid(), reportUuidStatus);
-            throw new LjBaseRuntimeException(-9999,e+"");
+            throw new LjBaseRuntimeException(-9999, e + "");
         }
         List<MeasureListIssueStruct> datas = null;
         log.debug(apiMeasureReportIssueReq.getData());
@@ -123,7 +123,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         try {
             helper.execute();
         } catch (Exception e) {
-            throw new  LjBaseRuntimeException(-9999,e+"");
+            throw new LjBaseRuntimeException(-9999, e + "");
         }
         droppedInfoVo.setDropped(helper.getDroppedIssueLog());
         reportUuidStatus = KeyProcedureTaskConstant.SUCCEED;
@@ -132,7 +132,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     }
 
     @Override
-    public LjBaseResponse<DroppedInfoVo> reportZoneResult(ApiMeasureReportZoneResultReq apiMeasureReportZoneResultReq, HttpServletRequest request) throws ParseException,LjBaseRuntimeException{
+    public LjBaseResponse<DroppedInfoVo> reportZoneResult(ApiMeasureReportZoneResultReq apiMeasureReportZoneResultReq, HttpServletRequest request) throws ParseException, LjBaseRuntimeException {
         LjBaseResponse<DroppedInfoVo> ljBaseResponse = new LjBaseResponse<>();
         DroppedInfoVo droppedInfoVo = new DroppedInfoVo();
         // 检查uuid，没有uuid也可以执行以下代码以保存请求内容
@@ -147,7 +147,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             keyProcedureTaskAppService.startReport(apiMeasureReportZoneResultReq.getReport_uuid(), uid, request);
         } catch (Exception e) {
             keyProcedureTaskAppService.updateReportStatus(apiMeasureReportZoneResultReq.getReport_uuid(), reportUuidStatus);
-            throw new LjBaseRuntimeException(-9999,e+"");
+            throw new LjBaseRuntimeException(-9999, e + "");
         }
         List<ResultListVo> zoneResults = JSONArray.parseArray(apiMeasureReportZoneResultReq.getData(), ResultListVo.class);
         List<DroppedVo> dropped = createZoneResultsNoProj(zoneResults);
@@ -295,22 +295,22 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                 }
                 List<Map> zoneResultData = new ArrayList<>();
                 resultListVo.getData().forEach(textResultVo -> {
-                    Map groupData = new HashMap();
-                    groupData.put("RecorderId",textResultVo.getRecorder_id());
-                    groupData.put("UpdateAt",textResultVo.getUpdate_at());
-                    groupData.put(TEXTURE,textResultVo.getTexture());
+                    Map<String, Object> groupData = Maps.newHashMap();
+                    groupData.put("RecorderId", textResultVo.getRecorder_id());
+                    groupData.put("UpdateAt", textResultVo.getUpdate_at());
+                    groupData.put(TEXTURE, textResultVo.getTexture());
                     List<Map> textResultData = new ArrayList<>();
                     textResultVo.getData().forEach(singlePointTestVo -> {
-                        Map pointData = new HashMap();
-                        pointData.put("Key",singlePointTestVo.getKey());
-                        List<Double> tempData = splitToFloatsComma(singlePointTestVo.getData(),true);
-                        pointData.put("Data",tempData);
-                        pointData.put(DATATYPE,singlePointTestVo.getData_type());
-                        pointData.put(DESIGNVALUE,singlePointTestVo.getDesign_value());
-                        pointData.put(DESIGNVALUEREQD,singlePointTestVo.getDesign_value_reqd());
+                        Map<String, Object> pointData = Maps.newHashMap();
+                        pointData.put("Key", singlePointTestVo.getKey());
+                        List<Double> tempData = splitToFloatsComma(singlePointTestVo.getData(), true);
+                        pointData.put("Data", tempData);
+                        pointData.put(DATATYPE, singlePointTestVo.getData_type());
+                        pointData.put(DESIGNVALUE, singlePointTestVo.getDesign_value());
+                        pointData.put(DESIGNVALUEREQD, singlePointTestVo.getDesign_value_reqd());
                         textResultData.add(pointData);
                     });
-                    groupData.put("Data",textResultData);
+                    groupData.put("Data", textResultData);
                     zoneResultData.add(groupData);
                 });
                 log.info(JSON.toJSONString(zoneResultData));
@@ -352,7 +352,8 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                     }
                     if (t.getUpdate_at() != null && t.getUpdate_at() > DateTool.getLongFromString(clientCreateAt)) {
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                        Date date;
+                        Date date = new Date();
+                        log.info("时间{}", DateUtil.dateToString(date));
                         try {
                             Date parse = sdf.parse(sdf.format(new Date((t.getUpdate_at() * 1000))));
                             clientCreateAt = sdf.format(parse);
@@ -360,12 +361,12 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                             log.error("error:", e);
                         } catch (ParseException e) {
                             log.error("error:", e);
-                            throw new ParseException("error :"+e,-9999);
+                            throw new ParseException("error :" + e, -9999);
                         }
                     }
                     i++;
                 }
-                MsgAppendVo msgAppendVo  = new MsgAppendVo();
+                MsgAppendVo msgAppendVo = new MsgAppendVo();
                 msgAppendVo.setUuid(zoneResult.getUuid());
                 msgAppendVo.setZoneUuid(zoneResult.getZoneUuid());
                 msgAppendVo.setProjId(zoneResult.getProjectId());
@@ -391,23 +392,23 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         return droppedVos;
     }
 
-    private List<Double> splitToFloatsComma(String idsStr,boolean ignoreBlank) {
-        return splitToFloats(idsStr,",",ignoreBlank);
+    private List<Double> splitToFloatsComma(String idsStr, boolean ignoreBlank) {
+        return splitToFloats(idsStr, ",", ignoreBlank);
     }
 
-    private List<Double> splitToFloats(String idsStr,String sep, boolean ignoreBlank) {
+    private List<Double> splitToFloats(String idsStr, String sep, boolean ignoreBlank) {
         List<Double> ids = new ArrayList<>();
-        for (String idStr:idsStr.split(sep)
-             ) {
+        for (String idStr : idsStr.split(sep)
+        ) {
             idStr = idStr.trim();
-            if ("".equals(idStr)){
+            if ("".equals(idStr)) {
                 continue;
             }
             try {
                 double id = Double.parseDouble(idStr);
                 ids.add(id);
-            }catch (Exception e){
-                if (ignoreBlank){
+            } catch (Exception e) {
+                if (ignoreBlank) {
                     continue;
                 }
                 log.error("String switch double exception");
@@ -422,7 +423,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
      *
      * @param formula
      */
-    private void calcResult(String formula, MeasureZoneResult result) throws Exception{
+    private void calcResult(String formula, MeasureZoneResult result) throws Exception {
         List<MeasureZoneGroupData> resultData = Lists.newArrayList();
         List<Map> dataZone = JSONArray.parseArray(result.getData(), Map.class);
         for (Map d : dataZone) {
@@ -517,7 +518,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         List<RelVo> relList = new ArrayList<>();
         String[] projectIds = apiMeasureRegionReq.getProject_ids().split(",");
         if (projectIds.length == 0) {
-            throw new LjBaseRuntimeException(-9999,"project ids is empty.");
+            throw new LjBaseRuntimeException(-9999, "project ids is empty.");
         }
         String updateAtGte = "0001-01-01 00:00:00";
         List<MeasureRegion> regionList = new ArrayList<>();
@@ -569,7 +570,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             ljBaseResponse.setData(measureRegionV2Vo);
         } catch (Exception e) {
             log.error(SEARCHUNSCOPEDBYPROJIDLASTIDUPDATEATGT + "[" + apiMeasureRegionReqV2.getProject_id() + ERROR + e);
-            throw new LjBaseRuntimeException(-9999,"读取数据失败，code:region");
+            throw new LjBaseRuntimeException(-9999, "读取数据失败，code:region");
         }
         return ljBaseResponse;
     }
@@ -584,7 +585,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             ljBaseResponse.setData(totalVo);
         } catch (Exception e) {
             log.error("GetCountUnscopedByProjIdUpdateAtGt" + "[" + apiMeasureRegionTotalReqV2.getProject_id() + ERROR + e);
-            throw new LjBaseRuntimeException(-9999,"读取数据失败，code:region_total");
+            throw new LjBaseRuntimeException(-9999, "读取数据失败，code:region_total");
         }
         return ljBaseResponse;
     }
@@ -610,7 +611,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             ljBaseResponse.setData(measureRegionRelV2Vo);
         } catch (Exception e) {
             log.error("SearchRelUnscopedByProjIdLastIdUpdateAtGt" + "[" + apiMeasureRegionRelReqV2.getProject_id() + ERROR + e);
-            throw new LjBaseRuntimeException(-9999,"读取数据失败，code:region_rel");
+            throw new LjBaseRuntimeException(-9999, "读取数据失败，code:region_rel");
         }
         return ljBaseResponse;
     }
@@ -649,7 +650,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             measureSquadAndRepairerVo.setRepairer_list(repairerList);
         } catch (Exception e) {
             log.error(e.getMessage());
-            throw new LjBaseRuntimeException(-9999,e+"");
+            throw new LjBaseRuntimeException(-9999, e + "");
         }
         ljBaseResponse.setData(measureSquadAndRepairerVo);
         return ljBaseResponse;
@@ -661,7 +662,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         MeasureZoneResultVo measureZoneResultVo = new MeasureZoneResultVo();
         List<ResultListVo> resultList = new ArrayList<>();
         if (apiMeasureZoneResultReq.getList_ids() == null || apiMeasureZoneResultReq.getList_ids().split(",").length == 0) {
-            throw new LjBaseRuntimeException(-9999,"list is empty.");
+            throw new LjBaseRuntimeException(-9999, "list is empty.");
         }
         String[] listIds = apiMeasureZoneResultReq.getList_ids().split(",");
         Integer lastId = 0;
@@ -708,7 +709,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             measureZoneResultVo.setResult_list(resultList);
         } catch (Exception e) {
             log.error(SEARCHUNSCOPEDBYPROJIDLASTIDUPDATEATGT + "[" + apiMeasureZoneResultReqV2.getList_id() + ERROR + e.getMessage());
-            throw new LjBaseRuntimeException(-9999,"读取数据失败，code:zone");
+            throw new LjBaseRuntimeException(-9999, "读取数据失败，code:zone");
         }
         ljBaseResponse.setData(measureZoneResultVo);
         return ljBaseResponse;
@@ -724,7 +725,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             totalVo.setTotal(total);
         } catch (Exception e) {
             log.error(SEARCHUNSCOPEDBYPROJIDLASTIDUPDATEATGT + "[" + apiMeasureZoneResultTotalReqV2.getList_id() + ERROR + e.getMessage());
-            throw new LjBaseRuntimeException(-9999,"读取数据失败，code:zone_total");
+            throw new LjBaseRuntimeException(-9999, "读取数据失败，code:zone_total");
         }
         ljBaseResponse.setData(totalVo);
         return ljBaseResponse;
@@ -806,9 +807,9 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         singlePointTestVo.setTotal(singlePointTest.getInteger("Total"));
         List<Object> data = (List<Object>) singlePointTest.get("Data");
         if (data != null) {
-            data.forEach(d -> {
-                singlePointTestVo.setData(singlePointTestVo.getData() == null ? "" + "," + d : singlePointTestVo.getData() + "," + d);
-            });
+            data.forEach(d ->
+                    singlePointTestVo.setData(singlePointTestVo.getData() == null ? "" + "," + d : singlePointTestVo.getData() + "," + d)
+            );
         }
         if (!",".equals(singlePointTestVo.getData()) && StringUtils.isNotBlank(singlePointTestVo.getData())) {
             singlePointTestVo.setData(singlePointTestVo.getData().substring(1));
@@ -817,9 +818,9 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         }
         List<Object> deviation = (List<Object>) singlePointTest.get("Deviation");
         if (deviation != null) {
-            deviation.forEach(d -> {
-                singlePointTestVo.setDeviation(singlePointTestVo.getDeviation() == null ? "" + "," + d : singlePointTestVo.getDeviation() + "," + d);
-            });
+            deviation.forEach(d ->
+                    singlePointTestVo.setDeviation(singlePointTestVo.getDeviation() == null ? "" + "," + d : singlePointTestVo.getDeviation() + "," + d)
+            );
         }
         if (!",".equals(singlePointTestVo.getDeviation()) && StringUtils.isNotBlank(singlePointTestVo.getDeviation())) {
             singlePointTestVo.setDeviation(singlePointTestVo.getDeviation().substring(1));

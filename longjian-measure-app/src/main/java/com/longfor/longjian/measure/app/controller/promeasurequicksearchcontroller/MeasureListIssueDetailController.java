@@ -73,7 +73,7 @@ public class MeasureListIssueDetailController {
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
-        return new LjBaseResponse<>(measureListIssueDetailService.IssueInfo(req));
+        return new LjBaseResponse<>(measureListIssueDetailService.issueInfo(req));
     }
 
     /**
@@ -241,13 +241,13 @@ public class MeasureListIssueDetailController {
     }
 
     @RequestMapping(value = "update_plan_end_on/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse UpdatePlanEndOn(@Valid PostMeasureListDetailUpdateIssuePlanEndOnReq req, HttpServletRequest request){
+    public LjBaseResponse updatePlanEndOn(@Valid PostMeasureListDetailUpdateIssuePlanEndOnReq req, HttpServletRequest request){
         try {
             ctrlTool.projPerm(request, CtrlToolConstant.PROJECT_MEASURE_ISSUEMANAGE_COMPILE);
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
-        return measureListIssueDetailService.UpdatePlanEndOn(req);
+        return measureListIssueDetailService.updatePlanEndOn(req);
     }
 
     @RequestMapping(value = "issue_status/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

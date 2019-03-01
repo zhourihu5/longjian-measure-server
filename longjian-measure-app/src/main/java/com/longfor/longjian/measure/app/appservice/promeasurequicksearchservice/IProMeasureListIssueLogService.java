@@ -8,18 +8,18 @@ import java.util.List;
 public interface IProMeasureListIssueLogService {
     /**
      *
-     * @param project_id
+     * @param projectId
      * @param uuid
      * @return
      */
-    List<MeasureListIssueHistoryRepairLogVo> getIssueActionLogByIssueUuid(Integer project_id, String uuid);
+    List<MeasureListIssueHistoryRepairLogVo> getIssueActionLogByIssueUuid(Integer projectId, String uuid);
 
     /**
      *
-     * @param project_id
+     * @param projectId
      * @param uuid
      * @param reformnocheck
      * @return
      */
-    List<MeasureListIssueLog> searchIssueLogByIssueUuidAndStatus(Integer project_id, String uuid, int reformnocheck);
+    List<MeasureListIssueLog> searchIssueLogByIssueUuidAndStatus(Integer projectId, String uuid, int reformnocheck);
 }

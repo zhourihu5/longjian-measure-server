@@ -53,9 +53,9 @@ public class MeasureRegionRelSearchImpl implements IMeasureRegionRelSearchServic
         List<MeasureRegion> measureRegionList = measureRegionService.searchByProjIdAndRelId(measureRegionRelReq.getProj_id(), region.getRelId());
         Map<Integer, Object> areaMap = Maps.newHashMap();
         List<Integer> areaIds = Lists.newArrayList();
-        measureRegionList.forEach(measureRegion -> {
-            areaIds.add(measureRegion.getAreaId());
-        });
+        measureRegionList.forEach(measureRegion ->
+            areaIds.add(measureRegion.getAreaId())
+        );
         Set<Integer> areaIdPaths = Sets.newHashSet();
         List<AreaRetrieveVo> areaRetrieveVos = coreAreaService.searchByIdList(measureRegionRelReq.getProj_id(), areaIds);
         areaRetrieveVos.forEach(areaRetrieveVo -> {
@@ -66,9 +66,9 @@ public class MeasureRegionRelSearchImpl implements IMeasureRegionRelSearchServic
             }
         });
         List<AreaRetrieveVo> areaRetrieveVoList = coreAreaService.searchByIdList(measureRegionRelReq.getProj_id(), new ArrayList<Integer>(areaIdPaths));
-        areaRetrieveVoList.forEach(areaRetrieveVo -> {
-            areaMap.put(areaRetrieveVo.getId(),areaRetrieveVo);
-        });
+        areaRetrieveVoList.forEach(areaRetrieveVo ->
+            areaMap.put(areaRetrieveVo.getId(),areaRetrieveVo)
+        );
         for (MeasureRegion measureRegion : measureRegionList) {
             if (!areaMap.containsKey(measureRegion.getAreaId())) {
                 continue;

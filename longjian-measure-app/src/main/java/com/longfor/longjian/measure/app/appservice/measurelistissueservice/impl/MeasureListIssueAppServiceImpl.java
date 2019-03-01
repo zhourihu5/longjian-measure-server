@@ -56,6 +56,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
     @Resource
     private SessionInfo sessionInfo;
     public static final String ERROR = "error:";
+
     @Override
     public LjBaseResponse<MeasureIssueQueryVo> issueQueryJson(MeasureIssueQueryReq req, HttpServletRequest request) throws LjBaseRuntimeException {
         LjBaseResponse<MeasureIssueQueryVo> ljBaseResponse = new LjBaseResponse<>();
@@ -79,7 +80,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
         List<String> createAtRangeList = Arrays.asList(createAtRangeArr);
         Map<String, Object> issueMap = null;
         try {
-            SearchMeasueListIssueInProjVo vo =new SearchMeasueListIssueInProjVo();
+            SearchMeasueListIssueInProjVo vo = new SearchMeasueListIssueInProjVo();
             vo.setProjectId(projectId);
             vo.setLimit(req.getLimit());
             vo.setPage(req.getPage());
@@ -157,18 +158,18 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
         List<Integer> areaIdLists = Lists.newArrayList();
         List<String> categoryKeys = Lists.newArrayList();
         List<Integer> measureListIds = Lists.newArrayList();
-        mapUserId.forEach((k, v) -> {
-            userIds.add(k);
-        });
-        mapAreaId.forEach((k, v) -> {
-            areaIdLists.add(k);
-        });
-        mapCategoryKey.forEach((k, v) -> {
-            categoryKeys.add(k);
-        });
-        mapMeasureId.forEach((k, v) -> {
-            measureListIds.add(k);
-        });
+        mapUserId.forEach((k, v) ->
+                userIds.add(k)
+        );
+        mapAreaId.forEach((k, v) ->
+                areaIdLists.add(k)
+        );
+        mapCategoryKey.forEach((k, v) ->
+                categoryKeys.add(k)
+        );
+        mapMeasureId.forEach((k, v) ->
+                measureListIds.add(k)
+        );
         // 获取列表相关的名称map
         Map<String, Object> map = this.getIssueReferNameMap(projectId, areaIdLists, categoryKeys, measureListIds, userIds);
         Map<Integer, List<String>> mAreaName = (Map<Integer, List<String>>) map.get("mAreaName");
@@ -178,11 +179,11 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
         for (MeasureListIssue item : items) {
             MeasureIssueQueryItemVo r = new MeasureIssueQueryItemVo();
             MeasureListSearchResultVo measureList = new MeasureListSearchResultVo();
-            measureList.setId(item.getListId() == null ? 0 :item.getListId());
-            measureList.setName(mMeasureListName.get(item.getListId()) == null ? "" :mMeasureListName.get(item.getListId()));
+            measureList.setId(item.getListId() == null ? 0 : item.getListId());
+            measureList.setName(mMeasureListName.get(item.getListId()) == null ? "" : mMeasureListName.get(item.getListId()));
             UserInfoVo repairer = new UserInfoVo();
-            repairer.setId(item.getRepairerId() == null ? 0 :item.getRepairerId());
-            repairer.setReal_name(mUserName.get(item.getRepairerId())== null ? "" :mUserName.get(item.getRepairerId()));
+            repairer.setId(item.getRepairerId() == null ? 0 : item.getRepairerId());
+            repairer.setReal_name(mUserName.get(item.getRepairerId()) == null ? "" : mUserName.get(item.getRepairerId()));
             r.setMeasure_list(measureList);
             r.setRepairer(repairer);
             r.setArea_path_names(mAreaName.get(item.getAreaId()));
@@ -199,16 +200,16 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
                 if (zone != null) {
                     MeasureRegion region = mRegion.get(zone.getRegionUuid());
                     if (region != null && item.getAreaId().equals(region.getAreaId())) {
-                            if (r.getArea_path_names() == null) {
-                                r.setArea_info("");
-                            } else {
-                                r.setArea_info(StringUtils.join(r.getArea_path_names(), "-") + " " + region.getRegionIndex());
-                            }
-                            r.setRegion_id(region.getId() == null ? 0 : region.getId());
+                        if (r.getArea_path_names() == null) {
+                            r.setArea_info("");
+                        } else {
+                            r.setArea_info(StringUtils.join(r.getArea_path_names(), "-") + " " + region.getRegionIndex());
+                        }
+                        r.setRegion_id(region.getId() == null ? 0 : region.getId());
                     }
                 }
             } catch (Exception e) {
-                throw new LjBaseRuntimeException(-9999,e+"");
+                throw new LjBaseRuntimeException(-9999, e + "");
             }
             measureIssueQueryItemVos.add(r);
         }
@@ -246,11 +247,11 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
             }
             boolean isClose = this.updateIssueRepairInfoByUuid(uuid, projectId, uid, repairerId, planEndOn);
             if (isClose) {
-                throw new LjBaseRuntimeException(-9999,"问题已经关闭，不可编辑");
+                throw new LjBaseRuntimeException(-9999, "问题已经关闭，不可编辑");
             }
         } catch (Exception e) {
             log.error(ERROR + e);
-            throw new LjBaseRuntimeException(-9999,e+"");
+            throw new LjBaseRuntimeException(-9999, e + "");
         }
     }
 
@@ -260,7 +261,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
         String eStr = "";
         Integer status = eInt;
         boolean isClosed = false;
-        log.info("senderId :{}",senderId);
+        log.info("senderId :{}", senderId);
         try {
             issue = measureListIssueService.getByConditionNoFoundErr(projectId, uuid);
             if (issue.getCloseStatus().equals(MeasureListCloseStatusEnum.CLOSED.getId())) {
@@ -270,7 +271,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
                 status = MeasureListIssueType.ASSIGNNOREFORM;
             }
         } catch (Exception e) {
-            throw new LjBaseRuntimeException(-9999,e+"");
+            throw new LjBaseRuntimeException(-9999, e + "");
         }
         helper.init(projectId);
         //变更类型
@@ -282,7 +283,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
         try {
             helper.execute();
         } catch (Exception e) {
-            throw new LjBaseRuntimeException(-9999,"error:"+e);
+            throw new LjBaseRuntimeException(-9999, "error:" + e);
         }
         return isClosed;
     }

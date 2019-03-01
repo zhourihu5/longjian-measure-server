@@ -31,7 +31,7 @@ public class MeasureStatisticImpl implements IMeasureStatisticService {
     private IMeasureListIssueService measureListIssueService;
 
     @Override
-    public MeasureStatisticSquadStatsVo SquadMeasureStatsJson(GetMeasureStatisticTaskReq getMeasureStatisticTaskReq) {
+    public MeasureStatisticSquadStatsVo squadMeasureStatsJson(GetMeasureStatisticTaskReq getMeasureStatisticTaskReq) {
 
         MeasureList measureList = measureListService.getByProjIdAndIdNoFoundErr(getMeasureStatisticTaskReq.getProject_id(), getMeasureStatisticTaskReq.getMeasure_list_id());
         if (measureList == null) {
