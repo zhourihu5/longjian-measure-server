@@ -18,5 +18,5 @@ public interface IExportFileRecordService {
      * @param format
      * @param date
      */
-    ExportFileRecord create(Integer curUserId, Integer teamId, Integer projId, Integer value, InputVo input, String format, Date date, HttpServletResponse response) throws LjBaseRuntimeException;
+    ExportFileRecord create(Integer curUserId, Integer teamId, Integer projId, Integer value, InputVo input, String format, Date date) throws LjBaseRuntimeException;
 }

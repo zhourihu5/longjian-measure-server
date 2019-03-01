@@ -188,15 +188,13 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
                 MeasureZone zone = mZone.get(item.getZoneUuid());
                 if (zone != null) {
                     MeasureRegion region = mRegion.get(zone.getRegionUuid());
-                    if (region != null) {
-                        if (item.getAreaId().equals(region.getAreaId())) {
+                    if (region != null && item.getAreaId().equals(region.getAreaId())) {
                             if (r.getArea_path_names() == null) {
                                 r.setArea_info("");
                             } else {
                                 r.setArea_info(StringUtils.join(r.getArea_path_names(), "-") + " " + region.getRegionIndex());
                             }
                             r.setRegion_id(region.getId() == null ? 0 : region.getId());
-                        }
                     }
                 }
             } catch (Exception e) {
@@ -238,7 +236,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
             }
             boolean isClose = this.updateIssueRepairInfoByUuid(uuid, project_id, uid, repairer_id, plan_end_on);
             if (isClose) {
-                throw new RuntimeException("问题已经关闭，不可编辑");
+                throw new LjBaseRuntimeException(-9999,"问题已经关闭，不可编辑");
             }
         } catch (Exception e) {
             log.error(ERROR + e);

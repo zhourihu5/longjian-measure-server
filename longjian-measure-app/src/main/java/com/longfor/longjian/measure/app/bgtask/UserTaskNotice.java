@@ -27,7 +27,7 @@ public class UserTaskNotice {
     @Resource
     private RedisUtil redisUtil;
 
-    public String sendToRedis(Integer userId, BgtaskEnum taskType, String s, Map params, String task_cls_name) throws IntrospectionException, IllegalAccessException, InvocationTargetException {
+    public String sendToRedis(Integer userId, BgtaskEnum taskType, Map params) throws IntrospectionException, IllegalAccessException, InvocationTargetException {
         String taskKey=getTaskKey(userId,taskType);
         redisUtil.rpush(getQueueName(taskType), taskKey);//加入任务队列
         params.put("taskTypeId", taskType.getValue());

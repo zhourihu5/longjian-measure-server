@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.app.commonentity;
 
+import com.longfor.longjian.measure.app.vo.AppendVo;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -52,57 +53,39 @@ public class MeasureIssueReportMsg {
         checked_issues = new ArrayList<>();
     }
 
-    public void appendCreated(String uuid, Integer projId, Integer listId, Integer checkerId, Integer repairerId, Integer areaId,
-                              String areaPathAndId, String categoryKey, String categoryPathAndKey, Integer senderId,
-                              Date timeAt) {
-        MeasureIssue measureIssue = createMeasureIssue(uuid, projId, listId, checkerId, repairerId, areaId,
-                areaPathAndId, categoryKey, categoryPathAndKey, senderId,
-                timeAt);
+    public void appendCreated(AppendVo appendVo) {
+        MeasureIssue measureIssue = createMeasureIssue(appendVo);
         created_issues.add(measureIssue);
     }
 
-    public void appendAssigned(String uuid, Integer projId, Integer listId, Integer checkerId, Integer repairerId, Integer areaId,
-                               String areaPathAndId, String categoryKey, String categoryPathAndKey, Integer senderId,
-                               Date timeAt) {
-        MeasureIssue measureIssue = createMeasureIssue(uuid, projId, listId, checkerId, repairerId, areaId,
-                areaPathAndId, categoryKey, categoryPathAndKey, senderId,
-                timeAt);
+    public void appendAssigned(AppendVo appendVo) {
+        MeasureIssue measureIssue = createMeasureIssue(appendVo);
         assigned_issues.add(measureIssue);
     }
 
-    public void appendReformed(String uuid, Integer projId, Integer listId, Integer checkerId, Integer repairerId, Integer areaId,
-                               String areaPathAndId, String categoryKey, String categoryPathAndKey, Integer senderId,
-                               Date timeAt) {
-        MeasureIssue measureIssue = createMeasureIssue(uuid, projId, listId, checkerId, repairerId, areaId,
-                areaPathAndId, categoryKey, categoryPathAndKey, senderId,
-                timeAt);
+    public void appendReformed(AppendVo appendVo) {
+        MeasureIssue measureIssue = createMeasureIssue(appendVo);
         reformed_issues.add(measureIssue);
     }
 
-    public void appendChecked(String uuid, Integer projId, Integer listId, Integer checkerId, Integer repairerId, Integer areaId,
-                              String areaPathAndId, String categoryKey, String categoryPathAndKey, Integer senderId,
-                              Date timeAt) {
-        MeasureIssue measureIssue = createMeasureIssue(uuid, projId, listId, checkerId, repairerId, areaId,
-                areaPathAndId, categoryKey, categoryPathAndKey, senderId,
-                timeAt);
+    public void appendChecked(AppendVo appendVo) {
+        MeasureIssue measureIssue = createMeasureIssue(appendVo);
         checked_issues.add(measureIssue);
     }
 
-    private MeasureIssue createMeasureIssue(String uuid, Integer projId, Integer listId, Integer checkerId, Integer repairerId, Integer areaId,
-                                              String areaPathAndId, String categoryKey, String categoryPathAndKey, Integer senderId,
-                                              Date timeAt) {
+    private MeasureIssue createMeasureIssue(AppendVo appendVo) {
         MeasureIssue measureIssue = new MeasureIssue();
-        measureIssue.setUuid(uuid);
-        measureIssue.setProj_id(projId);
-        measureIssue.setList_id(listId);
-        measureIssue.setChecker_id(checkerId);
-        measureIssue.setRepairer_id(repairerId);
-        measureIssue.setArea_id(areaId);
-        measureIssue.setArea_path_and_id(areaPathAndId);
-        measureIssue.setCategory_key(categoryKey);
-        measureIssue.setCategory_path_and_key(categoryPathAndKey);
-        measureIssue.setSender_id(senderId);
-        measureIssue.setTimestamp(timeAt.getTime());
+        measureIssue.setUuid(appendVo.getUuid());
+        measureIssue.setProj_id(appendVo.getProjId());
+        measureIssue.setList_id(appendVo.getListId());
+        measureIssue.setChecker_id(appendVo.getCheckerId());
+        measureIssue.setRepairer_id(appendVo.getRepairerId());
+        measureIssue.setArea_id(appendVo.getAreaId());
+        measureIssue.setArea_path_and_id(appendVo.getAreaPathAndId());
+        measureIssue.setCategory_key(appendVo.getCategoryKey());
+        measureIssue.setCategory_path_and_key(appendVo.getCategoryPathAndKey());
+        measureIssue.setSender_id(appendVo.getSenderId());
+        measureIssue.setTimestamp(appendVo.getTimeAt().getTime());
         return measureIssue;
     }
 }

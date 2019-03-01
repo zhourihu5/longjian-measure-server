@@ -16,6 +16,7 @@ import com.longfor.longjian.measure.app.req.promeasuremanagerreq.GetProMeasureAr
 import com.longfor.longjian.measure.app.req.promeasuremanagerreq.GetProMeasureCheckItemsReq;
 import com.longfor.longjian.measure.app.req.promeasuremanagerreq.GetProMeasurePlanListReq;
 import com.longfor.longjian.measure.app.req.promeasurequicksearchreq.*;
+import com.longfor.longjian.measure.vo.GetMeasureListIssueBriefVo;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
 import com.longfor.longjian.measure.app.vo.promeasurevo.*;
 import com.longfor.longjian.measure.consts.constant.CategoryClsTypeConstant;
@@ -312,8 +313,17 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     @Override
     public LjBaseResponse<BlisterRateInfoVo> getBlisterRateInfo(GetBlisterRateInfoReq getBlisterRateInfoReq) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
         LjBaseResponse<BlisterRateInfoVo> ljBaseResponse = new LjBaseResponse<>();
-        Map<String, Object> issue = measureListIssueService.getMeasureListIssueBrief(getBlisterRateInfoReq.getProject_id(), getBlisterRateInfoReq.getMeasure_list_id()
-                , MeasureListConstant.UNCLOSECODE, MeasureListIssueType.REPAIRABLE + "", MeasureListIssueType.NOREPAIRABLE + "", MeasureListIssueType.NOTENOASSIGN + "", MeasureListIssueType.ASSIGNNOREFORM + "", MeasureListIssueType.REFORMNOCHECK + "", MeasureListIssueType.CHECKYES + "");
+        GetMeasureListIssueBriefVo getMeasureListIssueBriefVo =new GetMeasureListIssueBriefVo();
+        getMeasureListIssueBriefVo.setProject_id(getBlisterRateInfoReq.getProject_id());
+        getMeasureListIssueBriefVo.setMeasure_list_id( getBlisterRateInfoReq.getMeasure_list_id());
+        getMeasureListIssueBriefVo.setUNCLOSECODE( MeasureListConstant.UNCLOSECODE);
+        getMeasureListIssueBriefVo.setREPAIRABLE(MeasureListIssueType.REPAIRABLE + "");
+        getMeasureListIssueBriefVo.setNOREPAIRABLE(MeasureListIssueType.NOREPAIRABLE + "");
+        getMeasureListIssueBriefVo.setNOTENOASSIGN(MeasureListIssueType.NOTENOASSIGN + "");
+        getMeasureListIssueBriefVo.setASSIGNNOREFORM(MeasureListIssueType.ASSIGNNOREFORM + "");
+        getMeasureListIssueBriefVo.setREFORMNOCHECK(MeasureListIssueType.REFORMNOCHECK + "");
+        getMeasureListIssueBriefVo.setCHECKYES(MeasureListIssueType.CHECKYES + "");
+        Map<String, Object> issue = measureListIssueService.getMeasureListIssueBrief(getMeasureListIssueBriefVo);
         BlisterRateInfoVo blisterRateInfoVo = (BlisterRateInfoVo) ConvertUtil.convertMap(BlisterRateInfoVo.class, issue);
         ljBaseResponse.setData(blisterRateInfoVo);
         return ljBaseResponse;

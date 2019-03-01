@@ -1,6 +1,9 @@
 package com.longfor.longjian.measure.consts.constant;
 
 public class KeyProcedureTaskConstant {
+    private KeyProcedureTaskConstant() {
+    }
+
     /**
      * ReportStatus 0,未上报"`
      */

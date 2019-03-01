@@ -59,7 +59,7 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
     private static final  String  ROOTCATEGORYDATAS= "rootCategoryDatas";
     private static final  String  MEASUREDDATA= "measuredData";
     @Override
-    public void exportExcelAsync(Integer curUserId, Integer projId, Integer list_id, HttpServletResponse response) {
+    public void exportExcelAsync(Integer curUserId, Integer projId, Integer list_id) {
         try {
             Project project = projectService.GetByIdNoFoundErr(projId);
             MeasureList measureList = projectService.getByProjIdAndIdNoFoundErr(projId, list_id);
@@ -72,7 +72,7 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
             input.setMeasured_data(map.get(MEASUREDDATA) == null ? new MeasuredDataVo() : (MeasuredDataVo) map.get(MEASUREDDATA));
             Date date = new Date();
             String newTime = new SimpleDateFormat("yyyyMMddHHmmss").format(date);
-            exportFileRecordService.create(curUserId, project.getTeamId(), projId, ExportFileRecordType.MeasureDetail.getValue(), input, String.format("%s-统计.%s.xlsx", measureList.getName() == null ? "llll" : measureList.getName(), newTime), date, response);
+            exportFileRecordService.create(curUserId, project.getTeamId(), projId, ExportFileRecordType.MeasureDetail.getValue(), input, String.format("%s-统计.%s.xlsx", measureList.getName() == null ? "llll" : measureList.getName(), newTime), date);
         } catch (Exception e) {
             log.error("error:" + e);
             throw new LjBaseRuntimeException(-9999, e.getMessage());
@@ -546,8 +546,6 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
         dataVos.add(zoneData);
         datamap.put(squadId, dataVos);
         OkRateVo okRateVo = new OkRateVo();
-        Integer ok_total = d.getOk_rate().getOk_total();
-        Integer okTotal = zoneData.getOkTotal();
         okRateVo.setOk_total((d.getOk_rate().getOk_total() == null ? 0 : d.getOk_rate().getOk_total()) + (zoneData.getOkTotal() == null ? 0 : zoneData.getOkTotal()));
         okRateVo.setTotal((d.getOk_rate().getTotal() == null ? 0 : d.getOk_rate().getTotal()) + (zoneData.getTotal() == null ? 0 : zoneData.getTotal()));
         d.setOk_rate(okRateVo);

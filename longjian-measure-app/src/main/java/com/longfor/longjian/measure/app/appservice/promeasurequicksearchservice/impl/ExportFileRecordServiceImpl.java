@@ -8,6 +8,7 @@ import com.longfor.longjian.measure.domain.externalservice.IExportFileRecordDoma
 import com.longfor.longjian.measure.po.zhijian2.ExportFileRecord;
 import com.longfor.longjian.measure.vo.ExportVo;
 import com.longfor.longjian.measure.vo.InputVo;
+import com.longfor.longjian.measure.vo.InsertFullVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +41,7 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
     }
 
     @Override
-    public ExportFileRecord create(Integer userId, Integer teamId, Integer projectId, Integer exportType, InputVo input, String exportName, Date executeAt, HttpServletResponse response) throws LjBaseRuntimeException {
+    public ExportFileRecord create(Integer userId, Integer teamId, Integer projectId, Integer exportType, InputVo input, String exportName, Date executeAt) throws LjBaseRuntimeException {
         String inputFilename = null;
         String outputFilename = null;
         try {
@@ -58,7 +59,18 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
             throw new LjBaseRuntimeException(-9999,e+"");
         }
         String filepath = exportVo.getMeasure_base_uri() + outputFilename;
-        Map<String, Object> map = exportFileRecordDomainService.insertFull(userId, teamId, projectId, exportType, String.format("%s %s", inputFilename, outputFilename), filepath, exportName, 0, "", executeAt);
+        InsertFullVo insertFullVo =new InsertFullVo();
+        insertFullVo.setUserId(userId);
+        insertFullVo.setTeamId(teamId);
+        insertFullVo.setProjectId(projectId);
+        insertFullVo.setExportType(exportType);
+        insertFullVo.setParams(String.format("%s %s", inputFilename, outputFilename));
+        insertFullVo.setResultFilePath(filepath);
+        insertFullVo.setResultName(exportName);
+        insertFullVo.setStatus(0);
+        insertFullVo.setErrorMsg("");
+        insertFullVo.setExecuteAt(executeAt);
+        Map<String, Object> map = exportFileRecordDomainService.insertFull(insertFullVo);
         ExportFileRecord exportFileRecord = (ExportFileRecord) map.get("exportFileRecord");
         return exportFileRecord;
     }

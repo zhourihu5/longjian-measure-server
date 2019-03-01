@@ -81,9 +81,10 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
     private ICoreAreaService coreAreaService;
     @Resource
     private SessionInfo sessionInfo;
-    private static final String ISSUEISNO= "该爆点信息不存在";
-    private static final String CUR_PROJ= "cur_proj";
-    private static final String PROBLENISCLOSE= "问题已被关闭";
+    private static final String ISSUEISNO = "该爆点信息不存在";
+    private static final String CUR_PROJ = "cur_proj";
+    private static final String PROBLENISCLOSE = "问题已被关闭";
+
     @Override
     public MeasureListIssueDetailIssueInfoVo IssueInfo(GetMeasureListIssueDetailReq req) {
         MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(req.getProject_id(), req.getUuid());
@@ -138,7 +139,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
                 rulevo.setGroup_count_max(rule.getGroupCountMax());
                 rulevo.setGroup_count_min(rule.getGroupCountMin());
                 rulevo.setPoint_need(rule.getPointNeed());
-                List<MeasurePointRuleVo> measurePointRuleVos= convertPoint(rule.getPoints());
+                List<MeasurePointRuleVo> measurePointRuleVos = convertPoint(rule.getPoints());
                 rulevo.setPoints(measurePointRuleVos);
                 rulevo.setRule_type(rule.getRuleType());
                 rulevo.setTeam_id(rule.getTeamId());
@@ -226,12 +227,12 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
     }
 
     private List<MeasurePointRuleVo> convertPoint(String points) {
-        return JSONArray.parseArray(points,MeasurePointRuleVo.class);
+        return JSONArray.parseArray(points, MeasurePointRuleVo.class);
     }
 
     @Override
     public MeasureListIssueDetailRepairListVo repairList(GetMeasureListIssueDetailReq req) {
-        MeasureListIssueDetailRepairListVo measureListIssueDetailRepairListVo =new MeasureListIssueDetailRepairListVo();
+        MeasureListIssueDetailRepairListVo measureListIssueDetailRepairListVo = new MeasureListIssueDetailRepairListVo();
         List<MeasureListIssueDetailRepairerVo> vo = new ArrayList<>();
         MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(req.getProject_id(), req.getUuid());
         if (issue == null) {
@@ -244,9 +245,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
-        if (issue != null) {
-            measureRepairerUsers = measureRepairerUserService.SearchMeasureReparierUserByListId(cur_proj.getId(), issue.getListId());
-        }
+        measureRepairerUsers = measureRepairerUserService.SearchMeasureReparierUserByListId(cur_proj.getId(), issue.getListId());
         List<Integer> uids = new ArrayList<>();
         for (MeasureRepairerUser repairerUser : measureRepairerUsers) {
             uids.add(repairerUser.getUserId());
@@ -409,7 +408,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         List<Integer> ids = new ArrayList<>();
         String[] idsStr = area.getPath().split("/");
         for (String idStr : idsStr) {
-            if(!"".equals(idStr)) {
+            if (!"".equals(idStr)) {
                 int id = Integer.parseInt(idStr);
                 ids.add(id);
             }
@@ -477,7 +476,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
             ).done();
         } catch (ParseException e) {
             log.warn("日期解析异常");
-            log.error("error:",e);
+            log.error("error:", e);
 
         }
         measureListIssueHelper.execute();
@@ -507,7 +506,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
             ).done();
         } catch (ParseException e) {
             log.warn("日期解析异常");
-            log.error("error:",e);
+            log.error("error:", e);
         }
         measureListIssueHelper.execute();
         return isClose;
@@ -515,9 +514,9 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
 
     @Override
     public LjBaseResponse<MeasureListIssueGetIssueStatus> getIssueByProjectIdAndUuid(MeasureListIssueDetailReq req) {
-        LjBaseResponse<MeasureListIssueGetIssueStatus> ljBaseResponse =new LjBaseResponse<>();
+        LjBaseResponse<MeasureListIssueGetIssueStatus> ljBaseResponse = new LjBaseResponse<>();
         MeasureListIssue measureListIssue = measureListIssueService.getByConditionNoFoundErr(req.getProject_id(), req.getUuid());
-        MeasureListIssueGetIssueStatus measureListIssueGetIssueStatus =new MeasureListIssueGetIssueStatus();
+        MeasureListIssueGetIssueStatus measureListIssueGetIssueStatus = new MeasureListIssueGetIssueStatus();
         measureListIssueGetIssueStatus.setStatus(measureListIssue.getStatus());
         measureListIssueGetIssueStatus.setClose_status(measureListIssue.getCloseStatus());
         ljBaseResponse.setData(measureListIssueGetIssueStatus);

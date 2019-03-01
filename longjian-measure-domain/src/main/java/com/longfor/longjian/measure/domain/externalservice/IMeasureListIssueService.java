@@ -4,6 +4,7 @@ import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.po.zhijian2.Area;
 import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListIssue;
+import com.longfor.longjian.measure.vo.GetMeasureListIssueBriefVo;
 
 import java.text.ParseException;
 import java.util.List;
@@ -20,17 +21,8 @@ public interface IMeasureListIssueService {
 
     /**
      * 查询爆点情况
-     * @param project_id
-     * @param measure_list_id
-     * @param UNCLOSECODE
-     * @param REPAIRABLE
-     * @param NOREPAIRABLE
-     * @param ASSIGNNOREFORM
-     * @param REFORMNOCHECK
-     * @param CHECKYES
-     * @return
      */
-    Map<String,Object> getMeasureListIssueBrief(Integer project_id, Integer measure_list_id, String UNCLOSECODE, String REPAIRABLE, String NOREPAIRABLE, String NOTENOASSIGN, String ASSIGNNOREFORM, String REFORMNOCHECK, String CHECKYES);
+    Map<String,Object> getMeasureListIssueBrief(GetMeasureListIssueBriefVo getMeasureListIssueBriefVo);
 
 
     /**
