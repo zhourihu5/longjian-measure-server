@@ -311,8 +311,8 @@ public class MeasureListServiceImpl implements IMeasureListService {
         return  categoryV3Mapper.selectByExample(example);
     }
 
-    public static Map<String, Object> objectToMap(Object obj) throws IntrospectionException ,IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException {
+    public static Map<String, Object> objectToMap(Object obj) throws IntrospectionException, IllegalArgumentException,
+            InvocationTargetException, IllegalAccessException {
         if (obj == null)
             return null;
         Map<String, Object> map = new HashMap<String, Object>();

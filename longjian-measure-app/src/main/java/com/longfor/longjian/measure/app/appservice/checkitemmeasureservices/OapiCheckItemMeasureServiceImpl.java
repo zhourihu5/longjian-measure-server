@@ -25,7 +25,6 @@ import com.longfor.longjian.measure.po.zhijian2.CheckItemV3;
 import com.longfor.longjian.measure.po.zhijian2.FileResource;
 import com.longfor.longjian.measure.util.FileUtil;
 import com.longfor.longjian.measure.vo.FormVo;
-import com.longfor.longjian.measure.vo.ReadFileVo;
 import com.longfor.longjian.measure.vo.StoreUrlVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;

@@ -4,7 +4,6 @@ import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.po.zhijian2.ExportFileRecord;
 import com.longfor.longjian.measure.vo.InputVo;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 public interface IExportFileRecordService {

@@ -500,8 +500,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
      * @return
      */
     private List<PointVo> stringtoPointVo(String point) {
-        List<PointVo> pointVos = JSONObject.parseArray(point, PointVo.class);
-        return pointVos;
+        return JSONObject.parseArray(point, PointVo.class);
     }
 
     /**

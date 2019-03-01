@@ -9,9 +9,9 @@ import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.util.DateUtil;
 import com.longfor.longjian.measure.app.appservice.promeasurequicksearchservice.IExportFileRecordService;
 import com.longfor.longjian.measure.app.appservice.promeasurequicksearchservice.IMeasureDetailService;
+import com.longfor.longjian.measure.consts.constant.DateConstant;
 import com.longfor.longjian.measure.consts.enums.AreaTypeEnum;
 import com.longfor.longjian.measure.consts.enums.MeasureRegionSrcType;
-import com.longfor.longjian.measure.consts.constant.DateConstant;
 import com.longfor.longjian.measure.domain.externalservice.*;
 import com.longfor.longjian.measure.po.zhijian2.*;
 import com.longfor.longjian.measure.po.zhijian2_apisvr.User;
@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.util.StringUtil;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;

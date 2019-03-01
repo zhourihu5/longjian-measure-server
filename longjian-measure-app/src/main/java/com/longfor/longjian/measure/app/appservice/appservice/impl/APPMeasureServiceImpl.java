@@ -50,7 +50,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class APPMeasureServiceImpl implements IAPPMeasureService {
 
-    private static Integer MEASUREAPIGETPERTIME = 5000;
+    private static final Integer MEASUREAPIGETPERTIME = 5000;
 
     @Autowired
     private IKeyProcedureTaskAppService keyProcedureTaskAppService;
@@ -83,6 +83,10 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     private static final String SEARCHUNSCOPEDBYPROJIDLASTIDUPDATEATGT = "SearchUnscopedByProjIdLastIdUpdateAtGt";
     private static final String ERROR = "],error:";
     private static final String UPDATEAT = "UpdateAt";
+    private static final String TEXTURE = "Texture";
+    private static final String DATATYPE = "DataType";
+    private static final String DESIGNVALUE = "DesignValue";
+    private static final String DESIGNVALUEREQD = "DesignValueReqd";
 
     @Override
     public LjBaseResponse<DroppedInfoVo> reportIssue(ApiMeasureReportIssueReq apiMeasureReportIssueReq, HttpServletRequest request) throws LjBaseRuntimeException,ParseException {
@@ -294,16 +298,16 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                     Map groupData = new HashMap();
                     groupData.put("RecorderId",textResultVo.getRecorder_id());
                     groupData.put("UpdateAt",textResultVo.getUpdate_at());
-                    groupData.put("Texture",textResultVo.getTexture());
+                    groupData.put(TEXTURE,textResultVo.getTexture());
                     List<Map> textResultData = new ArrayList<>();
                     textResultVo.getData().forEach(singlePointTestVo -> {
                         Map pointData = new HashMap();
                         pointData.put("Key",singlePointTestVo.getKey());
                         List<Double> tempData = splitToFloatsComma(singlePointTestVo.getData(),true);
                         pointData.put("Data",tempData);
-                        pointData.put("DataType",singlePointTestVo.getData_type());
-                        pointData.put("DesignValue",singlePointTestVo.getDesign_value());
-                        pointData.put("DesignValueReqd",singlePointTestVo.getDesign_value_reqd());
+                        pointData.put(DATATYPE,singlePointTestVo.getData_type());
+                        pointData.put(DESIGNVALUE,singlePointTestVo.getDesign_value());
+                        pointData.put(DESIGNVALUEREQD,singlePointTestVo.getDesign_value_reqd());
                         textResultData.add(pointData);
                     });
                     groupData.put("Data",textResultData);
@@ -423,17 +427,17 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         List<Map> dataZone = JSONArray.parseArray(result.getData(), Map.class);
         for (Map d : dataZone) {
             MeasureZoneGroupData r = new MeasureZoneGroupData();
-            r.setTexture(MapUtils.getString(d, "Texture", null));
+            r.setTexture(MapUtils.getString(d, TEXTURE, null));
             r.setData(Maps.newHashMap());
             r.setScore(0F);
             List<Map> dataPoint = JSONArray.parseArray(MapUtils.getString(d, "Data", null), Map.class);
             for (Map pd : dataPoint) {
                 MeasureZonePointData npd = new MeasureZonePointData();
                 npd.setKey(MapUtils.getString(pd, "Key", null));
-                npd.setDataType(MapUtils.getInteger(pd, "DataType", null));
+                npd.setDataType(MapUtils.getInteger(pd, DATATYPE, null));
                 npd.setData(JSONArray.parseArray(MapUtils.getString(pd, "Data", null), Long.class));
-                npd.setDesignValueReqd(MapUtils.getBoolean(pd, "DesignValueReqd", null));
-                npd.setDesignValue(MapUtils.getLong(pd, "DesignValue", null));
+                npd.setDesignValueReqd(MapUtils.getBoolean(pd, DESIGNVALUEREQD, null));
+                npd.setDesignValue(MapUtils.getLong(pd, DESIGNVALUE, null));
                 r.getData().put(MapUtils.getString(pd, "Key", null), npd);
             }
             resultData.add(r);
@@ -442,7 +446,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         ScriptEngine se = sem.getEngineByName("js");
         for (MeasureZoneGroupData r : resultData) {
             Map<String, Object> args = Maps.newHashMap();
-            args.put("texture", r.getTexture());
+            args.put(TEXTURE, r.getTexture());
             for (Map.Entry<String, MeasureZonePointData> entry : r.getData().entrySet()) {
                 args.put(entry.getKey(), entry.getValue().toMap());
             }
@@ -771,7 +775,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         TextResultVo textResultVo = new TextResultVo();
         textResultVo.setRecorder_id(textResult.getInteger("RecorderId"));
         textResultVo.setScore(textResult.getDouble("Score"));
-        textResultVo.setTexture(textResult.getString("Texture"));
+        textResultVo.setTexture(textResult.getString(TEXTURE));
         textResultVo.setUpdate_at(textResult.getDate(UPDATEAT) == null ? 0 : DateUtil.dateToTimestamp(textResult.getDate(UPDATEAT)));
         List<SinglePointTestVo> d = new ArrayList<>();
         String data = textResult.getString("Data");
@@ -793,9 +797,9 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
      */
     private SinglePointTestVo converDataToSinglePointTestVo(JSONObject singlePointTest) {
         SinglePointTestVo singlePointTestVo = new SinglePointTestVo();
-        singlePointTestVo.setData_type(singlePointTest.getInteger("DataType"));
-        singlePointTestVo.setDesign_value(singlePointTest.getDouble("DesignValue"));
-        singlePointTestVo.setDesign_value_reqd(singlePointTest.getBoolean("DesignValueReqd"));
+        singlePointTestVo.setData_type(singlePointTest.getInteger(DATATYPE));
+        singlePointTestVo.setDesign_value(singlePointTest.getDouble(DESIGNVALUE));
+        singlePointTestVo.setDesign_value_reqd(singlePointTest.getBoolean(DESIGNVALUEREQD));
         singlePointTestVo.setKey(singlePointTest.getString("Key"));
         singlePointTestVo.setSeq(singlePointTest.getString("Seq"));
         singlePointTestVo.setOk_total(singlePointTest.getInteger("OkTotal"));

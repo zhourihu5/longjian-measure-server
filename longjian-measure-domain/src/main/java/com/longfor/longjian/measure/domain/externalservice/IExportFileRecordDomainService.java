@@ -2,7 +2,6 @@ package com.longfor.longjian.measure.domain.externalservice;
 
 import com.longfor.longjian.measure.vo.InsertFullVo;
 
-import java.util.Date;
 import java.util.Map;
 
 public interface IExportFileRecordDomainService {

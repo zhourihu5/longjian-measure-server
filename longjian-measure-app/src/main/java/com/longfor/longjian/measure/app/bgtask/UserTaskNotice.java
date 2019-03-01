@@ -1,6 +1,5 @@
 package com.longfor.longjian.measure.app.bgtask;
 
-import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.util.DateUtil;
 import com.longfor.longjian.common.util.Md5Util;
 import com.longfor.longjian.common.util.RedisUtil;

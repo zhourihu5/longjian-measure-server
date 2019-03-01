@@ -225,7 +225,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
         if (vo.getRepairer_id()!= null && vo.getRepairer_id() > 0) {
             criteria.andEqualTo("repairerId", vo.getRepairer_id());
         }
-        if (vo.getIs_overdue() != null && vo.getIs_overdue() != false) {
+        if (vo.getIs_overdue() != null && !vo.getIs_overdue().equals(false)) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Long nowTimestamp = sdf.parse("2006-01-02 23:59:59").getTime();
             Long startTimestamp = sdf.parse("1980-01-01 00:00:00").getTime();

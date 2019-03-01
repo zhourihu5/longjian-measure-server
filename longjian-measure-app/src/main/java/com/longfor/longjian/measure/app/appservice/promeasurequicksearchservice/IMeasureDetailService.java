@@ -1,7 +1,5 @@
 package com.longfor.longjian.measure.app.appservice.promeasurequicksearchservice;
 
-import javax.servlet.http.HttpServletResponse;
-
 public interface IMeasureDetailService {
     /**
      *
