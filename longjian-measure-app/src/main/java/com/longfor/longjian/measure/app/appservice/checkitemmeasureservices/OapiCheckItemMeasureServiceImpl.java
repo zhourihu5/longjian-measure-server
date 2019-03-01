@@ -1,4 +1,4 @@
-package com.longfor.longjian.measure.app.appservice.checkItemmeasureservice;
+package com.longfor.longjian.measure.app.appservice.checkitemmeasureservices;
 
 import com.google.common.collect.Maps;
 import com.longfor.longjian.common.FeignClient.IPermissionService;
@@ -7,6 +7,7 @@ import com.longfor.longjian.common.entity.TeamBase;
 import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.util.CtrlTool;
 import com.longfor.longjian.common.util.SessionInfo;
+import com.longfor.longjian.measure.app.appservice.checkitemmeasureservices.IOapiCheckItemMeasureService;
 import com.longfor.longjian.measure.app.feignclient.IMeasureFeignService;
 import com.longfor.longjian.measure.app.req.checkitemmeasurereq.GetCategoryReq;
 import com.longfor.longjian.measure.app.req.checkitemmeasurereq.GetCheckItemReq;
@@ -89,7 +90,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
             ljBaseResponse.setData(getCheckItemVo);
         } catch (Exception e) {
             log.error(ERROR + e);
-            throw new RuntimeException(e);
+            throw new LjBaseRuntimeException(-9999,e+"");
         }
         return ljBaseResponse;
     }
@@ -119,7 +120,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
             ljBaseResponse.setData(getCategoryVo);
         } catch (Exception e) {
             log.error(ERROR + e);
-            throw new RuntimeException(e);
+            throw new LjBaseRuntimeException(-9999,e+"");
         }
         return ljBaseResponse;
     }

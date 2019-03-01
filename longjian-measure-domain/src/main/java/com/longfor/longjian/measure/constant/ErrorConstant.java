@@ -1,6 +1,10 @@
 package com.longfor.longjian.measure.constant;
 
+
 public class ErrorConstant {
+    private ErrorConstant() {
+    }
+
     /**
      * 检查项
      */
@@ -12,4 +16,5 @@ public class ErrorConstant {
     public static final String CHECK_ITEM_GEN_KEY_FAILT = "100006,创建唯一码失败";
     public static final String CHECK_ITEM_TREE_CATEGORY_NOT_EXISTS = "100007,检查项所属任务类型不存在";
     public static final String CHECK_ITEM_HAS_BLANK_NODE = "100008,存在空白节点";
+
 }

@@ -8,6 +8,7 @@ import com.longfor.longjian.measure.dao.zhijian2.*;
 import com.longfor.longjian.measure.domain.externalservice.IMeasureListService;
 import com.longfor.longjian.measure.po.zhijian2.*;
 import com.longfor.longjian.measure.util.DateUtil;
+import com.longfor.longjian.measure.vo.CreateZoneFromAppVo;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,9 +47,8 @@ public class MeasureListServiceImpl implements IMeasureListService {
     private static final String DELETEAT = "deleteAt";
     private static final String LISTID = "listId";
     @Override
-    public List<Map<String, Object>> getMeasureList(Integer finish_status, String q, Integer project_id, String categoryPathAndKey, String areaPathAndId, String[] userIds, Integer page, Integer page_size) {
-        page = page - 1;
-        return measureListMapper.getMeasureList(finish_status, q, project_id, categoryPathAndKey, areaPathAndId, userIds, page, page_size);
+    public List<Map<String, Object>> getMeasureList(Map<String,Object> map) {
+        return measureListMapper.getMeasureList(map);
     }
 
     @Override
@@ -96,18 +96,18 @@ public class MeasureListServiceImpl implements IMeasureListService {
     }
 
     @Override
-    public void createZoneFromApp(Integer project_id, Integer list_id, String uuid, String regionUuid, Integer areaId, String areaPathAndId, String category_key, String categoryPathAndKey, Integer finishId, Integer closeId) {
+    public void createZoneFromApp(CreateZoneFromAppVo vo) {
         MeasureZone measureZone = new MeasureZone();
-        measureZone.setProjectId(project_id);
-        measureZone.setListId(list_id);
-        measureZone.setUuid(uuid);
-        measureZone.setRegionUuid(regionUuid);
-        measureZone.setAreaId(areaId);
-        measureZone.setAreaPathAndId(areaPathAndId);
-        measureZone.setCategoryKey(category_key);
-        measureZone.setCategoryPathAndKey(categoryPathAndKey);
-        measureZone.setFinishStatus(finishId);
-        measureZone.setCloseStatus(closeId);
+        measureZone.setProjectId(vo.getProject_id());
+        measureZone.setListId(vo.getList_id());
+        measureZone.setUuid(vo.getUuid());
+        measureZone.setRegionUuid(vo.getUuid1());
+        measureZone.setAreaId(vo.getAreaId());
+        measureZone.setAreaPathAndId(vo.getAreaPathAndId());
+        measureZone.setCategoryKey(vo.getCategory_key());
+        measureZone.setCategoryPathAndKey(vo.getS());
+        measureZone.setFinishStatus(vo.getId());
+        measureZone.setCloseStatus(vo.getId1());
         measureZone.setCreateAt(new Date());
         measureZone.setUpdateAt(new Date());
         measureZoneMapper.insert(measureZone);

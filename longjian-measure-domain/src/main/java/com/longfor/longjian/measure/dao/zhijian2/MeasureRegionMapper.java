@@ -81,11 +81,5 @@ public interface MeasureRegionMapper extends LFMySQLMapper<MeasureRegion> {
      */
     List<Map<String, Object>> getMaxRegionIndexGroupByAreaIdNoDeleted(@Param("projId") Integer project_id, @Param("areaIdList") List area_id_list);
 
-//    /**
-//     *
-//     * @param model
-//     */
-//    void save(@Param("model") MeasureRegion model);
-
     MeasureRegion GetByUuid(@Param("projId") Integer projId, @Param("uuid") String uuid);
 }

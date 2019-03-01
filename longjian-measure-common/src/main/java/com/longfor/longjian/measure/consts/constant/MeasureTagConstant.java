@@ -6,6 +6,9 @@ package com.longfor.longjian.measure.consts.constant;
  * 2018-11-22
  */
 public class MeasureTagConstant {
+    private MeasureTagConstant() {
+    }
+
     /**
      * ownership 集团
      */

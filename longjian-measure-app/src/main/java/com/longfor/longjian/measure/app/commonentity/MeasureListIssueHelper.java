@@ -3,7 +3,9 @@ package com.longfor.longjian.measure.app.commonentity;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.longfor.gaia.gfs.data.mybatis.toolkit.LFDataSourceContextHolder;
+import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.kafka.KafkaProducer;
+import com.longfor.longjian.measure.app.vo.AppendVo;
 import com.longfor.longjian.measure.app.vo.appmeasuresyncvo.DroppedVo;
 import com.longfor.longjian.measure.consts.enums.ApiDropDataReasonEnum;
 import com.longfor.longjian.measure.consts.enums.EventQueueEnum;
@@ -536,10 +538,6 @@ public class MeasureListIssueHelper {
             }
         });
 
-        //todo 执行之前判断是否有错误产生了
-        // if nil != helper.Error {
-        //        		return helper.Error
-
 
         //执行入库
         MeasureIssueReportMsg msgPkg = new MeasureIssueReportMsg();
@@ -551,40 +549,84 @@ public class MeasureListIssueHelper {
             for (Map.Entry<String, MeasureListIssue> entry : this.needInsertIssueMap.entrySet()) {
                 MeasureListIssue issue = entry.getValue();
                 measureListIssueService.insertMeasureListIssueObject(issue);
-                msgPkg.appendCreated(
-                        issue.getUuid(), issue.getProjectId(), issue.getListId(), issue.getSenderId(), 0,
-                        issue.getAreaId(), issue.getAreaPathAndId(), issue.getCategoryKey(),
-                        issue.getCategoryPathAndKey(), issue.getSenderId(), issue.getClientCreateAt());
+                AppendVo appendCreatedVo = new AppendVo();
+                appendCreatedVo.setUuid(issue.getUuid());
+                appendCreatedVo.setProjId(issue.getProjectId());
+                appendCreatedVo.setListId(issue.getListId());
+                appendCreatedVo.setCheckerId(issue.getSenderId());
+                appendCreatedVo.setRepairerId(0);
+                appendCreatedVo.setAreaId(issue.getAreaId());
+                appendCreatedVo.setAreaPathAndId(issue.getAreaPathAndId());
+                appendCreatedVo.setCategoryKey(issue.getCategoryKey());
+                appendCreatedVo.setCategoryPathAndKey(issue.getCategoryPathAndKey());
+                appendCreatedVo.setSenderId(issue.getSenderId());
+                appendCreatedVo.setTimeAt(issue.getClientCreateAt());
+                msgPkg.appendCreated(appendCreatedVo);
                 if (issue.getStatus() == MeasureListIssueType.ASSIGNNOREFORM) {
-                    msgPkg.appendAssigned(
-                            issue.getUuid(), issue.getProjectId(), issue.getListId(), issue.getSenderId(), issue.getRepairerId(),
-                            issue.getAreaId(), issue.getAreaPathAndId(), issue.getCategoryKey(),
-                            issue.getCategoryPathAndKey(), issue.getSenderId(), issue.getClientCreateAt());
+                    AppendVo appendAssignedVo = new AppendVo();
+                    appendAssignedVo.setUuid(issue.getUuid());
+                    appendAssignedVo.setProjId(issue.getProjectId());
+                    appendAssignedVo.setListId(issue.getListId());
+                    appendAssignedVo.setCheckerId(issue.getSenderId());
+                    appendAssignedVo.setRepairerId(issue.getRepairerId());
+                    appendAssignedVo.setAreaId(issue.getAreaId());
+                    appendAssignedVo.setAreaPathAndId(issue.getAreaPathAndId());
+                    appendAssignedVo.setCategoryKey(issue.getCategoryKey());
+                    appendAssignedVo.setCategoryPathAndKey(issue.getCategoryPathAndKey());
+                    appendAssignedVo.setSenderId(issue.getSenderId());
+                    appendAssignedVo.setTimeAt(issue.getClientCreateAt());
+                    msgPkg.appendAssigned(appendAssignedVo);
                 }
             }
             //更新的issue
             for (Map.Entry<String, MeasureListIssue> entry : this.needUpdateIssueMap.entrySet()) {
                 MeasureListIssue issue = entry.getValue();
-                Date updateAt = issue.getUpdateAt();
                 measureListIssueService.updateFullNoAffectedErr(issue);
                 switch (issue.getStatus()) {
                     case MeasureListIssueType.ASSIGNNOREFORM:
-                        msgPkg.appendAssigned(
-                                issue.getUuid(), issue.getProjectId(), issue.getListId(), issue.getSenderId(), issue.getRepairerId(),
-                                issue.getAreaId(), issue.getAreaPathAndId(), issue.getCategoryKey(),
-                                issue.getCategoryPathAndKey(), issue.getSenderId(), issue.getClientCreateAt());
+                        AppendVo appendAssignedVo = new AppendVo();
+                        appendAssignedVo.setUuid(issue.getUuid());
+                        appendAssignedVo.setProjId(issue.getProjectId());
+                        appendAssignedVo.setListId(issue.getListId());
+                        appendAssignedVo.setCheckerId(issue.getSenderId());
+                        appendAssignedVo.setRepairerId(issue.getRepairerId());
+                        appendAssignedVo.setAreaId(issue.getAreaId());
+                        appendAssignedVo.setAreaPathAndId(issue.getAreaPathAndId());
+                        appendAssignedVo.setCategoryKey(issue.getCategoryKey());
+                        appendAssignedVo.setCategoryPathAndKey(issue.getCategoryPathAndKey());
+                        appendAssignedVo.setSenderId(issue.getSenderId());
+                        appendAssignedVo.setTimeAt(issue.getClientCreateAt());
+                        msgPkg.appendAssigned(appendAssignedVo);
                         break;
                     case MeasureListIssueType.REFORMNOCHECK:
-                        msgPkg.appendReformed(
-                                issue.getUuid(), issue.getProjectId(), issue.getListId(), issue.getSenderId(), issue.getRepairerId(),
-                                issue.getAreaId(), issue.getAreaPathAndId(), issue.getCategoryKey(),
-                                issue.getCategoryPathAndKey(), issue.getSenderId(), issue.getClientCreateAt());
+                        AppendVo appendReformedVo = new AppendVo();
+                        appendReformedVo.setUuid(issue.getUuid());
+                        appendReformedVo.setProjId(issue.getProjectId());
+                        appendReformedVo.setListId(issue.getListId());
+                        appendReformedVo.setCheckerId(issue.getSenderId());
+                        appendReformedVo.setRepairerId(issue.getRepairerId());
+                        appendReformedVo.setAreaId(issue.getAreaId());
+                        appendReformedVo.setAreaPathAndId(issue.getAreaPathAndId());
+                        appendReformedVo.setCategoryKey(issue.getCategoryKey());
+                        appendReformedVo.setCategoryPathAndKey(issue.getCategoryPathAndKey());
+                        appendReformedVo.setSenderId(issue.getSenderId());
+                        appendReformedVo.setTimeAt(issue.getClientCreateAt());
+                        msgPkg.appendReformed(appendReformedVo);
                         break;
                     case MeasureListIssueType.CHECKYES:
-                        msgPkg.appendChecked(
-                                issue.getUuid(), issue.getProjectId(), issue.getListId(), issue.getSenderId(), issue.getRepairerId(),
-                                issue.getAreaId(), issue.getAreaPathAndId(), issue.getCategoryKey(),
-                                issue.getCategoryPathAndKey(), issue.getSenderId(), issue.getClientCreateAt());
+                        AppendVo appendCheckedVo = new AppendVo();
+                        appendCheckedVo.setUuid(issue.getUuid());
+                        appendCheckedVo.setProjId(issue.getProjectId());
+                        appendCheckedVo.setListId(issue.getListId());
+                        appendCheckedVo.setCheckerId(issue.getSenderId());
+                        appendCheckedVo.setRepairerId(issue.getRepairerId());
+                        appendCheckedVo.setAreaId(issue.getAreaId());
+                        appendCheckedVo.setAreaPathAndId(issue.getAreaPathAndId());
+                        appendCheckedVo.setCategoryKey(issue.getCategoryKey());
+                        appendCheckedVo.setCategoryPathAndKey(issue.getCategoryPathAndKey());
+                        appendCheckedVo.setSenderId(issue.getSenderId());
+                        appendCheckedVo.setTimeAt(issue.getClientCreateAt());
+                        msgPkg.appendChecked(appendCheckedVo);
                         break;
                     default:
                         log.info("当前状态 :{}",issue.getStatus());
@@ -597,7 +639,7 @@ public class MeasureListIssueHelper {
                 if (this.needInsertIssueLog.size() != affected) {
                     String msg = "insert affected not match, len[" + this.needInsertIssueLog.size() + "] affected[" + affected + "]";
                     log.warn(msg);
-                    throw new Exception(msg);
+                    throw new LjBaseRuntimeException(-9999,msg);
                 }
             }
             txManager.commit(status);

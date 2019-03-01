@@ -5,6 +5,7 @@ import com.longfor.longjian.measure.po.zhijian2.MeasureList;
 import com.longfor.longjian.measure.po.zhijian2.MeasureSquad;
 import com.longfor.longjian.measure.po.zhijian2.MeasureSquadUser;
 import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
+import com.longfor.longjian.measure.vo.CreateZoneFromAppVo;
 
 import java.util.List;
 import java.util.Map;
@@ -13,17 +14,10 @@ import java.util.Set;
 public interface IMeasureListService {
     /**
      *
-     * @param finish_status
-     * @param q
-     * @param project_id
-     * @param categoryPathAndKey
-     * @param areaPathAndId
-     * @param userIds
-     * @param page
-     * @param page_size
+     * @param map
      * @return
      */
-    List<Map<String,Object>> getMeasureList(Integer finish_status, String q, Integer project_id, String categoryPathAndKey, String areaPathAndId, String[] userIds, Integer page, Integer page_size);
+    List<Map<String,Object>> getMeasureList(Map<String,Object> map);
 
     /**
      * total
@@ -86,18 +80,9 @@ public interface IMeasureListService {
 
     /**
      *
-     * @param project_id
-     * @param list_id
-     * @param uuid
-     * @param uuid1
-     * @param areaId
-     * @param areaPathAndId
-     * @param category_key
-     * @param s
-     * @param id
-     * @param id1
+     * @param vo
      */
-    void createZoneFromApp(Integer project_id, Integer list_id, String uuid, String uuid1, Integer areaId, String areaPathAndId, String category_key, String s, Integer id, Integer id1);
+    void createZoneFromApp(CreateZoneFromAppVo vo);
 
     /**
      *

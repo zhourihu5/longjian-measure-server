@@ -13,20 +13,18 @@ import java.util.List;
  */
 @Slf4j
 public class FileUtil {
+
+    private FileUtil() {
+    }
     //将文件转换成byte数组
     public static byte[] urlTobyte(String filePath) throws IOException {
-        InputStream fis = null;
         byte[] buffer = null;
-        try {
-            fis = new BufferedInputStream(new FileInputStream(filePath));
+        try (InputStream fis = new BufferedInputStream(new FileInputStream(filePath))){
             buffer = new byte[fis.available()];
         } catch (FileNotFoundException e) {
             log.error("error :",e);
-        } finally {
-            if (fis != null) {
-                fis.close();
-            }
         }
+
         return buffer;
     }
 
@@ -51,8 +49,4 @@ public class FileUtil {
         }
         return storeUrlVo;
     }
-    /* public static void main(String[] args) throws IOException {
-         byte[] bytes = urlTobyte("pictures/2019-01-17/1547721951652018806.xlsx");
-         System.out.println(bytes);
-    }*/
 }

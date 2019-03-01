@@ -107,7 +107,7 @@ public class MeasureListController {
         Integer userId = sessionInfo.getSessionUser().getUserId();
         String r = null;
         try {
-            r = userTaskNotice.sendToRedis(userId, BgtaskEnum.MEASURE_LIST_CREATE,"",params, null);
+            r = userTaskNotice.sendToRedis(userId, BgtaskEnum.MEASURE_LIST_CREATE,params);
         } catch (Exception e) {
            throw new LjBaseRuntimeException(-9999,e+"");
         }

@@ -23,8 +23,4 @@ public enum MeasureListCloseStatusEnum {
         this.id = id;
         this.value = value;
     }
-/*
-    public static void main(String[] args) {
-        System.out.print(MeasureListCloseStatusEnum.Closed.getId());
-    }*/
 }

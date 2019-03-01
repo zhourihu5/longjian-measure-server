@@ -11,7 +11,7 @@ public interface IKeyProcedureTaskAppService {
      * @param uid
      * @param request
      */
-    void startReport(String report_uuid, Integer uid, HttpServletRequest request) throws CommonException, Exception;
+    void startReport(String report_uuid, Integer uid, HttpServletRequest request) throws CommonException;
 
     /**
      *

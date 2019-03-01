@@ -1,5 +1,6 @@
 package com.longfor.longjian.measure.app.commonentity;
 
+import com.longfor.longjian.measure.app.vo.MsgAppendVo;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -32,22 +33,20 @@ public class MeasureZoneResultCreateMsg implements Serializable {
         created_results = new ArrayList<>();
     }
 
-    public void append(String uuid, String zoneUuid,Integer projId, Integer listId, Integer senderId, Integer areaId ,
-                                             String areaPathAndId, String categoryKey, String categoryPathAndKey,Integer okTotal, Integer total,
-                                             Long timeAt){
+    public void append(MsgAppendVo vo){
         MeasureZoneResult measureZoneResult = new MeasureZoneResult();
-        measureZoneResult.setUuid(uuid);
-        measureZoneResult.setZone_uuid(zoneUuid);
-        measureZoneResult.setProj_id(projId);
-        measureZoneResult.setList_id(listId);
-        measureZoneResult.setSender_id(senderId);
-        measureZoneResult.setArea_id(areaId);
-        measureZoneResult.setArea_path_and_id(areaPathAndId);
-        measureZoneResult.setCategory_key(categoryKey);
-        measureZoneResult.setCategory_path_and_key(categoryPathAndKey);
-        measureZoneResult.setOk_total(okTotal);
-        measureZoneResult.setTimestamp(timeAt);
-        measureZoneResult.setTotal(total);
+        measureZoneResult.setUuid(vo.getUuid());
+        measureZoneResult.setZone_uuid(vo.getZoneUuid());
+        measureZoneResult.setProj_id(vo.getProjId());
+        measureZoneResult.setList_id(vo.getListId());
+        measureZoneResult.setSender_id(vo.getSenderId());
+        measureZoneResult.setArea_id(vo.getAreaId());
+        measureZoneResult.setArea_path_and_id(vo.getAreaPathAndId());
+        measureZoneResult.setCategory_key(vo.getCategoryKey());
+        measureZoneResult.setCategory_path_and_key(vo.getCategoryPathAndKey());
+        measureZoneResult.setOk_total(vo.getOkTotal());
+        measureZoneResult.setTimestamp(vo.getTimeAt());
+        measureZoneResult.setTotal(vo.getTotal());
         created_results.add(measureZoneResult);
     }
 

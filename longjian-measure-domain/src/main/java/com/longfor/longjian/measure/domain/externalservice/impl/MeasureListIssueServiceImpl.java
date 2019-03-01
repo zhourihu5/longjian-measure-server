@@ -15,6 +15,8 @@ import com.longfor.longjian.measure.util.AreaUtils;
 import com.longfor.longjian.measure.util.CategoryUtils;
 import com.longfor.longjian.measure.util.DateTool;
 import com.longfor.longjian.measure.util.DateUtil;
+import com.longfor.longjian.measure.vo.GetMeasureListIssueBriefVo;
+import com.longfor.longjian.measure.vo.SearchMeasueListIssueInProjVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.lang.StringUtils;
@@ -58,18 +60,18 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     }
 
     @Override
-    public Map<String, Object> getMeasureListIssueBrief(Integer project_id, Integer measure_list_id, String UNCLOSECODE, String REPAIRABLE, String NOREPAIRABLE, String NOTENOASSIGN, String ASSIGNNOREFORM, String REFORMNOCHECK, String CHECKYES) {
+    public Map<String, Object> getMeasureListIssueBrief(GetMeasureListIssueBriefVo vo) {
         Map<String, Object> map = new HashMap<>();
-        Integer zoneCount = measureListIssueMapper.getZoneCount(project_id, measure_list_id, UNCLOSECODE);
+        Integer zoneCount = measureListIssueMapper.getZoneCount(vo.getProject_id(), vo.getMeasure_list_id(), vo.getUNCLOSECODE());
         map.put("zone_count", zoneCount);
-        map.put("repairable_count", measureListIssueMapper.getCountByTyp(project_id, measure_list_id, REPAIRABLE, UNCLOSECODE));
-        map.put("unrepairable_count", measureListIssueMapper.getCountByTyp(project_id, measure_list_id, NOREPAIRABLE, UNCLOSECODE));
-        map.put("note_no_assign", measureListIssueMapper.getCountByStatus(project_id, measure_list_id, NOTENOASSIGN, UNCLOSECODE));
-        map.put("assign_no_reform", measureListIssueMapper.getCountByStatus(project_id, measure_list_id, ASSIGNNOREFORM, UNCLOSECODE));
-        map.put("reform_no_check", measureListIssueMapper.getCountByStatus(project_id, measure_list_id, REFORMNOCHECK, UNCLOSECODE));
-        map.put("check_yes", measureListIssueMapper.getCountByStatus(project_id, measure_list_id, CHECKYES, UNCLOSECODE));
+        map.put("repairable_count", measureListIssueMapper.getCountByTyp(vo.getProject_id(), vo.getMeasure_list_id(), vo.getREPAIRABLE(), vo.getUNCLOSECODE()));
+        map.put("unrepairable_count", measureListIssueMapper.getCountByTyp(vo.getProject_id(), vo.getMeasure_list_id(), vo.getNOREPAIRABLE(), vo.getUNCLOSECODE()));
+        map.put("note_no_assign", measureListIssueMapper.getCountByStatus(vo.getProject_id(), vo.getMeasure_list_id(), vo.getNOTENOASSIGN(), vo.getUNCLOSECODE()));
+        map.put("assign_no_reform", measureListIssueMapper.getCountByStatus(vo.getProject_id(), vo.getMeasure_list_id(), vo.getASSIGNNOREFORM(), vo.getUNCLOSECODE()));
+        map.put("reform_no_check", measureListIssueMapper.getCountByStatus(vo.getProject_id(), vo.getMeasure_list_id(), vo.getREFORMNOCHECK(), vo.getUNCLOSECODE()));
+        map.put("check_yes", measureListIssueMapper.getCountByStatus(vo.getProject_id(), vo.getMeasure_list_id(), vo.getCHECKYES(), vo.getUNCLOSECODE()));
         //查找所有测区
-        int count = measureZoneMapper.searchTotalByProjectIdAndMeasureListId(project_id, new int[]{measure_list_id});
+        int count = measureZoneMapper.searchTotalByProjectIdAndMeasureListId(vo.getProject_id(), new int[]{vo.getMeasure_list_id()});
         String zonePercentage = String.format("%.2f", (Double.parseDouble(zoneCount.toString()) / count) * 100);
         if ("0.00".equals(zonePercentage) || zoneCount == 0 || count == 0) {
             map.put("zone_percentage", "0");
@@ -178,41 +180,39 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     }
 
     @Override
-    public Map<String, Object> searchMeasueListIssueInProj(Integer projectId, Integer limit, Integer page, String category_key, List<Integer> areaIdList, List<String> measureListIdList, List<String> createAtRangeList, Integer status, Integer repairer_id, Boolean is_overdue) throws ParseException {
+    public Map<String, Object> searchMeasueListIssueInProj(SearchMeasueListIssueInProjVo vo) throws ParseException {
         Map<String, Object> map = Maps.newHashMap();
         Example example = new Example(MeasureListIssue.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo(PROJECTID, projectId);
-        if (!measureListIdList.isEmpty() && measureListIdList.size() > 0) {
-            criteria.andIn("listId", measureListIdList);
+        criteria.andEqualTo(PROJECTID, vo.getProjectId());
+        if (!vo.getMeasureListIdList().isEmpty() && vo.getMeasureListIdList().size() > 0) {
+            criteria.andIn("listId", vo.getMeasureListIdList());
         }
-        if (createAtRangeList.size() == 2 && Integer.parseInt(createAtRangeList.get(1)) > 0) {
+        if (vo.getCreateAtRangeList().size() == 2 && Integer.parseInt(vo.getCreateAtRangeList().get(1)) > 0) {
 //            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String t1 = DateUtil.getLongDateStringByLong(Long.parseLong(createAtRangeList.get(0)) * 1000);
-            String t2 = DateUtil.getLongDateStringByLong(Long.parseLong(createAtRangeList.get(1)) * 1000);
+            String t1 = DateUtil.getLongDateStringByLong(Long.parseLong(vo.getCreateAtRangeList().get(0)) * 1000);
+            String t2 = DateUtil.getLongDateStringByLong(Long.parseLong(vo.getCreateAtRangeList().get(1)) * 1000);
             criteria.andBetween("createAt", t1, t2);
         }
-        if (!areaIdList.isEmpty() && areaIdList.size() > 0) {
+        if (!vo.getAreaIdList().isEmpty() && vo.getAreaIdList().size() > 0) {
             try {
-                this.createAreasMapByLeaveIds(areaIdList);
+                this.createAreasMapByLeaveIds(vo.getAreaIdList());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
             Example.Criteria criteria1 = example.createCriteria();
-            for (Integer s : areaIdList) {
+            for (Integer s : vo.getAreaIdList()) {
                 String pathAndId = AreaUtils.getPathAndId(s);
                 if (!pathAndId.equals("")) {
-                    //criteria1.andLike("areaPathAndId", this.startswith(pathAndId));
-                    //criteria1.andEqualTo("areaId", s);
                     criteria1.orCondition("(area_path_and_id like \""+this.startswith(pathAndId)+"\" and area_id = "+s+" )");
                 }
             }
             example.and(criteria1);
         }
-        if (category_key != null && category_key.length() > 0) {
+        if (vo.getCategory_key()!= null && vo.getCategory_key().length() > 0) {
             Example.Criteria criteria2 = example.createCriteria();
             try {
-                CategoryV3 category = categoryV3Mapper.getCategoryByKeyNoFoundErr(category_key);
+                CategoryV3 category = categoryV3Mapper.getCategoryByKeyNoFoundErr(vo.getCategory_key());
                 if (category != null) {
                     criteria2.andEqualTo("categoryKey", category.getKey());
                     criteria2.orLike("categoryPathAndKey", this.startswith(this.childPath(category)));
@@ -223,13 +223,13 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
             }
 
         }
-        if (status != null && status > 0) {
-            criteria.andEqualTo("status", status);
+        if (vo.getStatus()!= null && vo.getStatus() > 0) {
+            criteria.andEqualTo("status", vo.getStatus());
         }
-        if (repairer_id != null && repairer_id > 0) {
-            criteria.andEqualTo("repairerId", repairer_id);
+        if (vo.getRepairer_id()!= null && vo.getRepairer_id() > 0) {
+            criteria.andEqualTo("repairerId", vo.getRepairer_id());
         }
-        if (is_overdue != null && is_overdue != false) {
+        if (vo.getIs_overdue() != null && vo.getIs_overdue() != false) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Long nowTimestamp = sdf.parse("2006-01-02 23:59:59").getTime();
             Long startTimestamp = sdf.parse("1980-01-01 00:00:00").getTime();
@@ -239,12 +239,12 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
         criteria.andIsNull(DELETEAT);
         Integer count = measureListIssueMapper.selectCountByExample(example);
         Integer start = 0;
-        if (page > 1) {
-            start = (page - 1) * limit;
+        if (vo.getPage()> 1) {
+            start = (vo.getPage() - 1) * vo.getLimit();
         }
         String orderBy = "id ASC";
         example.setOrderByClause(orderBy);
-        List<MeasureListIssue> items = measureListIssueMapper.selectByExampleAndRowBounds(example, new RowBounds(start, limit));
+        List<MeasureListIssue> items = measureListIssueMapper.selectByExampleAndRowBounds(example, new RowBounds(start, vo.getLimit()));
         map.put("count", count);
         map.put("items", items);
         return map;

@@ -1,6 +1,9 @@
 package com.longfor.longjian.measure.consts.constant;
 
 public class ApiDropDataReasonConstant {
+    private ApiDropDataReasonConstant() {
+    }
+
     public static final String NOTFOUND = "name:\"未找到资源\" value:\"1\"";
     public static final String EXISTS = "name:\"资源已存在\" value:\"2\"";
     public static final String MEASYREZONENOTFOUND = "name:\"测区不存在\" value:\"11\"";

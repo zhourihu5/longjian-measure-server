@@ -10,17 +10,10 @@ import java.util.Map;
 public interface MeasureListMapper extends LFMySQLMapper<MeasureList> {
     /**
      *
-     * @param finish_status
-     * @param q
-     * @param project_id
-     * @param categoryPathAndKey
-     * @param areaPathAndId
-     * @param userIds
-     * @param page
-     * @param page_size
+     * @param map
      * @return
      */
-    List<Map<String,Object>> getMeasureList(@Param("finishStatus") Integer finish_status, @Param("q") String q, @Param("projectId") Integer project_id, @Param("categoryPathAndKey") String categoryPathAndKey, @Param("areaPathAndId") String areaPathAndId, @Param("userIds") String[] userIds, @Param("page") Integer page, @Param("pageSize") Integer page_size);
+    List<Map<String,Object>> getMeasureList(Map<String,Object> map);
 
     /**
      * total

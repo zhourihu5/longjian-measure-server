@@ -9,5 +9,5 @@ public interface IMeasureDetailService {
      * @param projId
      * @param list_id
      */
-    void exportExcelAsync(Integer userId, Integer projId, Integer list_id, HttpServletResponse response);
+    void exportExcelAsync(Integer userId, Integer projId, Integer list_id);
 }

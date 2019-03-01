@@ -2,6 +2,7 @@ package com.longfor.longjian.measure.app.appservice.promeasuremanagerservice.imp
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.google.common.collect.Maps;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.common.entity.ProjectBase;
 import com.longfor.longjian.common.entity.TeamBase;
@@ -16,6 +17,7 @@ import com.longfor.longjian.measure.app.req.promeasuremanagerreq.GetProMeasureAr
 import com.longfor.longjian.measure.app.req.promeasuremanagerreq.GetProMeasureCheckItemsReq;
 import com.longfor.longjian.measure.app.req.promeasuremanagerreq.GetProMeasurePlanListReq;
 import com.longfor.longjian.measure.app.req.promeasurequicksearchreq.*;
+import com.longfor.longjian.measure.vo.GetMeasureListIssueBriefVo;
 import com.longfor.longjian.measure.app.vo.ItemsVo;
 import com.longfor.longjian.measure.app.vo.promeasurevo.*;
 import com.longfor.longjian.measure.consts.constant.CategoryClsTypeConstant;
@@ -218,7 +220,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         boolean existPlan = measureListService.searchByProjectIdAndMeasureListId(getCompareBetweenGroupReq.getProject_id(), getCompareBetweenGroupReq.getMeasure_list_id()) != null;
         if (!existPlan) {
             //任务不存在,抛出异常
-            throw new LjBaseRuntimeException(-9999,RENWUBUCUNZAI);
+            throw new LjBaseRuntimeException(-9999, RENWUBUCUNZAI);
         }
         // 获取测区数量
         Integer total = measureZoneService.searchTotalByProjectIdAndMeasureListId(projectBase.getId(), new int[]{getCompareBetweenGroupReq.getMeasure_list_id()});
@@ -253,7 +255,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         boolean existPlan = measureListService.searchByProjectIdAndMeasureListId(getLoserCompareBetweenGroupReq.getProject_id(), getLoserCompareBetweenGroupReq.getMeasure_list_id()) != null;
         if (!existPlan) {
             //任务不存在,抛出异常
-            throw new LjBaseRuntimeException(-9999,RENWUBUCUNZAI);
+            throw new LjBaseRuntimeException(-9999, RENWUBUCUNZAI);
         }
         //获取分组信息
         List<MeasureSquad> measureSquadlist = measureSquadService.searchOnlyMeasureSquadByProjIdAndListId(getLoserCompareBetweenGroupReq.getProject_id(), getLoserCompareBetweenGroupReq.getMeasure_list_id());
@@ -290,7 +292,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         MeasureList measureList = measureListService.searchByProjectIdAndMeasureListId(getCompareItemBetweenSquadsReq.getProject_id(), getCompareItemBetweenSquadsReq.getMeasure_list_id());
         if (measureList == null) {
             //任务不存在,抛出异常
-            throw new LjBaseRuntimeException(-9999,RENWUBUCUNZAI);
+            throw new LjBaseRuntimeException(-9999, RENWUBUCUNZAI);
         }
         // 获取分组信息，否则不管
         List<MeasureSquad> measureSquadlist = measureSquadService.searchOnlyMeasureSquadByProjIdAndListId(getCompareItemBetweenSquadsReq.getProject_id(), getCompareItemBetweenSquadsReq.getMeasure_list_id());
@@ -312,8 +314,17 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     @Override
     public LjBaseResponse<BlisterRateInfoVo> getBlisterRateInfo(GetBlisterRateInfoReq getBlisterRateInfoReq) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
         LjBaseResponse<BlisterRateInfoVo> ljBaseResponse = new LjBaseResponse<>();
-        Map<String, Object> issue = measureListIssueService.getMeasureListIssueBrief(getBlisterRateInfoReq.getProject_id(), getBlisterRateInfoReq.getMeasure_list_id()
-                , MeasureListConstant.UNCLOSECODE, MeasureListIssueType.REPAIRABLE + "", MeasureListIssueType.NOREPAIRABLE + "", MeasureListIssueType.NOTENOASSIGN + "", MeasureListIssueType.ASSIGNNOREFORM + "", MeasureListIssueType.REFORMNOCHECK + "", MeasureListIssueType.CHECKYES + "");
+        GetMeasureListIssueBriefVo getMeasureListIssueBriefVo = new GetMeasureListIssueBriefVo();
+        getMeasureListIssueBriefVo.setProject_id(getBlisterRateInfoReq.getProject_id());
+        getMeasureListIssueBriefVo.setMeasure_list_id(getBlisterRateInfoReq.getMeasure_list_id());
+        getMeasureListIssueBriefVo.setUNCLOSECODE(MeasureListConstant.UNCLOSECODE);
+        getMeasureListIssueBriefVo.setREPAIRABLE(MeasureListIssueType.REPAIRABLE + "");
+        getMeasureListIssueBriefVo.setNOREPAIRABLE(MeasureListIssueType.NOREPAIRABLE + "");
+        getMeasureListIssueBriefVo.setNOTENOASSIGN(MeasureListIssueType.NOTENOASSIGN + "");
+        getMeasureListIssueBriefVo.setASSIGNNOREFORM(MeasureListIssueType.ASSIGNNOREFORM + "");
+        getMeasureListIssueBriefVo.setREFORMNOCHECK(MeasureListIssueType.REFORMNOCHECK + "");
+        getMeasureListIssueBriefVo.setCHECKYES(MeasureListIssueType.CHECKYES + "");
+        Map<String, Object> issue = measureListIssueService.getMeasureListIssueBrief(getMeasureListIssueBriefVo);
         BlisterRateInfoVo blisterRateInfoVo = (BlisterRateInfoVo) ConvertUtil.convertMap(BlisterRateInfoVo.class, issue);
         ljBaseResponse.setData(blisterRateInfoVo);
         return ljBaseResponse;
@@ -375,7 +386,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         String[] listIds = getAreaPOPreq.getList_ids().split(",");
         String[] areaIds = getAreaPOPreq.getArea_ids().split(",");
         if (listIds.length == 0 || areaIds.length == 0 || getAreaPOPreq.getParent_category_key().length() == 0) {
-            throw new LjBaseRuntimeException(-9999,"参数不完整");
+            throw new LjBaseRuntimeException(-9999, "参数不完整");
         }
         List<Map<String, Object>> list = searchMeasureCategoryAreaStatByProjectIdAndListIdsAndParentCategoryKeyAndAreaIds(projectId, listIds, getAreaPOPreq.getParent_category_key(), areaIds);
         list.forEach(LambdaExceptionUtil.throwingConsumerWrapper(map -> {
@@ -923,7 +934,16 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     private List<ProMeasurePlanVo> SearchByProjIdCategoryKeyAreaIdStatusUserIdInPage(Integer projectId, GetProMeasurePlanListReq getProMeasurePlanListReq, String[] userIds, String categoryPathAndKey, String areaPathAndId) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException, ParseException {
         List<ProMeasurePlanVo> measurePlanVoList = new ArrayList<>();
         //查询 measurelist
-        List<Map<String, Object>> list = measureListService.getMeasureList(getProMeasurePlanListReq.getFinish_status(), getProMeasurePlanListReq.getQ(), projectId, categoryPathAndKey, areaPathAndId, userIds, getProMeasurePlanListReq.getPage(), getProMeasurePlanListReq.getPage_size());
+        Map<String, Object> getMeasureListMap = Maps.newHashMap();
+        getMeasureListMap.put("finish_status", getProMeasurePlanListReq.getFinish_status());
+        getMeasureListMap.put("q", getProMeasurePlanListReq.getQ());
+        getMeasureListMap.put("projectId", projectId);
+        getMeasureListMap.put("categoryPathAndKey", categoryPathAndKey);
+        getMeasureListMap.put("areaPathAndId", areaPathAndId);
+        getMeasureListMap.put("userIds", userIds);
+        getMeasureListMap.put("page", (getProMeasurePlanListReq.getPage() - 1) * getProMeasurePlanListReq.getPage_size());
+        getMeasureListMap.put("page_size", getProMeasurePlanListReq.getPage_size());
+        List<Map<String, Object>> list = measureListService.getMeasureList(getMeasureListMap);
         list2SearchResult(getProMeasurePlanListReq.getProject_id(), list);
         for (Map<String, Object> map : list
         ) {

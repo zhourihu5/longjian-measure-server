@@ -2,6 +2,8 @@ package com.longfor.longjian.measure.consts.constant;
 
 
 public class MeasureListConstant {
+    private MeasureListConstant() {
+    }
 
     public static final String UNFINISH = "进行中";
     public static final String FINISHED = "已完成";

@@ -1,6 +1,9 @@
 package com.longfor.longjian.measure.consts.constant;
 
 public class MeasureListIssueType {
+    private MeasureListIssueType() {
+    }
+
     /**
      * typ  需整改问题"
      */
