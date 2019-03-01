@@ -417,12 +417,12 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
      *
      * @param formula
      */
-    private void calcResult(String formula, MeasureZoneResult result) {
+    private void calcResult(String formula, MeasureZoneResult result) throws Exception{
         List<MeasureZoneGroupData> resultData = Lists.newArrayList();
         List<Map> dataZone = JSONArray.parseArray(result.getData(), Map.class);
         for (Map d : dataZone) {
             MeasureZoneGroupData r = new MeasureZoneGroupData();
-            r.setTexture(MapUtils.getString(d, "Texture", ""));
+            r.setTexture(MapUtils.getString(d, "Texture", null));
             r.setData(Maps.newHashMap());
             r.setScore(0F);
             List<Map> dataPoint = JSONArray.parseArray(MapUtils.getString(d, "Data", null), Map.class);
@@ -431,7 +431,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                 npd.setKey(MapUtils.getString(pd, "Key", null));
                 npd.setDataType(MapUtils.getInteger(pd, "DataType", null));
                 npd.setData(JSONArray.parseArray(MapUtils.getString(pd, "Data", null), Long.class));
-                npd.setDesignValueReqd(MapUtils.getBoolean(pd, "Data", null));
+                npd.setDesignValueReqd(MapUtils.getBoolean(pd, "DesignValueReqd", null));
                 npd.setDesignValue(MapUtils.getLong(pd, "DesignValue", null));
                 r.getData().put(MapUtils.getString(pd, "Key", null), npd);
             }
@@ -449,9 +449,11 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             try {
                 se.eval(formula);
                 Invocable inv2 = (Invocable) se;
-                res = (String) inv2.invokeFunction("calc", args);
+                res = JSON.toJSONString(inv2.invokeFunction("calc", args));
+                log.info("JS执行结果res:{}", res);
             } catch (Exception e) {
                 log.error("执行JavaScript错误", e);
+                throw e;
             }
             Map resultValue = JSONObject.parseObject(res, Map.class);
             for (Map.Entry<String, MeasureZonePointData> entry : r.getData().entrySet()) {
@@ -484,9 +486,9 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         for (int i = 0; i < resultData.size(); i++) {
             MeasureZoneGroupData r = resultData.get(i);
             Map data = dataZone.get(i);
-            data.put("Score", result.getScore());
+            data.put("Score", r.getScore());
             result.setScore(result.getScore() + r.getScore());
-            for (Map v : (List<Map>) data.get("data")) {
+            for (Map v : (List<Map>) data.get("Data")) {
                 MeasureZonePointData d = r.getData().get(v.get("Key"));
                 v.put("Total", d.getTotal());
                 result.setTotal(result.getTotal() + d.getTotal());
