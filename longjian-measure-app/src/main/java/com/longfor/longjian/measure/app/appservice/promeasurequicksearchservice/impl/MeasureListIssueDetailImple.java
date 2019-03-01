@@ -86,19 +86,19 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
     private static final String PROBLENISCLOSE = "问题已被关闭";
 
     @Override
-    public MeasureListIssueDetailIssueInfoVo IssueInfo(GetMeasureListIssueDetailReq req) {
+    public MeasureListIssueDetailIssueInfoVo issueInfo(GetMeasureListIssueDetailReq req) {
         MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(req.getProject_id(), req.getUuid());
         if (issue == null) {
             throw new LjBaseRuntimeException(-1, ISSUEISNO);
         }
-        ProjectBase cur_proj = null;
+        ProjectBase curProj = null;
         try {
-            cur_proj = (ProjectBase) sessionInfo.getBaseInfo(CUR_PROJ);
+            curProj = (ProjectBase) sessionInfo.getBaseInfo(CUR_PROJ);
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
 
-        MeasureListIssueInfo info = FormatMeasureListIssue(cur_proj.getId(), issue);
+        MeasureListIssueInfo info = FormatMeasureListIssue(curProj.getId(), issue);
         MeasureListIssueDetailIssueInfoVo rsp = new MeasureListIssueDetailIssueInfoVo();
         rsp.setTask_name(info.getTaskName());
         rsp.setCategory_path_names(info.getCategoryPathNames());
@@ -158,22 +158,22 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
             voResesults.add(squadResult);
         }
         vo.setResults(voResesults);
-        ProjectBase cur_proj = null;
+        ProjectBase curProj = null;
         try {
-            cur_proj = (ProjectBase) sessionInfo.getBaseInfo(CUR_PROJ);
+            curProj = (ProjectBase) sessionInfo.getBaseInfo(CUR_PROJ);
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
 
         MeasureZone measureZone = null;
         try {
-            measureZone = measureZoneService.GetZoneByUuid(cur_proj.getId(), issue.getZoneUuid());
+            measureZone = measureZoneService.GetZoneByUuid(curProj.getId(), issue.getZoneUuid());
         } catch (Exception e) {
             log.error("");
         }
         if (measureZone != null) {
             // proj_id 同上
-            MeasureRegion region = measureRegionService.GetByUuid(cur_proj.getId(), measureZone.getRegionUuid());
+            MeasureRegion region = measureRegionService.GetByUuid(curProj.getId(), measureZone.getRegionUuid());
             MeasureRegionVo regionvo = new MeasureRegionVo();
             if (region != null) {
                 regionvo.setId(region.getId());
@@ -239,13 +239,13 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
             throw new LjBaseRuntimeException(-1, ISSUEISNO);
         }
         List<MeasureRepairerUser> measureRepairerUsers = null;
-        ProjectBase cur_proj = null;
+        ProjectBase curProj = null;
         try {
-            cur_proj = (ProjectBase) sessionInfo.getBaseInfo(CUR_PROJ);
+            curProj = (ProjectBase) sessionInfo.getBaseInfo(CUR_PROJ);
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
-        measureRepairerUsers = measureRepairerUserService.SearchMeasureReparierUserByListId(cur_proj.getId(), issue.getListId());
+        measureRepairerUsers = measureRepairerUserService.SearchMeasureReparierUserByListId(curProj.getId(), issue.getListId());
         List<Integer> uids = new ArrayList<>();
         for (MeasureRepairerUser repairerUser : measureRepairerUsers) {
             uids.add(repairerUser.getUserId());
@@ -302,7 +302,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
     }
 
     @Override
-    public LjBaseResponse UpdatePlanEndOn(PostMeasureListDetailUpdateIssuePlanEndOnReq req) {
+    public LjBaseResponse updatePlanEndOn(PostMeasureListDetailUpdateIssuePlanEndOnReq req) {
         /**
          * c *niuhe.Context
          * uId := getCurUid(c)

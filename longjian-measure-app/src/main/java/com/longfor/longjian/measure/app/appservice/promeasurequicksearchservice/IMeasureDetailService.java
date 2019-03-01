@@ -5,7 +5,7 @@ public interface IMeasureDetailService {
      *
      * @param userId
      * @param projId
-     * @param list_id
+     * @param listId
      */
-    void exportExcelAsync(Integer userId, Integer projId, Integer list_id);
+    void exportExcelAsync(Integer userId, Integer projId, Integer listId);
 }

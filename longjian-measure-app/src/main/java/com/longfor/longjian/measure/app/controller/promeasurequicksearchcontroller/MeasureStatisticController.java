@@ -44,7 +44,7 @@ public class MeasureStatisticController {
         }catch (Exception e){
             throw new LjBaseRuntimeException(-9999,e.getMessage());
         }
-        return new LjBaseResponse<>(measureStatisticService.SquadMeasureStatsJson(getMeasureStatisticTaskReq));
+        return new LjBaseResponse<>(measureStatisticService.squadMeasureStatsJson(getMeasureStatisticTaskReq));
     }
 }
 

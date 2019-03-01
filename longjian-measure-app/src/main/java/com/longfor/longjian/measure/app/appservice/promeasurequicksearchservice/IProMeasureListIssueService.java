@@ -5,10 +5,10 @@ import java.text.ParseException;
 public interface IProMeasureListIssueService {
     /**
      * 项目.实测实量.爆点管理.删除
-     * @param project_id
+     * @param projectId
      * @param uuid
      */
-    void measureListIssueDeleteByProjUuid(Integer project_id, String uuid);
+    void measureListIssueDeleteByProjUuid(Integer projectId, String uuid);
 
     /**
      *
@@ -25,9 +25,9 @@ public interface IProMeasureListIssueService {
     /**
      *
      * @param uuid
-     * @param project_id
+     * @param projectId
      * @param uid
      * @param status
      */
-    void updateIssueCloseStatusByUuid(String uuid, Integer project_id, Integer uid, Integer status) throws ParseException;
+    void updateIssueCloseStatusByUuid(String uuid, Integer projectId, Integer uid, Integer status) throws ParseException;
 }

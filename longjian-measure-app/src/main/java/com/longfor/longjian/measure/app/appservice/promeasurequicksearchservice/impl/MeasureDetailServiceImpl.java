@@ -58,14 +58,14 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
     private static final  String  ROOTCATEGORYDATAS= "rootCategoryDatas";
     private static final  String  MEASUREDDATA= "measuredData";
     @Override
-    public void exportExcelAsync(Integer curUserId, Integer projId, Integer list_id) {
+    public void exportExcelAsync(Integer curUserId, Integer projId, Integer listId) {
         try {
             Project project = projectService.GetByIdNoFoundErr(projId);
-            MeasureList measureList = projectService.getByProjIdAndIdNoFoundErr(projId, list_id);
+            MeasureList measureList = projectService.getByProjIdAndIdNoFoundErr(projId, listId);
             if(measureList==null){
                 measureList = new MeasureList();
             }
-            Map<String, Object> map = this.search4ExportExcel(projId, list_id);
+            Map<String, Object> map = this.search4ExportExcel(projId, listId);
             InputVo input = new InputVo();
             input.setData(map.get(ROOTCATEGORYDATAS) == null ? new ArrayList<>() : (List<CategoryDataVo>) map.get(ROOTCATEGORYDATAS));
             input.setMeasured_data(map.get(MEASUREDDATA) == null ? new MeasuredDataVo() : (MeasuredDataVo) map.get(MEASUREDDATA));
@@ -76,13 +76,12 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
             log.error("error:" + e);
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
-        return;
     }
 
-    private Map<String, Object> search4ExportExcel(Integer projId, Integer list_id) {
+    private Map<String, Object> search4ExportExcel(Integer projId, Integer listId) {
         Map<String, Object> map = Maps.newHashMap();
         try {
-            List<MeasureZoneResult> measureZoneResults = measureZoneResultService.searchByListId(projId, list_id);
+            List<MeasureZoneResult> measureZoneResults = measureZoneResultService.searchByListId(projId, listId);
             Map<String, Boolean> categoryKeyMap = Maps.newHashMap();
             Map<Integer, Boolean> ruleIdMap = Maps.newHashMap();
             Map<String, Boolean> zoneUuidMap = Maps.newHashMap();
@@ -96,36 +95,35 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                 zoneUuidMap.put(obj.getZoneUuid(), true);
                 squadIdMap.put(obj.getSquadId(), true);
             }
-            ;
             //Category
             Map<String, CategoryV3> categoryMap = Maps.newHashMap();
-            if (categoryKeyMap.keySet().size() > 0) {
+            if (!categoryKeyMap.keySet().isEmpty()) {
                 List<CategoryV3> categorys = checkItemV3Service.searchCategoryByKeyIn(categoryKeyMap.keySet());
-                categorys.forEach(categoryV3 -> {
-                    categoryMap.put(categoryV3.getKey(), categoryV3);
-                });
+                categorys.forEach(categoryV3 ->
+                    categoryMap.put(categoryV3.getKey(), categoryV3)
+                );
             }
             // Rule
             Map<Integer, MeasureRule> ruleMap = Maps.newHashMap();
-            if (ruleIdMap.keySet().size() > 0) {
+            if (!ruleIdMap.keySet().isEmpty()) {
                 List<MeasureRule> rules = measureRuleService.searchUnscopedByIds(ruleIdMap.keySet());
-                rules.forEach(measureRule -> {
-                    ruleMap.put(measureRule.getId(), measureRule);
-                });
+                rules.forEach(measureRule ->
+                    ruleMap.put(measureRule.getId(), measureRule)
+                );
             }
             // RegionUuid
-            List<MeasureZone> measureZones = measureZoneService.searchByListId(projId, list_id);
+            List<MeasureZone> measureZones = measureZoneService.searchByListId(projId, listId);
             Map<String, String> regionUuidMap = Maps.newHashMap();
-            measureZones.forEach(measureZone -> {
-                regionUuidMap.put(measureZone.getUuid(), measureZone.getRegionUuid());
-            });
+            measureZones.forEach(measureZone ->
+                regionUuidMap.put(measureZone.getUuid(), measureZone.getRegionUuid())
+            );
             // Area
 
             List<MeasureRegion> regions = measureRegionService.searchUnscopedByProjIdUpdateAtGt2(projId, DateConstant.TIME_FMT);
             Map<String, Integer> regionMap = Maps.newHashMap();
-            regions.forEach(measureRegion -> {
-                regionMap.put(measureRegion.getUuid(), measureRegion.getAreaId());
-            });
+            regions.forEach(measureRegion ->
+                regionMap.put(measureRegion.getUuid(), measureRegion.getAreaId())
+            );
             Map<Integer, Boolean> areaIdMap = Maps.newHashMap();
             Collection<String> values = regionUuidMap.values();
             values.forEach(value -> {
@@ -134,13 +132,13 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                 }
             });
             Map<String, AreaInfoWithExtendVo> regionUuidToAreaMap = Maps.newHashMap();
-            if (areaIdMap.keySet().size() > 0) {
+            if (!areaIdMap.keySet().isEmpty()) {
                 List<Area> areas = areaService.selectByIds(areaIdMap.keySet());
                 List<AreaInfoWithExtendVo> areaExs = areaService.formatAreaInfoWithExtend(areas);
                 Map<Integer, AreaInfoWithExtendVo> areaMap = Maps.newHashMap();
-                areaExs.forEach(areaInfoWithExtendVo -> {
-                    areaMap.put(areaInfoWithExtendVo.getArea().getId(), areaInfoWithExtendVo);
-                });
+                areaExs.forEach(areaInfoWithExtendVo ->
+                    areaMap.put(areaInfoWithExtendVo.getArea().getId(), areaInfoWithExtendVo)
+                );
                 measureZones.forEach(measureZone -> {
                     Integer areaId = regionMap.get(measureZone.getRegionUuid());
                     AreaInfoWithExtendVo areaInfoWithExtendVo = areaMap.get(areaId);
@@ -152,11 +150,11 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                 });
             }
             // Squad
-            List<MeasureSquad> squads = measureListService.searchOnlyMeasureSquadByProjIdAndListId(projId, list_id);
+            List<MeasureSquad> squads = measureListService.searchOnlyMeasureSquadByProjIdAndListId(projId, listId);
             Map<Integer, MeasureSquad> squadMap = Maps.newHashMap();
-            squads.forEach(measureSquad -> {
-                squadMap.put(measureSquad.getId(), measureSquad);
-            });
+            squads.forEach(measureSquad ->
+                squadMap.put(measureSquad.getId(), measureSquad)
+            );
             Map<String, CategoryDataVo> categoryDataMap = Maps.newHashMap();
             List<CategoryDataVo> rootCategoryDatas = Lists.newArrayList();
             measureZoneResults.forEach(obj -> {
@@ -207,10 +205,10 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                     log.error("error:",e);
                 }
             });
-            rootCategoryDatas.forEach(categoryDataVo -> {
-                this.reCalc(categoryDataVo);
-            });
-            MeasuredDataVo measuredDataVo = this.getMeasuredDataByListId(projId, list_id);
+            rootCategoryDatas.forEach(categoryDataVo ->
+                reCalc(categoryDataVo)
+            );
+            MeasuredDataVo measuredDataVo = this.getMeasuredDataByListId(projId, listId);
             map.put(MEASUREDDATA, measuredDataVo);
             map.put(ROOTCATEGORYDATAS, rootCategoryDatas);
         } catch (Exception e) {
@@ -219,10 +217,10 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
         return map;
     }
 
-    private MeasuredDataVo getMeasuredDataByListId(Integer projId, Integer list_id) {
+    private MeasuredDataVo getMeasuredDataByListId(Integer projId, Integer listId) {
         try {
             MeasuredDataVo md = new MeasuredDataVo();
-            MeasureList list = measureListService.getNoFoundErr(projId, list_id);
+            MeasureList list = measureListService.getNoFoundErr(projId, listId);
             Project proj = new Project();
             if (list != null) {
                 md.setList_name(list.getName());
@@ -230,7 +228,7 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                 proj = projectService.GetByIdNoFoundErr(md.getProj_id());
                 md.setProj_name(proj.getName());
             }
-            List<MeasureZoneResult> results = measureZoneResultService.searchByProjIdListId(projId, list_id);
+            List<MeasureZoneResult> results = measureZoneResultService.searchByProjIdListId(projId, listId);
             Map<String, MeasureZone> zoneMap = Maps.newHashMap();
             Map<Integer, Boolean> squadMap = Maps.newHashMap();
             Map<Integer, MeasureRule> ruleMap = Maps.newHashMap();
@@ -256,28 +254,28 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                     }
                 }
             }
-            if (zoneMap.keySet().size() > 0 && (proj.getId() != null || proj.getId().equals(0))) {
+            if (!zoneMap.keySet().isEmpty() && (proj.getId() != null || proj.getId().equals(0))) {
                     List<MeasureZone> zones = measureListService.searchZoneByProjUuids(proj.getId(), zoneMap.keySet());
                     zones.forEach(measureZone -> {
                         zoneMap.put(measureZone.getUuid(), measureZone);
                         regionMap.put(measureZone.getRegionUuid(), null);
                     });
             }
-            if (squadMap.keySet().size() > 0 && (proj.getId() != null || proj.getId().equals(0))) {
+            if (!squadMap.keySet().isEmpty() && (proj.getId() != null || proj.getId().equals(0))) {
                     List<MeasureSquad> squads = measureListService.searchByProjIdIdIn(proj.getId(), squadMap.keySet());
                     squads.forEach(measureSquad -> {
                         md.getSquad_map().put(measureSquad.getId(), measureSquad.getName());
                     });
             }
             Map<Integer, MeasureRule> ruleMap2 = Maps.newHashMap();
-            if (ruleMap.keySet().size() > 0) {
+            if (!ruleMap.keySet().isEmpty()) {
                 List<MeasureRule> measureRules = measureRuleService.searchByIds(ruleMap.keySet());
-                measureRules.forEach(measureRule -> {
-                    ruleMap2.put(measureRule.getId(), measureRule);
-                });
+                measureRules.forEach(measureRule ->
+                    ruleMap2.put(measureRule.getId(), measureRule)
+                );
             }
             ruleMap.putAll(ruleMap2);
-            if (categoryMap.keySet().size() > 0) {
+            if (!categoryMap.keySet().isEmpty()) {
                 List<CategoryV3> categorys = checkItemV3Service.searchCategoryByKeyIn(categoryMap.keySet());
                 categorys.forEach(categoryV3 -> {
                     MeasuredDataCategoryVo measuredDataCategoryVo = new MeasuredDataCategoryVo();
@@ -287,13 +285,13 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                     md.getCategory_map().put(categoryV3.getKey(), measuredDataCategoryVo);
                 });
             }
-            if (userMap.keySet().size() > 0) {
+            if (!userMap.keySet().isEmpty()) {
                 Map<Integer, User> users = userService.getUsersByIds(new ArrayList<>(userMap.keySet()));
                 users.forEach((id, user) -> {
                     md.getUser_map().put(user.getUserId(), user.getRealName());
                 });
             }
-            if (regionMap.keySet().size() > 0) {
+            if (!regionMap.keySet().isEmpty()) {
                 List<MeasureRegion> regions = regionSerVice.searchByProjUuids(projId, new ArrayList<>(regionMap.keySet()));
                 regions.forEach(region -> {
                     regionMap.put(region.getUuid(), region);
@@ -311,7 +309,7 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                     }
                 });
             }
-            if (areaMap.keySet().size() > 0) {
+            if (!areaMap.keySet().isEmpty()) {
                 List<Area> areas = areaService.selectByIds(areaMap.keySet());
                 areas.forEach(area -> {
                     areaMap.put(area.getId(), area);
@@ -323,9 +321,9 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                 if (ruleMap.get(measureZoneResult.getRuleId()) != null) {
                     String points = ruleMap.get(measureZoneResult.getRuleId()).getPoints();
                     List<MeasurePointRule> pointRules = JSONArray.parseArray(points, MeasurePointRule.class);
-                    pointRules.forEach(measurePointRule -> {
-                        pointMap.put(measurePointRule.getKey(), measurePointRule);
-                    });
+                    pointRules.forEach(measurePointRule ->
+                        pointMap.put(measurePointRule.getKey(), measurePointRule)
+                    );
                 }
                 String regionUuid = null;
                 MeasureZone zone = zoneMap.get(measureZoneResult.getZoneUuid());

@@ -37,6 +37,7 @@ public class RegionServiceImpl implements IRegionService {
     private IMeasureZoneService measureZoneService;
     private static final String POLYGON = "polygon";
     private static final String TAG_ID_LIST = "tag_id_list";
+
     @Override
     @Transactional
     public void add(Integer projectId, String regionList, Integer srcType) {
@@ -46,42 +47,42 @@ public class RegionServiceImpl implements IRegionService {
         //找出所有area_id对应的area
         Set areaIdSet = new HashSet();
         List<HashMap> regionInfoList = JSONArray.parseArray(regionList, HashMap.class);
-        regionInfoList.forEach(regionInfo -> {
-            areaIdSet.addAll((List)regionInfo.get("area_id_list"));
-        });
+        regionInfoList.forEach(regionInfo ->
+                areaIdSet.addAll((List) regionInfo.get("area_id_list"))
+        );
         log.info(JSON.toJSONString(areaIdSet));
         //area_id_list = area_id_set 不理解为啥set转换list
         List areaIdList = new ArrayList(areaIdSet);
 
         //查询area信息, 用id建立map关系
-        List<AreaRetrieveVo> areaList = coreAreaService.searchByIdList(projectId,areaIdList);
+        List<AreaRetrieveVo> areaList = coreAreaService.searchByIdList(projectId, areaIdList);
         log.info("area_id_list: " + JSON.toJSONString(areaIdList));
         log.info("area_list: " + JSON.toJSONString(areaList));
-        List<Area> area_list = JSONArray.parseArray(JSON.toJSONString(areaList),Area.class);
-        Map<Integer,Area> areaMap = area_list.stream().collect(Collectors.toMap(Area::getId,area -> area));
+        List<Area> areaLists = JSONArray.parseArray(JSON.toJSONString(areaList), Area.class);
+        Map<Integer, Area> areaMap = areaLists.stream().collect(Collectors.toMap(Area::getId, area -> area));
         log.info("area_map: " + JSON.toJSONString(areaMap));
 
         Set<Integer> difference = new HashSet(areaIdList);
         difference.removeAll(areaMap.keySet());
-        if (!difference.isEmpty()){
+        if (!difference.isEmpty()) {
             log.info("missing area_id: " + JSON.toJSONString(difference));
-            throw new LjBaseRuntimeException(MeasureErrorEnum.AREAMISSING.getId(),MeasureErrorEnum.AREAMISSING.getValue());
+            throw new LjBaseRuntimeException(MeasureErrorEnum.AREAMISSING.getId(), MeasureErrorEnum.AREAMISSING.getValue());
         }
 
         //todo: 有复杂的选择语句如何处理? 直接在peewee外部加一个固定参数的功能? (python源码也是todo)
         //获取measure_region现有的最大的index
-        List<Map<String,Object>> indexMap  = measureRegionService.getMaxRegionIndexGroupByAreaIdNoDeleted(projectId,areaIdList);
-        Map<String,Object> indexDict = new HashMap<>();
-        indexMap.forEach(map ->{
-            indexDict.put(map.get("area_id").toString(),map.get("region_index"));
-        });
+        List<Map<String, Object>> indexMap = measureRegionService.getMaxRegionIndexGroupByAreaIdNoDeleted(projectId, areaIdList);
+        Map<String, Object> indexDict = new HashMap<>();
+        indexMap.forEach(map ->
+                indexDict.put(map.get("area_id").toString(), map.get("region_index"))
+        );
         log.info("index_dict: " + JSON.toJSONString(indexDict));
 
         //补全没有出现过的测区index
-        Map<String,Object> trueIndexDict = new HashMap<>();
-        areaIdList.forEach(areaId -> {
-            trueIndexDict.put(areaId.toString(),indexDict.get(areaId.toString()) == null ? 0 : indexDict.get(areaId.toString()));
-        });
+        Map<String, Object> trueIndexDict = new HashMap<>();
+        areaIdList.forEach(areaId ->
+                trueIndexDict.put(areaId.toString(), indexDict.get(areaId.toString()) == null ? 0 : indexDict.get(areaId.toString()))
+        );
         log.info("true_index_dict: " + JSON.toJSONString(trueIndexDict));
 
         //插入region
@@ -89,51 +90,51 @@ public class RegionServiceImpl implements IRegionService {
             List<MeasureRegion> modelList = new ArrayList<>();
 
             //region
-            List<Integer> areaIdLists = JSONArray.parseArray(regionInfo.get("area_id_list").toString(),Integer.class);
+            List<Integer> areaIdLists = JSONArray.parseArray(regionInfo.get("area_id_list").toString(), Integer.class);
             log.info("len : " + areaIdLists.size());
             log.info(JSON.toJSONString(regionInfoList));
             areaIdList.forEach(areaId -> {
                 Area areaInfo = areaMap.get(areaId);
                 String areaPathAndId = areaInfo.getPath() + areaId + "/";
                 String uuid = UUID.randomUUID().toString();
-                String genUuid = uuid.replace("-","");
+                String genUuid = uuid.replace("-", "");
                 String polygon = regionInfo.get(POLYGON).toString();
-                trueIndexDict.put(areaId.toString(),(int)trueIndexDict.get(areaId.toString()) + 1);
-                Map<String,Object> regionDict = new HashMap<>();
-                regionDict.put("project_id",projectId);
-                regionDict.put("area_id",areaId);
-                regionDict.put("area_path_and_id",areaPathAndId);
-                regionDict.put("drawing_md5",areaInfo.getDrawingMd5());
-                regionDict.put(POLYGON,polygon);
-                regionDict.put("src_type",srcType);
-                regionDict.put("uuid",genUuid);
-                regionDict.put("region_index",trueIndexDict.get(areaId.toString()));
-                regionDict.put("rel_id",0);
-                regionDict.put(TAG_ID_LIST,regionInfo.get(TAG_ID_LIST));
+                trueIndexDict.put(areaId.toString(), (int) trueIndexDict.get(areaId.toString()) + 1);
+                Map<String, Object> regionDict = new HashMap<>();
+                regionDict.put("project_id", projectId);
+                regionDict.put("area_id", areaId);
+                regionDict.put("area_path_and_id", areaPathAndId);
+                regionDict.put("drawing_md5", areaInfo.getDrawingMd5());
+                regionDict.put(POLYGON, polygon);
+                regionDict.put("src_type", srcType);
+                regionDict.put("uuid", genUuid);
+                regionDict.put("region_index", trueIndexDict.get(areaId.toString()));
+                regionDict.put("rel_id", 0);
+                regionDict.put(TAG_ID_LIST, regionInfo.get(TAG_ID_LIST));
                 log.info("region_dict : " + JSON.toJSONString(regionDict));
                 log.info("true_index_dict : " + JSON.toJSONString(trueIndexDict));
-                MeasureRegion model = JSONObject.toJavaObject((JSON)JSON.toJSON(regionDict),MeasureRegion.class);
+                MeasureRegion model = JSONObject.toJavaObject((JSON) JSON.toJSON(regionDict), MeasureRegion.class);
                 model.setCreateAt(new Date());
                 model.setUpdateAt(new Date());
                 MeasureRegion regionModel = measureRegionService.save(model);
                 modelList.add(regionModel);
             });
             //数量大于一个的时候创立关联关系
-            if (modelList.size() > 1){
-                String regionIds = String.join(",",modelList.stream().map(measureRegion -> {
-                    return measureRegion.getId() + "";
-                }).collect(Collectors.toList()).toArray(new String[modelList.size()]));
-                Map<String,Object> relDict = new HashMap<>();
-                relDict.put("desc","");
-                relDict.put("project_id",projectId);
-                relDict.put("region_ids",regionIds);
-                MeasureRegionRel model = JSONObject.toJavaObject((JSON)JSON.toJSON(relDict),MeasureRegionRel.class);
+            if (modelList.size() > 1) {
+                String regionIds = String.join(",", modelList.stream().map(measureRegion ->
+                        measureRegion.getId() + ""
+                ).collect(Collectors.toList()).toArray(new String[modelList.size()]));
+                Map<String, Object> relDict = new HashMap<>();
+                relDict.put("desc", "");
+                relDict.put("project_id", projectId);
+                relDict.put("region_ids", regionIds);
+                MeasureRegionRel model = JSONObject.toJavaObject((JSON) JSON.toJSON(relDict), MeasureRegionRel.class);
                 model.setCreateAt(new Date());
                 model.setUpdateAt(new Date());
                 MeasureRegionRel relModel = measureRegionRelService.save(model);
 
                 //关系写回measure_region
-                modelList.forEach(mode ->{
+                modelList.forEach(mode -> {
                     mode.setRelId(relModel.getId());
                     measureRegionService.update(mode);
                 });
@@ -144,42 +145,42 @@ public class RegionServiceImpl implements IRegionService {
     @Override
     @Transactional
     public void edit(Integer projectId, String regionInfoList) {
-        List<HashMap> regionInfolist = JSONArray.parseArray(regionInfoList,HashMap.class);
+        List<HashMap> regionInfolist = JSONArray.parseArray(regionInfoList, HashMap.class);
         log.info(JSON.toJSONString(regionInfolist));
-        regionInfolist.forEach(regionInfo -> {
-            measureRegionService.updateByProjectIdAndIdInNoDeleted(projectId,(List)regionInfo.get("region_ids"),regionInfo.get(POLYGON).toString(),regionInfo.get(TAG_ID_LIST).toString());
-        });
+        regionInfolist.forEach(regionInfo ->
+            measureRegionService.updateByProjectIdAndIdInNoDeleted(projectId, (List) regionInfo.get("region_ids"), regionInfo.get(POLYGON).toString(), regionInfo.get(TAG_ID_LIST).toString())
+        );
     }
 
     @Override
     @Transactional
     public void delete(Integer projectId, List<Integer> regionIdList) {
         //描区下不能有测区
-        List<MeasureRegion> regionModelList = measureRegionService.selectByProjectIdAndIdNoDeleted(projectId,regionIdList);
+        List<MeasureRegion> regionModelList = measureRegionService.selectByProjectIdAndIdNoDeleted(projectId, regionIdList);
         List<String> regionUuidList = regionModelList.stream().map(MeasureRegion::getUuid).collect(Collectors.toList());
-        List<MeasureZone> zoneResult = measureZoneService.selectByProjectIdAndRegionUUIdIn(projectId,regionUuidList);
-        if (zoneResult != null && zoneResult.size() > 0){
+        List<MeasureZone> zoneResult = measureZoneService.selectByProjectIdAndRegionUUIdIn(projectId, regionUuidList);
+        if (zoneResult != null && !zoneResult.isEmpty()) {
             log.info(JSON.toJSONString(zoneResult));
-            throw new LjBaseRuntimeException(MeasureErrorEnum.MEASUREZONEEXIST.getId(),MeasureErrorEnum.MEASUREZONEEXIST.getValue());
+            throw new LjBaseRuntimeException(MeasureErrorEnum.MEASUREZONEEXIST.getId(), MeasureErrorEnum.MEASUREZONEEXIST.getValue());
         }
 
         //MeasureRegionRel里面的rel_ids去除MeasureRegion.id
         //找出所有rel_id对应的model
         List<Integer> relIdList = new ArrayList<>();
         regionModelList.forEach(regoinModel -> {
-            if (regoinModel.getRelId() != 0){
+            if (regoinModel.getRelId() != 0) {
                 relIdList.add(regoinModel.getRelId());
             }
         });
-        if (relIdList.size() > 0) {
+        if (!relIdList.isEmpty()) {
             List<MeasureRegionRel> relModelList = measureRegionRelService.selectByProjectIdAndIdNoDeleted(projectId, relIdList);
 
             log.info("rel_list: " + JSON.toJSONString(relIdList));
             //建立关系映射字典
             Map<Integer, List<Integer>> relModelDict = new HashMap<>();
-            relModelList.forEach(relModel -> {
-                relModelDict.put(relModel.getId(), Arrays.stream(relModel.getRegionIds().split(",")).map(Integer::parseInt).collect(Collectors.toList()));
-            });
+            relModelList.forEach(relModel ->
+                relModelDict.put(relModel.getId(), Arrays.stream(relModel.getRegionIds().split(",")).map(Integer::parseInt).collect(Collectors.toList()))
+            );
 
             //移除相关的id
             regionModelList.forEach(regionModel -> {
@@ -191,8 +192,8 @@ public class RegionServiceImpl implements IRegionService {
 
             //更新相关的rel_model
             relModelList.forEach(relModel -> {
-                String region_ids = String.join(",", relModelDict.get(relModel.getId()).stream().map(x -> x + "").collect(Collectors.toList()).toArray(new String[relModelDict.get(relModel.getId()).size()]));
-                relModel.setRegionIds(region_ids);
+                String regionIds = String.join(",", relModelDict.get(relModel.getId()).stream().map(x -> x + "").collect(Collectors.toList()).toArray(new String[relModelDict.get(relModel.getId()).size()]));
+                relModel.setRegionIds(regionIds);
                 relModel.setUpdateAt(new Date());
                 measureRegionRelService.update(relModel);
             });
@@ -200,6 +201,6 @@ public class RegionServiceImpl implements IRegionService {
 
         //删除描区
         log.info("region_id_list : " + regionIdList);
-        measureRegionService.delete(projectId,regionIdList);
+        measureRegionService.delete(projectId, regionIdList);
     }
 }

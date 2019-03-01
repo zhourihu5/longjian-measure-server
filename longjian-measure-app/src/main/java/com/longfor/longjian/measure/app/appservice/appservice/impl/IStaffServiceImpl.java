@@ -221,7 +221,7 @@ public class IStaffServiceImpl implements IStaffService {
             map.put(userInfoProtoVos.get(k).getUser_id(), userInfoProtoVos.get(k).getReal_name());
         }
 
-        List<RepairerListSearchVo> repairer_info = new ArrayList<>();
+        List<RepairerListSearchVo> repairerInfo = new ArrayList<>();
 
         for (MeasureRepairerUser measureRepairerUser : measureRepairerUserList) {
             RepairerListSearchVo repairerListSearchVo = new RepairerListSearchVo();
@@ -230,9 +230,9 @@ public class IStaffServiceImpl implements IStaffService {
             repairerListSearchVo.setReal_name(map.get(measureRepairerUser.getUserId()));
             repairerListSearchVo.setRole_type(measureRepairerUser.getRoleType());
 
-            repairer_info.add(repairerListSearchVo);
+            repairerInfo.add(repairerListSearchVo);
         }
-        return repairer_info;
+        return repairerInfo;
     }
 
     @Override

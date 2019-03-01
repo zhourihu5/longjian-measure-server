@@ -11,5 +11,5 @@ public interface IMeasureStatisticService {
      * @author DDC
      * @date 2019/1/9 15:35
      **/
-    MeasureStatisticSquadStatsVo SquadMeasureStatsJson(GetMeasureStatisticTaskReq getMeasureStatisticTaskReq);
+    MeasureStatisticSquadStatsVo squadMeasureStatsJson(GetMeasureStatisticTaskReq getMeasureStatisticTaskReq);
 }

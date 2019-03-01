@@ -239,9 +239,9 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
         log.info("area_dict:{}", JSON.toJSON(areaDict));
 
         //创建任务区域
-        fullAreaList.forEach(area -> {
-            measureListAreaService.create(projId, area.getId(), area.getPath() + area.getId() + "/", listModel.getId());
-        });
+        fullAreaList.forEach(area ->
+            measureListAreaService.create(projId, area.getId(), area.getPath() + area.getId() + "/", listModel.getId())
+        );
 
         //检查小组组间人员查重
         int userNums = 0;
@@ -303,9 +303,9 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
         log.info("region_dict");
 
         Set<Integer> relIdSet = new HashSet<>();
-        regionList.forEach(region -> {
-            relIdSet.add(region.getRelId());
-        });
+        regionList.forEach(region ->
+            relIdSet.add(region.getRelId())
+        );
         List<MeasureRegionRel> relList = measureRegionRelService.selectByProjectIdAndIdNoDeleted(projId, new ArrayList<>(relIdSet));
         Map<Integer, MeasureRegionRel> relDict = relList.stream().collect(Collectors.toMap(MeasureRegionRel::getId, regionRel -> regionRel));
         log.info("rel_dict");

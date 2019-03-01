@@ -105,7 +105,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         //areaPathAndId 参数赋值
         String areaPathAndId = getAreaPathAndId(getProMeasurePlanListReq);
         //获取measureList
-        List<ProMeasurePlanVo> list = SearchByProjIdCategoryKeyAreaIdStatusUserIdInPage(projectId, getProMeasurePlanListReq, userIds, categoryPathAndKey, areaPathAndId);
+        List<ProMeasurePlanVo> list = searchByProjIdCategoryKeyAreaIdStatusUserIdInPage(projectId, getProMeasurePlanListReq, userIds, categoryPathAndKey, areaPathAndId);
         //获取total
         Integer total = measureListService.getTotalMeasure(getProMeasurePlanListReq.getFinish_status(), getProMeasurePlanListReq.getQ(), getProMeasurePlanListReq.getProject_id(), categoryPathAndKey, areaPathAndId, userIds);
         proMeasurePlanListVo.setItems(list);
@@ -193,7 +193,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         ItemsVo<List<CheckerVo>> itemsVo = new ItemsVo<>();
         List<CheckerVo> checkerVos = new ArrayList<>();
         List<Integer> userIds = userInProjectService.getUserIdByProjectIds(new int[]{getCheckerListReq.getProject_id()});
-        if (userIds.size() > 0) {
+        if (!userIds.isEmpty()) {
             List<Map<String, Object>> users = userService.getUserByUserIds(userIds);
             users.forEach(LambdaExceptionUtil.throwingConsumerWrapper(user -> {
                 CheckerVo checkerVo = (CheckerVo) ConvertUtil.convertMap(CheckerVo.class, user);
@@ -235,9 +235,9 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         // 计算各项的数据
         List<Map<String, Object>> results = measureZoneResultService.statMearureZoneResultSquadTotalCountByListIdGroupByCategoryKey(getCompareBetweenGroupReq.getMeasure_list_id());
         //填写合格率数据
-        List<SquadsPassVo> squads_pass = getSquadsPassVos(measureSquadlist, total, measureZoneResults, results);
+        List<SquadsPassVo> squadsPass = getSquadsPassVos(measureSquadlist, total, measureZoneResults, results);
         squadsAndPassVo.setSquads(squads);
-        squadsAndPassVo.setSquads_pass(squads_pass);
+        squadsAndPassVo.setSquads_pass(squadsPass);
         ljBaseResponse.setData(squadsAndPassVo);
         return ljBaseResponse;
     }
@@ -259,20 +259,20 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         }
         //获取分组信息
         List<MeasureSquad> measureSquadlist = measureSquadService.searchOnlyMeasureSquadByProjIdAndListId(getLoserCompareBetweenGroupReq.getProject_id(), getLoserCompareBetweenGroupReq.getMeasure_list_id());
-        List<String> pass_diff_largest_squad_names = new ArrayList<>();
-        List<String> pass_percentage_smallest_squad_names = new ArrayList<>();
+        List<String> passDiffLargestSquadNames = new ArrayList<>();
+        List<String> passPercentageSmallestSquadNames = new ArrayList<>();
         measureSquadlist.forEach(measureSquad -> {
-            pass_diff_largest_squad_names.add(measureSquad.getName());
-            pass_percentage_smallest_squad_names.add(measureSquad.getName());
+            passDiffLargestSquadNames.add(measureSquad.getName());
+            passPercentageSmallestSquadNames.add(measureSquad.getName());
         });
         //设置合格率差值最大组
-        List<MeasureStatisticSquadsPassDiffLargestInfoVo> pass_diff_largest = searchCategoryDiffLargestByMeasureListId(getLoserCompareBetweenGroupReq.getMeasure_list_id());
+        List<MeasureStatisticSquadsPassDiffLargestInfoVo> passDiffLargest = searchCategoryDiffLargestByMeasureListId(getLoserCompareBetweenGroupReq.getMeasure_list_id());
         //设置合格率最小组
-        List<MeasureStatisticSquadsSmallestPassPercentInfoVo> pass_percentage_smallest = searchCategorySquadSmallestByMeasureListId(getLoserCompareBetweenGroupReq.getMeasure_list_id());
-        passDiffVo.setPass_diff_largest_squad_names(pass_diff_largest_squad_names);
-        passDiffVo.setPass_percentage_smallest_squad_names(pass_percentage_smallest_squad_names);
-        passDiffVo.setPass_diff_largest(pass_diff_largest);
-        passDiffVo.setPass_percentage_smallest(pass_percentage_smallest);
+        List<MeasureStatisticSquadsSmallestPassPercentInfoVo> passPercentageSmallest = searchCategorySquadSmallestByMeasureListId(getLoserCompareBetweenGroupReq.getMeasure_list_id());
+        passDiffVo.setPass_diff_largest_squad_names(passDiffLargestSquadNames);
+        passDiffVo.setPass_percentage_smallest_squad_names(passPercentageSmallestSquadNames);
+        passDiffVo.setPass_diff_largest(passDiffLargest);
+        passDiffVo.setPass_percentage_smallest(passPercentageSmallest);
         ljBaseResponse.setData(passDiffVo);
         return ljBaseResponse;
     }
@@ -296,17 +296,17 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         }
         // 获取分组信息，否则不管
         List<MeasureSquad> measureSquadlist = measureSquadService.searchOnlyMeasureSquadByProjIdAndListId(getCompareItemBetweenSquadsReq.getProject_id(), getCompareItemBetweenSquadsReq.getMeasure_list_id());
-        List<SquadsPassVo> squads_rate = new ArrayList<>();
+        List<SquadsPassVo> squadsRate = new ArrayList<>();
         measureSquadlist.forEach(measureSquad -> {
             SquadsPassVo squadsPassVo = new SquadsPassVo();
             squadsPassVo.setSquad_id(measureSquad.getId());
             squadsPassVo.setSquad_name(measureSquad.getName());
             squadsPassVo.setRate(measureSquad.getPlanRate() + "");
-            squads_rate.add(squadsPassVo);
+            squadsRate.add(squadsPassVo);
         });
-        List<CategoryDetailsVo> category_details = getCategoryDetails(getCompareItemBetweenSquadsReq, measureList, projectBase);
-        compareItemBetweenSquadsVo.setCategory_details(category_details);
-        compareItemBetweenSquadsVo.setSquads_rate(squads_rate);
+        List<CategoryDetailsVo> categoryDetails = getCategoryDetails(getCompareItemBetweenSquadsReq, measureList, projectBase);
+        compareItemBetweenSquadsVo.setCategory_details(categoryDetails);
+        compareItemBetweenSquadsVo.setSquads_rate(squadsRate);
         ljBaseResponse.setData(compareItemBetweenSquadsVo);
         return ljBaseResponse;
     }
@@ -391,12 +391,12 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         List<Map<String, Object>> list = searchMeasureCategoryAreaStatByProjectIdAndListIdsAndParentCategoryKeyAndAreaIds(projectId, listIds, getAreaPOPreq.getParent_category_key(), areaIds);
         list.forEach(LambdaExceptionUtil.throwingConsumerWrapper(map -> {
             AreaPOPVo areaPOPVo = (AreaPOPVo) ConvertUtil.convertMap(AreaPOPVo.class, map);
-            List<MeasureStatisticAreaDistributeVo> area_dist = new ArrayList<>();
+            List<MeasureStatisticAreaDistributeVo> areaDists = new ArrayList<>();
             ((ArrayList<Map<String, Object>>) map.get("areaDist")).forEach(LambdaExceptionUtil.throwingConsumerWrapper(areaDist -> {
                 MeasureStatisticAreaDistributeVo measureStatisticAreaDistributeVo = (MeasureStatisticAreaDistributeVo) ConvertUtil.convertMap(MeasureStatisticAreaDistributeVo.class, areaDist);
-                area_dist.add(measureStatisticAreaDistributeVo);
+                areaDists.add(measureStatisticAreaDistributeVo);
             }));
-            areaPOPVo.setArea_dist(area_dist);
+            areaPOPVo.setArea_dist(areaDists);
             areaPOPVos.add(areaPOPVo);
         }));
         itemsVo.setItems(areaPOPVos);
@@ -407,16 +407,16 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     /**
      * 统计检查项和区域的统计数据
      *
-     * @param project_id
+     * @param projectId
      * @param listIds
-     * @param parent_category_key
+     * @param parentCategoryKey
      * @param areaIds
      * @return
      */
-    private List<Map<String, Object>> searchMeasureCategoryAreaStatByProjectIdAndListIdsAndParentCategoryKeyAndAreaIds(Integer project_id, String[] listIds, String parent_category_key, String[] areaIds) {
+    private List<Map<String, Object>> searchMeasureCategoryAreaStatByProjectIdAndListIdsAndParentCategoryKeyAndAreaIds(Integer projectId, String[] listIds, String parentCategoryKey, String[] areaIds) {
         List<Map<String, Object>> list = new ArrayList<>();
         // 取出所有的category子项
-        List<CategoryV3> categoryV3s = categoryV3Service.searchSubCategoryByFatherKey(parent_category_key);
+        List<CategoryV3> categoryV3s = categoryV3Service.searchSubCategoryByFatherKey(parentCategoryKey);
         categoryV3s.forEach(categoryV3 -> {
             Map<String, Object> map = new HashMap<>();
             map.put(CATEGORY_KEY, categoryV3.getKey());
@@ -430,7 +430,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             for (String areaId : areaIds
             ) {
                 // 考虑到有可能很多测区是没有数据的，先count一下后再执行，测区为0就返回空值
-                Integer c = measureZoneResultService.countMeasureZoneByListIdsAndCategoryKeyAndAreaId(project_id, listIds, categoryV3.getKey(), areaId);
+                Integer c = measureZoneResultService.countMeasureZoneByListIdsAndCategoryKeyAndAreaId(projectId, listIds, categoryV3.getKey(), areaId);
                 if (c <= 0) {
                     continue;
                 }
@@ -509,13 +509,13 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             return null;
         }
         List<Map<String, Object>> items = measureListIssueService.getMeasureListIssueStatusMapByListIdsAndCategoryKeyAndAreaId(listIds, categoryV3, area, MeasureListConstant.CLOSEDCODE);
-        if (items == null || items.size() <= 0) {
+        if (items == null || items.isEmpty()) {
             return null;
         }
         Map<Integer, Integer> smap = new HashMap<>();
-        items.forEach(map -> {
-            smap.put(Integer.parseInt(map.get("status").toString()), Integer.parseInt(map.get(COUNT).toString()));
-        });
+        items.forEach(map ->
+                smap.put(Integer.parseInt(map.get("status").toString()), Integer.parseInt(map.get(COUNT).toString()))
+        );
         return smap;
     }
 
@@ -526,7 +526,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     private List<BlisterCategoryDetailsVo> searchMeasureListIssueDistributionCategory(GetBlisterRateCheckItemsReq getBlisterRateCheckItemsReq) {
         List<BlisterCategoryDetailsVo> r = new ArrayList<>();
         List<MeasureListIssue> issues = measureListIssueService.searchMeasureListIssueDistributionCategory(getBlisterRateCheckItemsReq.getProject_id(), getBlisterRateCheckItemsReq.getMeasure_list_id(), MeasureListConstant.UNCLOSECODE);
-        if (issues == null || issues.size() <= 0) {
+        if (issues == null || issues.isEmpty()) {
             return r;
         }
         //map去重，获取categorys
@@ -578,22 +578,22 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         return r;
     }
 
-    private BlisterCategoryDetailsVo searchMeasureListIssueDistributionCategorys(Integer project_id, Integer measure_list_id, String categoryPathAndKey) {
+    private BlisterCategoryDetailsVo searchMeasureListIssueDistributionCategorys(Integer projectId, Integer measureListId, String categoryPathAndKey) {
         BlisterCategoryDetailsVo r = new BlisterCategoryDetailsVo();
         //查找问题数
         try {
-            Integer count = measureListIssueService.searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(project_id, measure_list_id, MeasureListConstant.UNCLOSECODE, categoryPathAndKey, null);
+            Integer count = measureListIssueService.searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(projectId, measureListId, MeasureListConstant.UNCLOSECODE, categoryPathAndKey, null);
             r.setIssue_count(count);
-            count = measureListIssueService.searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(project_id, measure_list_id, MeasureListConstant.UNCLOSECODE, categoryPathAndKey, MeasureListIssueType.NOTENOASSIGN);
+            count = measureListIssueService.searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(projectId, measureListId, MeasureListConstant.UNCLOSECODE, categoryPathAndKey, MeasureListIssueType.NOTENOASSIGN);
             r.setNote_no_assign(count);
-            count = measureListIssueService.searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(project_id, measure_list_id, MeasureListConstant.UNCLOSECODE, categoryPathAndKey, MeasureListIssueType.ASSIGNNOREFORM);
+            count = measureListIssueService.searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(projectId, measureListId, MeasureListConstant.UNCLOSECODE, categoryPathAndKey, MeasureListIssueType.ASSIGNNOREFORM);
             r.setAssign_no_reform(count);
-            count = measureListIssueService.searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(project_id, measure_list_id, MeasureListConstant.UNCLOSECODE, categoryPathAndKey, MeasureListIssueType.REFORMNOCHECK);
+            count = measureListIssueService.searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(projectId, measureListId, MeasureListConstant.UNCLOSECODE, categoryPathAndKey, MeasureListIssueType.REFORMNOCHECK);
             r.setReform_no_check(count);
-            count = measureListIssueService.searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(project_id, measure_list_id, MeasureListConstant.UNCLOSECODE, categoryPathAndKey, MeasureListIssueType.CHECKYES);
+            count = measureListIssueService.searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(projectId, measureListId, MeasureListConstant.UNCLOSECODE, categoryPathAndKey, MeasureListIssueType.CHECKYES);
             r.setCheck_yes(count);
         } catch (Exception e) {
-            throw e;
+            throw new LjBaseRuntimeException(-9999, e + "");
         }
         return r;
     }
@@ -605,9 +605,9 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     private List<CategoryV3> searchCategoryTopByCategoryKeyIn(List<String> categoryKeys) {
         List<CategoryV3> categoryV3s = categoryV3Service.getCategoryByKeys(categoryKeys);
         List<String> rootCategoryIds = new ArrayList<>();
-        categoryV3s.forEach(categoryV3 -> {
-            rootCategoryIds.add(categoryV3.getRootCategoryId().toString());
-        });
+        categoryV3s.forEach(categoryV3 ->
+                rootCategoryIds.add(categoryV3.getRootCategoryId().toString())
+        );
         List<CategoryV3> rootCategorys = categoryV3Service.getCategoryByKeys(rootCategoryIds);
         Map<Integer, CategoryPathTree> trees = new HashMap<>();
         rootCategorys.forEach(rootCategory -> {
@@ -650,9 +650,9 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             List<CategoryV3> categoryV3s = categoryV3Service.searchByRootCategoryId(rootCategory.getId());
             categoryV3s.add(rootCategory);
             Map<String, String> categoryPathMap = new HashMap<>();
-            categoryV3s.forEach(categoryV3 -> {
-                categoryPathMap.put(categoryV3.getKey(), categoryV3.getPath() + categoryV3.getKey() + "/");
-            });
+            categoryV3s.forEach(categoryV3 ->
+                    categoryPathMap.put(categoryV3.getKey(), categoryV3.getPath() + categoryV3.getKey() + "/")
+            );
             tree = categoryV3Service.getPathTreeByRootCategory(rootCategory);
         } catch (Exception e) {
             log.warn(e.getMessage());
@@ -724,11 +724,11 @@ public class ProMeasureServiceImpl implements IProMeasureService {
      * 获取子节点
      *
      * @param categoryPathAndKey
-     * @param category_key
+     * @param categoryKey
      * @return
      */
-    private String[] getSubKeyByKeyPathAndKey(String categoryPathAndKey, String category_key) {
-        String key = "/" + category_key + "/";
+    private String[] getSubKeyByKeyPathAndKey(String categoryPathAndKey, String categoryKey) {
+        String key = "/" + categoryKey + "/";
         if (categoryPathAndKey.charAt(0) == '/') {
             categoryPathAndKey = categoryPathAndKey.substring(1);
         }
@@ -741,19 +741,18 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             return new String[]{""};
         }
         index += key.length();
-        String[] subKeys = categoryPathAndKey.substring(index).split("/");
-        return subKeys;
+        return categoryPathAndKey.substring(index).split("/");
     }
 
     /**
      * 设置合格率最小组
      *
-     * @param measure_list_id
+     * @param measureListId
      * @return
      */
-    private List<MeasureStatisticSquadsSmallestPassPercentInfoVo> searchCategorySquadSmallestByMeasureListId(Integer measure_list_id) {
+    private List<MeasureStatisticSquadsSmallestPassPercentInfoVo> searchCategorySquadSmallestByMeasureListId(Integer measureListId) {
         List<MeasureStatisticSquadsSmallestPassPercentInfoVo> measureStatisticSquadsSmallestPassPercentInfoVos = new ArrayList<>();
-        List<Map<String, Object>> categoryKeys = measureZoneResultService.getSquadPassPercentSmallestCategoryKeyListByMeasureListId(measure_list_id);
+        List<Map<String, Object>> categoryKeys = measureZoneResultService.getSquadPassPercentSmallestCategoryKeyListByMeasureListId(measureListId);
         int lastSquadId = 0;
         int i = 0;
         for (Map<String, Object> categoryKey : categoryKeys) {
@@ -764,14 +763,14 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             lastSquadId = squadId;
             MeasureStatisticSquadsSmallestPassPercentInfoVo measureStatisticSquadsSmallestPassPercentInfoVo = new MeasureStatisticSquadsSmallestPassPercentInfoVo();
             CategoryV3 categoryV3 = categoryV3Service.getCategoryByKey(categoryKey.get(CATEGORY_KEY).toString());
-            List<Map<String, Object>> sInfos = measureZoneResultService.getSquadsZoneResultPassPercentByListIdAndCategoryKey(measure_list_id, categoryKey.get(CATEGORY_KEY).toString(), MeasureListConstant.CLOSEDCODE);
-            if (sInfos != null && sInfos.size() > 0) {
+            List<Map<String, Object>> sInfos = measureZoneResultService.getSquadsZoneResultPassPercentByListIdAndCategoryKey(measureListId, categoryKey.get(CATEGORY_KEY).toString(), MeasureListConstant.CLOSEDCODE);
+            if (sInfos != null && !sInfos.isEmpty()) {
                 measureStatisticSquadsSmallestPassPercentInfoVo.setCategory_key(categoryV3.getKey());
                 measureStatisticSquadsSmallestPassPercentInfoVo.setCategory_name(categoryV3.getName());
                 List<String> squads = new ArrayList<>();
-                sInfos.forEach(squadsInfo -> {
-                    squads.add(String.format("%.2f", Float.parseFloat(squadsInfo.get(PASSPERCENT).toString()) * 100.0));
-                });
+                sInfos.forEach(squadsInfo ->
+                    squads.add(String.format("%.2f", Float.parseFloat(squadsInfo.get(PASSPERCENT).toString()) * 100.0))
+                );
                 measureStatisticSquadsSmallestPassPercentInfoVo.setSquads(squads);
                 measureStatisticSquadsSmallestPassPercentInfoVo.setSmallest_index(i);
                 measureStatisticSquadsSmallestPassPercentInfoVos.add(measureStatisticSquadsSmallestPassPercentInfoVo);
@@ -784,12 +783,12 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     /**
      * 设置合格率差值最大组
      *
-     * @param measure_list_id
+     * @param measureListId
      * @return
      */
-    private List<MeasureStatisticSquadsPassDiffLargestInfoVo> searchCategoryDiffLargestByMeasureListId(Integer measure_list_id) {
+    private List<MeasureStatisticSquadsPassDiffLargestInfoVo> searchCategoryDiffLargestByMeasureListId(Integer measureListId) {
         List<MeasureStatisticSquadsPassDiffLargestInfoVo> measureStatisticSquadsPassDiffLargestInfoVos = new ArrayList<>();
-        List<Map<String, Object>> categoryKeys = measureZoneResultService.getPassPercentDiffCategoryKeyListByMeasureListId(measure_list_id);
+        List<Map<String, Object>> categoryKeys = measureZoneResultService.getPassPercentDiffCategoryKeyListByMeasureListId(measureListId);
         float largest = 0;
         for (Map<String, Object> categoryKey : categoryKeys) {
             float diff = Float.parseFloat(categoryKey.get("diff").toString());
@@ -799,14 +798,14 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             largest = diff;
             MeasureStatisticSquadsPassDiffLargestInfoVo measureStatisticSquadsPassDiffLargestInfoVo = new MeasureStatisticSquadsPassDiffLargestInfoVo();
             CategoryV3 categoryV3 = categoryV3Service.getCategoryByKey(categoryKey.get(CATEGORY_KEY).toString());
-            List<Map<String, Object>> sInfos = measureZoneResultService.getSquadsZoneResultPassPercentByListIdAndCategoryKey(measure_list_id, categoryKey.get(CATEGORY_KEY).toString(), MeasureListConstant.CLOSEDCODE);
-            if (sInfos != null && sInfos.size() > 0) {
+            List<Map<String, Object>> sInfos = measureZoneResultService.getSquadsZoneResultPassPercentByListIdAndCategoryKey(measureListId, categoryKey.get(CATEGORY_KEY).toString(), MeasureListConstant.CLOSEDCODE);
+            if (sInfos != null && !sInfos.isEmpty()) {
                 measureStatisticSquadsPassDiffLargestInfoVo.setCategory_key(categoryV3.getKey());
                 measureStatisticSquadsPassDiffLargestInfoVo.setCategory_name(categoryV3.getName());
                 List<String> squads = new ArrayList<>();
-                sInfos.forEach(squadsInfo -> {
-                    squads.add(String.format("%.2f", Float.parseFloat(squadsInfo.get(PASSPERCENT).toString()) * 100.0));
-                });
+                sInfos.forEach(squadsInfo ->
+                    squads.add(String.format("%.2f", Float.parseFloat(squadsInfo.get(PASSPERCENT).toString()) * 100.0))
+                );
                 measureStatisticSquadsPassDiffLargestInfoVo.setSquads(squads);
                 measureStatisticSquadsPassDiffLargestInfoVos.add(measureStatisticSquadsPassDiffLargestInfoVo);
             }
@@ -931,7 +930,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
      * @param areaPathAndId
      * @return
      */
-    private List<ProMeasurePlanVo> SearchByProjIdCategoryKeyAreaIdStatusUserIdInPage(Integer projectId, GetProMeasurePlanListReq getProMeasurePlanListReq, String[] userIds, String categoryPathAndKey, String areaPathAndId) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException, ParseException {
+    private List<ProMeasurePlanVo> searchByProjIdCategoryKeyAreaIdStatusUserIdInPage(Integer projectId, GetProMeasurePlanListReq getProMeasurePlanListReq, String[] userIds, String categoryPathAndKey, String areaPathAndId) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException, ParseException {
         List<ProMeasurePlanVo> measurePlanVoList = new ArrayList<>();
         //查询 measurelist
         Map<String, Object> getMeasureListMap = Maps.newHashMap();
@@ -968,7 +967,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         return measurePlanVoList;
     }
 
-    private void list2SearchResult(Integer project_id, List<Map<String, Object>> list) {
+    private void list2SearchResult(Integer projectId, List<Map<String, Object>> list) {
         Map<String, String> mapCategoryName = new HashMap<>();
         List<Integer> listIds = new ArrayList<>(list.size());
         List<String> rootCategoryKeys = list.stream().filter(item -> {
@@ -982,9 +981,9 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         }).map(iteam -> iteam.get(ROOTCATEGORYKEY).toString()).collect(Collectors.toList());
         List<CategoryV3> categorys = categoryV3Service.SearchCategoryByKeyIn(rootCategoryKeys);
 
-        categorys.forEach(category -> {
-            mapCategoryName.put(category.getKey(), category.getName());
-        });
+        categorys.forEach(category ->
+            mapCategoryName.put(category.getKey(), category.getName())
+        );
 
         list.forEach(item -> {
             String key = item.get(ROOTCATEGORYKEY).toString();
@@ -993,12 +992,12 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             }
         });
 
-        List<MeasureListArea> listAreas = measureListAreaService.searchListAreaByListIdIn(project_id, listIds);
+        List<MeasureListArea> listAreas = measureListAreaService.searchListAreaByListIdIn(projectId, listIds);
         Map<Integer, Boolean> mapTopAreaId = new HashMap<>();
         Map<Integer, List<Integer>> mapListTopAreaId = new HashMap<>();
         for (MeasureListArea area : listAreas) {
             List<Integer> ids = StringUtil.splitToIdsSlash(area.getAreaPathAndId(), false);
-            if (ids.size() == 0) {
+            if (ids.isEmpty()) {
                 continue;
             }
             int topId = ids.get(0);
@@ -1024,9 +1023,8 @@ public class ProMeasureServiceImpl implements IProMeasureService {
                 continue;
             }
             topIds = topIds.stream().distinct().collect(Collectors.toList());
-            item.put(TOPAREAS, topIds.stream().map(id -> {
-                return mapAreas.get(id);
-            }).filter(area -> area != null).collect(Collectors.toList()));
+            item.put(TOPAREAS, topIds.stream().map(id -> mapAreas.get(id)
+            ).filter(area -> area != null).collect(Collectors.toList()));
         }
     }
 }
