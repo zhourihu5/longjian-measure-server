@@ -8,6 +8,9 @@ import java.util.function.Consumer;
  * lambda表达式异常处理，避免代码冗余
  */
 public class LambdaExceptionUtil {
+    public LambdaExceptionUtil() {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * map 转 vo 时的异常
@@ -20,7 +23,7 @@ public class LambdaExceptionUtil {
             try {
                 throwingConsumer.accept(i);
             } catch (Exception ex) {
-                throw new RuntimeException(ex);
+                throw new RuntimeException("mapToVo Exception");
             }
         };
     }

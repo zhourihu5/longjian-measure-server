@@ -16,6 +16,9 @@ import java.util.stream.Stream;
  */
 public class StringSplitToListUtil {
 
+    public StringSplitToListUtil() {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * 字符串分割 转换为int类型的

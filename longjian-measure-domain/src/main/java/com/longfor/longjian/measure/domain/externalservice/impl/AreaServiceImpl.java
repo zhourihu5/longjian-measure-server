@@ -122,7 +122,7 @@ public class AreaServiceImpl implements IAreaService {
         try {
             areas = this.selectByIds(new HashSet<>(areaIds));
         } catch (Exception e) {
-            return null;
+            return new ArrayList<>();
         }
         List<Integer> totalIds = Lists.newArrayList();
         areas.forEach(area -> {

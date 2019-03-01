@@ -5,6 +5,9 @@ import org.apache.commons.lang.StringUtils;
 
 @Slf4j
 public class StringUtil {
+    public StringUtil() {
+        throw new UnsupportedOperationException();
+    }
 
     public static String[] getPathSlice(String keyPath) {
         if (keyPath.charAt(0) == '/') {
@@ -38,10 +41,9 @@ public class StringUtil {
      * @param a
      * @param b
      * @param sep
-     * @param ignoreBlank
      * @return
      */
-    public static Integer compareIdList(String a, String b, String sep, boolean ignoreBlank) {
+    public static Integer compareIdList(String a, String b, String sep) {
         if (a.equals(b)) {
             return 0;
         }
@@ -70,9 +72,4 @@ public class StringUtil {
         }
     }
     //比较两个Id序列的大小
-
-
-//    public static void main(String[] args) {
-//        System.out.println(keysToPath(new String[]{"1"}));
-//    }
 }

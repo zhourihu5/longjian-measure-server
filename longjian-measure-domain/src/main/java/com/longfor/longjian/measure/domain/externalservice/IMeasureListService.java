@@ -5,6 +5,8 @@ import com.longfor.longjian.measure.po.zhijian2.MeasureList;
 import com.longfor.longjian.measure.po.zhijian2.MeasureSquad;
 import com.longfor.longjian.measure.po.zhijian2.MeasureSquadUser;
 import com.longfor.longjian.measure.po.zhijian2.MeasureZone;
+import com.longfor.longjian.measure.vo.ConditionSearchVo;
+import com.longfor.longjian.measure.vo.CreateMeasureListVo;
 import com.longfor.longjian.measure.vo.CreateZoneFromAppVo;
 
 import java.util.List;
@@ -153,18 +155,11 @@ public interface IMeasureListService {
 
     /**
      *
-     * @param group_id
-     * @param project_id
-     * @param page
-     * @param page_size
-     * @param area_id
-     * @param user_id_list
-     * @param finish_status
-     * @param name
-     * @param category_key
+     * @param vo
      * @return
+     * @throws LjBaseRuntimeException
      */
-    Map<String, Object> conditionSearch(Integer group_id, Integer project_id, Integer page, Integer page_size, String area_id, String user_id_list, Integer finish_status, String name, String category_key) throws LjBaseRuntimeException;
+    Map<String, Object> conditionSearch(ConditionSearchVo vo) throws LjBaseRuntimeException;
 
-    MeasureList createMeasureList(int proj_id, String name, String area_type, Integer id, Integer id1, String root_category_key, String plan_begin_on, String plan_end_on);
+    MeasureList createMeasureList(CreateMeasureListVo vo );
 }

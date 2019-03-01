@@ -14,8 +14,10 @@ import java.util.Map;
  * Jiazm 2019/01/14 16:34
  */
 @Data
-@NoArgsConstructor
 public class CategoryUtils {
+    private CategoryUtils() {
+    }
+
     private static Map<String, CategoryV3> m = Maps.newHashMap();
 
     public static Map<String, CategoryV3> getM() {

@@ -102,12 +102,10 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
             if (!newCountListFlag) {
                 map.put(NEW_COUNT, 0);
             }
-            boolean trendReformListFlag = false;
             for (Map<String, Object> trendReform : trendReformList
             ) {
                 if (startTime.equals(trendReform.get("days").toString())) {
                     map.put(REFORM_COUNT, Integer.parseInt(trendReform.get(REFORM_COUNT).toString()));
-                    trendReformListFlag = true;
                     break;
                 }
             }
@@ -117,7 +115,6 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
             result.add(map);
             startTime = DateTool.getShortDateStringByStringDate(startTime, 1);
         } while (DateTool.getLongFromShortString(startTime) <= DateTool.getLongFromShortString(endTime));
-//        Collections.sort(humans, Comparator.comparing(Human::getName));
         return result;
     }
 
@@ -189,7 +186,6 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
             criteria.andIn("listId", vo.getMeasureListIdList());
         }
         if (vo.getCreateAtRangeList().size() == 2 && Integer.parseInt(vo.getCreateAtRangeList().get(1)) > 0) {
-//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String t1 = DateUtil.getLongDateStringByLong(Long.parseLong(vo.getCreateAtRangeList().get(0)) * 1000);
             String t2 = DateUtil.getLongDateStringByLong(Long.parseLong(vo.getCreateAtRangeList().get(1)) * 1000);
             criteria.andBetween("createAt", t1, t2);
@@ -198,7 +194,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
             try {
                 this.createAreasMapByLeaveIds(vo.getAreaIdList());
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new LjBaseRuntimeException(-9999,e+"");
             }
             Example.Criteria criteria1 = example.createCriteria();
             for (Integer s : vo.getAreaIdList()) {
@@ -219,7 +215,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
                 }
                 example.and(criteria2);
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new LjBaseRuntimeException(-9999,e+"");
             }
 
         }

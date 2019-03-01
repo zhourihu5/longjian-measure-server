@@ -177,7 +177,6 @@ public class DateUtil {
         SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD);
         Long time = date1.getTime();
         String d = format.format(time);
-//        Date startDate = format.parse(d);
         return d;
     }
 
@@ -240,25 +239,4 @@ public class DateUtil {
         return dd;
     }
 
-//    public static void main(String[] args) throws ParseException {
-////        String category_key = "1605";
-////        String categoryPathAndKey = "/1605/1605_21_0/1605_55_0/";
-////        String key = "/" + category_key + "/";
-////        if (categoryPathAndKey.charAt(0) == '/'){
-////            categoryPathAndKey  = categoryPathAndKey.substring(1);
-////        }
-////        if (categoryPathAndKey.charAt(categoryPathAndKey.length() - 1) == '/'){
-////            categoryPathAndKey = categoryPathAndKey.substring(0,categoryPathAndKey.length() - 1);
-////        }
-////        categoryPathAndKey = "/" + categoryPathAndKey + "/";
-////        int index = categoryPathAndKey.indexOf(key);
-//////        if (index < 0){
-//////            return "";
-//////        }
-////        index += key.length();
-////        String [] subKeys = categoryPathAndKey.substring(index).split("/");
-////        System.out.print(subKeys[0]);
-////        System.out.println(getYeasterShortDate(new Date()));
-//        System.out.println(getLongDateStringByLong(Long.parseLong("1550592000")));
-//    }
 }
