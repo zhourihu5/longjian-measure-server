@@ -122,7 +122,7 @@ public class MeasureListIssueHelper {
         this.currentLog.setStatus(status);
         this.currentLog.setAttachmentMd5List(attachmentMd5List);
         this.currentLog.setCategoryKey(categoryKey);
-        this.currentLog.setClientCreateAt(DateTool.getDateByLong(clientCreateAt));
+        this.currentLog.setClientCreateAt(DateTool.getDateByLong(clientCreateAt * 1000));
         return this;
     }
 
@@ -289,6 +289,7 @@ public class MeasureListIssueHelper {
                 issue.setCloseTime(Integer.parseInt(detail.getCloseTime() + ""));
             }
             issue.setClientCreateAt(this.currentLog.getClientCreateAt());
+            log.info("currentLog.getClientCreateAt:",this.currentLog.getClientCreateAt());
             //添加到需要创建的issue列表中
             this.needInsertIssueMap.put(issueUuid, issue);
         } else if (inOld) {
@@ -307,8 +308,9 @@ public class MeasureListIssueHelper {
             //已存在于需要更新的列表中
             boolean changed;
             issue = this.needUpdateIssueMap.get(issueUuid);
-            issue = (MeasureListIssue) this.modifyIssue(issue).get(0);
-            changed = (boolean) this.modifyIssue(issue).get(1);
+            List<Object> oj = this.modifyIssue(issue);
+            issue = (MeasureListIssue)(oj.get(0));
+            changed = (boolean)(oj.get(1));
             if (changed) {
                 this.needInsertIssueMap.put(issueUuid, issue);
             }
@@ -352,7 +354,7 @@ public class MeasureListIssueHelper {
         boolean changed = false;
 
         //问题类型
-        if (this.currentLog.getTyp() == null || this.currentLog.getTyp() != -1) {
+        if (this.currentLog.getTyp() != null || this.currentLog.getTyp() != -1) {
             changed = true;
             issue.setTyp(this.currentLog.getTyp());
         }
@@ -366,7 +368,7 @@ public class MeasureListIssueHelper {
             //修改issue的endon
             switch (this.currentLog.getStatus()) {
                 case MeasureListIssueType.REFORMNOCHECK:
-                    issue.setEndOn((int) this.currentLog.getClientCreateAt().getTime());
+                    issue.setEndOn((int) (this.currentLog.getClientCreateAt().getTime()/1000));
                     break;
                 case MeasureListIssueType.CHECKYES:
                     // 不变
@@ -381,7 +383,7 @@ public class MeasureListIssueHelper {
             changed = true;
             issue.setRepairerId(detail.getRepairerId());
             issue.setLastAssigner(this.currentLog.getSenderId());
-            issue.setLastAssignerAt((int) this.currentLog.getClientCreateAt().getTime());
+            issue.setLastAssignerAt((int) (this.currentLog.getClientCreateAt().getTime())/1000);
         } else if (detail.getRepairerId() == 0) {
             changed = true;
             issue.setRepairerId(0);
@@ -412,7 +414,7 @@ public class MeasureListIssueHelper {
             if (detail.getCloseStatus() == Integer.parseInt(MeasureListConstant.CLOSEDCODE)) {
                 // 关闭
                 issue.setCloseUser(this.currentLog.getSenderId());
-                issue.setCloseTime((int) this.currentLog.getClientCreateAt().getTime());
+                issue.setCloseTime((int) (this.currentLog.getClientCreateAt().getTime()/1000));
             } else if (detail.getCloseStatus() == Integer.parseInt(MeasureListConstant.UNCLOSECODE)) {
                 //打开
                 issue.setCloseUser(0);
