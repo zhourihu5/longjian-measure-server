@@ -110,7 +110,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         ) {
             helper.start().
                     setNormalField(v.getUuid(), v.getList_id(), v.getIssue_uuid(), v.getSender_id(), v.getDesc(),
-                            v.getTyp(), v.getStatus(), v.getAttachment_md5_list(), v.getCategory_key(), Long.parseLong(v.getClient_create_at()*1000+"")).
+                            v.getTyp(), v.getStatus(), v.getAttachment_md5_list(), v.getCategory_key(), v.getClient_create_at().longValue()).
                     setDatailField(v.getZone_uuid(), Long.parseLong(v.getPlan_end_on().toString()), Long.parseLong(v.getEnd_on().toString()), v.getRepairer_id(),
                             v.getCondition(), v.getArea_id(), v.getDrawing_md5(), v.getPos_x(), v.getPos_y(),
                             v.getClose_status(), v.getClose_user(), v.getClose_time() == null ? 0 : Long.parseLong(v.getClose_time().toString()), v.getCheck_status())
@@ -289,32 +289,36 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                     zoneResult.setAreaId(region.getAreaId());
                     zoneResult.setAreaPathAndId(region.getAreaPathAndId());
                 }
-                List<com.longfor.longjian.measure.app.commonentity.MeasureZoneGroupData> zoneResultData = new ArrayList<>();
+                List<Map> zoneResultData = new ArrayList<>();
                 resultListVo.getData().forEach(textResultVo -> {
-                    com.longfor.longjian.measure.app.commonentity.MeasureZoneGroupData groupData = new com.longfor.longjian.measure.app.commonentity.MeasureZoneGroupData();
-                    groupData.setRecorderId(textResultVo.getRecorder_id());
-                    groupData.setRecorderId(textResultVo.getUpdate_at());
-                    groupData.setTexture(textResultVo.getTexture());
-                    List<com.longfor.longjian.measure.app.commonentity.MeasureZonePointData> textResultData = new ArrayList<>();
+                    Map groupData = new HashMap();
+                    groupData.put("RecorderId",textResultVo.getRecorder_id());
+                    groupData.put("UpdateAt",textResultVo.getUpdate_at());
+                    groupData.put("Texture",textResultVo.getTexture());
+                    List<Map> textResultData = new ArrayList<>();
                     textResultVo.getData().forEach(singlePointTestVo -> {
-                        com.longfor.longjian.measure.app.commonentity.MeasureZonePointData pointData = new com.longfor.longjian.measure.app.commonentity.MeasureZonePointData();
-                        pointData.setKey(singlePointTestVo.getKey());
+                        Map pointData = new HashMap();
+                        pointData.put("Key",singlePointTestVo.getKey());
                         List<Double> tempData = splitToFloatsComma(singlePointTestVo.getData(),true);
-                        pointData.setData(tempData);
-                        pointData.setDataType(singlePointTestVo.getData_type());
-                        pointData.setDesignValue(singlePointTestVo.getDesign_value());
-                        pointData.setDesignValueReqd(singlePointTestVo.getDesign_value_reqd());
+                        pointData.put("Data",tempData);
+                        pointData.put("DataType",singlePointTestVo.getData_type());
+                        pointData.put("DesignValue",singlePointTestVo.getDesign_value());
+                        pointData.put("DesignValueReqd",singlePointTestVo.getDesign_value_reqd());
                         textResultData.add(pointData);
                     });
-                    groupData.setData(textResultData);
+                    groupData.put("Data",textResultData);
                     zoneResultData.add(groupData);
                 });
+                log.info(JSON.toJSONString(zoneResultData));
                 zoneResult.setData(JSON.toJSONString(zoneResultData));
+                zoneResult.setCreateAt(new Date());
+                zoneResult.setUpdateAt(new Date());
+                zoneResult.setCloseStatus(0);
                 //计算结果是否合格
                 try {
                     calcResult(ruleInfo.getFormula(), zoneResult);
                 } catch (Exception e) {
-                    log.warn("calc result error:" + e.getMessage());
+                    log.warn("calc result error:" + e);
                     DroppedVo droppedVo = new DroppedVo();
                     droppedVo.setUuid(resultListVo.getUuid());
                     droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonEnum.MEASURERULEERROR.getValue()));
@@ -414,7 +418,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
      *
      * @param formula
      */
-    private void calcResult(String formula, MeasureZoneResult result) {
+    private void calcResult(String formula, MeasureZoneResult result) throws Exception{
         List<MeasureZoneGroupData> resultData = Lists.newArrayList();
         List<Map> dataZone = JSONArray.parseArray(result.getData(), Map.class);
         for (Map d : dataZone) {
@@ -428,7 +432,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                 npd.setKey(MapUtils.getString(pd, "Key", null));
                 npd.setDataType(MapUtils.getInteger(pd, "DataType", null));
                 npd.setData(JSONArray.parseArray(MapUtils.getString(pd, "Data", null), Long.class));
-                npd.setDesignValueReqd(MapUtils.getBoolean(pd, "Data", null));
+                npd.setDesignValueReqd(MapUtils.getBoolean(pd, "DesignValueReqd", null));
                 npd.setDesignValue(MapUtils.getLong(pd, "DesignValue", null));
                 r.getData().put(MapUtils.getString(pd, "Key", null), npd);
             }
@@ -446,9 +450,11 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             try {
                 se.eval(formula);
                 Invocable inv2 = (Invocable) se;
-                res = (String) inv2.invokeFunction("calc", args);
+                res = JSON.toJSONString(inv2.invokeFunction("calc", args));
+                log.info("JS执行结果res:{}", res);
             } catch (Exception e) {
                 log.error("执行JavaScript错误", e);
+                throw e;
             }
             Map resultValue = JSONObject.parseObject(res, Map.class);
             for (Map.Entry<String, MeasureZonePointData> entry : r.getData().entrySet()) {
@@ -481,9 +487,9 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         for (int i = 0; i < resultData.size(); i++) {
             MeasureZoneGroupData r = resultData.get(i);
             Map data = dataZone.get(i);
-            data.put("Score", result.getScore());
+            data.put("Score", r.getScore());
             result.setScore(result.getScore() + r.getScore());
-            for (Map v : (List<Map>) data.get("data")) {
+            for (Map v : (List<Map>) data.get("Data")) {
                 MeasureZonePointData d = r.getData().get(v.get("Key"));
                 v.put("Total", d.getTotal());
                 result.setTotal(result.getTotal() + d.getTotal());
