@@ -423,22 +423,22 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
      *
      * @param formula
      */
-    private void calcResult(String formula, MeasureZoneResult result) throws Exception {
+    private void calcResult(String formula, MeasureZoneResult result) throws Exception{
         List<MeasureZoneGroupData> resultData = Lists.newArrayList();
         List<Map> dataZone = JSONArray.parseArray(result.getData(), Map.class);
         for (Map d : dataZone) {
             MeasureZoneGroupData r = new MeasureZoneGroupData();
-            r.setTexture(MapUtils.getString(d, TEXTURE, null));
+            r.setTexture(MapUtils.getString(d, "Texture", null));
             r.setData(Maps.newHashMap());
             r.setScore(0F);
             List<Map> dataPoint = JSONArray.parseArray(MapUtils.getString(d, "Data", null), Map.class);
             for (Map pd : dataPoint) {
                 MeasureZonePointData npd = new MeasureZonePointData();
                 npd.setKey(MapUtils.getString(pd, "Key", null));
-                npd.setDataType(MapUtils.getInteger(pd, DATATYPE, null));
+                npd.setDataType(MapUtils.getInteger(pd, "DataType", null));
                 npd.setData(JSONArray.parseArray(MapUtils.getString(pd, "Data", null), Long.class));
-                npd.setDesignValueReqd(MapUtils.getBoolean(pd, DESIGNVALUEREQD, null));
-                npd.setDesignValue(MapUtils.getLong(pd, DESIGNVALUE, null));
+                npd.setDesignValueReqd(MapUtils.getBoolean(pd, "DesignValueReqd", null));
+                npd.setDesignValue(MapUtils.getLong(pd, "DesignValue", null));
                 r.getData().put(MapUtils.getString(pd, "Key", null), npd);
             }
             resultData.add(r);
@@ -447,7 +447,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         ScriptEngine se = sem.getEngineByName("js");
         for (MeasureZoneGroupData r : resultData) {
             Map<String, Object> args = Maps.newHashMap();
-            args.put(TEXTURE, r.getTexture());
+            args.put("texture", r.getTexture());
             for (Map.Entry<String, MeasureZonePointData> entry : r.getData().entrySet()) {
                 args.put(entry.getKey(), entry.getValue().toMap());
             }
