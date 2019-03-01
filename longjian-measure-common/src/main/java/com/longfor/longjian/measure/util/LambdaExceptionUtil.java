@@ -9,6 +9,7 @@ import java.util.function.Consumer;
  */
 public class LambdaExceptionUtil {
     public LambdaExceptionUtil() {
+        throw new UnsupportedOperationException();
     }
 
     /**

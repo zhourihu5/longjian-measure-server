@@ -6,6 +6,7 @@ import org.apache.commons.lang.StringUtils;
 @Slf4j
 public class StringUtil {
     public StringUtil() {
+        throw new UnsupportedOperationException();
     }
 
     public static String[] getPathSlice(String keyPath) {

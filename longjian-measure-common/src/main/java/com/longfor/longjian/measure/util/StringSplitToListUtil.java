@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 public class StringSplitToListUtil {
 
     public StringSplitToListUtil() {
+        throw new UnsupportedOperationException();
     }
 
     /**
