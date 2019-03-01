@@ -1,4 +1,4 @@
-package com.longfor.longjian.measure.app.appservice.checkItemmeasureservice;
+package com.longfor.longjian.measure.app.appservice.checkitemmeasureservice;
 
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.common.exception.LjBaseRuntimeException;
@@ -15,7 +15,6 @@ import com.longfor.longjian.measure.app.vo.promeasurevo.GetCheckItemVo;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.text.ParseException;
 
 public interface IOapiCheckItemMeasureService {
     /**
