@@ -437,7 +437,7 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                         }
                         return a.getHouse_id() - b.getHouse_id();
                     }
-                    return com.longfor.longjian.measure.util.StringUtil.compareIdList(a.getCategoryOrder(), b.getCategoryOrder(), "\\.", true);
+                    return com.longfor.longjian.measure.util.StringUtil.compareIdList(a.getCategoryOrder(), b.getCategoryOrder(), "\\.");
                 }
             });
             return md;
