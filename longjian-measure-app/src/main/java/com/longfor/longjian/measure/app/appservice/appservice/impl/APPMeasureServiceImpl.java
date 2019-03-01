@@ -288,32 +288,36 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                     zoneResult.setAreaId(region.getAreaId());
                     zoneResult.setAreaPathAndId(region.getAreaPathAndId());
                 }
-                List<com.longfor.longjian.measure.app.commonentity.MeasureZoneGroupData> zoneResultData = new ArrayList<>();
+                List<Map> zoneResultData = new ArrayList<>();
                 resultListVo.getData().forEach(textResultVo -> {
-                    com.longfor.longjian.measure.app.commonentity.MeasureZoneGroupData groupData = new com.longfor.longjian.measure.app.commonentity.MeasureZoneGroupData();
-                    groupData.setRecorderId(textResultVo.getRecorder_id());
-                    groupData.setRecorderId(textResultVo.getUpdate_at());
-                    groupData.setTexture(textResultVo.getTexture());
-                    List<com.longfor.longjian.measure.app.commonentity.MeasureZonePointData> textResultData = new ArrayList<>();
+                    Map groupData = new HashMap();
+                    groupData.put("RecorderId",textResultVo.getRecorder_id());
+                    groupData.put("UpdateAt",textResultVo.getUpdate_at());
+                    groupData.put("Texture",textResultVo.getTexture());
+                    List<Map> textResultData = new ArrayList<>();
                     textResultVo.getData().forEach(singlePointTestVo -> {
-                        com.longfor.longjian.measure.app.commonentity.MeasureZonePointData pointData = new com.longfor.longjian.measure.app.commonentity.MeasureZonePointData();
-                        pointData.setKey(singlePointTestVo.getKey());
+                        Map pointData = new HashMap();
+                        pointData.put("Key",singlePointTestVo.getKey());
                         List<Double> tempData = splitToFloatsComma(singlePointTestVo.getData(),true);
-                        pointData.setData(tempData);
-                        pointData.setDataType(singlePointTestVo.getData_type());
-                        pointData.setDesignValue(singlePointTestVo.getDesign_value());
-                        pointData.setDesignValueReqd(singlePointTestVo.getDesign_value_reqd());
+                        pointData.put("Data",tempData);
+                        pointData.put("DataType",singlePointTestVo.getData_type());
+                        pointData.put("DesignValue",singlePointTestVo.getDesign_value());
+                        pointData.put("DesignValueReqd",singlePointTestVo.getDesign_value_reqd());
                         textResultData.add(pointData);
                     });
-                    groupData.setData(textResultData);
+                    groupData.put("Data",textResultData);
                     zoneResultData.add(groupData);
                 });
+                log.info(JSON.toJSONString(zoneResultData));
                 zoneResult.setData(JSON.toJSONString(zoneResultData));
+                zoneResult.setCreateAt(new Date());
+                zoneResult.setUpdateAt(new Date());
+                zoneResult.setCloseStatus(0);
                 //计算结果是否合格
                 try {
                     calcResult(ruleInfo.getFormula(), zoneResult);
                 } catch (Exception e) {
-                    log.warn("calc result error:" + e.getMessage());
+                    log.warn("calc result error:" + e);
                     DroppedVo droppedVo = new DroppedVo();
                     droppedVo.setUuid(resultListVo.getUuid());
                     droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonEnum.MEASURERULEERROR.getValue()));
@@ -407,7 +411,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         List<Map> dataZone = JSONArray.parseArray(result.getData(), Map.class);
         for (Map d : dataZone) {
             MeasureZoneGroupData r = new MeasureZoneGroupData();
-            r.setTexture(MapUtils.getString(d, "Texture", null));
+            r.setTexture(MapUtils.getString(d, "Texture", ""));
             r.setData(Maps.newHashMap());
             r.setScore(0F);
             List<Map> dataPoint = JSONArray.parseArray(MapUtils.getString(d, "Data", null), Map.class);
