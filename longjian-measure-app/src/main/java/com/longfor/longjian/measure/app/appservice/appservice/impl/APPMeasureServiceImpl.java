@@ -288,20 +288,21 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                     zoneResult.setAreaId(region.getAreaId());
                     zoneResult.setAreaPathAndId(region.getAreaPathAndId());
                 }
-                List<TextResultVo> zoneResultData = new ArrayList<TextResultVo>();
+                List<com.longfor.longjian.measure.app.commonentity.MeasureZoneGroupData> zoneResultData = new ArrayList<>();
                 resultListVo.getData().forEach(textResultVo -> {
-                    TextResultVo groupData = new TextResultVo();
-                    groupData.setRecorder_id(textResultVo.getRecorder_id());
-                    groupData.setUpdate_at(textResultVo.getUpdate_at());
+                    com.longfor.longjian.measure.app.commonentity.MeasureZoneGroupData groupData = new com.longfor.longjian.measure.app.commonentity.MeasureZoneGroupData();
+                    groupData.setRecorderId(textResultVo.getRecorder_id());
+                    groupData.setRecorderId(textResultVo.getUpdate_at());
                     groupData.setTexture(textResultVo.getTexture());
-                    List<SinglePointTestVo> textResultData = new ArrayList<>();
+                    List<com.longfor.longjian.measure.app.commonentity.MeasureZonePointData> textResultData = new ArrayList<>();
                     textResultVo.getData().forEach(singlePointTestVo -> {
-                        SinglePointTestVo pointData = new SinglePointTestVo();
+                        com.longfor.longjian.measure.app.commonentity.MeasureZonePointData pointData = new com.longfor.longjian.measure.app.commonentity.MeasureZonePointData();
                         pointData.setKey(singlePointTestVo.getKey());
-                        pointData.setData(singlePointTestVo.getData());
-                        pointData.setData_type(singlePointTestVo.getData_type());
-                        pointData.setDesign_value(singlePointTestVo.getDesign_value());
-                        pointData.setDesign_value_reqd(singlePointTestVo.getDesign_value_reqd());
+                        List<Double> tempData = splitToFloatsComma(singlePointTestVo.getData(),true);
+                        pointData.setData(tempData);
+                        pointData.setDataType(singlePointTestVo.getData_type());
+                        pointData.setDesignValue(singlePointTestVo.getDesign_value());
+                        pointData.setDesignValueReqd(singlePointTestVo.getDesign_value_reqd());
                         textResultData.add(pointData);
                     });
                     groupData.setData(textResultData);
@@ -309,17 +310,17 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                 });
                 zoneResult.setData(JSON.toJSONString(zoneResultData));
                 //计算结果是否合格
-               /* try {
+                try {
                     calcResult(ruleInfo.getFormula(), zoneResult);
                 } catch (Exception e) {
                     log.warn("calc result error:" + e.getMessage());
                     DroppedVo droppedVo = new DroppedVo();
                     droppedVo.setUuid(resultListVo.getUuid());
-                    droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonEnum.MeasureRuleError.getValue()));
-                    droppedVo.setReason(ApiDropDataReasonEnum.MeasureRuleError.getName());
+                    droppedVo.setReason_type(Integer.parseInt(ApiDropDataReasonEnum.MEASURERULEERROR.getValue()));
+                    droppedVo.setReason(ApiDropDataReasonEnum.MEASURERULEERROR.getName());
                     droppedVos.add(droppedVo);
                     continue;
-                }*/
+                }
 //                zoneResult = measureZoneResultService.insertObjectNoAffectedErr(zoneResult);
                 try {
                     measureZoneResultService.insertObjectNoAffectedErr(zoneResult);
@@ -368,6 +369,32 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         }
 
         return droppedVos;
+    }
+
+    private List<Double> splitToFloatsComma(String idsStr,boolean ignoreBlank) {
+        return splitToFloats(idsStr,",",ignoreBlank);
+    }
+
+    private List<Double> splitToFloats(String idsStr,String sep, boolean ignoreBlank) {
+        List<Double> ids = new ArrayList<>();
+        for (String idStr:idsStr.split(sep)
+             ) {
+            idStr = idStr.trim();
+            if ("".equals(idStr)){
+                continue;
+            }
+            try {
+                double id = Double.parseDouble(idStr);
+                ids.add(id);
+            }catch (Exception e){
+                if (ignoreBlank){
+                    continue;
+                }
+                log.error("String switch double exception");
+                return null;
+            }
+        }
+        return ids;
     }
 
     /**

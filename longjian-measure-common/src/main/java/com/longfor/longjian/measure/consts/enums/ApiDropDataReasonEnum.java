@@ -20,7 +20,8 @@ public enum ApiDropDataReasonEnum {
     MEASSUREISSUEWASDELETED("爆点信息已被删除", "52"),
     MEASUREUSERNOTINSQUAD("人员不存在于测量小组中", "53"),
     OTHER("未知错误", "999"),
-    MEASURERULENOFOUND("规则不存在","61");
+    MEASURERULENOFOUND("规则不存在","61"),
+    MEASURERULEERROR("测量结果计算失败","62");
     private String name;
     private String value;
 

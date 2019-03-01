@@ -34,7 +34,7 @@ public class ArrayUtil {
 
     public static List<Integer> getDiff(Integer[] arrayA, Integer[] arrayB) {
         if(ArrayUtils.isEmpty(arrayA)) return new ArrayList<>();
-        if(ArrayUtils.isEmpty(arrayB)) return Arrays.asList(arrayA);
+        if(ArrayUtils.isEmpty(arrayB)) return new ArrayList<>(new HashSet<>(Arrays.asList(arrayA)));
         Set<Integer> setA = new HashSet<>(Arrays.asList(arrayA));
         Set<Integer> setB = new HashSet<>(Arrays.asList(arrayB));
         Set<Integer> setDiff = SetUtils.difference(setA,setB).toSet();
@@ -50,19 +50,8 @@ public class ArrayUtil {
      */
     public static boolean getSetDiff(Set<Integer> set1, Set<Integer> set2) {
         set1.removeAll(set2);
-        if (set1.size() > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return !set1.isEmpty();
     }
-
-//    public static void main(String[] args) {
-//        Integer[] arrayA= new Integer[]{12,32};
-//        Integer[] arrayB = new Integer[]{};
-//        System.out.println(getDiff(arrayA,arrayB,"A-B"));
-//        System.out.println(getDiff(arrayA,arrayB,"B-A"));
-//    }
 }
 
 
