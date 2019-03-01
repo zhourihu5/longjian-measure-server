@@ -201,7 +201,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             //如果有上传过就不让写入（在未有开关之前统一拒收）
             try {
                 List<MeasureZoneResult> measureZoneResults = measureZoneResultService.getByProjIdListIdZoneUuidSquadId(resultListVo.getProject_id(), resultListVo.getList_id(), resultListVo.getZone_uuid(), resultListVo.getSquad_id());
-                boolean has = measureZoneResults != null && measureZoneResults.isEmpty();
+                boolean has = measureZoneResults != null && measureZoneResults.size() > 0;
                 if (has) {
                     log.warn("zone result already uploaded, zone_uuid:" + resultListVo.getZone_uuid());
                     ApiDropDataReasonEnum reason = ApiDropDataReasonEnum.MEASUREZONERESULTEXISTS;
