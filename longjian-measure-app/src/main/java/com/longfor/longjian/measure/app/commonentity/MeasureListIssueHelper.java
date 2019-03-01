@@ -312,6 +312,16 @@ public class MeasureListIssueHelper {
             issue = (MeasureListIssue)(oj.get(0));
             changed = (boolean)(oj.get(1));
             if (changed) {
+                this.needUpdateIssueMap.put(issueUuid, issue);
+            }
+        }else if (inNew){
+            //已存在于需要新增的列表中
+            boolean changed;
+            issue = this.needInsertIssueMap.get(issueUuid);
+            List<Object> oj = this.modifyIssue(issue);
+            issue = (MeasureListIssue)(oj.get(0));
+            changed = (boolean)(oj.get(1));
+            if (changed) {
                 this.needInsertIssueMap.put(issueUuid, issue);
             }
         }
@@ -354,7 +364,7 @@ public class MeasureListIssueHelper {
         boolean changed = false;
 
         //问题类型
-        if (this.currentLog.getTyp() != null || this.currentLog.getTyp() != -1) {
+        if (this.currentLog.getTyp() != null && this.currentLog.getTyp() != -1) {
             changed = true;
             issue.setTyp(this.currentLog.getTyp());
         }
