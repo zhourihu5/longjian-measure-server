@@ -5,6 +5,7 @@ import com.longfor.longjian.measure.po.zhijian2.Area;
 import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListIssue;
 import com.longfor.longjian.measure.vo.GetMeasureListIssueBriefVo;
+import com.longfor.longjian.measure.vo.SearchMeasueListIssueInProjVo;
 
 import java.text.ParseException;
 import java.util.List;
@@ -106,19 +107,11 @@ public interface IMeasureListIssueService {
 
     /**
      *
-     * @param projectId
-     * @param limit
-     * @param page
-     * @param category_key
-     * @param areaIdList
-     * @param measureListIdList
-     * @param createAtRangeList
-     * @param status
-     * @param repairer_id
-     * @param is_overdue
+     * @param vo
      * @return
+     * @throws ParseException
      */
-    Map<String, Object> searchMeasueListIssueInProj(Integer projectId, Integer limit, Integer page, String category_key, List<Integer> areaIdList, List<String> measureListIdList, List<String> createAtRangeList, Integer status, Integer repairer_id, Boolean is_overdue) throws ParseException;
+    Map<String, Object> searchMeasueListIssueInProj(SearchMeasueListIssueInProjVo vo ) throws ParseException;
 
     /**
      *

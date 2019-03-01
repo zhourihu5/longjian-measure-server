@@ -17,6 +17,7 @@ import com.longfor.longjian.measure.consts.enums.*;
 import com.longfor.longjian.measure.domain.externalservice.*;
 import com.longfor.longjian.measure.po.zhijian2.*;
 import com.longfor.longjian.measure.util.JsonUtil;
+import com.longfor.longjian.measure.vo.CreateZoneFromAppVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -447,7 +448,18 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
                 log.error(ERRORLOG + e + "reportZoneVo.uuid" + reportZoneVo.getUuid());
             }
             try {
-                measureListService.createZoneFromApp(reportZoneVo.getProject_id(), reportZoneVo.getList_id(), reportZoneVo.getUuid(), measureRegion.getUuid(), measureRegion.getAreaId(), measureRegion.getAreaPathAndId(), reportZoneVo.getCategory_key(), String.format("%s%s/",category.getPath(),category.getKey()), MeasureListFinishStatusEnum.UNFINISH.getId(), MeasureListCloseStatusEnum.UNCLOSE.getId());
+                CreateZoneFromAppVo vo =new CreateZoneFromAppVo();
+                vo.setProject_id(reportZoneVo.getProject_id());
+                vo.setList_id(reportZoneVo.getList_id());
+                vo.setUuid(reportZoneVo.getUuid());
+                vo.setUuid1(measureRegion.getUuid());
+                vo.setAreaId(measureRegion.getAreaId());
+                vo.setAreaPathAndId(measureRegion.getAreaPathAndId());
+                vo.setCategory_key(reportZoneVo.getCategory_key());
+                vo.setS(String.format("%s%s/",category.getPath(),category.getKey()));
+                vo.setId(MeasureListFinishStatusEnum.UNFINISH.getId());
+                vo.setId1(MeasureListCloseStatusEnum.UNCLOSE.getId());
+                measureListService.createZoneFromApp(vo);
             } catch (Exception e) {
                 log.error("create zone fail, "+ERRORLOG + e);
                 DroppedVo droppedVo = new DroppedVo();

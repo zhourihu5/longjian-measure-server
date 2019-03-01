@@ -16,6 +16,7 @@ import com.longfor.longjian.measure.util.CategoryUtils;
 import com.longfor.longjian.measure.util.DateTool;
 import com.longfor.longjian.measure.util.DateUtil;
 import com.longfor.longjian.measure.vo.GetMeasureListIssueBriefVo;
+import com.longfor.longjian.measure.vo.SearchMeasueListIssueInProjVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.lang.StringUtils;
@@ -179,41 +180,39 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     }
 
     @Override
-    public Map<String, Object> searchMeasueListIssueInProj(Integer projectId, Integer limit, Integer page, String category_key, List<Integer> areaIdList, List<String> measureListIdList, List<String> createAtRangeList, Integer status, Integer repairer_id, Boolean is_overdue) throws ParseException {
+    public Map<String, Object> searchMeasueListIssueInProj(SearchMeasueListIssueInProjVo vo) throws ParseException {
         Map<String, Object> map = Maps.newHashMap();
         Example example = new Example(MeasureListIssue.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo(PROJECTID, projectId);
-        if (!measureListIdList.isEmpty() && measureListIdList.size() > 0) {
-            criteria.andIn("listId", measureListIdList);
+        criteria.andEqualTo(PROJECTID, vo.getProjectId());
+        if (!vo.getMeasureListIdList().isEmpty() && vo.getMeasureListIdList().size() > 0) {
+            criteria.andIn("listId", vo.getMeasureListIdList());
         }
-        if (createAtRangeList.size() == 2 && Integer.parseInt(createAtRangeList.get(1)) > 0) {
+        if (vo.getCreateAtRangeList().size() == 2 && Integer.parseInt(vo.getCreateAtRangeList().get(1)) > 0) {
 //            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String t1 = DateUtil.getLongDateStringByLong(Long.parseLong(createAtRangeList.get(0)) * 1000);
-            String t2 = DateUtil.getLongDateStringByLong(Long.parseLong(createAtRangeList.get(1)) * 1000);
+            String t1 = DateUtil.getLongDateStringByLong(Long.parseLong(vo.getCreateAtRangeList().get(0)) * 1000);
+            String t2 = DateUtil.getLongDateStringByLong(Long.parseLong(vo.getCreateAtRangeList().get(1)) * 1000);
             criteria.andBetween("createAt", t1, t2);
         }
-        if (!areaIdList.isEmpty() && areaIdList.size() > 0) {
+        if (!vo.getAreaIdList().isEmpty() && vo.getAreaIdList().size() > 0) {
             try {
-                this.createAreasMapByLeaveIds(areaIdList);
+                this.createAreasMapByLeaveIds(vo.getAreaIdList());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
             Example.Criteria criteria1 = example.createCriteria();
-            for (Integer s : areaIdList) {
+            for (Integer s : vo.getAreaIdList()) {
                 String pathAndId = AreaUtils.getPathAndId(s);
                 if (!pathAndId.equals("")) {
-                    //criteria1.andLike("areaPathAndId", this.startswith(pathAndId));
-                    //criteria1.andEqualTo("areaId", s);
                     criteria1.orCondition("(area_path_and_id like \""+this.startswith(pathAndId)+"\" and area_id = "+s+" )");
                 }
             }
             example.and(criteria1);
         }
-        if (category_key != null && category_key.length() > 0) {
+        if (vo.getCategory_key()!= null && vo.getCategory_key().length() > 0) {
             Example.Criteria criteria2 = example.createCriteria();
             try {
-                CategoryV3 category = categoryV3Mapper.getCategoryByKeyNoFoundErr(category_key);
+                CategoryV3 category = categoryV3Mapper.getCategoryByKeyNoFoundErr(vo.getCategory_key());
                 if (category != null) {
                     criteria2.andEqualTo("categoryKey", category.getKey());
                     criteria2.orLike("categoryPathAndKey", this.startswith(this.childPath(category)));
@@ -224,13 +223,13 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
             }
 
         }
-        if (status != null && status > 0) {
-            criteria.andEqualTo("status", status);
+        if (vo.getStatus()!= null && vo.getStatus() > 0) {
+            criteria.andEqualTo("status", vo.getStatus());
         }
-        if (repairer_id != null && repairer_id > 0) {
-            criteria.andEqualTo("repairerId", repairer_id);
+        if (vo.getRepairer_id()!= null && vo.getRepairer_id() > 0) {
+            criteria.andEqualTo("repairerId", vo.getRepairer_id());
         }
-        if (is_overdue != null && is_overdue != false) {
+        if (vo.getIs_overdue() != null && vo.getIs_overdue() != false) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Long nowTimestamp = sdf.parse("2006-01-02 23:59:59").getTime();
             Long startTimestamp = sdf.parse("1980-01-01 00:00:00").getTime();
@@ -240,12 +239,12 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
         criteria.andIsNull(DELETEAT);
         Integer count = measureListIssueMapper.selectCountByExample(example);
         Integer start = 0;
-        if (page > 1) {
-            start = (page - 1) * limit;
+        if (vo.getPage()> 1) {
+            start = (vo.getPage() - 1) * vo.getLimit();
         }
         String orderBy = "id ASC";
         example.setOrderByClause(orderBy);
-        List<MeasureListIssue> items = measureListIssueMapper.selectByExampleAndRowBounds(example, new RowBounds(start, limit));
+        List<MeasureListIssue> items = measureListIssueMapper.selectByExampleAndRowBounds(example, new RowBounds(start, vo.getLimit()));
         map.put("count", count);
         map.put("items", items);
         return map;

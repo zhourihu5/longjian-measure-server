@@ -11,6 +11,7 @@ import com.longfor.longjian.common.util.SessionInfo;
 import com.longfor.longjian.measure.app.appservice.measurelistissueservice.IMeasureListIssueAppService;
 import com.longfor.longjian.measure.app.commonentity.MeasureListIssueHelper;
 import com.longfor.longjian.measure.app.req.measurelist.MeasureIssueQueryReq;
+import com.longfor.longjian.measure.vo.SearchMeasueListIssueInProjVo;
 import com.longfor.longjian.measure.app.vo.measurelistvo.MeasureIssueQueryItemVo;
 import com.longfor.longjian.measure.app.vo.measurelistvo.MeasureIssueQueryVo;
 import com.longfor.longjian.measure.app.vo.measurelistvo.MeasureListSearchResultVo;
@@ -78,9 +79,18 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
         List<String> createAtRangeList = Arrays.asList(createAtRangeArr);
         Map<String, Object> issueMap = null;
         try {
-            issueMap = measureListIssueService.searchMeasueListIssueInProj(projectId, req.getLimit(), req.getPage(), req.getCategory_key(),
-                    areaIdList, measureListIdList, createAtRangeList, req.getStatus(),
-                    req.getRepairer_id(), req.getIs_overdue());
+            SearchMeasueListIssueInProjVo vo =new SearchMeasueListIssueInProjVo();
+            vo.setProjectId(projectId);
+            vo.setLimit(req.getLimit());
+            vo.setPage(req.getPage());
+            vo.setCategory_key(req.getCategory_key());
+            vo.setAreaIdList(areaIdList);
+            vo.setMeasureListIdList(measureListIdList);
+            vo.setCreateAtRangeList(createAtRangeList);
+            vo.setStatus(req.getStatus());
+            vo.setRepairer_id(req.getRepairer_id());
+            vo.setIs_overdue(req.getIs_overdue());
+            issueMap = measureListIssueService.searchMeasueListIssueInProj(vo);
 
         } catch (Exception e) {
             log.error(ERROR + e);

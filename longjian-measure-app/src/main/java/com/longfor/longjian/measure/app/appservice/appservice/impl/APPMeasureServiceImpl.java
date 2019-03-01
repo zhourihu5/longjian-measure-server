@@ -20,6 +20,7 @@ import com.longfor.longjian.measure.app.commonentity.MeasureZoneResultCreateMsg;
 import com.longfor.longjian.measure.app.commonentity.measure.MeasureZoneGroupData;
 import com.longfor.longjian.measure.app.commonentity.measure.MeasureZonePointData;
 import com.longfor.longjian.measure.app.req.appreq.*;
+import com.longfor.longjian.measure.app.vo.MsgAppendVo;
 import com.longfor.longjian.measure.app.vo.appmeasuresyncvo.*;
 import com.longfor.longjian.measure.app.vo.propaintareamanagevo.RelVo;
 import com.longfor.longjian.measure.consts.enums.ApiDropDataReasonEnum;
@@ -355,10 +356,20 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                     }
                     i++;
                 }
-                msgPkg.append(zoneResult.getUuid(), zoneResult.getZoneUuid(), zoneResult.getProjectId(), zoneResult.getListId(),
-                        senderId, zoneResult.getAreaId(), zoneResult.getAreaPathAndId(), zoneResult.getCategoryKey(),
-                        zoneResult.getCategoryPathAndKey(), zoneResult.getOkTotal(), zoneResult.getTotal(),
-                        DateTool.getLongFromString(clientCreateAt));
+                MsgAppendVo msgAppendVo  = new MsgAppendVo();
+                msgAppendVo.setUuid(zoneResult.getUuid());
+                msgAppendVo.setZoneUuid(zoneResult.getZoneUuid());
+                msgAppendVo.setProjId(zoneResult.getProjectId());
+                msgAppendVo.setListId(zoneResult.getListId());
+                msgAppendVo.setSenderId(senderId);
+                msgAppendVo.setAreaId(zoneResult.getAreaId());
+                msgAppendVo.setAreaPathAndId(zoneResult.getAreaPathAndId());
+                msgAppendVo.setCategoryKey(zoneResult.getCategoryKey());
+                msgAppendVo.setCategoryPathAndKey(zoneResult.getCategoryPathAndKey());
+                msgAppendVo.setOkTotal(zoneResult.getOkTotal());
+                msgAppendVo.setTotal(zoneResult.getTotal());
+                msgAppendVo.setTimeAt(DateTool.getLongFromString(clientCreateAt));
+                msgPkg.append(msgAppendVo);
             } catch (Exception e) {
                 log.warn("zoneResultDao.GetByZoneUuid:" + resultListVo.getZone_uuid());
                 throw e;
@@ -391,7 +402,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                     continue;
                 }
                 log.error("String switch double exception");
-                return null;
+                return new ArrayList<>();
             }
         }
         return ids;
