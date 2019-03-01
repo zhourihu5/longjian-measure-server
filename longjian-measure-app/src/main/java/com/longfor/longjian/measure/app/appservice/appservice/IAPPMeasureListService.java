@@ -33,7 +33,7 @@ public interface IAPPMeasureListService {
      * @author DDC
      * @date 2019/1/9 10:37
      **/
-    MeasureList GetByProjIdAndIdNoFoundErr(Integer projectId , Integer id);
+    MeasureList getByProjIdAndIdNoFoundErr(Integer projectId , Integer id);
 
     /**
      *

@@ -100,7 +100,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
         measureIssueQueryVo.setLimit(req.getLimit());
         measureIssueQueryVo.setPage(req.getPage());
         List<MeasureListIssue> items = (List<MeasureListIssue>) issueMap.get("items");
-        if (items.size() == 0) {
+        if (items.isEmpty()) {
             measureIssueQueryVo.setItems(new ArrayList<>());
             ljBaseResponse.setData(measureIssueQueryVo);
             return ljBaseResponse;
@@ -235,16 +235,16 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
     }
 
     @Override
-    public void updateMeasureListIssueByProjUuid(Integer project_id, String uuid, Integer repairer_id, Integer uid, Integer plan_end_on) throws LjBaseRuntimeException {
+    public void updateMeasureListIssueByProjUuid(Integer projectId, String uuid, Integer repairerId, Integer uid, Integer planEndOn) throws LjBaseRuntimeException {
         try {
-            MeasureListIssue issue = measureListIssueService.getByConditionNoFoundErr(project_id, uuid);
-            if (issue.getRepairerId().equals(repairer_id)) {
+            MeasureListIssue issue = measureListIssueService.getByConditionNoFoundErr(projectId, uuid);
+            if (issue.getRepairerId().equals(repairerId)) {
                 issue.setRepairerId(-1);
             }
-            if (issue.getPlanEndOn().equals(plan_end_on)) {
+            if (issue.getPlanEndOn().equals(planEndOn)) {
                 issue.setPlanEndOn(-1);
             }
-            boolean isClose = this.updateIssueRepairInfoByUuid(uuid, project_id, uid, repairer_id, plan_end_on);
+            boolean isClose = this.updateIssueRepairInfoByUuid(uuid, projectId, uid, repairerId, planEndOn);
             if (isClose) {
                 throw new LjBaseRuntimeException(-9999,"问题已经关闭，不可编辑");
             }
@@ -254,34 +254,35 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
         }
     }
 
-    public boolean updateIssueRepairInfoByUuid(String uuid, Integer project_id, Integer senderId, Integer repairer_id, Integer plan_end_on) throws LjBaseRuntimeException, ParseException {
+    public boolean updateIssueRepairInfoByUuid(String uuid, Integer projectId, Integer senderId, Integer repairerId, Integer planEndOn) throws LjBaseRuntimeException, ParseException {
         MeasureListIssue issue = null;
         Integer eInt = -1;
         String eStr = "";
         Integer status = eInt;
         boolean isClosed = false;
+        log.info("senderId :{}",senderId);
         try {
-            issue = measureListIssueService.getByConditionNoFoundErr(project_id, uuid);
+            issue = measureListIssueService.getByConditionNoFoundErr(projectId, uuid);
             if (issue.getCloseStatus().equals(MeasureListCloseStatusEnum.CLOSED.getId())) {
                 return isClosed;
             }
-            if (issue.getStatus().equals(MeasureListIssueType.NOTENOASSIGN) && repairer_id > 0) {
+            if (issue.getStatus().equals(MeasureListIssueType.NOTENOASSIGN) && repairerId > 0) {
                 status = MeasureListIssueType.ASSIGNNOREFORM;
             }
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999,e+"");
         }
-        helper.init(project_id);
+        helper.init(projectId);
         //变更类型
         helper.start().setNormalField(UUID.randomUUID().toString(), issue.getListId(), issue.getUuid(),
                 issue.getSenderId(), eStr, eInt, status, eStr, issue.getCategoryKey(), new Date().getTime())
-                .setDatailField(eStr, Long.parseLong(plan_end_on.toString()), Long.parseLong(eInt.toString()),
-                        repairer_id, eInt, eInt, eStr, eInt, eInt, eInt, eInt, Long.parseLong(eInt.toString()), eInt)
+                .setDatailField(eStr, Long.parseLong(planEndOn.toString()), Long.parseLong(eInt.toString()),
+                        repairerId, eInt, eInt, eStr, eInt, eInt, eInt, eInt, Long.parseLong(eInt.toString()), eInt)
                 .done();
         try {
             helper.execute();
         } catch (Exception e) {
-            throw e;
+            throw new LjBaseRuntimeException(-9999,"error:"+e);
         }
         return isClosed;
     }

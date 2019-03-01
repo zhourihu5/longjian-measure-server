@@ -50,7 +50,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class APPMeasureServiceImpl implements IAPPMeasureService {
 
-    private static Integer MEASURE_API_GET_PER_TIME = 5000;
+    private static Integer MEASUREAPIGETPERTIME = 5000;
 
     @Autowired
     private IKeyProcedureTaskAppService keyProcedureTaskAppService;
@@ -119,7 +119,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         try {
             helper.execute();
         } catch (Exception e) {
-            throw e;
+            throw new  LjBaseRuntimeException(-9999,e+"");
         }
         droppedInfoVo.setDropped(helper.getDroppedIssueLog());
         reportUuidStatus = KeyProcedureTaskConstant.SUCCEED;
@@ -197,7 +197,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             //如果有上传过就不让写入（在未有开关之前统一拒收）
             try {
                 List<MeasureZoneResult> measureZoneResults = measureZoneResultService.getByProjIdListIdZoneUuidSquadId(resultListVo.getProject_id(), resultListVo.getList_id(), resultListVo.getZone_uuid(), resultListVo.getSquad_id());
-                boolean has = measureZoneResults != null && measureZoneResults.size() > 0;
+                boolean has = measureZoneResults != null && measureZoneResults.isEmpty();
                 if (has) {
                     log.warn("zone result already uploaded, zone_uuid:" + resultListVo.getZone_uuid());
                     ApiDropDataReasonEnum reason = ApiDropDataReasonEnum.MEASUREZONERESULTEXISTS;
@@ -352,6 +352,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                             log.error("error:", e);
                         } catch (ParseException e) {
                             log.error("error:", e);
+                            throw new ParseException("error :"+e,-9999);
                         }
                     }
                     i++;
@@ -502,8 +503,8 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     public LjBaseResponse<MeasureRegionVo> getMeasureRegion(ApiMeasureRegionReq apiMeasureRegionReq) throws LjBaseRuntimeException {
         LjBaseResponse<MeasureRegionVo> ljBaseResponse = new LjBaseResponse<>();
         MeasureRegionVo measureRegionVo = new MeasureRegionVo();
-        List<MeasureRegionListVo> region_list = new ArrayList<>();
-        List<RelVo> rel_list = new ArrayList<>();
+        List<MeasureRegionListVo> regionLists = new ArrayList<>();
+        List<RelVo> relList = new ArrayList<>();
         String[] projectIds = apiMeasureRegionReq.getProject_ids().split(",");
         if (projectIds.length == 0) {
             throw new LjBaseRuntimeException(-9999,"project ids is empty.");
@@ -518,7 +519,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         //类转换,手动
         regionList.forEach(region -> {
             MeasureRegionListVo regionListVo = converMeasureRegionToMeasureRegionListVo(region);
-            region_list.add(regionListVo);
+            regionLists.add(regionListVo);
         });
         List<MeasureRegionRel> regionRelList = new ArrayList<>();
         for (String projectId : projectIds
@@ -529,10 +530,10 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         //类转换,手动
         regionRelList.forEach(regionRel -> {
             RelVo relVo = converMeasureRegionRelToRegionRelListVo(regionRel);
-            rel_list.add(relVo);
+            relList.add(relVo);
         });
-        measureRegionVo.setRel_list(rel_list);
-        measureRegionVo.setRegion_list(region_list);
+        measureRegionVo.setRel_list(relList);
+        measureRegionVo.setRegion_list(regionLists);
         ljBaseResponse.setData(measureRegionVo);
         return ljBaseResponse;
     }
@@ -541,20 +542,20 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     public LjBaseResponse<MeasureRegionV2Vo> getMeasureRegionV2(ApiMeasureRegionReqV2 apiMeasureRegionReqV2) throws LjBaseRuntimeException {
         LjBaseResponse<MeasureRegionV2Vo> ljBaseResponse = new LjBaseResponse<>();
         MeasureRegionV2Vo measureRegionV2Vo = new MeasureRegionV2Vo();
-        List<MeasureRegionListVo> region_list = new ArrayList<>();
+        List<MeasureRegionListVo> regionList = new ArrayList<>();
         Integer start = 0;
         try {
-            List<MeasureRegion> items = measureRegionService.searchUnscopedByProjIdLastIdUpdateAtGt(apiMeasureRegionReqV2.getProject_id(), apiMeasureRegionReqV2.getLast_id(), apiMeasureRegionReqV2.getTimestamp(), MEASURE_API_GET_PER_TIME, start);
+            List<MeasureRegion> items = measureRegionService.searchUnscopedByProjIdLastIdUpdateAtGt(apiMeasureRegionReqV2.getProject_id(), apiMeasureRegionReqV2.getLast_id(), apiMeasureRegionReqV2.getTimestamp(), MEASUREAPIGETPERTIME, start);
             Integer newLastId = 0;
-            if (items.size() > 0) {
+            if (!items.isEmpty()) {
                 newLastId = items.get(items.size() - 1).getId();
             }
             measureRegionV2Vo.setLast_id(newLastId);
             items.forEach(measureRegion -> {
                 MeasureRegionListVo regionListVo = converMeasureRegionToMeasureRegionListVo(measureRegion);
-                region_list.add(regionListVo);
+                regionList.add(regionListVo);
             });
-            measureRegionV2Vo.setRegion_list(region_list);
+            measureRegionV2Vo.setRegion_list(regionList);
             ljBaseResponse.setData(measureRegionV2Vo);
         } catch (Exception e) {
             log.error(SEARCHUNSCOPEDBYPROJIDLASTIDUPDATEATGT + "[" + apiMeasureRegionReqV2.getProject_id() + ERROR + e);
@@ -582,20 +583,20 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     public LjBaseResponse<MeasureRegionRelV2Vo> getMeasureRegionRelV2(ApiMeasureRegionRelReqV2 apiMeasureRegionRelReqV2) throws LjBaseRuntimeException {
         LjBaseResponse<MeasureRegionRelV2Vo> ljBaseResponse = new LjBaseResponse<>();
         MeasureRegionRelV2Vo measureRegionRelV2Vo = new MeasureRegionRelV2Vo();
-        List<RelVo> rel_list = new ArrayList<>();
+        List<RelVo> relList = new ArrayList<>();
         Integer start = 0;
         try {
-            List<MeasureRegionRel> items = measureRegionRelService.searchRelUnscopedByProjIdLastIdUpdateAtGt(apiMeasureRegionRelReqV2.getProject_id(), apiMeasureRegionRelReqV2.getLast_id(), apiMeasureRegionRelReqV2.getTimestamp(), MEASURE_API_GET_PER_TIME, start);
+            List<MeasureRegionRel> items = measureRegionRelService.searchRelUnscopedByProjIdLastIdUpdateAtGt(apiMeasureRegionRelReqV2.getProject_id(), apiMeasureRegionRelReqV2.getLast_id(), apiMeasureRegionRelReqV2.getTimestamp(), MEASUREAPIGETPERTIME, start);
             Integer newLastId = 0;
-            if (items.size() > 0) {
+            if (!items.isEmpty()) {
                 newLastId = items.get(items.size() - 1).getId();
             }
             measureRegionRelV2Vo.setLast_id(newLastId);
             items.forEach(measureRegionRel -> {
                 RelVo relVo = converMeasureRegionRelToRegionRelListVo(measureRegionRel);
-                rel_list.add(relVo);
+                relList.add(relVo);
             });
-            measureRegionRelV2Vo.setRel_list(rel_list);
+            measureRegionRelV2Vo.setRel_list(relList);
             ljBaseResponse.setData(measureRegionRelV2Vo);
         } catch (Exception e) {
             log.error("SearchRelUnscopedByProjIdLastIdUpdateAtGt" + "[" + apiMeasureRegionRelReqV2.getProject_id() + ERROR + e);
@@ -608,9 +609,9 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     public LjBaseResponse<MeasureSquadAndRepairerVo> measureSquadAndRepairer(ApiMeasureSquadAndRepairerReq apiMeasureSquadAndRepairerReq) throws LjBaseRuntimeException {
         LjBaseResponse<MeasureSquadAndRepairerVo> ljBaseResponse = new LjBaseResponse<>();
         MeasureSquadAndRepairerVo measureSquadAndRepairerVo = new MeasureSquadAndRepairerVo();
-        List<SquadListVo> squad_list = new ArrayList<>();
-        List<SquadUserListVo> squad_user_list = new ArrayList<>();
-        List<RepairerListVo> repairer_list = new ArrayList<>();
+        List<SquadListVo> squadList = new ArrayList<>();
+        List<SquadUserListVo> squadUserList = new ArrayList<>();
+        List<RepairerListVo> repairerList = new ArrayList<>();
         MeasureList measureList = null;
         try {
             measureList = measureListService.getNoProjNoFoundErr(apiMeasureSquadAndRepairerReq.getList_id().toString());
@@ -621,21 +622,21 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             List<MeasureSquad> squads = measureSquadService.searchMeasureSquadByListIdTimestampGt(measureList.getProjectId(), apiMeasureSquadAndRepairerReq.getList_id(), updateAtGt);
             squads.forEach(measureSquad -> {
                 SquadListVo squadListVo = converMeasureSquadToSquadListVo(measureSquad);
-                squad_list.add(squadListVo);
+                squadList.add(squadListVo);
             });
-            measureSquadAndRepairerVo.setSquad_list(squad_list);
+            measureSquadAndRepairerVo.setSquad_list(squadList);
             List<MeasureSquadUser> squadsUsers = measureSquadUserService.searchMeasureSquadUserByListIdTimestampGt(measureList.getProjectId(), apiMeasureSquadAndRepairerReq.getList_id(), updateAtGt);
             squadsUsers.forEach(measureSquadUser -> {
                 SquadUserListVo squadUserListVo = converMeasureSquadUserToSquadUserListVo(measureSquadUser);
-                squad_user_list.add(squadUserListVo);
+                squadUserList.add(squadUserListVo);
             });
-            measureSquadAndRepairerVo.setSquad_user_list(squad_user_list);
+            measureSquadAndRepairerVo.setSquad_user_list(squadUserList);
             List<MeasureRepairerUser> repairerUsers = measureRepairerUserService.searchMeasureReparierUserByListIdTimestampGt(measureList.getProjectId(), apiMeasureSquadAndRepairerReq.getList_id(), updateAtGt);
             repairerUsers.forEach(measureRepairerUser -> {
                 RepairerListVo repairerListVo = converMeasureRepairerUserToRepairerListVo(measureRepairerUser);
-                repairer_list.add(repairerListVo);
+                repairerList.add(repairerListVo);
             });
-            measureSquadAndRepairerVo.setRepairer_list(repairer_list);
+            measureSquadAndRepairerVo.setRepairer_list(repairerList);
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new LjBaseRuntimeException(-9999,e+"");
@@ -648,7 +649,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     public LjBaseResponse<MeasureZoneResultVo> measureZoneResult(ApiMeasureZoneResultReq apiMeasureZoneResultReq) throws LjBaseRuntimeException {
         LjBaseResponse<MeasureZoneResultVo> ljBaseResponse = new LjBaseResponse<>();
         MeasureZoneResultVo measureZoneResultVo = new MeasureZoneResultVo();
-        List<ResultListVo> result_list = new ArrayList<>();
+        List<ResultListVo> resultList = new ArrayList<>();
         if (apiMeasureZoneResultReq.getList_ids() == null || apiMeasureZoneResultReq.getList_ids().split(",").length == 0) {
             throw new LjBaseRuntimeException(-9999,"list is empty.");
         }
@@ -664,10 +665,10 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                 List<MeasureZoneResult> items = measureZoneResultService.searchResultUnscopedByListIdLastIdUpdateAtGt(measureList.getProjectId(), listId, lastId, timestamp, limit, start);
                 items.forEach(measureZoneResult -> {
                     ResultListVo resultListVo = converMeasureZoneResultToResultListVo(measureZoneResult);
-                    result_list.add(resultListVo);
+                    resultList.add(resultListVo);
                 });
             }
-            measureZoneResultVo.setResult_list(result_list);
+            measureZoneResultVo.setResult_list(resultList);
         } catch (Exception e) {
             log.error(e.getMessage());
             throw e;
@@ -680,21 +681,21 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     public LjBaseResponse<MeasureZoneResultVo> measureZoneResultV2(ApiMeasureZoneResultReqV2 apiMeasureZoneResultReqV2) throws LjBaseRuntimeException {
         LjBaseResponse<MeasureZoneResultVo> ljBaseResponse = new LjBaseResponse<>();
         MeasureZoneResultVo measureZoneResultVo = new MeasureZoneResultVo();
-        List<ResultListVo> result_list = new ArrayList<>();
+        List<ResultListVo> resultList = new ArrayList<>();
         try {
             MeasureList measureList = measureListService.getNoProjNoFoundErr(apiMeasureZoneResultReqV2.getList_id().toString());
             Integer start = 0;
-            List<MeasureZoneResult> items = measureZoneResultService.searchResultUnscopedByListIdLastIdUpdateAtGt(measureList.getProjectId(), apiMeasureZoneResultReqV2.getList_id().toString(), apiMeasureZoneResultReqV2.getLast_id(), apiMeasureZoneResultReqV2.getTimestamp(), MEASURE_API_GET_PER_TIME, start);
+            List<MeasureZoneResult> items = measureZoneResultService.searchResultUnscopedByListIdLastIdUpdateAtGt(measureList.getProjectId(), apiMeasureZoneResultReqV2.getList_id().toString(), apiMeasureZoneResultReqV2.getLast_id(), apiMeasureZoneResultReqV2.getTimestamp(), MEASUREAPIGETPERTIME, start);
             Integer newLastId = 0;
-            if (items.size() > 0) {
+            if (!items.isEmpty()) {
                 newLastId = items.get(items.size() - 1).getId();
             }
             measureZoneResultVo.setLast_id(newLastId);
             items.forEach(measureZoneResult -> {
                 ResultListVo resultListVo = converMeasureZoneResultToResultListVo(measureZoneResult);
-                result_list.add(resultListVo);
+                resultList.add(resultListVo);
             });
-            measureZoneResultVo.setResult_list(result_list);
+            measureZoneResultVo.setResult_list(resultList);
         } catch (Exception e) {
             log.error(SEARCHUNSCOPEDBYPROJIDLASTIDUPDATEATGT + "[" + apiMeasureZoneResultReqV2.getList_id() + ERROR + e.getMessage());
             throw new LjBaseRuntimeException(-9999,"读取数据失败，code:zone");

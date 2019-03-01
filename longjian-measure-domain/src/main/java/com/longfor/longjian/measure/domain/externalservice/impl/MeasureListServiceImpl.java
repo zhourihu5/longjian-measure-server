@@ -187,7 +187,7 @@ public class MeasureListServiceImpl implements IMeasureListService {
     }
 
     @Override
-    public MeasureList GetByProjIdAndIdNoFoundErr(Integer projectId, Integer id) {
+    public MeasureList getByProjIdAndIdNoFoundErr(Integer projectId, Integer id) {
         Example example = new Example(MeasureList.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo(PROJECTID, projectId).andEqualTo("id", id);

@@ -7,16 +7,16 @@ import javax.servlet.http.HttpServletRequest;
 public interface IKeyProcedureTaskAppService {
     /**
      *
-     * @param report_uuid
+     * @param reportuuid
      * @param uid
      * @param request
      */
-    void startReport(String report_uuid, Integer uid, HttpServletRequest request) throws CommonException;
+    void startReport(String reportuuid, Integer uid, HttpServletRequest request) throws CommonException;
 
     /**
      *
-     * @param report_uuid
+     * @param
      * @param reportUuidStatus
      */
-    void updateReportStatus(String report_uuid, String reportUuidStatus);
+    void updateReportStatus(String reportuuid, String reportUuidStatus);
 }

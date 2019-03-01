@@ -27,10 +27,10 @@ public class CoreAreaServiceImpl implements ICoreAreaService {
     IAreaService areaService;
 
     @Override
-    public List<AreaRetrieveVo> searchByIdList(Integer project_id, List area_id_list) {
+    public List<AreaRetrieveVo> searchByIdList(Integer projectId, List areaIdList) {
         SearchByIdListReq searchByIdListReq = new SearchByIdListReq();
-        searchByIdListReq.setArea_id_list(area_id_list);
-        searchByIdListReq.setProject_id(project_id);
+        searchByIdListReq.setArea_id_list(areaIdList);
+        searchByIdListReq.setProject_id(projectId);
         try {
             LjBaseResponse<ProjAreaSearchByIdListVo> ljBaseResponse = coreAreaFeignService.searchByIdList(searchByIdListReq);
             return ljBaseResponse.getData().getArea_list();

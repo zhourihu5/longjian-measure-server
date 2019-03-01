@@ -23,8 +23,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.beans.IntrospectionException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,28 +40,23 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
     @Autowired
     private IMeasureRegionService measureRegionService;
 
-    private static  final String  RELID= "relId";
+    private static final String RELID = "relId";
+
     @Override
     public LjBaseResponse<GroupRegionTagVo> getGroupMeasureRegionTag(GetGroupMeasureRegionTagReq getGroupMeasureRegionTagReq) throws LjBaseRuntimeException {
         LjBaseResponse<GroupRegionTagVo> ljBaseResponse = new LjBaseResponse<>();
         GroupRegionTagVo groupRegionTagVo = new GroupRegionTagVo();
         List<TagListVo> listVos = new ArrayList<>();
         //查询tag
-        List<Map<String, Object>> tagList = measureTagService.searchByGroupIdAndProjId(getGroupMeasureRegionTagReq.getGroup_id(), 0,MeasureTagConstant.GROUP);
+        List<Map<String, Object>> tagList = measureTagService.searchByGroupIdAndProjId(getGroupMeasureRegionTagReq.getGroup_id(), 0, MeasureTagConstant.GROUP);
         for (Map<String, Object> map : tagList
         ) {
             //map转换成vo
             TagListVo tagListVo = null;
             try {
                 tagListVo = (TagListVo) ConvertUtil.convertMap(TagListVo.class, map);
-            } catch (IntrospectionException e) {
-                throw new LjBaseRuntimeException(-9999,e+"");
-            } catch (IllegalAccessException e) {
-                throw new LjBaseRuntimeException(-9999,e+"");
-            } catch (InstantiationException e) {
-                throw new LjBaseRuntimeException(-9999,e+"");
-            } catch (InvocationTargetException e) {
-                throw new LjBaseRuntimeException(-9999,e+"");
+            } catch (Exception e) {
+                throw new LjBaseRuntimeException(-9999, e + "");
             }
             listVos.add(tagListVo);
         }
@@ -85,14 +78,8 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
             TagListVo tagListVo = null;
             try {
                 tagListVo = (TagListVo) ConvertUtil.convertMap(TagListVo.class, map);
-            } catch (IntrospectionException e) {
-                throw new LjBaseRuntimeException(-9999,e+"");
-            } catch (IllegalAccessException e) {
-                throw new LjBaseRuntimeException(-9999,e+"");
-            } catch (InstantiationException e) {
-                throw new LjBaseRuntimeException(-9999,e+"");
-            } catch (InvocationTargetException e) {
-                throw new LjBaseRuntimeException(-9999,e+"");
+            } catch (Exception e) {
+                throw new LjBaseRuntimeException(-9999, e + "");
             }
             listVos.add(tagListVo);
         }
@@ -114,14 +101,8 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
             RegionListVo regionListVo = null;
             try {
                 regionListVo = (RegionListVo) ConvertUtil.convertMap(RegionListVo.class, map);
-            } catch (IntrospectionException e) {
-                throw new LjBaseRuntimeException(-9999,e+"");
-            } catch (IllegalAccessException e) {
-                throw new LjBaseRuntimeException(-9999,e+"");
-            } catch (InstantiationException e) {
-                throw new LjBaseRuntimeException(-9999,e+"");
-            } catch (InvocationTargetException e) {
-                throw new LjBaseRuntimeException(-9999,e+"");
+            } catch (Exception e) {
+                throw new LjBaseRuntimeException(-9999, e + "");
             }
             PolygonVo polygonVo = new PolygonVo();
             //转换jsonObject
@@ -135,7 +116,7 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
                 relVo.setDesc(map.get("desc").toString());
                 relVo.setRegion_ids(map.get("region_ids").toString());
                 regionListVo.setRel(relVo);
-            }else {
+            } else {
                 regionListVo.setRel(new RelVo());
             }
             listVos.add(regionListVo);
@@ -158,13 +139,13 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
     @Override
     public LjBaseResponse<Object> addOnGroup(AddOnGroupReq addOnGroupReq) {
         LjBaseResponse<Object> ljBaseResponse = new LjBaseResponse<>();
-        if(addOnGroupReq.getProj_id() == null){
+        if (addOnGroupReq.getProj_id() == null) {
             addOnGroupReq.setProj_id(0);
         }
         if (addOnGroupReq.getName_list().length() > 0 && !addOnGroupReq.getName_list().equals("")) {
             String[] nameArr = addOnGroupReq.getName_list().split(",");
             List<String> nameList = Arrays.asList(nameArr);
-            Integer affCount = measureTagService.addOnGroup(addOnGroupReq.getGroup_id(), nameList, MeasureTagConstant.GROUP,addOnGroupReq.getProj_id());
+            Integer affCount = measureTagService.addOnGroup(addOnGroupReq.getGroup_id(), nameList, MeasureTagConstant.GROUP, addOnGroupReq.getProj_id());
             ljBaseResponse.setMessage(String.format("总共添加了 %s 条数据", affCount));
             ljBaseResponse.setResult(0);
         }
@@ -177,7 +158,7 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
         if (addOnProjReq.getName_list().length() > 0 && !addOnProjReq.getName_list().equals("")) {
             String[] nameArr = addOnProjReq.getName_list().split(",");
             List<String> nameList = Arrays.asList(nameArr);
-            Integer affCount = measureTagService.addOnProj(addOnProjReq.getGroup_id(),addOnProjReq.getProject_id(), nameList, MeasureTagConstant.PROJECT);
+            Integer affCount = measureTagService.addOnProj(addOnProjReq.getGroup_id(), addOnProjReq.getProject_id(), nameList, MeasureTagConstant.PROJECT);
             ljBaseResponse.setMessage(String.format("总共添加了 %s 条数据", affCount));
             ljBaseResponse.setResult(0);
         }
@@ -188,7 +169,7 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
     public LjBaseResponse<Object> editByProjId(EditByProjIdReq editByProjId) {
         LjBaseResponse<Object> ljBaseResponse = new LjBaseResponse<>();
         List<EditTagProtoVo> editTagProtoVos = JSONArray.parseArray(editByProjId.getEdit_tag_list(), EditTagProtoVo.class);
-        Integer affCount = measureTagService.editOnProjId(editByProjId.getGroup_id(), editByProjId.getProject_id(),editTagProtoVos, MeasureTagConstant.PROJECT);
+        Integer affCount = measureTagService.editOnProjId(editByProjId.getGroup_id(), editByProjId.getProject_id(), editTagProtoVos, MeasureTagConstant.PROJECT);
         ljBaseResponse.setMessage(String.format("总共修改了 %s 条数据", affCount));
         ljBaseResponse.setResult(0);
         return ljBaseResponse;

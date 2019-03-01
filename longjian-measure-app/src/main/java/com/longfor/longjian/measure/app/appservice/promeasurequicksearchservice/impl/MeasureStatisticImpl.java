@@ -33,7 +33,7 @@ public class MeasureStatisticImpl implements IMeasureStatisticService {
     @Override
     public MeasureStatisticSquadStatsVo SquadMeasureStatsJson(GetMeasureStatisticTaskReq getMeasureStatisticTaskReq) {
 
-        MeasureList measureList = measureListService.GetByProjIdAndIdNoFoundErr(getMeasureStatisticTaskReq.getProject_id(), getMeasureStatisticTaskReq.getMeasure_list_id());
+        MeasureList measureList = measureListService.getByProjIdAndIdNoFoundErr(getMeasureStatisticTaskReq.getProject_id(), getMeasureStatisticTaskReq.getMeasure_list_id());
         if (measureList == null) {
             throw new LjBaseRuntimeException(100000,"数据不存在");
         }

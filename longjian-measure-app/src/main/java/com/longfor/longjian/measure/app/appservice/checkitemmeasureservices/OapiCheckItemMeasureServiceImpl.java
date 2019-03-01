@@ -7,7 +7,6 @@ import com.longfor.longjian.common.entity.TeamBase;
 import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.util.CtrlTool;
 import com.longfor.longjian.common.util.SessionInfo;
-import com.longfor.longjian.measure.app.appservice.checkitemmeasureservices.IOapiCheckItemMeasureService;
 import com.longfor.longjian.measure.app.feignclient.IMeasureFeignService;
 import com.longfor.longjian.measure.app.req.checkitemmeasurereq.GetCategoryReq;
 import com.longfor.longjian.measure.app.req.checkitemmeasurereq.GetCheckItemReq;
@@ -16,8 +15,8 @@ import com.longfor.longjian.measure.app.req.checkitemmeasurereq.UpdateReqMeasure
 import com.longfor.longjian.measure.app.req.filereq.FileReq;
 import com.longfor.longjian.measure.app.vo.checkitemsvo.CheckItemListVo;
 import com.longfor.longjian.measure.app.vo.promeasurevo.*;
-import com.longfor.longjian.measure.consts.enums.LoginEnum;
 import com.longfor.longjian.measure.consts.constant.CtrlToolConstant;
+import com.longfor.longjian.measure.consts.enums.LoginEnum;
 import com.longfor.longjian.measure.domain.externalservice.ICategoryV3Service;
 import com.longfor.longjian.measure.domain.externalservice.ICheckItemV3Service;
 import com.longfor.longjian.measure.domain.externalservice.IFileResourceService;
@@ -159,7 +158,6 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
         LjBaseResponse<Object> ljBaseResponse = new LjBaseResponse<>();
         FormVo formVo = new FormVo();
         formVo.setRootCategoryId(fileReq.getId());
-        ReadFileVo readFileVo = new ReadFileVo();
         String name = "";
         String mimeType = null;
         byte[] content = null;

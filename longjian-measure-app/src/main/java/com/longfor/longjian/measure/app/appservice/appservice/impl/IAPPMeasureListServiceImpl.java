@@ -39,7 +39,7 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
     private IMeasureListService iMeasureListService;
 
     @Resource
-    private IMeasureListAreaService IMeasureListAreaService;
+    private IMeasureListAreaService iMeasureListAreaService;
 
     @Resource
     private IMeasureZoneService iMeasureZoneService;
@@ -112,7 +112,7 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
     public void delete(DeleteReq deleteReq) {
         iMeasureListService.delete(deleteReq.getList_id());
 
-        IMeasureListAreaService.delete(deleteReq.getList_id());
+        iMeasureListAreaService.delete(deleteReq.getList_id());
 
         iMeasureZoneService.delete(deleteReq.getList_id());
 
@@ -150,8 +150,8 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
     }
 
     @Override
-    public MeasureList GetByProjIdAndIdNoFoundErr(Integer projectId, Integer id) {
-        return measureListService.GetByProjIdAndIdNoFoundErr(projectId, id);
+    public MeasureList getByProjIdAndIdNoFoundErr(Integer projectId, Integer id) {
+        return measureListService.getByProjIdAndIdNoFoundErr(projectId, id);
     }
 
     @Override
@@ -171,10 +171,10 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
         LjBaseResponse<MeasureListInfoVo> ljBaseResponse = new LjBaseResponse<>();
         MeasureListInfoVo measureListInfoVo = new MeasureListInfoVo();
         List<ListInfoVo> listInfoVos = Lists.newArrayList();
-        Integer total_num = (Integer) listMap.get("total_num");
-        measureListInfoVo.setTotal(total_num);
-        List<Map<String, Object>> return_list = (List<Map<String, Object>>) listMap.get("return_list");
-        for (Map<String, Object> map : return_list) {
+        Integer totalNum = (Integer) listMap.get("total_num");
+        measureListInfoVo.setTotal(totalNum);
+        List<Map<String, Object>> returnList = (List<Map<String, Object>>) listMap.get("return_list");
+        for (Map<String, Object> map : returnList) {
             ListInfoVo listInfoVo = new ListInfoVo();
             listInfoVo.setId((Integer) map.get("id"));
             listInfoVo.setName(map.get("name").toString());
@@ -197,83 +197,83 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
     @Override
     @Transactional
     public void add(Map params) {
-        int proj_id = (int) params.get("proj_id");
-        String area_id_list = params.get("area_id_list").toString();
-        String area_type = params.get("area_type").toString();
-        String root_category_key = params.get("root_category_key").toString();
-        String zone_group = params.get("zone_group").toString();
-        String plan_begin_on = params.get("plan_begin_on").toString();
-        String plan_end_on = params.get("plan_end_on").toString();
+        int projId = (int) params.get("proj_id");
+        String areaIdLists = params.get("area_id_list").toString();
+        String areaType = params.get("area_type").toString();
+        String rootCategoryKey = params.get("root_category_key").toString();
+        String zoneGroup = params.get("zone_group").toString();
+        String planBeginOn = params.get("plan_begin_on").toString();
+        String planEndOn = params.get("plan_end_on").toString();
         String name = params.get("name").toString();
-        String squad_group = params.get("squad_group").toString();
-        String repairer_group = params.get("repairer_group").toString();
+        String squadGroup = params.get("squad_group").toString();
+        String repairerGroup = params.get("repairer_group").toString();
         //创建任务
         CreateMeasureListVo vo =new CreateMeasureListVo();
-        vo.setProj_id(proj_id);
+        vo.setProj_id(projId);
         vo.setName(name);
-        vo.setArea_type(area_type);
+        vo.setArea_type(areaType);
         vo.setId(MeasureCloseStatusEnum.OPEN.getId());
         vo.setId1(MeasureFinishStatusEnum.PROCESSING.getId());
-        vo.setRoot_category_key(root_category_key);
-        vo.setPlan_begin_on(plan_begin_on);
-        vo.setPlan_end_on(plan_end_on);
-        MeasureList list_model = measureListService.createMeasureList(vo);
+        vo.setRoot_category_key(rootCategoryKey);
+        vo.setPlan_begin_on(planBeginOn);
+        vo.setPlan_end_on(planEndOn);
+        MeasureList listModel = measureListService.createMeasureList(vo);
         //获取区域信息 todo lamada表达式没弄明白😐
-        String[] areaIdList = area_id_list.split(",");
+        String[] areaIdList = areaIdLists.split(",");
         List<Integer> areaIdListInt = new ArrayList<>();
         for (String id : areaIdList
         ) {
             areaIdListInt.add(Integer.parseInt(id));
         }
-        List<Area> area_list = areaService.searchByIdList(proj_id, areaIdListInt);
-        List<Integer> full_area_id_list = new ArrayList<>();
-        area_list.forEach(area -> {
-            full_area_id_list.add(area.getId());
+        List<Area> areaList = areaService.searchByIdList(projId, areaIdListInt);
+        List<Integer> fullAreaIdList = new ArrayList<>();
+        areaList.forEach(area -> {
+            fullAreaIdList.add(area.getId());
             String[] paths = area.getPath().split(",");
             for (int i = 1; i < paths.length - 1; i++) {
-                full_area_id_list.add(Integer.parseInt(paths[i]));
+                fullAreaIdList.add(Integer.parseInt(paths[i]));
             }
         });
-        List<Area> full_area_list = areaService.searchByIdList(proj_id, full_area_id_list);
-        Map<Integer, Area> area_dict = full_area_list.stream().collect(Collectors.toMap(Area::getId, area -> area));
-        log.info("area_dict:{}", JSON.toJSON(area_dict));
+        List<Area> fullAreaList = areaService.searchByIdList(projId, fullAreaIdList);
+        Map<Integer, Area> areaDict = fullAreaList.stream().collect(Collectors.toMap(Area::getId, area -> area));
+        log.info("area_dict:{}", JSON.toJSON(areaDict));
 
         //创建任务区域
-        full_area_list.forEach(area -> {
-            measureListAreaService.create(proj_id, area.getId(), area.getPath() + area.getId() + "/", list_model.getId());
+        fullAreaList.forEach(area -> {
+            measureListAreaService.create(projId, area.getId(), area.getPath() + area.getId() + "/", listModel.getId());
         });
 
         //检查小组组间人员查重
-        int user_nums = 0;
-        Set<String> user_set = new HashSet<>();
-        List<Map> squadGroup = JSONArray.parseArray(squad_group, Map.class);
-        for (Map squad : squadGroup) {
+        int userNums = 0;
+        Set<String> userSet = new HashSet<>();
+        List<Map> squadGroups = JSONArray.parseArray(squadGroup, Map.class);
+        for (Map squad : squadGroups) {
             squad.put(USER_ID_LIST, Arrays.asList(squad.get("user_ids").toString().split(",")));
-            user_nums += JSONArray.parseArray(squad.get(USER_ID_LIST).toString(), String.class).size();
-            user_set.addAll(new HashSet(JSONArray.parseArray(squad.get(USER_ID_LIST).toString(), String.class)));
-            if (user_nums != user_set.size()) {
+            userNums += JSONArray.parseArray(squad.get(USER_ID_LIST).toString(), String.class).size();
+            userSet.addAll(new HashSet(JSONArray.parseArray(squad.get(USER_ID_LIST).toString(), String.class)));
+            if (userNums != userSet.size()) {
                 throw new LjBaseRuntimeException(-9999, "duplicated");
             }
         }
 
         //创建检查小组, 以及检查小组成员
-        for (Map squad : squadGroup) {
+        for (Map squad : squadGroups) {
             MeasureSquad measureSquad = new MeasureSquad();
-            measureSquad.setProjectId(proj_id);
-            measureSquad.setListId(list_model.getId());
+            measureSquad.setProjectId(projId);
+            measureSquad.setListId(listModel.getId());
             measureSquad.setName(squad.get("name").toString());
             measureSquad.setPlanRate(Integer.parseInt(squad.get("plan_rate").toString()));
             measureSquad.setRate(0);
             measureSquad.setCreateAt(new Date());
             measureSquad.setUpdateAt(new Date());
-            MeasureSquad squad_model = measureSquadService.createReturnSuqad(measureSquad);
+            MeasureSquad squadModel = measureSquadService.createReturnSuqad(measureSquad);
             List<String> squadUserIds = JSONArray.parseArray(squad.get(USER_ID_LIST).toString(), String.class);
-            squadUserIds.forEach(user_id -> {
+            squadUserIds.forEach(userId -> {
                 MeasureSquadUser measureSquadUser = new MeasureSquadUser();
-                measureSquadUser.setProjectId(proj_id);
-                measureSquadUser.setListId(list_model.getId());
-                measureSquadUser.setSquadId(squad_model.getId());
-                measureSquadUser.setUserId(Integer.parseInt(user_id));
+                measureSquadUser.setProjectId(projId);
+                measureSquadUser.setListId(listModel.getId());
+                measureSquadUser.setSquadId(squadModel.getId());
+                measureSquadUser.setUserId(Integer.parseInt(userId));
                 measureSquadUser.setCreateAt(new Date());
                 measureSquadUser.setUpdateAt(new Date());
                 measureSquadUserService.create(measureSquadUser);
@@ -281,81 +281,81 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
         }
 
         //整改小组创建
-        List<Map> repairerGroup = JSONArray.parseArray(repairer_group, Map.class);
-        for (Map group : repairerGroup) {
-            List<String> user_id_list = Arrays.asList(group.get("user_ids").toString().split(","));
-            for (String user_id : user_id_list) {
-                measureRepairerUserService.create(proj_id, list_model.getId(), group.get("role_type").toString(), Integer.parseInt(user_id));
+        List<Map> repairerGroups = JSONArray.parseArray(repairerGroup, Map.class);
+        for (Map group : repairerGroups) {
+            List<String> userIdList = Arrays.asList(group.get("user_ids").toString().split(","));
+            for (String userId : userIdList) {
+                measureRepairerUserService.create(projId, listModel.getId(), group.get("role_type").toString(), Integer.parseInt(userId));
             }
         }
 
         //提前加载
-        Set<String> region_uuid_set = new HashSet<>();
-        List<Map> zoneGroup = JSONArray.parseArray(zone_group, Map.class);
-        zoneGroup.forEach(pair -> {
+        Set<String> regionUuidSet = new HashSet<>();
+        List<Map> zoneGroups = JSONArray.parseArray(zoneGroup, Map.class);
+        zoneGroups.forEach(pair -> {
             List<Map> groups = JSONArray.parseArray(pair.get("group").toString(), Map.class);
-            for (Map zone_dict : groups) {
-                region_uuid_set.add(zone_dict.get("region_uuid").toString());
+            for (Map zoneDict : groups) {
+                regionUuidSet.add(zoneDict.get("region_uuid").toString());
             }
         });
-        List<MeasureRegion> region_list = measureRegionService.searchByUuids(proj_id, region_uuid_set);
-        Map<String, MeasureRegion> region_dict = region_list.stream().collect(Collectors.toMap(MeasureRegion::getUuid, region -> region));
+        List<MeasureRegion> regionList = measureRegionService.searchByUuids(projId, regionUuidSet);
+        Map<String, MeasureRegion> regionDict = regionList.stream().collect(Collectors.toMap(MeasureRegion::getUuid, region -> region));
         log.info("region_dict");
 
-        Set<Integer> rel_id_set = new HashSet<>();
-        region_list.forEach(region -> {
-            rel_id_set.add(region.getRelId());
+        Set<Integer> relIdSet = new HashSet<>();
+        regionList.forEach(region -> {
+            relIdSet.add(region.getRelId());
         });
-        List<MeasureRegionRel> rel_list = measureRegionRelService.selectByProjectIdAndIdNoDeleted(proj_id, new ArrayList<>(rel_id_set));
-        Map<Integer, MeasureRegionRel> rel_dict = rel_list.stream().collect(Collectors.toMap(MeasureRegionRel::getId, regionRel -> regionRel));
+        List<MeasureRegionRel> relList = measureRegionRelService.selectByProjectIdAndIdNoDeleted(projId, new ArrayList<>(relIdSet));
+        Map<Integer, MeasureRegionRel> relDict = relList.stream().collect(Collectors.toMap(MeasureRegionRel::getId, regionRel -> regionRel));
         log.info("rel_dict");
 
-        List<MeasureZone> insert_zone_list = new ArrayList<>();
-        for (Map pair : zoneGroup) {
-            List<String> copy_area_id_list = Arrays.asList(pair.get("copy_to_areas").toString().split(","));
+        List<MeasureZone> insertZoneList = new ArrayList<>();
+        for (Map pair : zoneGroups) {
+            List<String> copyAreaIdList = Arrays.asList(pair.get("copy_to_areas").toString().split(","));
             List<Map> groups = JSONArray.parseArray(pair.get("group").toString(), Map.class);
-            for (Map zone_dict : groups) {
+            for (Map zonedict : groups) {
                 //定义好复制数据
-                zone_dict.put("close_status", MeasureCloseStatusEnum.OPEN.getId());
-                zone_dict.put("finish_status", MeasureFinishStatusEnum.PROCESSING.getId());
-                zone_dict.put("list_id", list_model.getId());
-                zone_dict.put("src_type", RegionSrcTypeEnum.BACKEND.getId());
+                zonedict.put("close_status", MeasureCloseStatusEnum.OPEN.getId());
+                zonedict.put("finish_status", MeasureFinishStatusEnum.PROCESSING.getId());
+                zonedict.put("list_id", listModel.getId());
+                zonedict.put("src_type", RegionSrcTypeEnum.BACKEND.getId());
 
                 //找到要复制到其他区域的描点
-                String origin_region_uuid = zone_dict.remove("region_uuid").toString();
-                MeasureRegion region_model_dict = region_dict.get(origin_region_uuid);
-                MeasureRegionRel rel_model_dict = rel_dict.get(region_model_dict.getRelId());
+                String originRegionuuid = zonedict.remove("region_uuid").toString();
+                MeasureRegion regionModelDict = regionDict.get(originRegionuuid);
+                MeasureRegionRel relModelDict = relDict.get(regionModelDict.getRelId());
 
-                List<String> region_id_list = new ArrayList<>();
-                if (rel_model_dict != null) {
-                    region_id_list = Arrays.asList(rel_model_dict.getRegionIds().split(","));
+                List<String> regionIdList = new ArrayList<>();
+                if (relModelDict != null) {
+                    regionIdList = Arrays.asList(relModelDict.getRegionIds().split(","));
                 } else {
-                    region_id_list.add(region_model_dict.getId().toString());
+                    regionIdList.add(regionModelDict.getId().toString());
                 }
 
                 //找出复制到其他区域的描点
-                List<MeasureRegion> region_model_list = measureRegionService.searchByIdAndAreaIdAndProjectIdNoDeleted(region_id_list, copy_area_id_list, proj_id);
-                region_model_list.forEach(LambdaExceptionUtil.throwingConsumerWrapper(region_model -> {
+                List<MeasureRegion> regionModelList = measureRegionService.searchByIdAndAreaIdAndProjectIdNoDeleted(regionIdList, copyAreaIdList, projId);
+                regionModelList.forEach(LambdaExceptionUtil.throwingConsumerWrapper(regionModel -> {
                     MeasureZone measureZone = new MeasureZone();
-                    Area area = area_dict.get(region_model.getAreaId());
-                    String area_path_and_id = area == null ? "" : area.getPath() + area.getId() + "/";
-                    measureZone.setRegionUuid(region_model.getUuid());
+                    Area area = areaDict.get(regionModel.getAreaId());
+                    String areaPathAndId = area == null ? "" : area.getPath() + area.getId() + "/";
+                    measureZone.setRegionUuid(regionModel.getUuid());
                     measureZone.setUuid(UUID.randomUUID().toString().replaceAll("-", ""));
                     measureZone.setAreaId(area == null ? 0 : area.getId());
-                    measureZone.setAreaPathAndId(area_path_and_id);
-                    measureZone.setCategoryKey(zone_dict.get("category_key").toString());
-                    measureZone.setCategoryPathAndKey(zone_dict.get("category_path_and_key").toString());
-                    measureZone.setProjectId(proj_id);
-                    measureZone.setListId(list_model.getId());
+                    measureZone.setAreaPathAndId(areaPathAndId);
+                    measureZone.setCategoryKey(zonedict.get("category_key").toString());
+                    measureZone.setCategoryPathAndKey(zonedict.get("category_path_and_key").toString());
+                    measureZone.setProjectId(projId);
+                    measureZone.setListId(listModel.getId());
                     measureZone.setSrcType(RegionSrcTypeEnum.BACKEND.getId());
                     measureZone.setFinishStatus(MeasureFinishStatusEnum.PROCESSING.getId());
                     measureZone.setCloseStatus(MeasureCloseStatusEnum.OPEN.getId());
                     measureZone.setCreateAt(new Date());
                     measureZone.setUpdateAt(new Date());
-                    insert_zone_list.add(measureZone);
+                    insertZoneList.add(measureZone);
                 }));
             }
         }
-        measureZoneService.insertMany(insert_zone_list);
+        measureZoneService.insertMany(insertZoneList);
     }
 }

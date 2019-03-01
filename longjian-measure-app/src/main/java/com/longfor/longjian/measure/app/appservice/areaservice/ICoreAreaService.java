@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ICoreAreaService {
 
-    List<AreaRetrieveVo> searchByIdList(Integer project_id, List area_id_list);
+    List<AreaRetrieveVo> searchByIdList(Integer projectId, List areaIdList);
 
     AreasMap createAreasMapByLeaveIds(List<Integer> ids);
 

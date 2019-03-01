@@ -1,12 +1,10 @@
 package com.longfor.longjian.measure.app.appservice.appservice.impl;
 
-import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.app.appservice.appservice.IKeyProcedureTaskAppService;
 import com.longfor.longjian.measure.consts.enums.ReportStatusEnum;
 import com.longfor.longjian.measure.domain.externalservice.IReportResultService;
 import com.longfor.longjian.measure.po.zhijian2.ReportResult;
 import com.longfor.longjian.measure.util.CommonException;
-import freemarker.core.ParseException;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,23 +31,23 @@ public class KeyProcedureTaskAppServiceImpl implements IKeyProcedureTaskAppServi
     private IReportResultService reportResultService;
 
     @Override
-    public void startReport(String report_uuid, Integer uid, HttpServletRequest request) throws CommonException {
+    public void startReport(String reportuuid, Integer uid, HttpServletRequest request) throws CommonException {
         // 保存请求内容
         ThreadFactory threadFactory = Executors.defaultThreadFactory();
         threadFactory.newThread(() -> {
             try {
-                writeRequestToFile(report_uuid, uid, request);
+                writeRequestToFile(reportuuid, uid, request);
             } catch (Exception e) {
                 log.error("错误", e);
             }
         }).start();
         //不传uuid的时候也允许上报，但不记录状态
-        if (report_uuid.length() == 0) {
+        if (reportuuid.length() == 0) {
             return;
         }
         ReportResult item;
         try {
-            item = reportResultService.getByReportUuid(report_uuid);
+            item = reportResultService.getByReportUuid(reportuuid);
         } catch (Exception e) {
             throw new CommonException("查询记录出错");
         }
@@ -66,7 +64,7 @@ public class KeyProcedureTaskAppServiceImpl implements IKeyProcedureTaskAppServi
             reportResultService.updateByPrimaryKey(item);
         } else {
             ReportResult reportResult = new ReportResult();
-            reportResult.setReportUuid(report_uuid);
+            reportResult.setReportUuid(reportuuid);
             reportResult.setUserId(uid);
             reportResult.setStatus(ReportStatusEnum.PADDING.getValue());
             reportResult.setCreateAt(new Date());
@@ -76,8 +74,8 @@ public class KeyProcedureTaskAppServiceImpl implements IKeyProcedureTaskAppServi
     }
 
     @Override
-    public void updateReportStatus(String report_uuid, String reportUuidStatus) {
-        ReportResult item = reportResultService.getByReportUuid(report_uuid);
+    public void updateReportStatus(String reportuuid, String reportUuidStatus) {
+        ReportResult item = reportResultService.getByReportUuid(reportuuid);
         item.setStatus(Integer.parseInt(reportUuidStatus));
         item.setUpdateAt(new Date());
         reportResultService.updateByPrimaryKey(item);

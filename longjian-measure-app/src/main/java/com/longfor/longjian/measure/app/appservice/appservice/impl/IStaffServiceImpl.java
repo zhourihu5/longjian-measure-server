@@ -178,16 +178,16 @@ public class IStaffServiceImpl implements IStaffService {
         List<UserInfoProtoVo> userInfoProtoVos = userInfo.getData().getUser_infos();
 
 
-        List<AllowUserSearchVo> allow_user_info = new ArrayList<>();
+        List<AllowUserSearchVo> allowUserInfo = new ArrayList<>();
 
         for (int z = 0; z < userInfoProtoVos.size(); z++) {
             AllowUserSearchVo allowUserSearchVo = new AllowUserSearchVo();
             allowUserSearchVo.setUser_id(userInfoProtoVos.get(z).getUser_id());
             allowUserSearchVo.setReal_name(userInfoProtoVos.get(z).getReal_name());
-            allow_user_info.add(allowUserSearchVo);
+            allowUserInfo.add(allowUserSearchVo);
         }
 
-        return allow_user_info;
+        return allowUserInfo;
     }
 
     @Override
@@ -302,7 +302,7 @@ public class IStaffServiceImpl implements IStaffService {
 
         List<Integer> deleteUserIds = ArrayUtil.getDiff(oldUserIds, newUseridsArr, "A-B");//找出删除组员并删除
 
-        if (deleteUserIds.size() > 0) {
+        if (!deleteUserIds.isEmpty()) {
             Map<String, Object> deleteMap = new HashMap<>();
 
             deleteMap.put("project_id", squadUpdateReq.getProject_id());
@@ -331,7 +331,7 @@ public class IStaffServiceImpl implements IStaffService {
             newMUser.setUpdateAt(new Date());
             measureSquadUsers.add(newMUser);
         }
-        if (measureSquadUsers.size() > 0) {
+        if (!measureSquadUsers.isEmpty()) {
             iMeasureSquadUserService.insertList(measureSquadUsers);
         }
 
@@ -382,7 +382,7 @@ public class IStaffServiceImpl implements IStaffService {
 
         List<Integer> delUserId = ArrayUtil.getDiff(prevUserId, newUseridsArr, "A-B");
 
-        if (delUserId.size() > 0) {
+        if (!delUserId.isEmpty()) {
             Map<String, Object> map = new HashMap<>();
             map.put("list_id", repairerListUpdateReq.getList_id());
             map.put("role_type", repairerListUpdateReq.getRole_type());
@@ -408,7 +408,7 @@ public class IStaffServiceImpl implements IStaffService {
             newMUser.setUpdateAt(new Date());
             newMeaRep.add(newMUser);
         }
-        if (newMeaRep.size() > 0) {
+        if (!newMeaRep.isEmpty()) {
             iMeasureRepairerUserService.insertList(newMeaRep);//新增人员
         }
     }

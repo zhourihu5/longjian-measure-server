@@ -151,7 +151,7 @@ public interface IMeasureListService {
      * @param id
      * @return
      */
-    MeasureList GetByProjIdAndIdNoFoundErr(Integer projectId, Integer id);
+    MeasureList getByProjIdAndIdNoFoundErr(Integer projectId, Integer id);
 
     /**
      *

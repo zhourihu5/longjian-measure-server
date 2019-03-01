@@ -29,7 +29,7 @@ import java.util.*;
 @Service
 @Slf4j
 public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
-    private static Integer MEASURE_API_GET_PER_TIME = 5000;
+    private static final Integer MEASUREAPIGETPERTIME = 5000;
     @Autowired
     private IMeasureRuleService measureRuleService;
     @Autowired
@@ -132,7 +132,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         }
         String[] listIds = apiMeasureZoneReq.getList_ids().split(",");
         Integer lastId = 0;
-        Integer limit = MEASURE_API_GET_PER_TIME;
+        Integer limit = MEASUREAPIGETPERTIME;
         Integer start = 0;
         Long timestamp = null;
         for (String listId : listIds
@@ -164,7 +164,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         MeasureList measureList = measureListService.getNoProjNoFoundErr(apiMeasureZoneReqV2.getList_id().toString());
         Integer lastId = 0;
         Integer start = 0;
-        Integer limit = MEASURE_API_GET_PER_TIME;
+        Integer limit = MEASUREAPIGETPERTIME;
         List<MeasureZone> measureZones = measureZoneService.searchZoneUnscopedByListIdLastIdUpdateAtGt2(measureList.getProjectId(), apiMeasureZoneReqV2.getList_id(), apiMeasureZoneReqV2.getLast_id(), apiMeasureZoneReqV2.getTimestamp(), start, limit);
         if ((measureZones.size()) > 0) {
             lastId = measureZones.get(measureZones.size() - 1).getId();
@@ -208,7 +208,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         MeasureList measureList = measureListService.getNoProjNoFoundErr(apiMeasureIssueReq.getList_id().toString());
         //判断用户是否在MeasureList中, 暂缺
         Integer start = 0;
-        Integer limit = MEASURE_API_GET_PER_TIME;
+        Integer limit = MEASUREAPIGETPERTIME;
         List<MeasureListIssue> measureListIssueList = measureListIssueService.searchIssueListByListIdLastIdTimestampGt(measureList.getId(), apiMeasureIssueReq.getLast_id(), apiMeasureIssueReq.getTimestamp(), start, limit);
         measureListIssueList.forEach(measureListIssue -> {
             IssueListVo issueListVo = converMeasureListIssueToIssueListVo(measureListIssue);
@@ -216,7 +216,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         });
         try {
             issueVo.setIssue_list(issueListVos);
-            if (issueListVos.size() > 0) {
+            if (!issueListVos.isEmpty()) {
                 IssueListVo issueListVo = issueListVos.get(issueListVos.size() - 1);
                 issueVo.setLast_id(issueListVo.getId());
             }
@@ -235,7 +235,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         List<IssueLogListVo> measureIssueLogVos = new ArrayList<>();
         MeasureList measureList = measureListService.getNoProjNoFoundErr(apiMeasureIssueLogReq.getList_id().toString());
         Integer start = 0;
-        Integer pageSize = MEASURE_API_GET_PER_TIME;
+        Integer pageSize = MEASUREAPIGETPERTIME;
         List<MeasureListIssueLog> measureListIssueLogs = measureListIssueLogService.searchIssueLogListByListIdLastIdTimestampGt(measureList.getProjectId(), apiMeasureIssueLogReq.getList_id(), apiMeasureIssueLogReq.getLast_id(), apiMeasureIssueLogReq.getTimestamp(), start, pageSize);
         //map转换vo
         measureListIssueLogs.forEach(measureListIssueLog -> {
@@ -244,7 +244,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         });
         try {
             issueLogVo.setIssue_log_list(measureIssueLogVos);
-            if (measureIssueLogVos.size() > 0) {
+            if (!measureIssueLogVos.isEmpty()) {
                 IssueLogListVo measureIssueLogVoEnt = measureIssueLogVos.get(measureIssueLogVos.size() - 1);
                 issueLogVo.setLast_id(measureIssueLogVoEnt.getId());
             }

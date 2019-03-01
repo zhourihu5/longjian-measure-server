@@ -63,11 +63,12 @@ public class IZoneServiceImpl implements IZoneService {
 
     @Resource
     private IMeasureRuleService measureRuleService;
-    private static  final String  PROJECTID= "projectId";
-    private static  final String  PROJECT_ID= "project_id";
-    private static  final String  ZONEID= "zoneId";
-    private static  final String  UPDATE_AT= "update_at";
-    private static  final String  DELETE_AT= "delete_at";
+    private static final String PROJECTID = "projectId";
+    private static final String PROJECT_ID = "project_id";
+    private static final String ZONEID = "zoneId";
+    private static final String UPDATE_AT = "update_at";
+    private static final String DELETE_AT = "delete_at";
+
     @Override
     public JSONObject getResult(GetResultReq getResultReq) {
 
@@ -154,10 +155,10 @@ public class IZoneServiceImpl implements IZoneService {
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo(PROJECTID, paginationSearchReq.getProject_id());
         criteria.andEqualTo("listId", paginationSearchReq.getList_id());
-        if (areaIdList.size() > 0) {
+        if (!areaIdList.isEmpty()) {
             criteria.andIn("areaId", areaIdList);
         }
-        if (categoryKeyList.size() > 0) {
+        if (!categoryKeyList.isEmpty()) {
             criteria.andIn("categoryKey", categoryKeyList);
         }
         Page result = PageHelper.startPage(paginationSearchReq.getPage(), paginationSearchReq.getPage_size());
@@ -168,7 +169,7 @@ public class IZoneServiceImpl implements IZoneService {
 
         List<MeasureZone> measureZoneList = result.getResult();
 
-        if (measureZoneList == null || measureZoneList.size() == 0) {
+        if (measureZoneList == null || !measureZoneList.isEmpty()) {
             jb.put("zone_info_list", jsonArray);
             jb.put("total", 0);
             return jb;
@@ -240,10 +241,10 @@ public class IZoneServiceImpl implements IZoneService {
 
                 MeasureRegion measureRegion = measureRegionList.get(0);
 
-                String categoryFullName = "";
+                StringBuilder categoryFullName = null;
 
                 for (int k = 1; k < keyList.length; k++) {
-                    categoryFullName += "/" + checkItemDict.get(keyList[k]).getName();
+                    categoryFullName.append("/").append(checkItemDict.get(keyList[k]).getName());
                 }
                 Map polygon = JSON.parseObject(measureRegion.getPolygon());
 
