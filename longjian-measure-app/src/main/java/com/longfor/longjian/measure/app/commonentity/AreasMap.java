@@ -12,6 +12,7 @@ import java.util.Map;
  * @create: 2019-01-11 14:16
  **/
 @Data
+@SuppressWarnings("squid:S1068")
 public class AreasMap {
     /**
      *

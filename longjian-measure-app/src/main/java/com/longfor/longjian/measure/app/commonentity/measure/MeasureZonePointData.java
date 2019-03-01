@@ -11,6 +11,7 @@ import java.util.Map;
 
 @Data
 @NoArgsConstructor
+@SuppressWarnings("squid:S1068")
 public class MeasureZonePointData implements Serializable {
 
     private String key;// MeasurePointRule.Key

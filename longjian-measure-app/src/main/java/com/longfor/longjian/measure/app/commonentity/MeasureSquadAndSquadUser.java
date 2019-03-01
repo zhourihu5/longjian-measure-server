@@ -12,6 +12,7 @@ import java.util.List;
  * @create: 2019-01-12 19:09
  **/
 @Data
+@SuppressWarnings("squid:S1068")
 public class MeasureSquadAndSquadUser {
     private MeasureSquad Squad;
     private List<MeasureSquadUser> Users;
