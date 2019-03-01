@@ -16,6 +16,8 @@ import com.longfor.longjian.measure.consts.enums.RegionSrcTypeEnum;
 import com.longfor.longjian.measure.domain.externalservice.*;
 import com.longfor.longjian.measure.po.zhijian2.*;
 import com.longfor.longjian.measure.util.LambdaExceptionUtil;
+import com.longfor.longjian.measure.vo.ConditionSearchVo;
+import com.longfor.longjian.measure.vo.CreateMeasureListVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -154,7 +156,18 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
 
     @Override
     public LjBaseResponse<MeasureListInfoVo> conditionSearch(ConditionSearchReq req) throws LjBaseRuntimeException {
-        Map<String, Object> listMap = measureListService.conditionSearch(req.getGroup_id(), req.getProject_id(), req.getPage(), req.getPage_size(), req.getArea_id(), req.getUser_id_list(), req.getFinish_status(), req.getName(), req.getCategory_key());
+
+        ConditionSearchVo vo =new ConditionSearchVo();
+        vo.setGroup_id(req.getGroup_id());
+        vo.setProject_id(req.getProject_id());
+        vo.setPage(req.getPage());
+        vo.setPage_size(req.getPage_size());
+        vo.setArea_id(req.getArea_id());
+        vo.setUser_id_list(req.getUser_id_list());
+        vo.setFinish_status(req.getFinish_status());
+        vo.setName(req.getName());
+        vo.setCategory_key(req.getCategory_key());
+        Map<String, Object> listMap = measureListService.conditionSearch(vo);
         LjBaseResponse<MeasureListInfoVo> ljBaseResponse = new LjBaseResponse<>();
         MeasureListInfoVo measureListInfoVo = new MeasureListInfoVo();
         List<ListInfoVo> listInfoVos = Lists.newArrayList();
@@ -195,7 +208,16 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
         String squad_group = params.get("squad_group").toString();
         String repairer_group = params.get("repairer_group").toString();
         //创建任务
-        MeasureList list_model = measureListService.createMeasureList(proj_id, name, area_type, MeasureCloseStatusEnum.OPEN.getId(), MeasureFinishStatusEnum.PROCESSING.getId(), root_category_key, plan_begin_on, plan_end_on);
+        CreateMeasureListVo vo =new CreateMeasureListVo();
+        vo.setProj_id(proj_id);
+        vo.setName(name);
+        vo.setArea_type(area_type);
+        vo.setId(MeasureCloseStatusEnum.OPEN.getId());
+        vo.setId1(MeasureFinishStatusEnum.PROCESSING.getId());
+        vo.setRoot_category_key(root_category_key);
+        vo.setPlan_begin_on(plan_begin_on);
+        vo.setPlan_end_on(plan_end_on);
+        MeasureList list_model = measureListService.createMeasureList(vo);
         //获取区域信息 todo lamada表达式没弄明白😐
         String[] areaIdList = area_id_list.split(",");
         List<Integer> areaIdListInt = new ArrayList<>();

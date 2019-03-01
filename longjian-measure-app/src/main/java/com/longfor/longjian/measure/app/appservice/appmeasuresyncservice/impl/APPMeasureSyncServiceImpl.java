@@ -16,7 +16,6 @@ import com.longfor.longjian.measure.app.vo.appmeasuresyncvo.*;
 import com.longfor.longjian.measure.consts.enums.*;
 import com.longfor.longjian.measure.domain.externalservice.*;
 import com.longfor.longjian.measure.po.zhijian2.*;
-import com.longfor.longjian.measure.util.JsonUtil;
 import com.longfor.longjian.measure.vo.CreateZoneFromAppVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -501,7 +500,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
      * @return
      */
     private List<PointVo> stringtoPointVo(String point) {
-        List<PointVo> pointVos = JsonUtil.GsonToList(point, PointVo.class);
+        List<PointVo> pointVos = JSONObject.parseArray(point, PointVo.class);
         return pointVos;
     }
 

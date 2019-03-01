@@ -58,9 +58,4 @@ public class FileResourceServiceImpl implements IFileResourceService {
         }
         return bytes;
     }
-
-    /*public static void main(String[] args) {
-        StoreUrlVo urlVo = fileResourceGetStoreUrl("pictures/452699f53a5d42c3ad81878ab4bd5a0b.png");
-        System.out.println(urlVo.getUri());
-    }*/
 }

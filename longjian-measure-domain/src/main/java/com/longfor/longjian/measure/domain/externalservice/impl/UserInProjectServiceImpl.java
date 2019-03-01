@@ -16,11 +16,6 @@ public class UserInProjectServiceImpl implements IUserInProjectService {
     @Override
     public List<Integer> getUserIdByProjectIds(int[] projectIds) {
         List<Integer> userIds = new ArrayList<>();
-//        Example example = new Example(UserInProject.class);
-//        Example.Criteria criteria = example.createCriteria();
-//        criteria.andIn("projectId",Arrays.asList(projectIds));
-//        criteria.andIsNull("deleteAt");
-//        List<UserInProject> userInProjectList = userInProjectMapper.selectByExample(example);
         List<UserInProject> userInProjectList = userInProjectMapper.getUserIdByProjectIds(projectIds);
         userInProjectList.forEach(userInProject -> {
             userIds.add(userInProject.getUserId());

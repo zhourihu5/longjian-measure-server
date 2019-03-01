@@ -16,6 +16,8 @@ import java.util.stream.Stream;
  */
 public class StringSplitToListUtil {
 
+    public StringSplitToListUtil() {
+    }
 
     /**
      * 字符串分割 转换为int类型的
