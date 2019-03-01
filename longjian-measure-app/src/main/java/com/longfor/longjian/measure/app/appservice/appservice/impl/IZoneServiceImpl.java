@@ -241,7 +241,7 @@ public class IZoneServiceImpl implements IZoneService {
 
                 MeasureRegion measureRegion = measureRegionList.get(0);
 
-                StringBuilder categoryFullName = null;
+                StringBuilder categoryFullName = new StringBuilder();
 
                 for (int k = 1; k < keyList.length; k++) {
                     categoryFullName.append("/").append(checkItemDict.get(keyList[k]).getName());
