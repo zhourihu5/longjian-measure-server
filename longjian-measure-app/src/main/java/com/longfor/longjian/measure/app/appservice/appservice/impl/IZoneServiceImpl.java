@@ -169,7 +169,7 @@ public class IZoneServiceImpl implements IZoneService {
 
         List<MeasureZone> measureZoneList = result.getResult();
 
-        if (measureZoneList == null || !measureZoneList.isEmpty()) {
+        if (measureZoneList == null || measureZoneList.isEmpty()) {
             jb.put("zone_info_list", jsonArray);
             jb.put("total", 0);
             return jb;
