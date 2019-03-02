@@ -429,7 +429,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         List<Map> dataZone = JSONArray.parseArray(result.getData(), Map.class);
         for (Map d : dataZone) {
             MeasureZoneGroupData r = new MeasureZoneGroupData();
-            r.setTexture(MapUtils.getString(d, TEXTURE, null));
+            r.setTexture(MapUtils.getString(d, TEXTURE, ""));
             r.setData(Maps.newHashMap());
             r.setScore(0F);
             List<Map> dataPoint = JSONArray.parseArray(MapUtils.getString(d, "Data", null), Map.class);

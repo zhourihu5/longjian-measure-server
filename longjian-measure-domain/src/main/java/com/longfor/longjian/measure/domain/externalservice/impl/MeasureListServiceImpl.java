@@ -112,6 +112,8 @@ public class MeasureListServiceImpl implements IMeasureListService {
         measureZone.setCloseStatus(vo.getId1());
         measureZone.setCreateAt(new Date());
         measureZone.setUpdateAt(new Date());
+        //客户端添加
+        measureZone.setSrcType(2);
         measureZoneMapper.insert(measureZone);
     }
 
