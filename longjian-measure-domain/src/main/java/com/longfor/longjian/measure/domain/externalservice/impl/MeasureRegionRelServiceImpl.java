@@ -46,7 +46,7 @@ public class MeasureRegionRelServiceImpl implements IMeasureRegionRelService {
 
     @Override
     public List<MeasureRegionRel> selectByProjectIdAndIdNoDeleted(Integer projectId, List<Integer> relIdList) {
-        if (relIdList == null || relIdList.size() <= 0){
+        if (relIdList == null || relIdList.isEmpty()){
             return new ArrayList<>();
         }
         Example example = new Example(MeasureRegionRel.class);

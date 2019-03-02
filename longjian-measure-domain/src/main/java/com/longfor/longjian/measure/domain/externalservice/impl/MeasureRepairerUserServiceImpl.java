@@ -3,7 +3,6 @@ package com.longfor.longjian.measure.domain.externalservice.impl;
 import com.longfor.longjian.measure.dao.zhijian2.MeasureRepairerUserMapper;
 import com.longfor.longjian.measure.domain.externalservice.IMeasureRepairerUserService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureRepairerUser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
@@ -44,8 +43,8 @@ public class MeasureRepairerUserServiceImpl implements IMeasureRepairerUserServi
     }
 
     @Override
-    public List<MeasureRepairerUser> SearchMeasureReparierUserByListId(Integer projId, Integer listId) {
-        return measureRepairerUserMapper.SearchMeasureReparierUserByListId(projId,listId);
+    public List<MeasureRepairerUser> searchMeasureReparierUserByListId(Integer projId, Integer listId) {
+        return measureRepairerUserMapper.searchMeasureReparierUserByListId(projId,listId);
     }
 
     @Override

@@ -36,9 +36,7 @@ public class UserServiceImpl implements IUserService {
     public Map<Integer, User> getUsersByIds(List<Integer> collect) {
         List<User> items = searchUserByIdsUnscoped(collect);
         Map<Integer, User> users = new HashMap<>();
-        items.forEach(item -> {
-            users.put(item.getUserId(),item);
-        });
+        items.forEach(item -> users.put(item.getUserId(),item));
         return users;
     }
 
@@ -59,16 +57,14 @@ public class UserServiceImpl implements IUserService {
     @Override
     @LFAssignDataSource("zhijian2_apisvr")
     public Map<Integer, String> getUserRealNameMap(List<Integer> userIds) {
-        if (userIds.size() == 0) {
+        if (userIds.isEmpty()) {
             return Maps.newHashMap();
         }
         Example example = new Example(User.class);
         example.createCriteria().andIn("userId", userIds);
         Map<Integer, String> r = Maps.newHashMap();
         List<User> userList = userMapper.selectByExample(example);
-        userList.forEach(user -> {
-            r.put(user.getUserId(), user.getRealName());
-        });
+        userList.forEach(user -> r.put(user.getUserId(), user.getRealName()));
         return r;
     }
 }

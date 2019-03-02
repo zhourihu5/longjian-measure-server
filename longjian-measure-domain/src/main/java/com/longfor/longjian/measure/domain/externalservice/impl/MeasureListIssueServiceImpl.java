@@ -50,6 +50,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     private static final String NEW_COUNT = "new_count";
     private static final String REFORM_COUNT = "reform_count";
     private static final String PROJECTID = "projectId";
+    private static final String PATHFLAG = "/";
     @Override
     public Integer countByMeasureListId(String id) {
         Example example = new Example(MeasureListIssue.class);
@@ -82,10 +83,10 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     }
 
     @Override
-    public List<Map<String, Object>> searchMeasureListIssueTrend(Integer projectId, Integer measureListId, String startTime, String endTime, String UNCLOSECODE) throws ParseException {
+    public List<Map<String, Object>> searchMeasureListIssueTrend(Integer projectId, Integer measureListId, String startTime, String endTime, String unCloseCode) throws ParseException {
         List<Map<String, Object>> result = new ArrayList<>();
-        List<Map<String, Object>> newCountList = measureListIssueMapper.searchMeasureListIssueTrendNewCountList(projectId, measureListId, startTime, endTime, UNCLOSECODE);
-        List<Map<String, Object>> trendReformList = measureListIssueMapper.searchMeasureListIssueTrendReformList(projectId, measureListId, startTime, endTime, UNCLOSECODE);
+        List<Map<String, Object>> newCountList = measureListIssueMapper.searchMeasureListIssueTrendNewCountList(projectId, measureListId, startTime, endTime, unCloseCode);
+        List<Map<String, Object>> trendReformList = measureListIssueMapper.searchMeasureListIssueTrendReformList(projectId, measureListId, startTime, endTime, unCloseCode);
         //数据合并，把两个查询出来的时间合并到开始到结束时间，数据是空就记0
         do {
             Map<String, Object> map = new HashMap<>();
@@ -119,8 +120,8 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     }
 
     @Override
-    public Integer countMeasureListIssueDistributionCategory(Integer projectId, Integer measureListId, String UNCLOSECODE) {
-        return measureListIssueMapper.countMeasureListIssueDistributionCategory(projectId, measureListId, UNCLOSECODE);
+    public Integer countMeasureListIssueDistributionCategory(Integer projectId, Integer measureListId, String unCloseCode) {
+        return measureListIssueMapper.countMeasureListIssueDistributionCategory(projectId, measureListId, unCloseCode);
     }
 
     @Override
@@ -130,8 +131,8 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
 
     @Override
     public List<Map<String, Object>> getMeasureListIssueStatusMapByListIdsAndCategoryKeyAndAreaId(String[] listIds, CategoryV3 categoryV3, Area area, String closedcode) {
-        String cateChildPath = categoryV3.getPath() + categoryV3.getKey() + "/";
-        String areaChilePath = area.getPath() + area.getId() + "/";
+        String cateChildPath = categoryV3.getPath() + categoryV3.getKey() + PATHFLAG;
+        String areaChilePath = area.getPath() + area.getId() + PATHFLAG;
         return measureListIssueMapper.getMeasureListIssueStatusMapByListIdsAndCategoryKeyAndAreaId(listIds, cateChildPath, areaChilePath, closedcode);
     }
 
@@ -148,7 +149,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     @Override
     public void insertMeasureListIssueObject(MeasureListIssue issue) {
         try {
-            boolean has = measureListIssueMapper.getByUuidUnscoped(issue.getUuid()) == null ? false : true;
+            boolean has = measureListIssueMapper.getByUuidUnscoped(issue.getUuid()) != null;
             if (has) {
                 //如果存在
                 //如果是已被删除的，应该舍弃掉
@@ -272,9 +273,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
 
     private void createAreasMapByAreaList(List<Area> areas) {
         Map<Integer, Area> maps = AreaUtils.getAreas();
-        areas.forEach(area -> {
-            AreaUtils.getAreas().put(area.getId(), area);
-        });
+        areas.forEach(area -> AreaUtils.getAreas().put(area.getId(), area));
         AreaUtils.setAreas(maps);
         AreaUtils.setList(areas);
     }
@@ -296,17 +295,13 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
         Map<String, CategoryV3> cMap = this.newCategoryMap(categories);
         CategoryUtils.setM(cMap);
         Map<String, List<String>> r = Maps.newHashMap();
-        categoryKeys.forEach(categoryKey -> {
-            r.put(categoryKey, CategoryUtils.getFullNamesByKey(categoryKey));
-        });
+        categoryKeys.forEach(categoryKey -> r.put(categoryKey, CategoryUtils.getFullNamesByKey(categoryKey)));
         return r;
     }
 
     private Map<String, CategoryV3> newCategoryMap(List<CategoryV3> categories) {
         Map<String, CategoryV3> mCategory = Maps.newHashMap();
-        categories.forEach(categoryV3 -> {
-            mCategory.put(categoryV3.getKey(), categoryV3);
-        });
+        categories.forEach(categoryV3 -> mCategory.put(categoryV3.getKey(), categoryV3));
         return mCategory;
     }
 
@@ -321,9 +316,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
             return null;
         }
         Map<Integer, String> r = Maps.newHashMap();
-        measureLists.forEach(measureList -> {
-            r.put(measureList.getId(), measureList.getName());
-        });
+        measureLists.forEach(measureList -> r.put(measureList.getId(), measureList.getName()));
         return r;
     }
 
@@ -331,14 +324,12 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     public Map<Integer, List<String>> getAreaPathNamesMap(List<Integer> areaIdLists){
         this.createAreasMapByLeaveIds(areaIdLists);
         Map<Integer, List<String>> mAreaName = Maps.newHashMap();
-        areaIdLists.forEach(id -> {
-            mAreaName.put(id, AreaUtils.getPathNames(id));
-        });
+        areaIdLists.forEach(id -> mAreaName.put(id, AreaUtils.getPathNames(id)));
         return mAreaName;
     }
 
     @Override
-    public MeasureListIssue GetIssueByProjectIdAndUuid(Integer projectId, String uuid) {
+    public MeasureListIssue getIssueByProjectIdAndUuid(Integer projectId, String uuid) {
         return measureListIssueMapper.GetIssueByProjectIdAndUuid(projectId, uuid);
     }
 

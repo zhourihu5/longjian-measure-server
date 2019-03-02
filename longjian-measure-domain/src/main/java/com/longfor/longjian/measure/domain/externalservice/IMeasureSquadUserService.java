@@ -66,5 +66,5 @@ public interface IMeasureSquadUserService {
      * @param squadId
      * @return
      */
-    List<MeasureSquadUser>SearchBySquadId(Integer projId,Integer squadId);
+    List<MeasureSquadUser>searchBySquadId(Integer projId,Integer squadId);
 }

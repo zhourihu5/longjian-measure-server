@@ -190,7 +190,7 @@ public class MeasureListIssueDetailController {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
 
-        measureListIssueService.GetIssueByProjectIdAndUuid(measureListIssueDetailReq.getProject_id(), measureListIssueDetailReq.getUuid());
+        measureListIssueService.getIssueByProjectIdAndUuid(measureListIssueDetailReq.getProject_id(), measureListIssueDetailReq.getUuid());
 
         List<MeasureListIssueHistoryRepairLogVo> actionLogs = proMeasureListIssueLogService.getIssueActionLogByIssueUuid(measureListIssueDetailReq.getProject_id(), measureListIssueDetailReq.getUuid());
         itemsVo.setItems(actionLogs);
@@ -269,7 +269,7 @@ public class MeasureListIssueDetailController {
         //鉴权
         try {
             ctrlTool.projPerm(request, CtrlToolConstant.PROJECT_MEASURE_ISSUEMANAGE_CHECK);
-            MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(req.getProject_id(), req.getUuid());
+            MeasureListIssue issue = measureListIssueService.getIssueByProjectIdAndUuid(req.getProject_id(), req.getUuid());
             if (issue == null) {
                 throw new LjBaseRuntimeException(-1, "该爆点信息不存在");
             }

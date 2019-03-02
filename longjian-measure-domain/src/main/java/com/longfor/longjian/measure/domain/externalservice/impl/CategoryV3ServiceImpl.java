@@ -5,7 +5,6 @@ import com.longfor.longjian.measure.domain.externalservice.ICategoryV3Service;
 import com.longfor.longjian.measure.model.tree.CategoryPathTree;
 import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
@@ -80,16 +79,14 @@ public class CategoryV3ServiceImpl implements ICategoryV3Service {
     }
 
     @Override
-    public List<CategoryV3> SearchCategoryByKeyIn(List keys) {
+    public List<CategoryV3> searchCategoryByKeyIn(List keys) {
         return categoryV3Mapper.SearchCategoryByKeyIn(keys);
     }
 
     private CategoryPathTree getPathTree(CategoryV3 rootCategory, CategoryV3 root, List<CategoryV3> items) {
 
         CategoryPathTree tree = new CategoryPathTree(rootCategory,root);
-        items.forEach(item -> {
-            tree.addNode(item);
-        });
+        items.forEach(item -> tree.addNode(item));
         return tree;
     }
 }

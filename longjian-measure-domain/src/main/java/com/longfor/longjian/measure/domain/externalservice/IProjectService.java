@@ -9,7 +9,7 @@ public interface IProjectService {
      * @param projId
      * @return
      */
-    Project GetByIdNoFoundErr(Integer projId);
+    Project getByIdNoFoundErr(Integer projId);
 
     /**
      *

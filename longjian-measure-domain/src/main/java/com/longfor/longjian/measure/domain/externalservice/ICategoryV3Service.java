@@ -78,5 +78,5 @@ public interface ICategoryV3Service {
      * @author DDC
      * @date 2019/1/10 20:55
      **/
-    List<CategoryV3> SearchCategoryByKeyIn(List keys);
+    List<CategoryV3> searchCategoryByKeyIn(List keys);
 }

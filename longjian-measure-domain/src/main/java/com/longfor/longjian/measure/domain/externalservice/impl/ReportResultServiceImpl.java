@@ -3,13 +3,12 @@ package com.longfor.longjian.measure.domain.externalservice.impl;
 import com.longfor.longjian.measure.dao.zhijian2.ReportResultMapper;
 import com.longfor.longjian.measure.domain.externalservice.IReportResultService;
 import com.longfor.longjian.measure.po.zhijian2.ReportResult;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
 @Service
-public class reportResultServiceImpl implements IReportResultService {
+public class ReportResultServiceImpl implements IReportResultService {
     @Resource
     private ReportResultMapper reportResultMapper;
 

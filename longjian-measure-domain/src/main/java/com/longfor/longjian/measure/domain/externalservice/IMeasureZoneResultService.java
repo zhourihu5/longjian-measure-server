@@ -38,10 +38,10 @@ public interface IMeasureZoneResultService {
      *
      * @param measureListId
      * @param categoryKey
-     * @param CLOSEDCODE
+     * @param closedCode
      * @return
      */
-    List<Map<String,Object>> getSquadsZoneResultPassPercentByListIdAndCategoryKey(Integer measureListId, String categoryKey, String CLOSEDCODE);
+    List<Map<String,Object>> getSquadsZoneResultPassPercentByListIdAndCategoryKey(Integer measureListId, String categoryKey, String closedCode);
 
     /**
      *
@@ -54,10 +54,10 @@ public interface IMeasureZoneResultService {
      *
      * @param projectId
      * @param measureListId
-     * @param category_key
+     * @param categoryKey
      * @return
      */
-    List<MeasureZoneResult> getSubActiveMeasureCategoryZonesByListIdCategoryKey(Integer projectId, Integer measureListId, String category_key);
+    List<MeasureZoneResult> getSubActiveMeasureCategoryZonesByListIdCategoryKey(Integer projectId, Integer measureListId, String categoryKey);
 
     /**
      * 通过任务Id列表和检查项和区域Id获取测区的测点数和合格率
@@ -151,11 +151,11 @@ public interface IMeasureZoneResultService {
 
     /**
      *
-     * @param ProjectId
+     * @param projectId
      * @param uuid
      * @return
      */
-    List<MeasureZoneResult> SearchZoneResultByProjIdZoneUuid(Integer ProjectId,String uuid);
+    List<MeasureZoneResult> searchZoneResultByProjIdZoneUuid(Integer projectId,String uuid);
 
     /**
      * @param projId

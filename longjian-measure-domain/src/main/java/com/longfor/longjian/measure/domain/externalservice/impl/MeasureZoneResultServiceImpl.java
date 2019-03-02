@@ -3,7 +3,6 @@ package com.longfor.longjian.measure.domain.externalservice.impl;
 import com.longfor.longjian.measure.dao.zhijian2.MeasureZoneResultMapper;
 import com.longfor.longjian.measure.domain.externalservice.IMeasureZoneResultService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureZoneResult;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
@@ -39,8 +38,8 @@ public class MeasureZoneResultServiceImpl implements IMeasureZoneResultService {
     }
 
     @Override
-    public List<Map<String, Object>> getSquadsZoneResultPassPercentByListIdAndCategoryKey(Integer measureListId, String categoryKey, String CLOSEDCODE) {
-        return measureZoneResultMapper.getSquadsZoneResultPassPercentByListIdAndCategoryKey(measureListId,categoryKey,CLOSEDCODE);
+    public List<Map<String, Object>> getSquadsZoneResultPassPercentByListIdAndCategoryKey(Integer measureListId, String categoryKey, String closedCode) {
+        return measureZoneResultMapper.getSquadsZoneResultPassPercentByListIdAndCategoryKey(measureListId,categoryKey,closedCode);
     }
 
     @Override
@@ -49,8 +48,8 @@ public class MeasureZoneResultServiceImpl implements IMeasureZoneResultService {
     }
 
     @Override
-    public List<MeasureZoneResult> getSubActiveMeasureCategoryZonesByListIdCategoryKey(Integer projectId, Integer measureListId, String category_key) {
-        return measureZoneResultMapper.getSubActiveMeasureCategoryZonesByListIdCategoryKey(projectId,measureListId,category_key);
+    public List<MeasureZoneResult> getSubActiveMeasureCategoryZonesByListIdCategoryKey(Integer projectId, Integer measureListId, String categoryKey) {
+        return measureZoneResultMapper.getSubActiveMeasureCategoryZonesByListIdCategoryKey(projectId,measureListId,categoryKey);
     }
 
     @Override
@@ -115,8 +114,8 @@ public class MeasureZoneResultServiceImpl implements IMeasureZoneResultService {
     }
 
     @Override
-    public List<MeasureZoneResult> SearchZoneResultByProjIdZoneUuid(Integer ProjectId, String uuid) {
-        return measureZoneResultMapper.SearchZoneResultByProjIdZoneUuid(ProjectId,uuid);
+    public List<MeasureZoneResult> searchZoneResultByProjIdZoneUuid(Integer projectId, String uuid) {
+        return measureZoneResultMapper.searchZoneResultByProjIdZoneUuid(projectId,uuid);
     }
 
     @Override

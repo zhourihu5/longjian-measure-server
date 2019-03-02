@@ -57,7 +57,7 @@ public interface IMeasureSquadService {
      * @param listId
      * @return
      */
-    List<MeasureSquad> SearchSquadByProjIdListId(Integer projId , Integer listId);
+    List<MeasureSquad> searchSquadByProjIdListId(Integer projId , Integer listId);
 
     /**
      *

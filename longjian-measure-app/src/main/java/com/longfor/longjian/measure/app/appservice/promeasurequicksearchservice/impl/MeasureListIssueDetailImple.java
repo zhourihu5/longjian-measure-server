@@ -87,7 +87,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
 
     @Override
     public MeasureListIssueDetailIssueInfoVo issueInfo(GetMeasureListIssueDetailReq req) {
-        MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(req.getProject_id(), req.getUuid());
+        MeasureListIssue issue = measureListIssueService.getIssueByProjectIdAndUuid(req.getProject_id(), req.getUuid());
         if (issue == null) {
             throw new LjBaseRuntimeException(-1, ISSUEISNO);
         }
@@ -120,7 +120,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         List<MeasureListIssueDetailSquadResultVo> voResesults = new ArrayList<>();
         MeasureListIssue issue = null;
         try {
-            issue = measureListIssueService.GetIssueByProjectIdAndUuid(req.getProject_id(), req.getUuid());
+            issue = measureListIssueService.getIssueByProjectIdAndUuid(req.getProject_id(), req.getUuid());
         } catch (Exception e) {
             log.warn("");
         }
@@ -150,7 +150,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
             }
         }
 
-        List<MeasureZoneResult> results = measureZoneResultService.SearchZoneResultByProjIdZoneUuid(req.getProject_id(), issue.getZoneUuid());
+        List<MeasureZoneResult> results = measureZoneResultService.searchZoneResultByProjIdZoneUuid(req.getProject_id(), issue.getZoneUuid());
         for (MeasureZoneResult result : results) {
             MeasureListIssueDetailSquadResultVo squadResult = new MeasureListIssueDetailSquadResultVo();
             squadResult.setSquad_id(result.getSquadId());
@@ -173,7 +173,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         }
         if (measureZone != null) {
             // proj_id 同上
-            MeasureRegion region = measureRegionService.GetByUuid(curProj.getId(), measureZone.getRegionUuid());
+            MeasureRegion region = measureRegionService.getByUuid(curProj.getId(), measureZone.getRegionUuid());
             MeasureRegionVo regionvo = new MeasureRegionVo();
             if (region != null) {
                 regionvo.setId(region.getId());
@@ -192,14 +192,14 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
                 vo.setRegion(regionvo);
             }
         }
-        List<MeasureSquad> measureSquads = measureSquadService.SearchSquadByProjIdListId(req.getProject_id(), issue.getListId());
+        List<MeasureSquad> measureSquads = measureSquadService.searchSquadByProjIdListId(req.getProject_id(), issue.getListId());
         List<MeasureSquadAndSquadUser> squals = new ArrayList<>();
         List<MeasureSquadUser> measureSquadUsers = null;
         List<Integer> uids = new ArrayList<>();
         for (MeasureSquad measureSquad : measureSquads) {
             MeasureSquadAndSquadUser measureSquadAndSquadUser = new MeasureSquadAndSquadUser();
             measureSquadAndSquadUser.setSquad(measureSquad);
-            measureSquadUsers = measureSquadUserService.SearchBySquadId(req.getProject_id(), measureSquad.getId());
+            measureSquadUsers = measureSquadUserService.searchBySquadId(req.getProject_id(), measureSquad.getId());
             measureSquadAndSquadUser.setUsers(measureSquadUsers);
             squals.add(measureSquadAndSquadUser);
             if (!squals.isEmpty()) {
@@ -234,7 +234,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
     public MeasureListIssueDetailRepairListVo repairList(GetMeasureListIssueDetailReq req) {
         MeasureListIssueDetailRepairListVo measureListIssueDetailRepairListVo = new MeasureListIssueDetailRepairListVo();
         List<MeasureListIssueDetailRepairerVo> vo = new ArrayList<>();
-        MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(req.getProject_id(), req.getUuid());
+        MeasureListIssue issue = measureListIssueService.getIssueByProjectIdAndUuid(req.getProject_id(), req.getUuid());
         if (issue == null) {
             throw new LjBaseRuntimeException(-1, ISSUEISNO);
         }
@@ -245,7 +245,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         } catch (Exception e) {
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
-        measureRepairerUsers = measureRepairerUserService.SearchMeasureReparierUserByListId(curProj.getId(), issue.getListId());
+        measureRepairerUsers = measureRepairerUserService.searchMeasureReparierUserByListId(curProj.getId(), issue.getListId());
         List<Integer> uids = new ArrayList<>();
         for (MeasureRepairerUser repairerUser : measureRepairerUsers) {
             uids.add(repairerUser.getUserId());
@@ -359,7 +359,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
 
     public Map<String, List<String>> getCategoryPathNamesMap(List<String> keys) {
         Map<String, List<String>> cateMap = new HashMap<>();
-        List<CategoryV3> categorys = categoryV3Service.SearchCategoryByKeyIn(keys);
+        List<CategoryV3> categorys = categoryV3Service.searchCategoryByKeyIn(keys);
         //cMap中key是category的key, 值为category实例
         Map<String, CategoryV3> cMap = new HashMap<>();
         for (CategoryV3 category : categorys) {
@@ -451,7 +451,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         Integer eInt = -1;
         Long eLong = -1L;
         String eStr = "";
-        MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(projectId, uuid);
+        MeasureListIssue issue = measureListIssueService.getIssueByProjectIdAndUuid(projectId, uuid);
 
         boolean isClose = false;
         if (issue.getCloseStatus() == MeasureListIssueType.CLOSED) {
@@ -487,7 +487,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
         Integer eInt = -1;
         Long eLong = -1L;
         String eStr = "";
-        MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(projectId, uuid);
+        MeasureListIssue issue = measureListIssueService.getIssueByProjectIdAndUuid(projectId, uuid);
         boolean isClose = false;
         if (issue.getCloseStatus() == MeasureListIssueType.CLOSED) {
             isClose = true;

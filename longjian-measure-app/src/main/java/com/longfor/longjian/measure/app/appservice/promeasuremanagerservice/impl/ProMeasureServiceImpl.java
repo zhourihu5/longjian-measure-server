@@ -979,7 +979,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             mapCategoryName.put(key, "");
             return true;
         }).map(iteam -> iteam.get(ROOTCATEGORYKEY).toString()).collect(Collectors.toList());
-        List<CategoryV3> categorys = categoryV3Service.SearchCategoryByKeyIn(rootCategoryKeys);
+        List<CategoryV3> categorys = categoryV3Service.searchCategoryByKeyIn(rootCategoryKeys);
 
         categorys.forEach(category ->
             mapCategoryName.put(category.getKey(), category.getName())

@@ -46,7 +46,7 @@ public interface IMeasureTagService {
      * @param group
      * @return
      */
-    Integer addOnGroup(Integer groupId, List<String> nameList, Integer group,Integer proj_id);
+    Integer addOnGroup(Integer groupId, List<String> nameList, Integer group,Integer projId);
 
     /**
      *

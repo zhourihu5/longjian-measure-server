@@ -37,10 +37,10 @@ public class IMeasureListAreaServiceImpl implements IMeasureListAreaService {
     }
 
     @Override
-    public List<MeasureListArea> searchListAreaByListIdIn(Integer project_id, List<Integer> listIds) {
+    public List<MeasureListArea> searchListAreaByListIdIn(Integer projectId, List<Integer> listIds) {
         Example example = new Example(MeasureListArea.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("projectId",project_id);
+        criteria.andEqualTo("projectId",projectId);
         criteria.andIn(LISTID,listIds);
         ExampleUtil.addDeleteAtJudge(example);
         return measureListAreaMapper.selectByExample(example);
@@ -57,9 +57,9 @@ public class IMeasureListAreaServiceImpl implements IMeasureListAreaService {
     }
 
     @Override
-    public void create(int proj_id, Integer areaId, String s, Integer listId) {
+    public void create(int projId, Integer areaId, String s, Integer listId) {
         MeasureListArea measureListArea = new MeasureListArea();
-        measureListArea.setProjectId(proj_id);
+        measureListArea.setProjectId(projId);
         measureListArea.setAreaId(areaId);
         measureListArea.setAreaPathAndId(s);
         measureListArea.setListId(listId);

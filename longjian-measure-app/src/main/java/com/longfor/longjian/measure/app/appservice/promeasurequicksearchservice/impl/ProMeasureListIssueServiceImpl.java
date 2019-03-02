@@ -34,7 +34,7 @@ public class ProMeasureListIssueServiceImpl implements IProMeasureListIssueServi
         int eInt = -1;
         String eStr = "";
 
-        MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(projectId,uuid);
+        MeasureListIssue issue = measureListIssueService.getIssueByProjectIdAndUuid(projectId,uuid);
 
         boolean isClosed = false;
         if (MeasureListCloseStatusEnum.CLOSED.getId().equals(issue.getCloseStatus())){
@@ -66,7 +66,7 @@ public class ProMeasureListIssueServiceImpl implements IProMeasureListIssueServi
         int eInt = -1;
         String eStr = "";
 
-        MeasureListIssue issue = measureListIssueService.GetIssueByProjectIdAndUuid(projectId,uuid);
+        MeasureListIssue issue = measureListIssueService.getIssueByProjectIdAndUuid(projectId,uuid);
 
         helper.init(projectId);
 

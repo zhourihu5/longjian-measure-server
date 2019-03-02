@@ -10,7 +10,6 @@ import com.longfor.longjian.measure.po.zhijian2.Area;
 import com.longfor.longjian.measure.util.AreaUtils;
 import com.longfor.longjian.measure.vo.AreaInfoWithExtendVo;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
@@ -73,9 +72,7 @@ public class AreaServiceImpl implements IAreaService {
         try {
             List<AreaInfoWithExtendVo> items = Lists.newArrayList();
             List<Integer> areaIds = Lists.newArrayList();
-            areas.forEach(area -> {
-                areaIds.add(area.getId());
-            });
+            areas.forEach(area -> areaIds.add(area.getId()));
             this.createAreasMapByLeaveIds(areaIds);
             for (Area area : areas) {
                 AreaInfoWithExtendVo item = new AreaInfoWithExtendVo();
@@ -112,9 +109,7 @@ public class AreaServiceImpl implements IAreaService {
 
     private void createAreasMapByAreaList(List<Area> areas) {
         Map<Integer, Area> areaMap = AreaUtils.getAreas();
-        areas.forEach(area -> {
-            areaMap.put(area.getId(),area);
-        });
+        areas.forEach(area -> areaMap.put(area.getId(),area));
         AreaUtils.setList(areas);
     }
 

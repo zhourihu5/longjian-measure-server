@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@SuppressWarnings("squid:S1068")
+@SuppressWarnings({"squid:S1068","squid:S00116"})
 public class MeasureIssueReportMsg {
 
     @Data
-    @SuppressWarnings("squid:S1068")
+    @SuppressWarnings({"squid:S1068","squid:S00116"})
     class MeasureIssue{
         /**
          * Uuid               string `json:"uuid"`

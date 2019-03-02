@@ -60,7 +60,7 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
     @Override
     public void exportExcelAsync(Integer curUserId, Integer projId, Integer listId) {
         try {
-            Project project = projectService.GetByIdNoFoundErr(projId);
+            Project project = projectService.getByIdNoFoundErr(projId);
             MeasureList measureList = projectService.getByProjIdAndIdNoFoundErr(projId, listId);
             if(measureList==null){
                 measureList = new MeasureList();
@@ -225,7 +225,7 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
             if (list != null) {
                 md.setList_name(list.getName());
                 md.setProj_id(list.getProjectId());
-                proj = projectService.GetByIdNoFoundErr(md.getProj_id());
+                proj = projectService.getByIdNoFoundErr(md.getProj_id());
                 md.setProj_name(proj.getName());
             }
             List<MeasureZoneResult> results = measureZoneResultService.searchByProjIdListId(projId, listId);

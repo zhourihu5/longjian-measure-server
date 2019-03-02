@@ -48,7 +48,7 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
 
     @Override
     public List<MeasureRegion> searchByUuids(Integer projId, Set<String> uuids) {
-        if (uuids == null || uuids.size() == 0) {
+        if (uuids == null || uuids.isEmpty()) {
             return new ArrayList<>();
         }
         return measureRegionMapper.searchByUuids(projId, uuids);
@@ -57,17 +57,15 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
     @Override
     public List<MeasureRegion> createRegionsFromRegionStructList(Integer projectId, List<MeasureRegion> measureRegions) throws LjBaseRuntimeException {
         Set<Integer> areaIds = new HashSet<>();
-        measureRegions.forEach(measureRegion -> {
-            areaIds.add(measureRegion.getAreaId());
-        });
+        measureRegions.forEach(measureRegion -> areaIds.add(measureRegion.getAreaId()));
         List<MeasureRegion> measureRegionLists = new ArrayList<>();
-        if(areaIds.size()>0){
+        if(!areaIds.isEmpty()){
             try {
                 Map<String, Integer> indexMap = measureRegionMapper.searchMeasureRegionAreaMaxIndexByAreaIdList(projectId, areaIds);
-                Integer area_id = indexMap.get("area_id");
-                Integer max_index = indexMap.get("max_index");
+                Integer areaId = indexMap.get("area_id");
+                Integer maxindex = indexMap.get("max_index");
                 Map<Integer, Integer> indexMap2 = Maps.newHashMap();
-                indexMap2.put(area_id,max_index);
+                indexMap2.put(areaId,maxindex);
                 measureRegions.forEach(measureRegion -> {
                     if (indexMap2.get(measureRegion.getAreaId()) == null) {
                         Integer maxIndex = indexMap2.get(measureRegion.getAreaId());
@@ -200,7 +198,7 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
     }
 
     @Override
-    public MeasureRegion GetByUuid(Integer projId, String uuid) {
+    public MeasureRegion getByUuid(Integer projId, String uuid) {
         return measureRegionMapper.GetByUuid(projId, uuid);
     }
 
@@ -214,10 +212,10 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
     }
 
     @Override
-    public List<MeasureRegion> searchByIdAndAreaIdAndProjectIdNoDeleted(List<String> regionIdList, List<String> copyAreaIdList, int proj_id) {
+    public List<MeasureRegion> searchByIdAndAreaIdAndProjectIdNoDeleted(List<String> regionIdList, List<String> copyAreaIdList, int projId) {
         Example example = new Example(MeasureRegion.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo(PROJECTID, proj_id);
+        criteria.andEqualTo(PROJECTID, projId);
         criteria.andIn("id", regionIdList);
         criteria.andIn("areaId", copyAreaIdList);
         ExampleUtil.addDeleteAtJudge(example);

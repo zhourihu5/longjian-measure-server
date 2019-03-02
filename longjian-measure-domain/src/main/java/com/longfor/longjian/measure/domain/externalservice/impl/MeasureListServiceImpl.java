@@ -13,7 +13,6 @@ import com.longfor.longjian.measure.vo.CreateMeasureListVo;
 import com.longfor.longjian.measure.vo.CreateZoneFromAppVo;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
@@ -151,8 +150,8 @@ public class MeasureListServiceImpl implements IMeasureListService {
     }
 
     @Override
-    public MeasureList getMeasureListByProjIdAndId(Integer projId, Integer Id) {
-        return measureListMapper.getMeasureListByProjIdAndId(projId, Id);
+    public MeasureList getMeasureListByProjIdAndId(Integer projId, Integer id) {
+        return measureListMapper.getMeasureListByProjIdAndId(projId, id);
     }
 
     @Override
@@ -198,9 +197,9 @@ public class MeasureListServiceImpl implements IMeasureListService {
 
     @Override
     public Map<String, Object> conditionSearch(ConditionSearchVo vo) throws LjBaseRuntimeException {
-        List<Integer> list_id_set = Lists.newArrayList();
+        List<Integer> listIdSet = Lists.newArrayList();
         List<Integer> userIdList = Lists.newArrayList();
-        List<Integer> list_id_set2 = Lists.newArrayList();
+        List<Integer> listIdSet2 = Lists.newArrayList();
         Example example = new Example(MeasureList.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo(PROJECTID, vo.getProject_id());
@@ -209,9 +208,7 @@ public class MeasureListServiceImpl implements IMeasureListService {
             Example.Criteria criteria1 = example1.createCriteria();
             criteria1.andEqualTo(PROJECTID, vo.getProject_id()).andEqualTo("areaId", vo.getArea_id());
             List<MeasureListArea> measureListAreas = measureListAreaMapper.selectByExample(example1);
-            measureListAreas.forEach(measureListArea -> {
-                list_id_set.add(measureListArea.getListId());
-            });
+            measureListAreas.forEach(measureListArea -> listIdSet.add(measureListArea.getListId()));
         }
         if (vo.getName() != null && !vo.getName().equals("")) {
             criteria.andEqualTo("name", vo.getName());
@@ -225,8 +222,8 @@ public class MeasureListServiceImpl implements IMeasureListService {
             criteria1.andEqualTo(PROJECTID, vo.getProject_id()).andIn("id", userIdList);
             List<MeasureSquadUser> measureSquadUsers = measureSquadUserMapper.selectByExample(example2);
             measureSquadUsers.forEach(measureSquadUser -> {
-                if (list_id_set.contains(measureSquadUser.getUserId())) {
-                    list_id_set2.add(measureSquadUser.getUserId());
+                if (listIdSet.contains(measureSquadUser.getUserId())) {
+                    listIdSet2.add(measureSquadUser.getUserId());
                 }
             });
         }
@@ -236,14 +233,14 @@ public class MeasureListServiceImpl implements IMeasureListService {
         if (vo.getCategory_key() != null && !vo.getCategory_key().equals("")) {
             criteria.andEqualTo("rootCategoryKey", vo.getCategory_key());
         }
-        if (!list_id_set.isEmpty()) {
-            criteria.andIn("id", list_id_set);
+        if (!listIdSet.isEmpty()) {
+            criteria.andIn("id", listIdSet);
         }
         criteria.andIsNull(DELETEAT);
         example.setOrderByClause("create_at");
         List<MeasureList> measureLists = measureListMapper.selectByExampleAndRowBounds(example,new RowBounds((vo.getPage() - 1) * vo.getPage_size(),vo.getPage_size()));
-        int total_num = measureListMapper.selectCountByExample(example);
-        List<Map<String,Object>> return_list =Lists.newArrayList();
+        int totalNum = measureListMapper.selectCountByExample(example);
+        List<Map<String,Object>> returnList =Lists.newArrayList();
         for (MeasureList list_model : measureLists) {
             Map<String, Object> map = null;
             try {
@@ -253,34 +250,29 @@ public class MeasureListServiceImpl implements IMeasureListService {
             }
             Example example4 =new Example(MeasureListIssue.class);
             example4.createCriteria().andEqualTo(LISTID,list_model.getId()).andEqualTo(PROJECTID,vo.getProject_id()).andIsNull(DELETEAT);
-            int issue_count = measureListIssueMapper.selectCountByExample(example4);
-            map.put("issue_count",issue_count);
-            List<String> key_list = Lists.newArrayList();
-            key_list.add(list_model.getRootCategoryKey());
-            List<CategoryV3> categoryV3s = this.searchbykeylist(vo.getGroup_id(), key_list);
+            int issueCount = measureListIssueMapper.selectCountByExample(example4);
+            map.put("issue_count",issueCount);
+            List<String> keyList = Lists.newArrayList();
+            keyList.add(list_model.getRootCategoryKey());
+            List<CategoryV3> categoryV3s = this.searchbykeylist(vo.getGroup_id(), keyList);
             Example example5 = new Example(MeasureListArea.class);
             Example.Criteria criteria1 = example5.createCriteria();
-            //todo 源码上的为'^/[1-9][0-9]*/$' 但是匹配不到三级目录
             criteria1.andEqualTo(LISTID,list_model.getId()).andCondition("area_path_and_id  REGEXP '^/[1-9][0-9]*/[1-9][0-9]*/$'");
-            List<MeasureListArea> area_list = measureListAreaMapper.selectByExample(example5);
-            Set<Integer> area_id_list = Sets.newHashSet();
-            List<String> top_areas =Lists.newArrayList();
-            if(area_list.size()>0){
-                area_list.forEach(measureListArea->{
-                    area_id_list.add(measureListArea.getAreaId());
-                });
-                List<Area> area_info_list = search_by_id_list(vo.getProject_id(), area_id_list);
-                area_info_list.forEach(area -> {
-                    top_areas.add(area.getName());
-                });
+            List<MeasureListArea> areaList = measureListAreaMapper.selectByExample(example5);
+            Set<Integer> areaIdList = Sets.newHashSet();
+            List<String> topAreas =Lists.newArrayList();
+            if(!areaList.isEmpty()){
+                areaList.forEach(measureListArea-> areaIdList.add(measureListArea.getAreaId()));
+                List<Area> areaInfoList = searchByIdList(vo.getProject_id(), areaIdList);
+                areaInfoList.forEach(area -> topAreas.add(area.getName()));
             }
-            map.put("top_areas",top_areas);
-            map.put("root_category_name",categoryV3s.size()>0 ? categoryV3s.get(0).getName():new CategoryV3().getName());
-            return_list.add(map);
+            map.put("top_areas",topAreas);
+            map.put("root_category_name",!categoryV3s.isEmpty() ? categoryV3s.get(0).getName():new CategoryV3().getName());
+            returnList.add(map);
         }
         Map<String,Object> map = Maps.newHashMap();
-        map.put("total_num",total_num);
-        map.put("return_list",return_list);
+        map.put("total_num",totalNum);
+        map.put("return_list",returnList);
         return map;
     }
 
@@ -301,23 +293,23 @@ public class MeasureListServiceImpl implements IMeasureListService {
         return measureList;
     }
 
-    private List<Area> search_by_id_list(Integer project_id, Set<Integer> area_id_list) {
+    private List<Area> searchByIdList(Integer projectId, Set<Integer> areaIdList) {
         Example example =new Example(Area.class);
-        example.createCriteria().andEqualTo(PROJECTID,project_id).andIn("id",area_id_list);
+        example.createCriteria().andEqualTo(PROJECTID,projectId).andIn("id",areaIdList);
         return areaMapper.selectByExample(example);
     }
 
-    private List<CategoryV3> searchbykeylist(Integer group_id, List<String> key_list) {
+    private List<CategoryV3> searchbykeylist(Integer groupId, List<String> keyList) {
         Example example=new Example(CategoryV3.class);
-        example.createCriteria().andEqualTo("teamId",group_id).andIn("key", key_list);
+        example.createCriteria().andEqualTo("teamId",groupId).andIn("key", keyList);
         return  categoryV3Mapper.selectByExample(example);
     }
 
-    public static Map<String, Object> objectToMap(Object obj) throws IntrospectionException, IllegalArgumentException,
+    public static Map<String, Object> objectToMap(Object obj) throws IntrospectionException,
             InvocationTargetException, IllegalAccessException {
         if (obj == null)
             return null;
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
 
         BeanInfo beanInfo = Introspector.getBeanInfo(obj.getClass());
         PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();

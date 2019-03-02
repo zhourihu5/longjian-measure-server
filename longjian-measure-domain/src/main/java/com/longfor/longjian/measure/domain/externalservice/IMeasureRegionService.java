@@ -140,7 +140,7 @@ public interface IMeasureRegionService {
      * @param uuid
      * @return
      */
-    MeasureRegion GetByUuid(Integer projId,String uuid);
+    MeasureRegion getByUuid(Integer projId,String uuid);
     /**
      *
      * @param projId

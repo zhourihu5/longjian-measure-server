@@ -25,7 +25,7 @@ public class ProjectServiceImpl implements IProjectService {
 
     @Override
     @LFAssignDataSource("zhijian2")
-    public Project GetByIdNoFoundErr(Integer projId) {
+    public Project getByIdNoFoundErr(Integer projId) {
         Example example = new Example(Project.class);
         example.createCriteria().andEqualTo("id", projId);
         return projectMapper.selectOneByExample(example);

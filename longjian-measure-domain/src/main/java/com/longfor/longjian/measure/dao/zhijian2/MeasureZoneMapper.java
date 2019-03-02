@@ -73,10 +73,10 @@ public interface MeasureZoneMapper extends LFMySQLMapper<MeasureZone> {
      * @param projId
      * @param listId
      * @param uuid
-     * @param category_key
+     * @param categorykey
      * @return
      */
-    List<MeasureZone> searchByCondition(@Param("project_id") Integer projId, @Param("list_id") Integer listId, @Param("uuid") String uuid, @Param("category_key") String category_key);
+    List<MeasureZone> searchByCondition(@Param("project_id") Integer projId, @Param("list_id") Integer listId, @Param("uuid") String uuid, @Param("category_key") String categorykey);
 
     /**
      *

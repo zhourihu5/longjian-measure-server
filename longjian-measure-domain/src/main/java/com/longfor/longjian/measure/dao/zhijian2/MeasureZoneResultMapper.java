@@ -41,10 +41,10 @@ public interface MeasureZoneResultMapper extends LFMySQLMapper<MeasureZoneResult
      *
      * @param measureListId
      * @param categoryKey
-     * @param CLOSEDCODE
+     * @param closedCode
      * @return
      */
-    List<Map<String,Object>> getSquadsZoneResultPassPercentByListIdAndCategoryKey(@Param("listId") Integer measureListId, @Param("categoryKey") String categoryKey, @Param("CLOSEDCODE") String CLOSEDCODE);
+    List<Map<String,Object>> getSquadsZoneResultPassPercentByListIdAndCategoryKey(@Param("listId") Integer measureListId, @Param("categoryKey") String categoryKey, @Param("CLOSEDCODE") String closedCode);
 
     /**
      *
@@ -133,5 +133,11 @@ public interface MeasureZoneResultMapper extends LFMySQLMapper<MeasureZoneResult
      */
     void delBySquadIdUuid(Map<String,Object>map);
 
-    List<MeasureZoneResult> SearchZoneResultByProjIdZoneUuid(@Param("ProjectId") Integer ProjectId , @Param("uuid") String uuid);
+    /**
+     *
+     * @param projectId
+     * @param uuid
+     * @return
+     */
+    List<MeasureZoneResult> searchZoneResultByProjIdZoneUuid(@Param("ProjectId") Integer projectId , @Param("uuid") String uuid);
 }

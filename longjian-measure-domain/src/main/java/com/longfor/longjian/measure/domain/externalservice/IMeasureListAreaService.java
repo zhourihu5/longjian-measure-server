@@ -11,7 +11,7 @@ public interface IMeasureListAreaService {
 
    void delete (Integer id);
 
-    List<MeasureListArea> searchListAreaByListIdIn(Integer project_id, List<Integer> listIds);
+    List<MeasureListArea> searchListAreaByListIdIn(Integer projectId, List<Integer> listIds);
 
     /**
      *
@@ -21,5 +21,5 @@ public interface IMeasureListAreaService {
      */
     List<MeasureListArea> searchByListId(String projectId, Integer id);
 
-    void create(int proj_id, Integer id, String s, Integer id1);
+    void create(int projId, Integer id, String s, Integer id1);
 }

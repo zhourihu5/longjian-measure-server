@@ -106,12 +106,12 @@ public interface IMeasureListService {
     /**
      * @Description:
      * @param projId
-     * @param Id
+     * @param id
      * @return com.longfor.longjian.measure.po.zhijian2.measurelist
      * @author DDC
      * @date 2019/1/10 20:54
      **/
-    MeasureList getMeasureListByProjIdAndId(Integer projId,Integer Id);
+    MeasureList getMeasureListByProjIdAndId(Integer projId,Integer id);
 
     /**
      *

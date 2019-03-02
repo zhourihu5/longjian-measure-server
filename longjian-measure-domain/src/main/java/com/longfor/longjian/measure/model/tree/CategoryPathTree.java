@@ -109,30 +109,30 @@ public class CategoryPathTree {
 
     private List<Object> fNode(String[] keys, CategoryPathTreeNode father, List<CategoryPathTreeNode> nodes) {
         List<Object> result = new ArrayList<>();
-        CategoryPathTreeNode _father = father;
-        CategoryPathTreeNode _node = null;
+        CategoryPathTreeNode reFather = father;
+        CategoryPathTreeNode reNode = null;
         String[] keyLeft = keys;
         String key = keys[0];
         //数组复制
-        String[] _keys = new String[keys.length - 1];
-        System.arraycopy(keys,1,_keys,0,keys.length - 1);
+        String[] reKeys = new String[keys.length - 1];
+        System.arraycopy(keys,1,reKeys,0,keys.length - 1);
         for (CategoryPathTreeNode node:nodes
              ) {
             if (node.getKey().equals(key)){
-                if (_keys.length > 0){
-                    List<Object> list = this.fNode(_keys,node,node.getSubs());
-                    _father = (CategoryPathTreeNode)(list.get(0));
-                    _node = (CategoryPathTreeNode)(list.get(1));
+                if (reKeys.length > 0){
+                    List<Object> list = this.fNode(reKeys,node,node.getSubs());
+                    reFather = (CategoryPathTreeNode)(list.get(0));
+                    reNode = (CategoryPathTreeNode)(list.get(1));
                     keyLeft = (String[])(list.get(2));
                 }else {
-                    _node = node;
-                    keyLeft = _keys;
+                    reNode = node;
+                    keyLeft = reKeys;
                 }
                 break;
             }
         }
-        result.add(_father);
-        result.add(_node);
+        result.add(reFather);
+        result.add(reNode);
         result.add(keyLeft);
         return result;
     }

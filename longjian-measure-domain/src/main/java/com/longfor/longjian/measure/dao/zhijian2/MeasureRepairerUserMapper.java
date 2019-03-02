@@ -19,5 +19,5 @@ public interface MeasureRepairerUserMapper extends LFMySQLMapper<MeasureRepairer
 
     void delOld(Map<String,Object> map);
 
-    List<MeasureRepairerUser> SearchMeasureReparierUserByListId(@Param("projId") Integer projId, @Param("listId") Integer listId);
+    List<MeasureRepairerUser> searchMeasureReparierUserByListId(@Param("projId") Integer projId, @Param("listId") Integer listId);
 }

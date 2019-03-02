@@ -10,11 +10,11 @@ import java.util.Map;
 public interface AreaMapper extends LFMySQLMapper<Area> {
     /**
      *
-     * @param project_id
-     * @param area_id
+     * @param projectId
+     * @param areaId
      * @return
      */
-    List<Map<String,Object>> selectByFatherId(@Param("projectId") String project_id, @Param("areaId") String area_id);
+    List<Map<String,Object>> selectByFatherId(@Param("projectId") String projectId, @Param("areaId") String areaId);
 
     /**
      *

@@ -50,7 +50,7 @@ public class MeasureTagServiceImpl implements IMeasureTagService {
     @Override
     @LFAssignDataSource("zhijian2")
     @Transactional(rollbackFor = Exception.class)
-    public Integer addOnGroup(Integer groupId, List<String> nameList, Integer ownership,Integer proj_id) {
+    public Integer addOnGroup(Integer groupId, List<String> nameList, Integer ownership,Integer projId) {
         Integer count=0;
         for (String name : nameList) {
             Date date =new Date();

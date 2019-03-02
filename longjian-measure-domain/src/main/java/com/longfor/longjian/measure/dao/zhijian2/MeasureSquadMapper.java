@@ -20,5 +20,5 @@ public interface MeasureSquadMapper extends LFMySQLMapper<MeasureSquad> {
 
     int insertMeasureSquad(MeasureSquad measureSquad);
 
-    List<MeasureSquad> SearchSquadByProjIdListId(@Param("projId") Integer projId,@Param("listId") Integer listId);
+    List<MeasureSquad> searchSquadByProjIdListId(@Param("projId") Integer projId,@Param("listId") Integer listId);
 }

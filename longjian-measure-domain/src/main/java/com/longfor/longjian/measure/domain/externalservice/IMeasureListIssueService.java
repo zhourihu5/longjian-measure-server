@@ -31,19 +31,19 @@ public interface IMeasureListIssueService {
      * @param measureListId
      * @param startTime
      * @param endTime
-     * @param UNCLOSECODE
+     * @param unCloseCode
      * @return
      */
-    List<Map<String, Object>> searchMeasureListIssueTrend(Integer projectId, Integer measureListId, String startTime, String endTime, String UNCLOSECODE) throws ParseException;
+    List<Map<String, Object>> searchMeasureListIssueTrend(Integer projectId, Integer measureListId, String startTime, String endTime, String unCloseCode) throws ParseException;
 
     /**
      *
      * @param projectId
      * @param measureListId
-     * @param UNCLOSECODE
+     * @param unCloseCode
      * @return
      */
-    Integer countMeasureListIssueDistributionCategory(Integer projectId, Integer measureListId, String UNCLOSECODE);
+    Integer countMeasureListIssueDistributionCategory(Integer projectId, Integer measureListId, String unCloseCode);
 
     /**
      *
@@ -141,7 +141,7 @@ public interface IMeasureListIssueService {
      * @author DDC
      * @date 2019/1/10 19:40
      **/
-    MeasureListIssue GetIssueByProjectIdAndUuid(Integer projectId,String uuid);
+    MeasureListIssue getIssueByProjectIdAndUuid(Integer projectId,String uuid);
 
 
     /**

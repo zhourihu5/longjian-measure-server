@@ -32,5 +32,5 @@ public interface MeasureSquadUserMapper extends LFMySQLMapper<MeasureSquadUser> 
      */
     void deleteOld(Map<String,Object> map);
 
-    List<MeasureSquadUser> SearchBySquadId(@Param("projId") Integer projId,@Param("squadId") Integer squadId);
+    List<MeasureSquadUser> searchBySquadId(@Param("projId") Integer projId,@Param("squadId") Integer squadId);
 }

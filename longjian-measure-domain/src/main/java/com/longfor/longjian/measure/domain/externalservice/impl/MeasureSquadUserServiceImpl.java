@@ -3,7 +3,6 @@ package com.longfor.longjian.measure.domain.externalservice.impl;
 import com.longfor.longjian.measure.dao.zhijian2.MeasureSquadUserMapper;
 import com.longfor.longjian.measure.domain.externalservice.IMeasureSquadUserService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureSquadUser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
@@ -75,7 +74,7 @@ public class MeasureSquadUserServiceImpl implements IMeasureSquadUserService{
     }
 
     @Override
-    public List<MeasureSquadUser> SearchBySquadId(Integer projId, Integer squadId) {
-        return measureSquadUserMapper.SearchBySquadId(projId,squadId);
+    public List<MeasureSquadUser> searchBySquadId(Integer projId, Integer squadId) {
+        return measureSquadUserMapper.searchBySquadId(projId,squadId);
     }
 }

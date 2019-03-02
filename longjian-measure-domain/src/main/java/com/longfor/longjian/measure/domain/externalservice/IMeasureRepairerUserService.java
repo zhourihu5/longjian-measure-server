@@ -49,7 +49,7 @@ public interface IMeasureRepairerUserService {
      * @param listId
      * @return
      */
-    List<MeasureRepairerUser> SearchMeasureReparierUserByListId(Integer projId,Integer listId);
+    List<MeasureRepairerUser> searchMeasureReparierUserByListId(Integer projId,Integer listId);
 
     /**
      *
