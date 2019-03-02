@@ -138,8 +138,7 @@ public class DateUtil {
         SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD);
         Long time = date1.getTime();
         String d = format.format(time);
-        Date startDate = format.parse(d);
-        return startDate;
+        return format.parse(d);
     }
 
     /**
@@ -153,15 +152,13 @@ public class DateUtil {
         SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD);
         Long time = date1.getTime();
         String d = format.format(time);
-        Date startDate = format.parse(d);
-        return startDate;
+        return format.parse(d);
     }
 
     public static Long getLongFromString(String time) throws ParseException {
         SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date dt2 = sdf.parse(time);
-        long lTime = dt2.getTime();
-        return lTime;
+        return dt2.getTime();
     }
 
     /**
@@ -176,8 +173,7 @@ public class DateUtil {
         Date date1 = calendar.getTime();
         SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD);
         Long time = date1.getTime();
-        String d = format.format(time);
-        return d;
+        return format.format(time);
     }
 
     /**
@@ -195,8 +191,7 @@ public class DateUtil {
         calendar.add(Calendar.DATE, day);
         Date endDate = calendar.getTime();
         Long time = endDate.getTime();
-        String d = format.format(time);
-        return d;
+        return format.format(time);
     }
 
     /**
@@ -207,8 +202,7 @@ public class DateUtil {
      */
     public static String getShortDateStringByLong(Long dateLong){
         SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD);
-        String d = format.format(dateLong);
-        return d;
+        return format.format(dateLong);
     }
 
     /**
@@ -219,8 +213,7 @@ public class DateUtil {
      */
     public static String getLongDateStringByLong(Long dateLong){
         SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String d = format.format(dateLong);
-        return d;
+        return format.format(dateLong);
     }
 
     /**

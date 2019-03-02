@@ -46,8 +46,7 @@ public class ProPaintAreaManageController {
      */
     @RequestMapping(value = "search_by_area_id/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<AreaRegionTagVo> getAreaRegionList(@Valid GetProjMeasureRegionReq getProjMeasureRegionReq) throws LjBaseRuntimeException {
-        LjBaseResponse<AreaRegionTagVo> ljBaseResponse =  proPaintAreaManageService.getProjMeasureRegionByAreaId(getProjMeasureRegionReq);
-        return ljBaseResponse;
+        return proPaintAreaManageService.getProjMeasureRegionByAreaId(getProjMeasureRegionReq);
     }
 
 

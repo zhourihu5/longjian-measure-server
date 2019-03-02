@@ -53,8 +53,7 @@ public class APPMeasureSyncController {
      */
     @RequestMapping(value = "info/measure_region/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<MeasureRegionVo> getMeasureRegion(@Valid ApiMeasureRegionReq apiMeasureRegionReq) throws LjBaseRuntimeException {
-        LjBaseResponse<MeasureRegionVo> ljBaseResponse = appMeasureService.getMeasureRegion(apiMeasureRegionReq);
-        return ljBaseResponse;
+        return appMeasureService.getMeasureRegion(apiMeasureRegionReq);
     }
 
     /**
@@ -66,8 +65,7 @@ public class APPMeasureSyncController {
      */
     @RequestMapping(value = "info/measure_region_v2/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<MeasureRegionV2Vo> getMeasureRegionV2(@Valid ApiMeasureRegionReqV2 apiMeasureRegionReqV2) throws LjBaseRuntimeException {
-        LjBaseResponse<MeasureRegionV2Vo> ljBaseResponse = appMeasureService.getMeasureRegionV2(apiMeasureRegionReqV2);
-        return ljBaseResponse;
+        return appMeasureService.getMeasureRegionV2(apiMeasureRegionReqV2);
     }
 
     /**

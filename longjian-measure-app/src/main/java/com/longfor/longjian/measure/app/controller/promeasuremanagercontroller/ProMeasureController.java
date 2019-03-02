@@ -47,8 +47,7 @@ public class ProMeasureController {
      */
     @RequestMapping(value = "measure/measure_list/search_json/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<ProMeasurePlanListVo> getProMeasurePlanList(@Valid GetProMeasurePlanListReq getProMeasurePlanListReq, HttpServletRequest request) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException, ParseException {
-        LjBaseResponse<ProMeasurePlanListVo> ljBaseResponse = proMeasureService.getProMeasurePlanList(getProMeasurePlanListReq,request);
-        return ljBaseResponse;
+        return proMeasureService.getProMeasurePlanList(getProMeasurePlanListReq,request);
     }
 
     /**
@@ -59,8 +58,7 @@ public class ProMeasureController {
      */
     @RequestMapping(value = "measure/measure_list/sub_categorys/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<ItemsVo<List<ProMeasureCheckIteamVo>>> getProMeasureCheckItems(@Valid GetProMeasureCheckItemsReq getProMeasureCheckItemsReq,HttpServletRequest request) throws LjBaseRuntimeException, InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
-        LjBaseResponse<ItemsVo<List<ProMeasureCheckIteamVo>>> ljBaseResponse = proMeasureService.getProMeasureCheckItems(getProMeasureCheckItemsReq,request);
-        return ljBaseResponse;
+        return proMeasureService.getProMeasureCheckItems(getProMeasureCheckItemsReq,request);
     }
 
     /**
@@ -73,8 +71,7 @@ public class ProMeasureController {
      */
     @RequestMapping(value = "area/area/subs/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<AreaInfoVo> getProMeasureAreaList(@Valid GetProMeasureAreaListReq getProMeasureAreaListReq) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
-        LjBaseResponse<AreaInfoVo> ljBaseResponse = proMeasureService.getProMeasureAreaList(getProMeasureAreaListReq);
-        return ljBaseResponse;
+        return proMeasureService.getProMeasureAreaList(getProMeasureAreaListReq);
     }
 
     /**
@@ -85,8 +82,7 @@ public class ProMeasureController {
      */
     @RequestMapping(value = "measure/ajax_json/user_list/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<ItemsVo<List<CheckerVo>>> getCheckerList(@Valid GetCheckerListReq getCheckerListReq){
-        LjBaseResponse<ItemsVo<List<CheckerVo>>> ljBaseResponse = proMeasureService.getCheckerList(getCheckerListReq);
-        return ljBaseResponse;
+        return proMeasureService.getCheckerList(getCheckerListReq);
     }
 
 

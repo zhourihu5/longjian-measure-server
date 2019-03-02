@@ -48,8 +48,7 @@ public class MeasureListIssue2Controller {
      */
     @RequestMapping(value = "issue_query_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<MeasureIssueQueryVo> issueQueryJson(@Valid MeasureIssueQueryReq measureIssueQueryReq, HttpServletRequest request) throws LjBaseRuntimeException {
-        LjBaseResponse<MeasureIssueQueryVo> ljBaseResponse = measureListIssueService.issueQueryJson(measureIssueQueryReq,request);
-        return ljBaseResponse;
+        return measureListIssueService.issueQueryJson(measureIssueQueryReq,request);
     }
 
     /**

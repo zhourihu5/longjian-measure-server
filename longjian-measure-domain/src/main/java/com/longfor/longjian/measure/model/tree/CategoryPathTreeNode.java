@@ -6,6 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
+@SuppressWarnings("squid:S1068")
 public class CategoryPathTreeNode {
     private String key;
     private CategoryV3 item;

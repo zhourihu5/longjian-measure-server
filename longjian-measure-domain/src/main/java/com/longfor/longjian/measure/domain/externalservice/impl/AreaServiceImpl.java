@@ -66,7 +66,6 @@ public class AreaServiceImpl implements IAreaService {
         return areaMapper.selectByExample(example);
     }
 
-    //@todo : 后续可以优化，暂时只有subs使用，考虑一次性取出所有数据，而不是遍历
     @Override
     public List<AreaInfoWithExtendVo> formatAreaInfoWithExtend(List<Area> areas) throws LjBaseRuntimeException {
         try {

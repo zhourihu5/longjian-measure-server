@@ -119,7 +119,6 @@ public class ConvertUtil {
      */
     public static String convertStrfromHtml(String str){
         String regex="<[^>]*>";
-        String s = str.replaceAll(regex, "");
-        return s;
+        return str.replaceAll(regex, "");
     }
 }

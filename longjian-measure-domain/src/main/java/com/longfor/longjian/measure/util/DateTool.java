@@ -154,15 +154,13 @@ public class DateTool {
         SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD);
         Long time = date1.getTime();
         String d = format.format(time);
-        Date startDate = format.parse(d);
-        return startDate;
+        return format.parse(d);
     }
 
     public static Long getLongFromString(String time) throws ParseException {
         SimpleDateFormat sdf= new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS);
         Date dt2 = sdf.parse(time);
-        long lTime = dt2.getTime();
-        return lTime;
+        return dt2.getTime();
     }
 
     /**
@@ -177,8 +175,7 @@ public class DateTool {
         Date date1 = calendar.getTime();
         SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD);
         Long time = date1.getTime();
-        String d = format.format(time);
-        return d;
+        return format.format(time);
     }
 
     /**
@@ -189,8 +186,7 @@ public class DateTool {
      */
     public static String getShortDateStringByLong(Long dateLong) throws ParseException {
         SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD);
-        String d = format.format(dateLong);
-        return d;
+        return format.format(dateLong);
     }
 
     /**
@@ -201,8 +197,7 @@ public class DateTool {
      */
     public static String getDateStringByLong(Long dateLong) throws ParseException {
         SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS);
-        String d = format.format(dateLong);
-        return d;
+        return format.format(dateLong);
     }
 
     /**
@@ -232,15 +227,13 @@ public class DateTool {
         calendar.add(Calendar.DATE, day);
         Date endDate = calendar.getTime();
         Long time = endDate.getTime();
-        String d = format.format(time);
-        return d;
+        return format.format(time);
     }
 
     public static Long getLongFromShortString(String time) throws ParseException {
         SimpleDateFormat sdf= new SimpleDateFormat(YYYY_MM_DD);
         Date dt2 = sdf.parse(time);
-        long lTime = dt2.getTime();
-        return lTime;
+        return dt2.getTime();
     }
 
 }

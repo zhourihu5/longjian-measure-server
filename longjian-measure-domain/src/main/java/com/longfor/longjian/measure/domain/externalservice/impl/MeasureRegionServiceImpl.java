@@ -37,8 +37,7 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
 
     @Override
     public List<MeasureRegion> searchUnscopedByProjIdLastIdUpdateAtGt(Integer projectId, Integer lastId, Long timestamp, Integer measureApiGetPerTime, Integer start) {
-        List<MeasureRegion> measureRegions = measureRegionMapper.searchUnscopedByProjIdLastIdUpdateAtGt(projectId, lastId, timestamp, measureApiGetPerTime, start);
-        return measureRegions;
+        return measureRegionMapper.searchUnscopedByProjIdLastIdUpdateAtGt(projectId, lastId, timestamp, measureApiGetPerTime, start);
     }
 
     @Override
@@ -109,8 +108,7 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
         example.createCriteria().andEqualTo(PROJECTID, projId).andEqualTo("uuid", regionUuid);
         List<MeasureRegion> measureRegions = measureRegionMapper.selectByExample(example);
         if (!measureRegions.isEmpty()) {
-            MeasureRegion region = measureRegions.get(0);
-            return region;
+            return measureRegions.get(0);
         }
         return null;
     }

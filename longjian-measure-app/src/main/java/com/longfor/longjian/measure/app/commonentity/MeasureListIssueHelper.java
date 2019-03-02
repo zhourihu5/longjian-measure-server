@@ -63,6 +63,7 @@ public class MeasureListIssueHelper {
     private Map<String, Integer> listIdAndUserIdToSquadIdMap;
     private List<DroppedVo> droppedIssueLog;
     private List<DroppedVo> droppedIssue;
+    private static final String ERROR = "error:";
     /**
      * 初始化
      *
@@ -338,8 +339,7 @@ public class MeasureListIssueHelper {
      * @return
      */
     public MeasureListIssue getIssueFromDb(String issueUuid) {
-        MeasureListIssue issue = measureListIssueService.getByUuidUnscoped(issueUuid);
-        return issue;
+        return measureListIssueService.getByUuidUnscoped(issueUuid);
     }
 
     /**
@@ -503,7 +503,7 @@ public class MeasureListIssueHelper {
                     });
                 }
             } catch (Exception e) {
-                log.error("error:",e);
+                log.error(ERROR,e);
                 throw e;
             }
         }
@@ -657,7 +657,7 @@ public class MeasureListIssueHelper {
         } catch (Exception e) {
             txManager.rollback(status);
             log.warn("執行失敗", e.getMessage());
-            log.error("error:",e);
+            log.error(ERROR,e);
         } finally {
             LFDataSourceContextHolder.clear();
         }
@@ -739,8 +739,7 @@ public class MeasureListIssueHelper {
      * @return
      */
     public List<MeasureSquadUser> getSquadUsers(Set<Integer> listIds) {
-        List<MeasureSquadUser> squadUsers = measureListService.searchMeasureSquadUserByListIds(this.currentProjectId, listIds);
-        return squadUsers;
+        return measureListService.searchMeasureSquadUserByListIds(this.currentProjectId, listIds);
     }
 
     /**
@@ -818,7 +817,7 @@ public class MeasureListIssueHelper {
                 }
             }
         } catch (Exception e) {
-            log.error("error:",e);
+            log.error(ERROR,e);
             throw e;
         }
         return needDropIssueUuid;

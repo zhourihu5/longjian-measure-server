@@ -41,8 +41,7 @@ public class MeasureRegionTagController {
      */
     @RequestMapping(value = "search_by_group_id/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<GroupRegionTagVo> getGroupMeasureRegionTag(@Valid GetGroupMeasureRegionTagReq getGroupMeasureRegionTagReq) throws LjBaseRuntimeException {
-        LjBaseResponse<GroupRegionTagVo> ljBaseResponse = proPaintAreaManageService.getGroupMeasureRegionTag(getGroupMeasureRegionTagReq);
-        return ljBaseResponse;
+        return proPaintAreaManageService.getGroupMeasureRegionTag(getGroupMeasureRegionTagReq);
     }
 
     /**
@@ -53,8 +52,7 @@ public class MeasureRegionTagController {
      */
     @RequestMapping(value = "search_by_proj_id/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<GroupRegionTagVo> getGroupMeasureRegionTag(@Valid GetProjMeasureRegionTagReq getProjMeasureRegionTagReq) throws LjBaseRuntimeException {
-        LjBaseResponse<GroupRegionTagVo> ljBaseResponse = proPaintAreaManageService.getProjMeasureRegionTag(getProjMeasureRegionTagReq);
-        return ljBaseResponse;
+        return proPaintAreaManageService.getProjMeasureRegionTag(getProjMeasureRegionTagReq);
     }
 
     /**集团实测描画区域标签管理
@@ -64,8 +62,7 @@ public class MeasureRegionTagController {
      */
     @RequestMapping(value = "edit_by_group_id/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<Object> editByGroupId(@Valid EditOnGroupReq editOnGroupReq) {
-        LjBaseResponse<Object> ljBaseResponse = proPaintAreaManageService.editOnGroup(editOnGroupReq);
-        return ljBaseResponse;
+        return proPaintAreaManageService.editOnGroup(editOnGroupReq);
     }
 
 
@@ -77,8 +74,7 @@ public class MeasureRegionTagController {
      */
     @RequestMapping(value = "add_on_group/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<Object> addOnGroup(@Valid AddOnGroupReq addOnGroupReq) {
-        LjBaseResponse<Object> ljBaseResponse = proPaintAreaManageService.addOnGroup(addOnGroupReq);
-        return ljBaseResponse;
+        return proPaintAreaManageService.addOnGroup(addOnGroupReq);
     }
 
     /**
@@ -89,8 +85,7 @@ public class MeasureRegionTagController {
      */
     @RequestMapping(value = "add_on_proj/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<Object> addOnProj(@Valid AddOnProjReq addOnProjReq) {
-        LjBaseResponse<Object> ljBaseResponse = proPaintAreaManageService.addOnProj(addOnProjReq);
-        return ljBaseResponse;
+        return proPaintAreaManageService.addOnProj(addOnProjReq);
     }
 
 
@@ -102,8 +97,7 @@ public class MeasureRegionTagController {
      */
     @RequestMapping(value = "edit_by_proj_id/" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<Object> editByProjId(@Valid EditByProjIdReq editByProjId) {
-        LjBaseResponse<Object> ljBaseResponse = proPaintAreaManageService.editByProjId(editByProjId);
-        return ljBaseResponse;
+        return proPaintAreaManageService.editByProjId(editByProjId);
     }
 
 

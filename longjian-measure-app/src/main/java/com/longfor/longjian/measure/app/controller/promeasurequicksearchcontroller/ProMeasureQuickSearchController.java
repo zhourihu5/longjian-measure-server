@@ -52,8 +52,7 @@ public class ProMeasureQuickSearchController {
      */
     @RequestMapping(value = "measure/measure_statistic/measure_list_json/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<ItemsVo<List<QuickSearchPlanVo>>> getQuickSearchPlanList(@Valid GetQuickSearchPlanListReq getQuickSearchPlanListReq, HttpServletRequest request){
-        LjBaseResponse<ItemsVo<List<QuickSearchPlanVo>>> ljBaseResponse = proMeasureQuickSearchService.getQuickSearchPlanList(getQuickSearchPlanListReq,request);
-        return ljBaseResponse;
+        return proMeasureQuickSearchService.getQuickSearchPlanList(getQuickSearchPlanListReq,request);
     }
 
     /**
@@ -64,8 +63,7 @@ public class ProMeasureQuickSearchController {
      */
     @RequestMapping(value = "measure/ajax_json/get_root_category/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<CategoryListVo> getAreaPOPCheckItemList(@Valid GetAreaPOPCheckItemListReq getAreaPOPCheckItemList, HttpServletRequest request){
-        LjBaseResponse<CategoryListVo> ljBaseResponse = proMeasureQuickSearchService.getAreaPOPCheckItemList(getAreaPOPCheckItemList,request);
-        return ljBaseResponse;
+        return proMeasureQuickSearchService.getAreaPOPCheckItemList(getAreaPOPCheckItemList,request);
     }
 
     /**
@@ -76,8 +74,7 @@ public class ProMeasureQuickSearchController {
      */
     @RequestMapping(value = "project/user/simple_list/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public LjBaseResponse<ItemsVo<List<CheckerVo>>> getBlisterReformer(@Valid GetCheckerListReq getCheckerListReq){
-        LjBaseResponse<ItemsVo<List<CheckerVo>>> ljBaseResponse = proMeasureService.getCheckerList(getCheckerListReq);
-        return ljBaseResponse;
+        return proMeasureService.getCheckerList(getCheckerListReq);
     }
 
     /**

@@ -8,7 +8,7 @@ import java.util.function.Consumer;
  * lambda表达式异常处理，避免代码冗余
  */
 public class LambdaExceptionUtil {
-    public LambdaExceptionUtil() {
+    private LambdaExceptionUtil() {
         throw new UnsupportedOperationException();
     }
 

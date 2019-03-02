@@ -5,7 +5,7 @@ import org.apache.commons.lang.StringUtils;
 
 @Slf4j
 public class StringUtil {
-    public StringUtil() {
+    private StringUtil() {
         throw new UnsupportedOperationException();
     }
 

@@ -17,8 +17,9 @@ import java.util.Map;
  * Jiazm 2019/01/14 10:07
  */
 @Data
-@NoArgsConstructor
 public class AreaUtils {
+    private AreaUtils(){
+    }
     private static Map<Integer, Area> areas = Maps.newHashMap();
     private static List<Area> list = Lists.newArrayList();
 

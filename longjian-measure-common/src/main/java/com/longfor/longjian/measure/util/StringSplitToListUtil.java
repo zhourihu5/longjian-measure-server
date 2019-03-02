@@ -16,7 +16,7 @@ import java.util.stream.Stream;
  */
 public class StringSplitToListUtil {
 
-    public StringSplitToListUtil() {
+    private StringSplitToListUtil() {
         throw new UnsupportedOperationException();
     }
 
@@ -99,8 +99,7 @@ public class StringSplitToListUtil {
     public static List<String> removeStartAndEndStrAndSplit(String str,String removeSep,String splitSep){
         String s = StringUtils.removeStart(str, removeSep);
         String s1 = StringUtils.removeEnd(s, removeSep);
-        List<String> strings = splitToStringComma(s1, splitSep);
-        return strings;
+        return splitToStringComma(s1, splitSep);
     }
 
     public static List<Integer> strToInts(String str, String split) {

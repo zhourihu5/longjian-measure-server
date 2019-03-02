@@ -6,6 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
+@SuppressWarnings("squid:S1068")
 public class CheckItemPathTree {
     private CategoryV3 rootCategory;
     private CategoryV3 category;
