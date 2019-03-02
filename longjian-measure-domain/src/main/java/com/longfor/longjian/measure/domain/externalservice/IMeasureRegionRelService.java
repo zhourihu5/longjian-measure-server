@@ -9,10 +9,10 @@ import java.util.Map;
 public interface IMeasureRegionRelService {
     /**
      * 查询rel Info 通过id
-     * @param rel_id
+     * @param relId
      * @return
      */
-    Map<String,Object> selectByRelId(String rel_id);
+    Map<String,Object> selectByRelId(String relId);
 
     /**
      *
@@ -24,14 +24,14 @@ public interface IMeasureRegionRelService {
 
     /**
      *
-     * @param project_id
-     * @param last_id
+     * @param projectId
+     * @param lastId
      * @param timestamp
      * @param measureApiGetPerTime
      * @param start
      * @return
      */
-    List<MeasureRegionRel> searchRelUnscopedByProjIdLastIdUpdateAtGt(Integer project_id, Integer last_id, Long timestamp, Integer measureApiGetPerTime, Integer start);
+    List<MeasureRegionRel> searchRelUnscopedByProjIdLastIdUpdateAtGt(Integer projectId, Integer lastId, Long timestamp, Integer measureApiGetPerTime, Integer start);
 
     /**
      *
@@ -39,9 +39,25 @@ public interface IMeasureRegionRelService {
      */
     MeasureRegionRel save(MeasureRegionRel model);
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     MeasureRegionRelVo selectById(Integer id);
 
-    List<MeasureRegionRel> selectByProjectIdAndIdNoDeleted(Integer project_id, List<Integer> rel_id_list);
+    /**
+     *
+     * @param projectId
+     * @param relIdList
+     * @return
+     */
+    List<MeasureRegionRel> selectByProjectIdAndIdNoDeleted(Integer projectId, List<Integer> relIdList);
 
-    MeasureRegionRel update(MeasureRegionRel rel_model);
+    /**
+     *
+     * @param relModel
+     * @return
+     */
+    MeasureRegionRel update(MeasureRegionRel relModel);
 }

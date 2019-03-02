@@ -9,8 +9,8 @@ import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
 public interface ICheckItemService {
     /**
      *
-     * @param category_key
+     * @param categoryKey
      * @return
      */
-    CategoryV3 getCategoryByKeyNoFoundErr(String category_key);
+    CategoryV3 getCategoryByKeyNoFoundErr(String categoryKey);
 }

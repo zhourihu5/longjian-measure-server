@@ -11,11 +11,11 @@ import java.util.Set;
 public interface MeasureRegionMapper extends LFMySQLMapper<MeasureRegion> {
     /**
      * 项目描画区域管理新增描画区域请求测区
-     * @param project_id
-     * @param area_id
+     * @param projectId
+     * @param areaId
      * @return
      */
-    List<Map<String,Object>> getProjMeasureRegionByAreaId(@Param("projId") Integer project_id, @Param("areaId") Integer area_id);
+    List<Map<String,Object>> getProjMeasureRegionByAreaId(@Param("projId") Integer projectId, @Param("areaId") Integer areaId);
 
     /**
      *
@@ -27,22 +27,22 @@ public interface MeasureRegionMapper extends LFMySQLMapper<MeasureRegion> {
 
     /**
      *
-     * @param project_id
-     * @param last_id
+     * @param projectId
+     * @param lastId
      * @param timestamp
      * @param measureApiGetPerTime
      * @param start
      * @return
      */
-    List<MeasureRegion> searchUnscopedByProjIdLastIdUpdateAtGt(@Param("projectId") Integer project_id, @Param("lastId") Integer last_id, @Param("timestamp") Long timestamp, @Param("measureApiGetPerTime") Integer measureApiGetPerTime, @Param("start") Integer start);
+    List<MeasureRegion> searchUnscopedByProjIdLastIdUpdateAtGt(@Param("projectId") Integer projectId, @Param("lastId") Integer lastId, @Param("timestamp") Long timestamp, @Param("measureApiGetPerTime") Integer measureApiGetPerTime, @Param("start") Integer start);
 
     /**
      *
-     * @param project_id
+     * @param projectId
      * @param timestamp
      * @return
      */
-    Integer getCountUnscopedByProjIdUpdateAtGt(@Param("projectId") Integer project_id, @Param("timestamp") Long timestamp);
+    Integer getCountUnscopedByProjIdUpdateAtGt(@Param("projectId") Integer projectId, @Param("timestamp") Long timestamp);
 
     /**
      *
@@ -67,19 +67,25 @@ public interface MeasureRegionMapper extends LFMySQLMapper<MeasureRegion> {
     void insertMeasureRegion(List<MeasureRegion> measureRegionLists);
     /**
      *
-     * @param project_id
+     * @param projectId
      * @param uuid
      * @return
      */
-    MeasureRegion getByConditionNoFoundErr(@Param("project_id") Integer project_id, @Param("uuid") String uuid);
+    MeasureRegion getByConditionNoFoundErr(@Param("project_id") Integer projectId, @Param("uuid") String uuid);
 
     /**
      * 获取measure_region现有的最大的index
-     * @param project_id
-     * @param area_id_list
+     * @param projectId
+     * @param areaIdList
      * @return
      */
-    List<Map<String, Object>> getMaxRegionIndexGroupByAreaIdNoDeleted(@Param("projId") Integer project_id, @Param("areaIdList") List area_id_list);
+    List<Map<String, Object>> getMaxRegionIndexGroupByAreaIdNoDeleted(@Param("projId") Integer projectId, @Param("areaIdList") List areaIdList);
 
+    /**
+     * SS
+     * @param projId
+     * @param uuid
+     * @return
+     */
     MeasureRegion GetByUuid(@Param("projId") Integer projId, @Param("uuid") String uuid);
 }

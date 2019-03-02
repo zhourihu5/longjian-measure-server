@@ -11,6 +11,7 @@ import java.util.List;
 public class MeasureIssueReportMsg {
 
     @Data
+    @SuppressWarnings("squid:S1068")
     class MeasureIssue{
         /**
          * Uuid               string `json:"uuid"`

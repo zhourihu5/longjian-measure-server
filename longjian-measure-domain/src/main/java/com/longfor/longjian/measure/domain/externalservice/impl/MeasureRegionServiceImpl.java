@@ -26,8 +26,8 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
     private static final String PROJECTID = "projectId";
     private static final String DELETEAT = "deleteAt";
     @Override
-    public List<Map<String, Object>> getProjMeasureRegionByAreaId(Integer project_id, Integer area_id) {
-        return measureRegionMapper.getProjMeasureRegionByAreaId(project_id, area_id);
+    public List<Map<String, Object>> getProjMeasureRegionByAreaId(Integer projectId, Integer areaId) {
+        return measureRegionMapper.getProjMeasureRegionByAreaId(projectId, areaId);
     }
 
     @Override
@@ -36,14 +36,14 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
     }
 
     @Override
-    public List<MeasureRegion> searchUnscopedByProjIdLastIdUpdateAtGt(Integer project_id, Integer last_id, Long timestamp, Integer measureApiGetPerTime, Integer start) {
-        List<MeasureRegion> measureRegions = measureRegionMapper.searchUnscopedByProjIdLastIdUpdateAtGt(project_id, last_id, timestamp, measureApiGetPerTime, start);
+    public List<MeasureRegion> searchUnscopedByProjIdLastIdUpdateAtGt(Integer projectId, Integer lastId, Long timestamp, Integer measureApiGetPerTime, Integer start) {
+        List<MeasureRegion> measureRegions = measureRegionMapper.searchUnscopedByProjIdLastIdUpdateAtGt(projectId, lastId, timestamp, measureApiGetPerTime, start);
         return measureRegions;
     }
 
     @Override
-    public Integer getCountUnscopedByProjIdUpdateAtGt(Integer project_id, Long timestamp) {
-        return measureRegionMapper.getCountUnscopedByProjIdUpdateAtGt(project_id, timestamp);
+    public Integer getCountUnscopedByProjIdUpdateAtGt(Integer projectId, Long timestamp) {
+        return measureRegionMapper.getCountUnscopedByProjIdUpdateAtGt(projectId, timestamp);
     }
 
     @Override
@@ -99,16 +99,16 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
     }
 
     @Override
-    public MeasureRegion searchByUuid(Integer project_id, String uuid) {
+    public MeasureRegion searchByUuid(Integer projectId, String uuid) {
         Example example = new Example(MeasureRegion.class);
-        example.createCriteria().andEqualTo(PROJECTID, project_id).andEqualTo("uuid", uuid);
+        example.createCriteria().andEqualTo(PROJECTID, projectId).andEqualTo("uuid", uuid);
         return measureRegionMapper.selectOneByExample(example);
     }
 
     @Override
-    public MeasureRegion searchByProjIdAndRegionUuid(Integer proj_id, String region_uuid) {
+    public MeasureRegion searchByProjIdAndRegionUuid(Integer projId, String regionUuid) {
         Example example = new Example(MeasureRegion.class);
-        example.createCriteria().andEqualTo(PROJECTID, proj_id).andEqualTo("uuid", region_uuid);
+        example.createCriteria().andEqualTo(PROJECTID, projId).andEqualTo("uuid", regionUuid);
         List<MeasureRegion> measureRegions = measureRegionMapper.selectByExample(example);
         if (!measureRegions.isEmpty()) {
             MeasureRegion region = measureRegions.get(0);
@@ -118,15 +118,15 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
     }
 
     @Override
-    public List<MeasureRegion> searchByProjIdAndRelId(Integer proj_id, Integer relId) {
+    public List<MeasureRegion> searchByProjIdAndRelId(Integer projectId, Integer relId) {
         Example example = new Example(MeasureRegion.class);
-        example.createCriteria().andEqualTo(PROJECTID, proj_id).andEqualTo("relId", relId);
+        example.createCriteria().andEqualTo(PROJECTID, projectId).andEqualTo("relId", relId);
         return measureRegionMapper.selectByExample(example);
     }
 
     @Override
-    public List<Map<String, Object>> getMaxRegionIndexGroupByAreaIdNoDeleted(Integer project_id, List area_id_list) {
-        return measureRegionMapper.getMaxRegionIndexGroupByAreaIdNoDeleted(project_id, area_id_list);
+    public List<Map<String, Object>> getMaxRegionIndexGroupByAreaIdNoDeleted(Integer projectId, List areaIdList) {
+        return measureRegionMapper.getMaxRegionIndexGroupByAreaIdNoDeleted(projectId, areaIdList);
     }
 
     @Override
@@ -150,51 +150,51 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
     }
 
     @Override
-    public List<MeasureRegion> searchByProjUuids(Integer project_id, List<String> regionUuids) {
+    public List<MeasureRegion> searchByProjUuids(Integer projectId, List<String> regionUuids) {
         Set<String> regionUuidSet = Sets.newHashSet();
         regionUuidSet.addAll(regionUuids);
         if (regionUuidSet.isEmpty()) {
             return Lists.newArrayList();
         }
         Example example = new Example(MeasureRegion.class);
-        example.createCriteria().andEqualTo(PROJECTID, project_id).andIn("uuid", regionUuids).andIsNull(DELETEAT);
+        example.createCriteria().andEqualTo(PROJECTID, projectId).andIn("uuid", regionUuids).andIsNull(DELETEAT);
         return measureRegionMapper.selectByExample(example);
     }
 
     @Override
-    public void updateByProjectIdAndIdInNoDeleted(Integer project_id, List region_ids, String polygon, String tag_id_list) {
+    public void updateByProjectIdAndIdInNoDeleted(Integer projectId, List regionIds, String polygon, String tagIdList) {
         MeasureRegion measureRegion = new MeasureRegion();
         measureRegion.setPolygon(polygon);
         measureRegion.setUpdateAt(new Date());
-        measureRegion.setTagIdList(tag_id_list);
+        measureRegion.setTagIdList(tagIdList);
 
         Example example = new Example(MeasureRegion.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo(PROJECTID, project_id);
-        criteria.andIn("id", region_ids);
+        criteria.andEqualTo(PROJECTID, projectId);
+        criteria.andIn("id", regionIds);
         criteria.andIsNull(DELETEAT);
         measureRegionMapper.updateByExampleSelective(measureRegion, example);
     }
 
     @Override
-    public List<MeasureRegion> selectByProjectIdAndIdNoDeleted(Integer project_id, List<Integer> region_id_list) {
+    public List<MeasureRegion> selectByProjectIdAndIdNoDeleted(Integer projectId, List<Integer> regionIdList) {
         Example example = new Example(MeasureRegion.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo(PROJECTID, project_id);
-        criteria.andIn("id", region_id_list);
+        criteria.andEqualTo(PROJECTID, projectId);
+        criteria.andIn("id", regionIdList);
         criteria.andIsNull(DELETEAT);
         return measureRegionMapper.selectByExample(example);
     }
 
     @Override
-    public void delete(Integer project_id, List<Integer> region_id_list) {
+    public void delete(Integer projectId, List<Integer> regionIdList) {
         MeasureRegion measureRegion = new MeasureRegion();
         measureRegion.setDeleteAt(new Date());
         measureRegion.setUpdateAt(new Date());
         Example example = new Example(MeasureRegion.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo(PROJECTID, project_id);
-        criteria.andIn("id", region_id_list);
+        criteria.andEqualTo(PROJECTID, projectId);
+        criteria.andIn("id", regionIdList);
 
         measureRegionMapper.updateByExampleSelective(measureRegion, example);
     }
@@ -214,12 +214,12 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
     }
 
     @Override
-    public List<MeasureRegion> searchByIdAndAreaIdAndProjectIdNoDeleted(List<String> region_id_list, List<String> copy_area_id_list, int proj_id) {
+    public List<MeasureRegion> searchByIdAndAreaIdAndProjectIdNoDeleted(List<String> regionIdList, List<String> copyAreaIdList, int proj_id) {
         Example example = new Example(MeasureRegion.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo(PROJECTID, proj_id);
-        criteria.andIn("id", region_id_list);
-        criteria.andIn("areaId", copy_area_id_list);
+        criteria.andIn("id", regionIdList);
+        criteria.andIn("areaId", copyAreaIdList);
         ExampleUtil.addDeleteAtJudge(example);
         return measureRegionMapper.selectByExample(example);
     }

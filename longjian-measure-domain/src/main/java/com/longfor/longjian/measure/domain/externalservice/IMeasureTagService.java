@@ -14,57 +14,57 @@ public interface IMeasureTagService {
      * 通过groupId查询tag
      * wangxs
      * 2018-11-22 17:14
-     * @param group_id
+     * @param groupId
      * @param ownership
      * @return
      */
-    List<Map<String,Object>> searchByGroupId(Integer group_id, Integer ownership);
+    List<Map<String,Object>> searchByGroupId(Integer groupId, Integer ownership);
 
     /**
      * 通过groupId,projId查询tag
      * wangxs
      * 2018-11-22 17:14
-     * @param group_id
-     * @param proj_id
+     * @param groupId
+     * @param projId
      * @param ownership
      * @return
      */
-    List<Map<String,Object>> searchByGroupIdAndProjId(Integer group_id, Integer proj_id, Integer ownership);
+    List<Map<String,Object>> searchByGroupIdAndProjId(Integer groupId, Integer projId, Integer ownership);
 
     /**
      *
-     * @param group_id
+     * @param groupId
      * @param editTagProtoVos
      * @param group
      */
-    Integer editOnGroup(Integer group_id, List<EditTagProtoVo> editTagProtoVos, Integer group);
+    Integer editOnGroup(Integer groupId, List<EditTagProtoVo> editTagProtoVos, Integer group);
 
     /**
      *
-     * @param group_id
+     * @param groupId
      * @param nameList
      * @param group
      * @return
      */
-    Integer addOnGroup(Integer group_id, List<String> nameList, Integer group,Integer proj_id);
+    Integer addOnGroup(Integer groupId, List<String> nameList, Integer group,Integer proj_id);
 
     /**
      *
-     * @param group_id
-     * @param project_id
+     * @param groupId
+     * @param projectId
      * @param nameList
      * @param project
      * @return
      */
-    Integer addOnProj(Integer group_id, Integer project_id, List<String> nameList, Integer project);
+    Integer addOnProj(Integer groupId, Integer projectId, List<String> nameList, Integer project);
 
     /**
      *
-     * @param group_id
-     * @param project_id
+     * @param groupId
+     * @param projectId
      * @param editTagProtoVos
      * @param project
      * @return
      */
-    Integer editOnProjId(Integer group_id, Integer project_id, List<EditTagProtoVo> editTagProtoVos, Integer project);
+    Integer editOnProjId(Integer groupId, Integer projectId, List<EditTagProtoVo> editTagProtoVos, Integer project);
 }

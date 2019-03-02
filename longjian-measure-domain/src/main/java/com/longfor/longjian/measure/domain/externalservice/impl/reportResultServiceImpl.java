@@ -6,14 +6,16 @@ import com.longfor.longjian.measure.po.zhijian2.ReportResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 @Service
 public class reportResultServiceImpl implements IReportResultService {
-    @Autowired
+    @Resource
     private ReportResultMapper reportResultMapper;
 
     @Override
-    public ReportResult getByReportUuid(String report_uuid) {
-        return reportResultMapper.getByReportUuid(report_uuid);
+    public ReportResult getByReportUuid(String reportUuid) {
+        return reportResultMapper.getByReportUuid(reportUuid);
     }
 
     @Override

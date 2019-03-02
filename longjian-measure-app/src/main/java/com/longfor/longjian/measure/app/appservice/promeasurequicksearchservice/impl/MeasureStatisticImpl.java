@@ -38,11 +38,11 @@ public class MeasureStatisticImpl implements IMeasureStatisticService {
             throw new LjBaseRuntimeException(100000,"数据不存在");
         }
 
-        Integer checkItemCount = measureZoneService.GetMeasureListCategoryCountAndCheckItemCount(getMeasureStatisticTaskReq.getMeasure_list_id());
+        Integer checkItemCount = measureZoneService.getMeasureListCategoryCountAndCheckItemCount(getMeasureStatisticTaskReq.getMeasure_list_id());
         if (checkItemCount == null) {
             checkItemCount = 0;
         }
-        Integer regionCount = measureZoneService.GetMeasureListBuildingCountAndRegionCount(getMeasureStatisticTaskReq.getMeasure_list_id());
+        Integer regionCount = measureZoneService.getMeasureListBuildingCountAndRegionCount(getMeasureStatisticTaskReq.getMeasure_list_id());
         if (regionCount == null) {
             regionCount = 0;
         }

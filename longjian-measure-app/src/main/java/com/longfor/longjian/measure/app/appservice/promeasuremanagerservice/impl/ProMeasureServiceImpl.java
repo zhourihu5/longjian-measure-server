@@ -83,6 +83,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
     private static final String TOTAL_SUM = "total_sum";
     private static final String TOPAREAS = "topAreas";
     private static final String ROOTCATEGORYKEY = "rootCategoryKey";
+    private static final String PATHFLAG = "/";
 
     @Override
     public LjBaseResponse<ProMeasurePlanListVo> getProMeasurePlanList(GetProMeasurePlanListReq getProMeasurePlanListReq, HttpServletRequest request) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException, ParseException {
@@ -175,7 +176,6 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             proMeasureAreaVos.add(proMeasureAreaVo);
         }
         areaInfoVo.setItems(proMeasureAreaVos);
-        // todo go代码暂时没有赋值
         areaInfoVo.setTotal(0);
         ljBaseResponse.setData(areaInfoVo);
         return ljBaseResponse;
@@ -735,7 +735,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         if (categoryPathAndKey.charAt(categoryPathAndKey.length() - 1) == '/') {
             categoryPathAndKey = categoryPathAndKey.substring(0, categoryPathAndKey.length() - 1);
         }
-        categoryPathAndKey = "/" + categoryPathAndKey + "/";
+        categoryPathAndKey = PATHFLAG + categoryPathAndKey + PATHFLAG;
         int index = categoryPathAndKey.indexOf(key);
         if (index < 0) {
             return new String[]{""};
@@ -896,7 +896,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             //查找子集
             Area area = areaService.getAreaByProjIdAndAreaId(getProMeasurePlanListReq.getProject_id(), getProMeasurePlanListReq.getArea_id());
             if (area != null) {
-                areaPathAndId = area.getPath() + area.getId() + "/";
+                areaPathAndId = area.getPath() + area.getId() + PATHFLAG;
             }
         }
         return areaPathAndId;
@@ -915,7 +915,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
             //查找子集
             CategoryV3 categoryV3 = categoryV3Service.getCategoryByKey(getProMeasurePlanListReq.getCategory_key());
             if (categoryV3 != null) {
-                categoryPathAndKey = categoryV3.getPath() + categoryV3.getKey() + "/";
+                categoryPathAndKey = categoryV3.getPath() + categoryV3.getKey() + PATHFLAG;
             }
         }
         return categoryPathAndKey;

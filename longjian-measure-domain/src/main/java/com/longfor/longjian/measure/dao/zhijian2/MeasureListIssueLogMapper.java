@@ -11,14 +11,14 @@ public interface MeasureListIssueLogMapper extends LFMySQLMapper<MeasureListIssu
     /**
      *
      * @param projectId
-     * @param list_id
-     * @param last_id
+     * @param listId
+     * @param lastId
      * @param timestamp
      * @param start
      * @param pageSize
      * @return
      */
-    List<MeasureListIssueLog> searchIssueLogListByListIdLastIdTimestampGt(@Param("projectId") Integer projectId, @Param("list_id")Integer list_id, @Param("last_id")Integer last_id, @Param("timestamp")Long timestamp, @Param("start")Integer start, @Param("pageSize")Integer pageSize);
+    List<MeasureListIssueLog> searchIssueLogListByListIdLastIdTimestampGt(@Param("projectId") Integer projectId, @Param("list_id")Integer listId, @Param("last_id")Integer lastId, @Param("timestamp")Long timestamp, @Param("start")Integer start, @Param("pageSize")Integer pageSize);
 
     /**
      *

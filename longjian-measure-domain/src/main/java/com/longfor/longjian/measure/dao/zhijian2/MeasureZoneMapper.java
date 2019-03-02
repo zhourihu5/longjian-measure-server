@@ -11,20 +11,20 @@ import java.util.Set;
 public interface MeasureZoneMapper extends LFMySQLMapper<MeasureZone> {
     /**
      * 获取测区数量
-     * @param project_id
+     * @param projId
      * @param ints
      * @return
      */
-    Integer searchTotalByProjectIdAndMeasureListId(@Param("projectId") Integer project_id, @Param("measureListIds") int[] ints);
+    Integer searchTotalByProjectIdAndMeasureListId(@Param("projectId") Integer projId, @Param("measureListIds") int[] ints);
 
     /**
      *
-     * @param project_id
-     * @param measure_list_id
+     * @param projId
+     * @param measureListId
      * @param subKey
      * @return
      */
-    Integer getMeasureZoneCountByListIdCategoryKey(@Param("projectId") Integer project_id, @Param("listId") Integer measure_list_id, @Param("subKey") String subKey);
+    Integer getMeasureZoneCountByListIdCategoryKey(@Param("projectId") Integer projId, @Param("listId") Integer measureListId, @Param("subKey") String subKey);
 
     /**
      *
@@ -41,23 +41,23 @@ public interface MeasureZoneMapper extends LFMySQLMapper<MeasureZone> {
     /**
      *
      * @param projectId
-     * @param list_id
-     * @param last_id
+     * @param listId
+     * @param lastId
      * @param timestamp
      * @param start
      * @param limit
      * @return
      */
-    List<MeasureZone> searchZoneUnscopedByListIdLastIdUpdateAtGt2(@Param("projectId") Integer projectId, @Param("list_id")Integer list_id, @Param("last_id")Integer last_id, @Param("timestamp") Long timestamp, @Param("start") Integer start, @Param("limit") Integer limit);
+    List<MeasureZone> searchZoneUnscopedByListIdLastIdUpdateAtGt2(@Param("projectId") Integer projectId, @Param("list_id")Integer listId, @Param("last_id")Integer lastId, @Param("timestamp") Long timestamp, @Param("start") Integer start, @Param("limit") Integer limit);
 
     /**
      *
      * @param projectId
-     * @param list_id
+     * @param listId
      * @param timestamp
      * @return
      */
-    Integer getCountZoneUnscopedByListIdUpdateAtGt(@Param("projectId")Integer projectId, @Param("list_id")Integer list_id, @Param("timestamp") Long timestamp);
+    Integer getCountZoneUnscopedByListIdUpdateAtGt(@Param("projectId")Integer projectId, @Param("list_id")Integer listId, @Param("timestamp") Long timestamp);
 
     /**
      *
@@ -70,21 +70,21 @@ public interface MeasureZoneMapper extends LFMySQLMapper<MeasureZone> {
 
     /**
      *
-     * @param project_id
-     * @param list_id
+     * @param projId
+     * @param listId
      * @param uuid
      * @param category_key
      * @return
      */
-    List<MeasureZone> searchByCondition(@Param("project_id") Integer project_id, @Param("list_id") Integer list_id, @Param("uuid") String uuid, @Param("category_key") String category_key);
+    List<MeasureZone> searchByCondition(@Param("project_id") Integer projId, @Param("list_id") Integer listId, @Param("uuid") String uuid, @Param("category_key") String category_key);
 
     /**
      *
-     * @param project_id
+     * @param projId
      * @param uuid
      * @return
      */
-    MeasureZone getZoneByUuid(@Param("project_id")Integer project_id, @Param("uuid")String uuid);
+    MeasureZone getZoneByUuid(@Param("project_id")Integer projId, @Param("uuid")String uuid);
     /**
      * @Description:
      * @param id

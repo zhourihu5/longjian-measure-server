@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -14,12 +15,12 @@ import java.util.Map;
 @Service
 public class MeasureSquadUserServiceImpl implements IMeasureSquadUserService{
 
-    @Autowired
+    @Resource
     MeasureSquadUserMapper measureSquadUserMapper;
 
     @Override
-    public List<MeasureSquadUser> searchMeasureSquadUserByListIdTimestampGt(Integer projectId, Integer list_id, String updateAtGt) {
-        return measureSquadUserMapper.searchMeasureSquadUserByListIdTimestampGt(projectId, list_id, updateAtGt);
+    public List<MeasureSquadUser> searchMeasureSquadUserByListIdTimestampGt(Integer projectId, Integer listId, String updateAtGt) {
+        return measureSquadUserMapper.searchMeasureSquadUserByListIdTimestampGt(projectId, listId, updateAtGt);
     }
 
     @Override

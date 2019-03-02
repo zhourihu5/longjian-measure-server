@@ -11,19 +11,19 @@ import java.util.Set;
 public interface IAreaService {
     /**
      *
-     * @param project_id
-     * @param area_id
+     * @param projectId
+     * @param areaId
      * @return
      */
-    Area getAreaByProjIdAndAreaId(Integer project_id, Integer area_id);
+    Area getAreaByProjIdAndAreaId(Integer projectId, Integer areaId);
 
     /**
      *
-     * @param project_id
-     * @param area_id
+     * @param projectId
+     * @param areaId
      * @return
      */
-    List<Map<String,Object>> getProMeasureAreaListByFatherId(String project_id, String area_id);
+    List<Map<String,Object>> getProMeasureAreaListByFatherId(String projectId, String areaId);
 
     /**
      *
@@ -41,11 +41,11 @@ public interface IAreaService {
 
     /**
      *
-     * @param proj_id
+     * @param projectId
      * @param areaIds
      * @return
      */
-    List<Area> searchByIdList(Integer proj_id, List<Integer> areaIds);
+    List<Area> searchByIdList(Integer projectId, List<Integer> areaIds);
 
     /**
      *

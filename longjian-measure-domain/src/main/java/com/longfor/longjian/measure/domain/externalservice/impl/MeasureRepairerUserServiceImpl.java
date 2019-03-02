@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -14,12 +15,12 @@ import java.util.Map;
 @Service
 public class MeasureRepairerUserServiceImpl implements IMeasureRepairerUserService {
 
-    @Autowired
+    @Resource
     MeasureRepairerUserMapper measureRepairerUserMapper;
 
     @Override
-    public List<MeasureRepairerUser> searchMeasureReparierUserByListIdTimestampGt(Integer projectId, Integer list_id, String updateAtGt) {
-        return measureRepairerUserMapper.searchMeasureReparierUserByListIdTimestampGt(projectId,list_id,updateAtGt);
+    public List<MeasureRepairerUser> searchMeasureReparierUserByListIdTimestampGt(Integer projectId, Integer listId, String updateAtGt) {
+        return measureRepairerUserMapper.searchMeasureReparierUserByListIdTimestampGt(projectId,listId,updateAtGt);
     }
 
     @Override
@@ -48,12 +49,12 @@ public class MeasureRepairerUserServiceImpl implements IMeasureRepairerUserServi
     }
 
     @Override
-    public void create(int proj_id, Integer listId, String role_type, Integer user_id) {
+    public void create(int projId, Integer listId, String roleType, Integer userId) {
         MeasureRepairerUser measureRepairerUser = new MeasureRepairerUser();
-        measureRepairerUser.setProjectId(proj_id);
+        measureRepairerUser.setProjectId(projId);
         measureRepairerUser.setListId(listId);
-        measureRepairerUser.setRoleType(Integer.parseInt(role_type));
-        measureRepairerUser.setUserId(user_id);
+        measureRepairerUser.setRoleType(Integer.parseInt(roleType));
+        measureRepairerUser.setUserId(userId);
         measureRepairerUser.setCreateAt(new Date());
         measureRepairerUser.setUpdateAt(new Date());
         measureRepairerUserMapper.insertSelective(measureRepairerUser);

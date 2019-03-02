@@ -101,7 +101,6 @@ public class MeasureListIssue2Controller {
         }
         LjBaseResponse<UpdateVo> ljBaseResponse = new LjBaseResponse<>();
         UpdateVo updateVo = new UpdateVo();
-        //TODO 在此添加Controller逻辑（golang中就是todo）
         Integer uid =userBase.getUserId();
         proMeasureListIssueService.updateIssueCloseStatusByUuid(req.getUuid(),req.getProject_id(),uid,req.getClose_status());
         ljBaseResponse.setData(updateVo);
@@ -125,7 +124,6 @@ public class MeasureListIssue2Controller {
         }
         LjBaseResponse<UpdateVo> ljBaseResponse = new LjBaseResponse<>();
         UpdateVo updateVo = new UpdateVo();
-        //TODO 在此添加Controller逻辑（golang中就是todo）
         proMeasureListIssueService.measureListIssueDeleteByProjUuid(req.getProject_id(),req.getUuid());
         ljBaseResponse.setData(updateVo);
         return ljBaseResponse;

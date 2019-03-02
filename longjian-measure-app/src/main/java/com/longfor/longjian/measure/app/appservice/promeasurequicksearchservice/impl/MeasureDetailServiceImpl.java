@@ -263,9 +263,7 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
             }
             if (!squadMap.keySet().isEmpty() && (proj.getId() != null || proj.getId().equals(0))) {
                     List<MeasureSquad> squads = measureListService.searchByProjIdIdIn(proj.getId(), squadMap.keySet());
-                    squads.forEach(measureSquad -> {
-                        md.getSquad_map().put(measureSquad.getId(), measureSquad.getName());
-                    });
+                    squads.forEach(measureSquad -> md.getSquad_map().put(measureSquad.getId(), measureSquad.getName()));
             }
             Map<Integer, MeasureRule> ruleMap2 = Maps.newHashMap();
             if (!ruleMap.keySet().isEmpty()) {
@@ -287,9 +285,8 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
             }
             if (!userMap.keySet().isEmpty()) {
                 Map<Integer, User> users = userService.getUsersByIds(new ArrayList<>(userMap.keySet()));
-                users.forEach((id, user) -> {
-                    md.getUser_map().put(user.getUserId(), user.getRealName());
-                });
+                users.forEach((id, user) -> md.getUser_map().put(user.getUserId(), user.getRealName())
+                );
             }
             if (!regionMap.keySet().isEmpty()) {
                 List<MeasureRegion> regions = regionSerVice.searchByProjUuids(projId, new ArrayList<>(regionMap.keySet()));

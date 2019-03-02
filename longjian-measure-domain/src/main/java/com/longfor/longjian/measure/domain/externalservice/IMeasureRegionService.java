@@ -11,11 +11,11 @@ import java.util.Set;
 public interface IMeasureRegionService {
     /**
      * 项目描画区域管理新增描画区域请求测区
-     * @param project_id
-     * @param area_id
+     * @param projectId
+     * @param areaId
      * @return
      */
-    List<Map<String,Object>> getProjMeasureRegionByAreaId(Integer project_id, Integer area_id);
+    List<Map<String,Object>> getProjMeasureRegionByAreaId(Integer projectId, Integer areaId);
 
     /**
      *
@@ -27,22 +27,22 @@ public interface IMeasureRegionService {
 
     /**
      *
-     * @param project_id
-     * @param last_id
+     * @param projectId
+     * @param lastId
      * @param timestamp
      * @param measureApiGetPerTime
      * @param start
      * @return
      */
-    List<MeasureRegion> searchUnscopedByProjIdLastIdUpdateAtGt(Integer project_id, Integer last_id, Long timestamp, Integer measureApiGetPerTime, Integer start);
+    List<MeasureRegion> searchUnscopedByProjIdLastIdUpdateAtGt(Integer projectId, Integer lastId, Long timestamp, Integer measureApiGetPerTime, Integer start);
 
     /**
      *
-     * @param project_id
+     * @param projectId
      * @param timestamp
      * @return
      */
-    Integer getCountUnscopedByProjIdUpdateAtGt(Integer project_id, Long timestamp);
+    Integer getCountUnscopedByProjIdUpdateAtGt(Integer projectId, Long timestamp);
 
     /**
      *
@@ -61,19 +61,19 @@ public interface IMeasureRegionService {
 
     /**
      *
-     * @param project_id
+     * @param projectId
      * @param uuid
      * @return
      */
-    MeasureRegion searchByUuid(Integer project_id, String uuid);
+    MeasureRegion searchByUuid(Integer projectId, String uuid);
 
     /**
      * 获取measure_region现有的最大的index
-     * @param project_id
-     * @param area_id_list
+     * @param projectId
+     * @param areaIdList
      * @return
      */
-    List<Map<String, Object>> getMaxRegionIndexGroupByAreaIdNoDeleted(Integer project_id, List area_id_list);
+    List<Map<String, Object>> getMaxRegionIndexGroupByAreaIdNoDeleted(Integer projectId, List areaIdList);
 
     MeasureRegion save(MeasureRegion model);
 
@@ -81,19 +81,19 @@ public interface IMeasureRegionService {
 
     /**
      *
-     * @param proj_id
-     * @param region_uuid
+     * @param projectId
+     * @param regionUuid
      * @return
      */
-    MeasureRegion searchByProjIdAndRegionUuid(Integer proj_id, String region_uuid);
+    MeasureRegion searchByProjIdAndRegionUuid(Integer projectId, String regionUuid);
 
     /**
      *
-     * @param proj_id
+     * @param projectId
      * @param relId
      * @return
      */
-    List<MeasureRegion> searchByProjIdAndRelId(Integer proj_id, Integer relId);
+    List<MeasureRegion> searchByProjIdAndRelId(Integer projectId, Integer relId);
 
     /**
      *
@@ -104,30 +104,42 @@ public interface IMeasureRegionService {
 
     /**
      *
-     * @param project_id
+     * @param projectId
      * @param regionUuids
      * @return
      */
-    List<MeasureRegion> searchByProjUuids(Integer project_id, List<String> regionUuids);
+    List<MeasureRegion> searchByProjUuids(Integer projectId, List<String> regionUuids);
 
     /**
      *
-     * @param project_id
-     * @param region_ids
+     * @param projectId
+     * @param regionIds
      * @param polygon
-     * @param tag_id_list
+     * @param tagIdList
      */
-    void updateByProjectIdAndIdInNoDeleted(Integer project_id, List region_ids, String polygon, String tag_id_list);
+    void updateByProjectIdAndIdInNoDeleted(Integer projectId, List regionIds, String polygon, String tagIdList);
 
-    List<MeasureRegion> selectByProjectIdAndIdNoDeleted(Integer project_id, List<Integer> region_id_list);
+    /**
+     *
+     * @param projectId
+     * @param regionIdList
+     * @return
+     */
+    List<MeasureRegion> selectByProjectIdAndIdNoDeleted(Integer projectId, List<Integer> regionIdList);
 
     /**
      * 逻辑删除
-     * @param project_id
-     * @param region_id_list
+     * @param projectId
+     * @param regionIdList
      */
-    void delete(Integer project_id, List<Integer> region_id_list);
+    void delete(Integer projectId, List<Integer> regionIdList);
 
+    /**
+     *
+     * @param projId
+     * @param uuid
+     * @return
+     */
     MeasureRegion GetByUuid(Integer projId,String uuid);
     /**
      *
@@ -137,5 +149,12 @@ public interface IMeasureRegionService {
      */
     List<MeasureRegion> searchUnscopedByProjIdUpdateAtGt2(Integer projId, String timeFmt);
 
-    List<MeasureRegion> searchByIdAndAreaIdAndProjectIdNoDeleted(List<String> region_id_list, List<String> copy_area_id_list, int proj_id);
+    /**
+     *
+     * @param regionIdList
+     * @param copyAreaIdList
+     * @param projId
+     * @return
+     */
+    List<MeasureRegion> searchByIdAndAreaIdAndProjectIdNoDeleted(List<String> regionIdList, List<String> copyAreaIdList, int projId);
 }

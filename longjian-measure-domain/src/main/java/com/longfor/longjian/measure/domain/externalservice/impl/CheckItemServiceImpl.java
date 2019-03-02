@@ -6,12 +6,14 @@ import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 @Service
 public class CheckItemServiceImpl implements ICheckItemService {
-    @Autowired
+    @Resource
     private CategoryV3Mapper categoryV3Mapper;
     @Override
-    public CategoryV3 getCategoryByKeyNoFoundErr(String category_key) {
-        return categoryV3Mapper.getCategoryByKeyNoFoundErr(category_key);
+    public CategoryV3 getCategoryByKeyNoFoundErr(String categoryKey) {
+        return categoryV3Mapper.getCategoryByKeyNoFoundErr(categoryKey);
     }
 }

@@ -10,11 +10,11 @@ public interface IMeasureSquadUserService {
     /**
      *
      * @param projectId
-     * @param list_id
+     * @param listId
      * @param updateAtGt
      * @return
      */
-    List<MeasureSquadUser> searchMeasureSquadUserByListIdTimestampGt(Integer projectId, Integer list_id, String updateAtGt);
+    List<MeasureSquadUser> searchMeasureSquadUserByListIdTimestampGt(Integer projectId, Integer listId, String updateAtGt);
 
     /**
      *
@@ -22,17 +22,49 @@ public interface IMeasureSquadUserService {
      */
     void delete(Integer id);
 
+    /**
+     *
+     * @param measureSquadUser
+     */
     void create(MeasureSquadUser measureSquadUser);
 
+    /**
+     *
+     * @param measureSquadUser
+     * @return
+     */
     List<MeasureSquadUser> select(MeasureSquadUser measureSquadUser);
 
+    /**
+     *
+     * @param map
+     */
     void deleteOld(Map<String,Object> map);
 
+    /**
+     *
+     * @param measureSquadUserList
+     */
     void insertList(List<MeasureSquadUser>measureSquadUserList);
 
+    /**
+     *
+     * @param measureSquadUser
+     */
     void deleteMeasureSquadUser(MeasureSquadUser measureSquadUser);
 
+    /**
+     *
+     * @param example
+     * @return
+     */
     List<MeasureSquadUser>selectByExample(Example example);
 
+    /**
+     *
+     * @param projId
+     * @param squadId
+     * @return
+     */
     List<MeasureSquadUser>SearchBySquadId(Integer projId,Integer squadId);
 }

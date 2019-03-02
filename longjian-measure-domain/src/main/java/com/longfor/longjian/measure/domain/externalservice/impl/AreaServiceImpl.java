@@ -14,27 +14,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class AreaServiceImpl implements IAreaService {
 
-    @Autowired
+    @Resource
     AreaMapper areaMapper;
 
     @Override
-    public Area getAreaByProjIdAndAreaId(Integer project_id, Integer area_id) {
+    public Area getAreaByProjIdAndAreaId(Integer projectId, Integer areaId) {
         Area area = new Area();
-        area.setId(area_id);
-        area.setProjectId(project_id);
+        area.setId(areaId);
+        area.setProjectId(projectId);
         area.setDeleteAt(null);
         return areaMapper.selectOne(area);
     }
 
     @Override
-    public List<Map<String, Object>> getProMeasureAreaListByFatherId(String project_id, String area_id) {
-        return areaMapper.selectByFatherId(project_id == null ? "" : project_id, area_id == null ? "" : area_id);
+    public List<Map<String, Object>> getProMeasureAreaListByFatherId(String projectId, String areaId) {
+        return areaMapper.selectByFatherId(projectId == null ? "" : projectId, areaId == null ? "" : areaId);
     }
 
     @Override
@@ -52,9 +53,9 @@ public class AreaServiceImpl implements IAreaService {
     }
 
     @Override
-    public List<Area> searchByIdList(Integer proj_id, List<Integer> areaIds) {
+    public List<Area> searchByIdList(Integer projectId, List<Integer> areaIds) {
         Example example = new Example(Area.class);
-        example.createCriteria().andEqualTo("projectId", proj_id).andIn("id", areaIds);
+        example.createCriteria().andEqualTo("projectId", projectId).andIn("id", areaIds);
         return areaMapper.selectByExample(example);
     }
 

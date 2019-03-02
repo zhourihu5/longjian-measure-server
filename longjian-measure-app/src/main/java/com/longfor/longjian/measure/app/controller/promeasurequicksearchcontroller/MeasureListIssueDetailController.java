@@ -67,7 +67,7 @@ public class MeasureListIssueDetailController {
      * @date 2019/1/14 14:31
      **/
     @RequestMapping(value = "issue_info/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public LjBaseResponse<MeasureListIssueDetailIssueInfoVo> IssueInfo(@Valid GetMeasureListIssueDetailReq req, HttpServletRequest request){
+    public LjBaseResponse<MeasureListIssueDetailIssueInfoVo> issueInfo(@Valid GetMeasureListIssueDetailReq req, HttpServletRequest request){
         try {
             ctrlTool.projPerm(request, CtrlToolConstant.PROJECT_MEASURE_ISSUEMANAGE_CHECK);
         } catch (Exception e) {
@@ -275,10 +275,8 @@ public class MeasureListIssueDetailController {
             }
             List<MeasureListIssueLog> measureListIssueLogs = proMeasureListIssueLogService.searchIssueLogByIssueUuidAndStatus(req.getProject_id(), issue.getUuid(), MeasureListIssueType.REFORMNOCHECK);
             Set<Integer> uids = Sets.newHashSet();
-            measureListIssueLogs.forEach(measureListIssueLog -> {
-                uids.add(measureListIssueLog.getSenderId());
-            });
-            if (uids.size() > 0) {
+            measureListIssueLogs.forEach(measureListIssueLog -> uids.add(measureListIssueLog.getSenderId()));
+            if (!uids.isEmpty()) {
                 Map<Integer, User> userMap = userService.getUsersByIds(new ArrayList<>(uids));
                 measureListIssueLogs.forEach(measureListIssueLog -> {
                     MeasureListIssueDetailRepairLogVo measureListIssueDetailRepairLogVo = new MeasureListIssueDetailRepairLogVo();

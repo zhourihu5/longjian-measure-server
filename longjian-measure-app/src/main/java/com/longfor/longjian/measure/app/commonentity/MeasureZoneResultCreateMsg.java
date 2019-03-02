@@ -13,20 +13,32 @@ public class MeasureZoneResultCreateMsg implements Serializable {
 
     @Data
     class MeasureZoneResult  implements Serializable{
+        @SuppressWarnings("squid:S00116")
         private String uuid;
+        @SuppressWarnings("squid:S00116")
         private String zone_uuid;
+        @SuppressWarnings("squid:S00116")
         private Integer proj_id;
+        @SuppressWarnings("squid:S00116")
         private Integer list_id;
+        @SuppressWarnings("squid:S00116")
         private Integer sender_id;
+        @SuppressWarnings("squid:S00116")
         private Integer area_id;
+        @SuppressWarnings("squid:S00116")
         private String area_path_and_id;
+        @SuppressWarnings("squid:S00116")
         private String category_key;
+        @SuppressWarnings("squid:S00116")
         private String category_path_and_key;
+        @SuppressWarnings("squid:S00116")
         private Integer ok_total;
+        @SuppressWarnings("squid:S00116")
         private Integer total;
+        @SuppressWarnings("squid:S00116")
         private Long timestamp;
     }
-
+    @SuppressWarnings("squid:S00116")
     private List<MeasureZoneResult> created_results;
 
     public MeasureZoneResultCreateMsg(){

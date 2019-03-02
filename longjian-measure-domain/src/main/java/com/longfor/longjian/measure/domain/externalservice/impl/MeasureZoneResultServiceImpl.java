@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -14,42 +15,42 @@ import java.util.Map;
 @Service
 public class MeasureZoneResultServiceImpl implements IMeasureZoneResultService {
 
-    @Autowired
+    @Resource
     MeasureZoneResultMapper measureZoneResultMapper;
     private static final String LISTID = "listId";
     @Override
-    public List<Map<String,Object>> statMeasureListZoneResultCountByListIdGroupBySquad(Integer measure_list_id) {
-        return measureZoneResultMapper.statMeasureListZoneResultCountByListIdGroupBySquad(measure_list_id);
+    public List<Map<String,Object>> statMeasureListZoneResultCountByListIdGroupBySquad(Integer measureListId) {
+        return measureZoneResultMapper.statMeasureListZoneResultCountByListIdGroupBySquad(measureListId);
     }
 
     @Override
-    public List<Map<String,Object>> statMearureZoneResultSquadTotalCountByListIdCategoryKey(Integer measure_list_id, String categoryKey) {
-        return measureZoneResultMapper.statMearureZoneResultSquadTotalCountByListIdCategoryKey(measure_list_id,categoryKey);
+    public List<Map<String,Object>> statMearureZoneResultSquadTotalCountByListIdCategoryKey(Integer measureListId, String categoryKey) {
+        return measureZoneResultMapper.statMearureZoneResultSquadTotalCountByListIdCategoryKey(measureListId,categoryKey);
     }
 
     @Override
-    public List<Map<String, Object>> statMearureZoneResultSquadTotalCountByListIdGroupByCategoryKey(Integer measure_list_id) {
-        return measureZoneResultMapper.statMearureZoneResultSquadTotalCountByListIdGroupByCategoryKey(measure_list_id);
+    public List<Map<String, Object>> statMearureZoneResultSquadTotalCountByListIdGroupByCategoryKey(Integer measureListId) {
+        return measureZoneResultMapper.statMearureZoneResultSquadTotalCountByListIdGroupByCategoryKey(measureListId);
     }
 
     @Override
-    public List<Map<String, Object>> getPassPercentDiffCategoryKeyListByMeasureListId(Integer measure_list_id) {
-        return measureZoneResultMapper.getPassPercentDiffCategoryKeyListByMeasureListId(measure_list_id);
+    public List<Map<String, Object>> getPassPercentDiffCategoryKeyListByMeasureListId(Integer measureListId) {
+        return measureZoneResultMapper.getPassPercentDiffCategoryKeyListByMeasureListId(measureListId);
     }
 
     @Override
-    public List<Map<String, Object>> getSquadsZoneResultPassPercentByListIdAndCategoryKey(Integer measure_list_id, String category_key, String CLOSEDCODE) {
-        return measureZoneResultMapper.getSquadsZoneResultPassPercentByListIdAndCategoryKey(measure_list_id,category_key,CLOSEDCODE);
+    public List<Map<String, Object>> getSquadsZoneResultPassPercentByListIdAndCategoryKey(Integer measureListId, String categoryKey, String CLOSEDCODE) {
+        return measureZoneResultMapper.getSquadsZoneResultPassPercentByListIdAndCategoryKey(measureListId,categoryKey,CLOSEDCODE);
     }
 
     @Override
-    public List<Map<String, Object>> getSquadPassPercentSmallestCategoryKeyListByMeasureListId(Integer measure_list_id) {
-        return measureZoneResultMapper.getSquadPassPercentSmallestCategoryKeyListByMeasureListId(measure_list_id);
+    public List<Map<String, Object>> getSquadPassPercentSmallestCategoryKeyListByMeasureListId(Integer measureListId) {
+        return measureZoneResultMapper.getSquadPassPercentSmallestCategoryKeyListByMeasureListId(measureListId);
     }
 
     @Override
-    public List<MeasureZoneResult> getSubActiveMeasureCategoryZonesByListIdCategoryKey(Integer project_id, Integer measure_list_id, String category_key) {
-        return measureZoneResultMapper.getSubActiveMeasureCategoryZonesByListIdCategoryKey(project_id,measure_list_id,category_key);
+    public List<MeasureZoneResult> getSubActiveMeasureCategoryZonesByListIdCategoryKey(Integer projectId, Integer measureListId, String category_key) {
+        return measureZoneResultMapper.getSubActiveMeasureCategoryZonesByListIdCategoryKey(projectId,measureListId,category_key);
     }
 
     @Override
@@ -57,8 +58,8 @@ public class MeasureZoneResultServiceImpl implements IMeasureZoneResultService {
         return measureZoneResultMapper.getMeasureZoneResultPassPercentageByListIdsAndCategoryKeyAndAreaId(listIds,key,areaId);
     }
     @Override
-    public Integer countMeasureZoneByListIdsAndCategoryKeyAndAreaId(Integer project_id, String[] listIds, String key, String areaId) {
-        return measureZoneResultMapper.countMeasureZoneByListIdsAndCategoryKeyAndAreaId(project_id,listIds,key,areaId);
+    public Integer countMeasureZoneByListIdsAndCategoryKeyAndAreaId(Integer projectId, String[] listIds, String key, String areaId) {
+        return measureZoneResultMapper.countMeasureZoneByListIdsAndCategoryKeyAndAreaId(projectId,listIds,key,areaId);
     }
 
     @Override
@@ -66,13 +67,13 @@ public class MeasureZoneResultServiceImpl implements IMeasureZoneResultService {
         return measureZoneResultMapper.searchResultUnscopedByListIdLastIdUpdateAtGt(projectId, listId, lastId, timestamp, limit, start);
     }
     @Override
-    public Integer getCountResultUnscopedByListIdLastIdUpdateAtGt(Integer projectId, Integer list_id, String timestamp) {
-        return measureZoneResultMapper.getCountResultUnscopedByListIdLastIdUpdateAtGt(projectId,list_id,timestamp);
+    public Integer getCountResultUnscopedByListIdLastIdUpdateAtGt(Integer projectId, Integer listId, String timestamp) {
+        return measureZoneResultMapper.getCountResultUnscopedByListIdLastIdUpdateAtGt(projectId,listId,timestamp);
     }
 
     @Override
-    public List<MeasureZoneResult> getByProjIdListIdZoneUuidSquadId(Integer project_id, Integer list_id, String zone_uuid, Integer squad_id) {
-        return measureZoneResultMapper.getByProjIdListIdZoneUuidSquadId(project_id, list_id, zone_uuid, squad_id);
+    public List<MeasureZoneResult> getByProjIdListIdZoneUuidSquadId(Integer projectId, Integer listId, String zoneUuid, Integer squadId) {
+        return measureZoneResultMapper.getByProjIdListIdZoneUuidSquadId(projectId, listId, zoneUuid, squadId);
     }
 
     @Override
@@ -119,9 +120,9 @@ public class MeasureZoneResultServiceImpl implements IMeasureZoneResultService {
     }
 
     @Override
-    public List<MeasureZoneResult> searchByListId(Integer projId, Integer list_id) {
+    public List<MeasureZoneResult> searchByListId(Integer projId, Integer listId) {
         Example example =new Example(MeasureZoneResult.class);
-        example.createCriteria().andEqualTo("projectId",projId).andEqualTo(LISTID,list_id);
+        example.createCriteria().andEqualTo("projectId",projId).andEqualTo(LISTID,listId);
         return measureZoneResultMapper.selectByExample(example);
     }
 

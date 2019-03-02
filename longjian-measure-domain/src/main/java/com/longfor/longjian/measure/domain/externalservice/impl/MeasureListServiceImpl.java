@@ -29,11 +29,11 @@ import java.util.*;
 @Service
 public class MeasureListServiceImpl implements IMeasureListService {
 
-    @Autowired
+    @Resource
     private MeasureListMapper measureListMapper;
-    @Autowired
+    @Resource
     private MeasureZoneMapper measureZoneMapper;
-    @Autowired
+    @Resource
     private MeasureSquadUserMapper measureSquadUserMapper;
     @Resource
     private MeasureSquadMapper measureSquadMapper;
@@ -54,20 +54,20 @@ public class MeasureListServiceImpl implements IMeasureListService {
     }
 
     @Override
-    public Integer getTotalMeasure(Integer finish_status, String q, Integer project_id, String categoryPathAndKey, String areaPathAndId, String[] userIds) {
-        return measureListMapper.getTotalMeasure(finish_status, q, project_id, categoryPathAndKey, areaPathAndId, userIds);
+    public Integer getTotalMeasure(Integer finishStatus, String q, Integer projectId, String categoryPathAndKey, String areaPathAndId, String[] userIds) {
+        return measureListMapper.getTotalMeasure(finishStatus, q, projectId, categoryPathAndKey, areaPathAndId, userIds);
     }
 
     @Override
-    public List<Map<String, Object>> searchByProjectId(Integer project_id) {
-        return measureListMapper.searchByProjectId(project_id);
+    public List<Map<String, Object>> searchByProjectId(Integer projectId) {
+        return measureListMapper.searchByProjectId(projectId);
     }
 
     @Override
-    public MeasureList searchByProjectIdAndMeasureListId(Integer project_id, Integer measure_list_id) {
+    public MeasureList searchByProjectIdAndMeasureListId(Integer projectId, Integer measureListId) {
         MeasureList measureList = new MeasureList();
-        measureList.setId(measure_list_id);
-        measureList.setProjectId(project_id);
+        measureList.setId(measureListId);
+        measureList.setProjectId(projectId);
         measureList.setDeleteAt(null);
         return measureListMapper.selectOne(measureList);
     }
@@ -83,15 +83,15 @@ public class MeasureListServiceImpl implements IMeasureListService {
     }
 
     @Override
-    public List<MeasureZone> searchZoneByMeasureListIdRegionUuidCategoryKey(Integer project_id, Integer list_id, String uuid, String category_key) {
-        return measureZoneMapper.searchByCondition(project_id, list_id, uuid, category_key);
+    public List<MeasureZone> searchZoneByMeasureListIdRegionUuidCategoryKey(Integer projectId, Integer listId, String uuid, String categoryKey) {
+        return measureZoneMapper.searchByCondition(projectId, listId, uuid, categoryKey);
     }
 
     @Override
-    public List<MeasureZone> getZoneByUuid(Integer project_id, String uuid) {
+    public List<MeasureZone> getZoneByUuid(Integer projectId, String uuid) {
         Example example = new Example(MeasureZone.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo(PROJECTID, project_id);
+        criteria.andEqualTo(PROJECTID, projectId);
         criteria.andEqualTo("uuid",uuid);
         criteria.andIsNull(DELETEAT);
         return measureZoneMapper.selectByExample(example);
@@ -161,16 +161,16 @@ public class MeasureListServiceImpl implements IMeasureListService {
     }
 
     @Override
-    public List<MeasureSquad> searchOnlyMeasureSquadByProjIdAndListId(Integer projId, Integer list_id) {
+    public List<MeasureSquad> searchOnlyMeasureSquadByProjIdAndListId(Integer projId, Integer listId) {
         Example example = new Example(MeasureSquad.class);
-        example.createCriteria().andEqualTo(PROJECTID, projId).andEqualTo(LISTID, list_id);
+        example.createCriteria().andEqualTo(PROJECTID, projId).andEqualTo(LISTID, listId);
         return measureSquadMapper.selectByExample(example);
     }
 
     @Override
-    public MeasureList getNoFoundErr(Integer projId, Integer list_id) {
+    public MeasureList getNoFoundErr(Integer projId, Integer listId) {
         Example example = new Example(MeasureList.class);
-        example.createCriteria().andEqualTo(PROJECTID, projId).andEqualTo("id", list_id);
+        example.createCriteria().andEqualTo(PROJECTID, projId).andEqualTo("id", listId);
         return measureListMapper.selectOneByExample(example);
     }
 

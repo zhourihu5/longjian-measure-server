@@ -24,25 +24,25 @@ public class MeasureTagServiceImpl implements IMeasureTagService {
     private MeasureTagMapper measureTagMapper;
 
     @Override
-    public List<Map<String, Object>> searchByGroupId(Integer group_id, Integer ownership) {
+    public List<Map<String, Object>> searchByGroupId(Integer groupId, Integer ownership) {
         //暂时不需要用page_level判断
-        return measureTagMapper.searchByGroupId(group_id, ownership);
+        return measureTagMapper.searchByGroupId(groupId, ownership);
     }
 
     @Override
-    public List<Map<String, Object>> searchByGroupIdAndProjId(Integer group_id, Integer proj_id, Integer ownership) {
-        return measureTagMapper.searchByGroupIdAndProjId(group_id, proj_id, ownership);
+    public List<Map<String, Object>> searchByGroupIdAndProjId(Integer groupId, Integer projId, Integer ownership) {
+        return measureTagMapper.searchByGroupIdAndProjId(groupId, projId, ownership);
     }
 
     @Override
     @LFAssignDataSource("zhijian2")
     @Transactional(rollbackFor = Exception.class)
-    public Integer editOnGroup(Integer group_id, List<EditTagProtoVo> editTagProtoVos, Integer ownership) {
+    public Integer editOnGroup(Integer groupId, List<EditTagProtoVo> editTagProtoVos, Integer ownership) {
         Integer count=0;
         for (EditTagProtoVo editTagProtoVo : editTagProtoVos) {
             Date date =new Date();
             Integer tagId = editTagProtoVo.getTagId();
-            count += measureTagMapper.updateByIdAndOwnership(group_id, tagId,editTagProtoVo.getName(),ownership,date);
+            count += measureTagMapper.updateByIdAndOwnership(groupId, tagId,editTagProtoVo.getName(),ownership,date);
         }
         return count;
     }
@@ -50,12 +50,12 @@ public class MeasureTagServiceImpl implements IMeasureTagService {
     @Override
     @LFAssignDataSource("zhijian2")
     @Transactional(rollbackFor = Exception.class)
-    public Integer addOnGroup(Integer group_id, List<String> nameList, Integer ownership,Integer proj_id) {
+    public Integer addOnGroup(Integer groupId, List<String> nameList, Integer ownership,Integer proj_id) {
         Integer count=0;
         for (String name : nameList) {
             Date date =new Date();
             MeasureTag measureTag =new MeasureTag();
-            measureTag.setGroupId(group_id);
+            measureTag.setGroupId(groupId);
             measureTag.setName(name);
             measureTag.setProjId(0);
             measureTag.setOwnership(ownership);
@@ -69,13 +69,13 @@ public class MeasureTagServiceImpl implements IMeasureTagService {
     @Override
     @LFAssignDataSource("zhijian2")
     @Transactional(rollbackFor = Exception.class)
-    public Integer addOnProj(Integer group_id, Integer project_id, List<String> nameList, Integer ownership) {
+    public Integer addOnProj(Integer groupId, Integer projectId, List<String> nameList, Integer ownership) {
         Integer count=0;
         for (String name : nameList) {
             Date date =new Date();
             MeasureTag measureTag =new MeasureTag();
-            measureTag.setGroupId(group_id);
-            measureTag.setProjId(project_id);
+            measureTag.setGroupId(groupId);
+            measureTag.setProjId(projectId);
             measureTag.setName(name);
             measureTag.setOwnership(ownership);
             measureTag.setCreateAt(date);
@@ -86,13 +86,13 @@ public class MeasureTagServiceImpl implements IMeasureTagService {
     }
 
     @Override
-    public Integer editOnProjId(Integer group_id, Integer project_id, List<EditTagProtoVo> editTagProtoVos, Integer ownership) {
+    public Integer editOnProjId(Integer groupId, Integer projectId, List<EditTagProtoVo> editTagProtoVos, Integer ownership) {
         Integer count=0;
         for (EditTagProtoVo editTagProtoVo : editTagProtoVos) {
             Date date =new Date();
             Integer tagId = editTagProtoVo.getTagId();
             String name = editTagProtoVo.getName();
-            count += measureTagMapper.updateByProjectIdAndOwnership(group_id,project_id,tagId,name, ownership,date);
+            count += measureTagMapper.updateByProjectIdAndOwnership(groupId,projectId,tagId,name, ownership,date);
         }
         return count;
     }

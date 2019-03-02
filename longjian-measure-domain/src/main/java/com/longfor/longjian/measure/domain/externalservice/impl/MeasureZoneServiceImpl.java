@@ -21,14 +21,14 @@ public class MeasureZoneServiceImpl implements IMeasureZoneService {
     private MeasureZoneMapper measureZoneMapper;
     private static final String PROJECTID = "projectId";
     @Override
-    public Integer searchTotalByProjectIdAndMeasureListId(Integer project_id, int[] ints) {
-        return measureZoneMapper.searchTotalByProjectIdAndMeasureListId(project_id, ints);
+    public Integer searchTotalByProjectIdAndMeasureListId(Integer projectId, int[] ints) {
+        return measureZoneMapper.searchTotalByProjectIdAndMeasureListId(projectId, ints);
     }
 
 
     @Override
-    public Integer getMeasureZoneCountByListIdCategoryKey(Integer project_id, Integer measure_list_id, String subKey) {
-        return measureZoneMapper.getMeasureZoneCountByListIdCategoryKey(project_id, measure_list_id, subKey);
+    public Integer getMeasureZoneCountByListIdCategoryKey(Integer projectId, Integer measureListId, String subKey) {
+        return measureZoneMapper.getMeasureZoneCountByListIdCategoryKey(projectId, measureListId, subKey);
     }
 
     @Override
@@ -38,13 +38,13 @@ public class MeasureZoneServiceImpl implements IMeasureZoneService {
     }
 
     @Override
-    public List<MeasureZone> searchZoneUnscopedByListIdLastIdUpdateAtGt2(Integer projectId, Integer list_id, Integer last_id, Long timestamp, Integer start, Integer limit) {
-        return measureZoneMapper.searchZoneUnscopedByListIdLastIdUpdateAtGt2(projectId, list_id, last_id, timestamp, start, limit);
+    public List<MeasureZone> searchZoneUnscopedByListIdLastIdUpdateAtGt2(Integer projectId, Integer listId, Integer lastId, Long timestamp, Integer start, Integer limit) {
+        return measureZoneMapper.searchZoneUnscopedByListIdLastIdUpdateAtGt2(projectId, listId, lastId, timestamp, start, limit);
     }
 
     @Override
-    public Integer getCountZoneUnscopedByListIdUpdateAtGt(Integer projectId, Integer list_id, Long timestamp) {
-        return measureZoneMapper.getCountZoneUnscopedByListIdUpdateAtGt(projectId,list_id,timestamp);
+    public Integer getCountZoneUnscopedByListIdUpdateAtGt(Integer projectId, Integer listId, Long timestamp) {
+        return measureZoneMapper.getCountZoneUnscopedByListIdUpdateAtGt(projectId,listId,timestamp);
     }
 
     @Override
@@ -81,59 +81,59 @@ public class MeasureZoneServiceImpl implements IMeasureZoneService {
     }
     @LFAssignDataSource("zhijian2")
     @Override
-    public List<MeasureZone> searchZoneByProjUuids(Integer project_id, List<String> zoneUuids) {
+    public List<MeasureZone> searchZoneByProjUuids(Integer projectId, List<String> zoneUuids) {
         Example example = new Example(MeasureZone.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo(PROJECTID,project_id);
+        criteria.andEqualTo(PROJECTID,projectId);
         criteria.andIn("uuid",zoneUuids);
         criteria.andIsNull("deleteAt");
         return measureZoneMapper.selectByExample(example);
     }
 
     @Override
-    public List<MeasureZone> selectByProjectIdAndRegionUUIdIn(Integer project_id, List<String> region_uuid_list) {
+    public List<MeasureZone> selectByProjectIdAndRegionUUIdIn(Integer projectId, List<String> regionUuidList) {
         Example example = new Example(MeasureZone.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo(PROJECTID,project_id);
-        criteria.andIn("regionUuid",region_uuid_list);
+        criteria.andEqualTo(PROJECTID,projectId);
+        criteria.andIn("regionUuid",regionUuidList);
         ExampleUtil.addDeleteAtJudge(example);
         return measureZoneMapper.selectByExample(example);
     }
 
     @Override
-    public MeasureZone GetZoneByUuid(Integer projId, String uuid) {
+    public MeasureZone getZoneByUuid(Integer projId, String uuid) {
         return  measureZoneMapper.getZoneByUuid(projId,uuid);
     }
 
     @Override
-    public MeasureZone GetByProjIdAndIdNoFoundErr(Integer projectId,Integer id) {
+    public MeasureZone getByProjIdAndIdNoFoundErr(Integer projectId,Integer id) {
         return measureZoneMapper.GetByCondition(projectId,id);
     }
 
     @Override
-    public Integer GetMeasureListCategoryCountAndCheckItemCount(Integer measureListId) {
+    public Integer getMeasureListCategoryCountAndCheckItemCount(Integer measureListId) {
         return measureZoneMapper.GetMeasureListCategoryCount(measureListId);
     }
 
     @Override
-    public Integer GetMeasureListBuildingCountAndRegionCount(Integer measureListId) {
+    public Integer getMeasureListBuildingCountAndRegionCount(Integer measureListId) {
         return measureZoneMapper.GetMeasureListBuildingCount(measureListId);
     }
 
     @Override
     @LFAssignDataSource("zhijian2")
-    public List<MeasureZone> searchByListId(Integer projId, Integer list_id) {
+    public List<MeasureZone> searchByListId(Integer projId, Integer listId) {
         Example example =new Example(MeasureZone.class);
-        example.createCriteria().andEqualTo(PROJECTID,projId).andEqualTo("listId",list_id);
+        example.createCriteria().andEqualTo(PROJECTID,projId).andEqualTo("listId",listId);
         return measureZoneMapper.selectByExample(example);
     }
 
     @Override
-    public void insertMany(List<MeasureZone> insert_zone_list) {
-        if (insert_zone_list == null|| insert_zone_list.size() <= 0){
+    public void insertMany(List<MeasureZone> insertZoneList) {
+        if (insertZoneList == null|| insertZoneList.isEmpty()){
             return;
         }
-        measureZoneMapper.insertList(insert_zone_list);
+        measureZoneMapper.insertList(insertZoneList);
     }
 
     @Override

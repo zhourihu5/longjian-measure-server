@@ -11,10 +11,10 @@ import java.util.Map;
 public interface MeasureRegionRelMapper extends LFMySQLMapper<MeasureRegionRel> {
     /**
      *  查询rel Info 通过id
-     * @param rel_id
+     * @param relId
      * @return
      */
-    Map<String,Object> selectByRelId(@Param("relId") String rel_id);
+    Map<String,Object> selectByRelId(@Param("relId") String relId);
 
     /**
      *
@@ -27,14 +27,14 @@ public interface MeasureRegionRelMapper extends LFMySQLMapper<MeasureRegionRel> 
 
     /**
      *
-     * @param project_id
-     * @param last_id
+     * @param projectId
+     * @param lastId
      * @param timestamp
      * @param measureApiGetPerTime
      * @param start
      * @return
      */
-    List<MeasureRegionRel> searchRelUnscopedByProjIdLastIdUpdateAtGt(@Param("projectId") Integer project_id, @Param("lastId") Integer last_id, @Param("timestamp") Long timestamp, @Param("measureApiGetPerTime") Integer measureApiGetPerTime, @Param("start") Integer start);
+    List<MeasureRegionRel> searchRelUnscopedByProjIdLastIdUpdateAtGt(@Param("projectId") Integer projectId, @Param("lastId") Integer lastId, @Param("timestamp") Long timestamp, @Param("measureApiGetPerTime") Integer measureApiGetPerTime, @Param("start") Integer start);
 
     MeasureRegionRelVo selectById(Integer id);
 }

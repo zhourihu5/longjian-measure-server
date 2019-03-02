@@ -167,7 +167,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
 
         MeasureZone measureZone = null;
         try {
-            measureZone = measureZoneService.GetZoneByUuid(curProj.getId(), issue.getZoneUuid());
+            measureZone = measureZoneService.getZoneByUuid(curProj.getId(), issue.getZoneUuid());
         } catch (Exception e) {
             log.error("");
         }

@@ -7,8 +7,8 @@ import org.apache.ibatis.annotations.Param;
 public interface ReportResultMapper extends LFMySQLMapper<ReportResult> {
     /**
      *
-     * @param report_uuid
+     * @param reportUuid
      * @return
      */
-    ReportResult getByReportUuid(@Param("uuid") String report_uuid);
+    ReportResult getByReportUuid(@Param("uuid") String reportUuid);
 }

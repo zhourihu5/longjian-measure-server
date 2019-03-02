@@ -7,26 +7,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
 @Service
 public class MeasureSquadServiceImpl implements IMeasureSquadService {
-    @Autowired
+    @Resource
     private MeasureSquadMapper measureSquadMapper;
     @Override
-    public List<MeasureSquad> searchOnlyMeasureSquadByProjIdAndListId(Integer project_id, Integer measure_list_id) {
+    public List<MeasureSquad> searchOnlyMeasureSquadByProjIdAndListId(Integer projectId, Integer measureListId) {
         Example example = new Example(MeasureSquad.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("listId",measure_list_id);
-        criteria.andEqualTo("projectId",project_id);
+        criteria.andEqualTo("listId",measureListId);
+        criteria.andEqualTo("projectId",projectId);
         criteria.andIsNull("deleteAt");
         return measureSquadMapper.selectByExample(example);
     }
 
     @Override
-    public List<MeasureSquad> searchMeasureSquadByListIdTimestampGt(Integer projectId, Integer list_id, String updateAtGt) {
-        return measureSquadMapper.searchMeasureSquadByListIdTimestampGt(projectId,list_id,updateAtGt);
+    public List<MeasureSquad> searchMeasureSquadByListIdTimestampGt(Integer projectId, Integer listId, String updateAtGt) {
+        return measureSquadMapper.searchMeasureSquadByListIdTimestampGt(projectId,listId,updateAtGt);
     }
 
     @Override

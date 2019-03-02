@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
@@ -16,13 +17,13 @@ import java.util.Map;
 @Slf4j
 public class CategoryV3ServiceImpl implements ICategoryV3Service {
 
-    @Autowired
+    @Resource
     private CategoryV3Mapper categoryV3Mapper;
 
     @Override
-    public CategoryV3 getCategoryByKey(String category_key) {
+    public CategoryV3 getCategoryByKey(String categoryKey) {
         CategoryV3 categoryV3 = new CategoryV3();
-        categoryV3.setKey(category_key);
+        categoryV3.setKey(categoryKey);
         categoryV3.setDeleteAt(null);
         return categoryV3Mapper.selectOne(categoryV3);
     }
@@ -60,10 +61,10 @@ public class CategoryV3ServiceImpl implements ICategoryV3Service {
     }
 
     @Override
-    public List<CategoryV3> searchSubCategoryByFatherKey(String parent_category_key) {
+    public List<CategoryV3> searchSubCategoryByFatherKey(String parentCategoryKey) {
         Example example = new Example(CategoryV3.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("fatherKey",parent_category_key);
+        criteria.andEqualTo("fatherKey",parentCategoryKey);
         criteria.andIsNull("deleteAt");
         return categoryV3Mapper.selectByExample(example);
     }

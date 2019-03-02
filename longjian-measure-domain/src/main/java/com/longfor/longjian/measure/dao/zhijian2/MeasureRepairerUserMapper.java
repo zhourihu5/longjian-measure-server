@@ -11,11 +11,11 @@ public interface MeasureRepairerUserMapper extends LFMySQLMapper<MeasureRepairer
     /**
      *
      * @param projectId
-     * @param list_id
+     * @param lastId
      * @param updateAtGt
      * @return
      */
-    List<MeasureRepairerUser> searchMeasureReparierUserByListIdTimestampGt(@Param("projectId") Integer projectId, @Param("listId") Integer list_id, @Param("updateAtGt") String updateAtGt);
+    List<MeasureRepairerUser> searchMeasureReparierUserByListIdTimestampGt(@Param("projectId") Integer projectId, @Param("listId") Integer lastId, @Param("updateAtGt") String updateAtGt);
 
     void delOld(Map<String,Object> map);
 

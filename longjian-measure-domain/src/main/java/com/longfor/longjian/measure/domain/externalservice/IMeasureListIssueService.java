@@ -27,32 +27,32 @@ public interface IMeasureListIssueService {
 
     /**
      * go项目实测快速查询爆点情况时间节点数据
-     * @param project_id
-     * @param measure_list_id
+     * @param projectId
+     * @param measureListId
      * @param startTime
      * @param endTime
      * @param UNCLOSECODE
      * @return
      */
-    List<Map<String, Object>> searchMeasureListIssueTrend(Integer project_id, Integer measure_list_id, String startTime, String endTime, String UNCLOSECODE) throws ParseException;
+    List<Map<String, Object>> searchMeasureListIssueTrend(Integer projectId, Integer measureListId, String startTime, String endTime, String UNCLOSECODE) throws ParseException;
 
     /**
      *
-     * @param project_id
-     * @param measure_list_id
+     * @param projectId
+     * @param measureListId
      * @param UNCLOSECODE
      * @return
      */
-    Integer countMeasureListIssueDistributionCategory(Integer project_id, Integer measure_list_id, String UNCLOSECODE);
+    Integer countMeasureListIssueDistributionCategory(Integer projectId, Integer measureListId, String UNCLOSECODE);
 
     /**
      *
-     * @param project_id
-     * @param measure_list_id
+     * @param projectId
+     * @param measureListId
      * @param unclosecode
      * @return
      */
-    List<MeasureListIssue> searchMeasureListIssueDistributionCategory(Integer project_id, Integer measure_list_id, String unclosecode);
+    List<MeasureListIssue> searchMeasureListIssueDistributionCategory(Integer projectId, Integer measureListId, String unclosecode);
 
     /**
      *
@@ -66,14 +66,14 @@ public interface IMeasureListIssueService {
 
     /**
      *
-     * @param list_id
-     * @param last_id
+     * @param listId
+     * @param lastId
      * @param timestamp
      * @param start
      * @param limit
      * @return
      */
-    List<MeasureListIssue> searchIssueListByListIdLastIdTimestampGt(Integer list_id, Integer last_id, Long timestamp, Integer start, Integer limit);
+    List<MeasureListIssue> searchIssueListByListIdLastIdTimestampGt(Integer listId, Integer lastId, Long timestamp, Integer start, Integer limit);
 
     /**
      *
@@ -95,14 +95,14 @@ public interface IMeasureListIssueService {
 
     /**
      *
-     * @param project_id
-     * @param measure_list_id
+     * @param projectId
+     * @param measureListId
      * @param unclosecode
      * @param categoryPathAndKey
      * @param status
      * @return
      */
-    Integer searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(Integer project_id, Integer measure_list_id, String unclosecode, String categoryPathAndKey, Integer status);
+    Integer searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(Integer projectId, Integer measureListId, String unclosecode, String categoryPathAndKey, Integer status);
 
     /**
      *
@@ -146,18 +146,18 @@ public interface IMeasureListIssueService {
 
     /**
      * 项目.实测实量.爆点管理.删除
-     * @param project_id
+     * @param projectId
      * @param uuid
      */
-    void deletedByUpdateDeletedAt(Integer project_id, String uuid);
+    void deletedByUpdateDeletedAt(Integer projectId, String uuid);
 
     /**
      *
-     * @param project_id
+     * @param projectId
      * @param uuid
      * @return
      */
-    MeasureListIssue getByConditionNoFoundErr(Integer project_id, String uuid);
+    MeasureListIssue getByConditionNoFoundErr(Integer projectId, String uuid);
 
     /**
      *

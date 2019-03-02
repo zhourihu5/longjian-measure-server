@@ -33,9 +33,9 @@ public class ProjectServiceImpl implements IProjectService {
 
     @Override
     @LFAssignDataSource("zhijian2")
-    public MeasureList getByProjIdAndIdNoFoundErr(Integer projId, Integer list_id) {
+    public MeasureList getByProjIdAndIdNoFoundErr(Integer projId, Integer listId) {
         Example example = new Example(MeasureList.class);
-        example.createCriteria().andEqualTo("projectId", projId).andEqualTo("id", list_id);
+        example.createCriteria().andEqualTo("projectId", projId).andEqualTo("id", listId);
         return measureListMapper.selectOneByExample(example);
     }
 }

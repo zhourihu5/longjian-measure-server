@@ -10,57 +10,57 @@ import java.util.Map;
 public interface MeasureZoneResultMapper extends LFMySQLMapper<MeasureZoneResult> {
     /**
      * 计算出所有小组的总检查数
-     * @param measure_list_id
+     * @param measureListId
      * @return
      */
-    List<Map<String,Object>> statMeasureListZoneResultCountByListIdGroupBySquad(@Param("listId") Integer measure_list_id);
+    List<Map<String,Object>> statMeasureListZoneResultCountByListIdGroupBySquad(@Param("listId") Integer measureListId);
 
     /**
      * 计算指定zoneUuid列表下，各个分组的合格率和测点数情况
-     * @param measure_list_id
+     * @param measureListId
      * @param categoryKey
      * @return
      */
-    List<Map<String,Object>> statMearureZoneResultSquadTotalCountByListIdCategoryKey(@Param("listId") Integer measure_list_id, @Param("categoryKey") String categoryKey);
+    List<Map<String,Object>> statMearureZoneResultSquadTotalCountByListIdCategoryKey(@Param("listId") Integer measureListId, @Param("categoryKey") String categoryKey);
 
     /**
      * 计算各项的数据
-     * @param measure_list_id
+     * @param measureListId
      * @return
      */
-    List<Map<String,Object>> statMearureZoneResultSquadTotalCountByListIdGroupByCategoryKey(@Param("listId") Integer measure_list_id);
+    List<Map<String,Object>> statMearureZoneResultSquadTotalCountByListIdGroupByCategoryKey(@Param("listId") Integer measureListId);
 
     /**
      *
-     * @param measure_list_id
+     * @param measureListId
      * @return
      */
-    List<Map<String,Object>> getPassPercentDiffCategoryKeyListByMeasureListId(@Param("listId") Integer measure_list_id);
+    List<Map<String,Object>> getPassPercentDiffCategoryKeyListByMeasureListId(@Param("listId") Integer measureListId);
 
     /**
      *
-     * @param measure_list_id
-     * @param category_key
+     * @param measureListId
+     * @param categoryKey
      * @param CLOSEDCODE
      * @return
      */
-    List<Map<String,Object>> getSquadsZoneResultPassPercentByListIdAndCategoryKey(@Param("listId") Integer measure_list_id, @Param("categoryKey") String category_key, @Param("CLOSEDCODE") String CLOSEDCODE);
+    List<Map<String,Object>> getSquadsZoneResultPassPercentByListIdAndCategoryKey(@Param("listId") Integer measureListId, @Param("categoryKey") String categoryKey, @Param("CLOSEDCODE") String CLOSEDCODE);
 
     /**
      *
-     * @param measure_list_id
+     * @param measureListId
      * @return
      */
-    List<Map<String,Object>> getSquadPassPercentSmallestCategoryKeyListByMeasureListId(@Param("listId") Integer measure_list_id);
+    List<Map<String,Object>> getSquadPassPercentSmallestCategoryKeyListByMeasureListId(@Param("listId") Integer measureListId);
 
     /**
      *
-     * @param project_id
-     * @param measure_list_id
-     * @param category_key
+     * @param projectId
+     * @param measureListId
+     * @param categoryKey
      * @return
      */
-    List<MeasureZoneResult> getSubActiveMeasureCategoryZonesByListIdCategoryKey(@Param("projectId") Integer project_id, @Param("listId") Integer measure_list_id, @Param("categoryKey") String category_key);
+    List<MeasureZoneResult> getSubActiveMeasureCategoryZonesByListIdCategoryKey(@Param("projectId") Integer projectId, @Param("listId") Integer measureListId, @Param("categoryKey") String categoryKey);
 
     /**
      * 通过任务Id列表和检查项和区域Id获取测区的测点数和合格率
@@ -73,13 +73,13 @@ public interface MeasureZoneResultMapper extends LFMySQLMapper<MeasureZoneResult
 
     /**
      *
-     * @param project_id
+     * @param projectId
      * @param listIds
      * @param key
      * @param areaId
      * @return
      */
-    Integer countMeasureZoneByListIdsAndCategoryKeyAndAreaId(@Param("projectId") Integer project_id, @Param("listIds") String[] listIds, @Param("categoryKey") String key, @Param("areaId") String areaId);
+    Integer countMeasureZoneByListIdsAndCategoryKeyAndAreaId(@Param("projectId") Integer projectId, @Param("listIds") String[] listIds, @Param("categoryKey") String key, @Param("areaId") String areaId);
 
     /**
      *
@@ -105,13 +105,13 @@ public interface MeasureZoneResultMapper extends LFMySQLMapper<MeasureZoneResult
 
     /**
      *
-     * @param project_id
-     * @param list_id
-     * @param zone_uuid
-     * @param squad_id
+     * @param projectId
+     * @param listId
+     * @param zoneUuid
+     * @param squadId
      * @return
      */
-    List<MeasureZoneResult> getByProjIdListIdZoneUuidSquadId(@Param("projectId") Integer project_id, @Param("listId") Integer list_id, @Param("zoneUuid") String zone_uuid, @Param("squadId") Integer squad_id);
+    List<MeasureZoneResult> getByProjIdListIdZoneUuidSquadId(@Param("projectId") Integer projectId, @Param("listId") Integer listId, @Param("zoneUuid") String zoneUuid, @Param("squadId") Integer squadId);
 
     /**
      *

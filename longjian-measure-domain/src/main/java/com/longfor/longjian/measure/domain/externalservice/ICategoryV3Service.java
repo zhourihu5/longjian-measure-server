@@ -9,10 +9,10 @@ import java.util.Map;
 public interface ICategoryV3Service {
     /**
      *通过key查对象
-     * @param category_key
+     * @param categoryKey
      * @return
      */
-    CategoryV3 getCategoryByKey(String category_key);
+    CategoryV3 getCategoryByKey(String categoryKey);
 
     /**
      * 查子集
@@ -52,10 +52,10 @@ public interface ICategoryV3Service {
 
     /**
      * 取出所有的category子项
-     * @param parent_category_key
+     * @param parentCategoryKey
      * @return
      */
-    List<CategoryV3> searchSubCategoryByFatherKey(String parent_category_key);
+    List<CategoryV3> searchSubCategoryByFatherKey(String parentCategoryKey);
 
     /**
      * 查询子集个数

@@ -8,21 +8,21 @@ import java.util.List;
 public interface IMeasureSquadService {
     /**
      * 查询测量小组
-     * @param project_id
-     * @param measure_list_id
+     * @param projectId
+     * @param measureListId
      * @return
      */
-    List<MeasureSquad> searchOnlyMeasureSquadByProjIdAndListId(Integer project_id, Integer measure_list_id);
+    List<MeasureSquad> searchOnlyMeasureSquadByProjIdAndListId(Integer projectId, Integer measureListId);
 
 
     /**
      *
      * @param projectId
-     * @param list_id
+     * @param listId
      * @param updateAtGt
      * @return
      */
-    List<MeasureSquad> searchMeasureSquadByListIdTimestampGt(Integer projectId, Integer list_id, String updateAtGt);
+    List<MeasureSquad> searchMeasureSquadByListIdTimestampGt(Integer projectId, Integer listId, String updateAtGt);
 
     /**
      *
@@ -30,8 +30,18 @@ public interface IMeasureSquadService {
      */
     void delete (Integer id);
 
+    /**
+     *
+     * @param measureSquad
+     * @return
+     */
     int create(MeasureSquad measureSquad);
 
+    /**
+     *
+     * @param measureSquad
+     * @return
+     */
     int update (MeasureSquad measureSquad);
 
     /**
@@ -41,8 +51,19 @@ public interface IMeasureSquadService {
      */
     List<MeasureSquad>selectByExample(Example example);
 
+    /**
+     *
+     * @param projId
+     * @param listId
+     * @return
+     */
     List<MeasureSquad> SearchSquadByProjIdListId(Integer projId , Integer listId);
 
+    /**
+     *
+     * @param measureSquad
+     * @return
+     */
     MeasureSquad createReturnSuqad(MeasureSquad measureSquad);
 
     /**

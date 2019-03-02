@@ -13,61 +13,61 @@ public interface MeasureListIssueMapper extends LFMySQLMapper<MeasureListIssue> 
 
     /**
      *
-     * @param project_id
-     * @param measure_list_id
+     * @param projectId
+     * @param measureListId
      * @param unclosecode
      * @return
      */
-    Integer getZoneCount(@Param("projectId") Integer project_id, @Param("listId") Integer measure_list_id, @Param("unclosecode") String unclosecode);
+    Integer getZoneCount(@Param("projectId") Integer projectId, @Param("listId") Integer measureListId, @Param("unclosecode") String unclosecode);
 
     /**
      *
-     * @param project_id
-     * @param measure_list_id
+     * @param projectId
+     * @param measureListId
      * @param typ
      * @return
      */
-    Integer getCountByTyp(@Param("projectId") Integer project_id, @Param("listId") Integer measure_list_id, @Param("typ") String typ,@Param("closeStatus") String closeStatus);
+    Integer getCountByTyp(@Param("projectId") Integer projectId, @Param("listId") Integer measureListId, @Param("typ") String typ,@Param("closeStatus") String closeStatus);
 
     /**
      *
-     * @param project_id
-     * @param measure_list_id
+     * @param projectId
+     * @param measureListId
      * @param status
      * @return
      */
-    Integer getCountByStatus(@Param("projectId") Integer project_id, @Param("listId") Integer measure_list_id, @Param("status") String status,@Param("closeStatus") String closeStatus);
+    Integer getCountByStatus(@Param("projectId") Integer projectId, @Param("listId") Integer measureListId, @Param("status") String status,@Param("closeStatus") String closeStatus);
 
     /**
      * newCountList
-     * @param project_id
-     * @param measure_list_id
+     * @param projectId
+     * @param measureListId
      * @param startTime
      * @param endTime
      * @param unclosecode
      * @return
      */
-    List<Map<String,Object>> searchMeasureListIssueTrendNewCountList(@Param("projectId") Integer project_id, @Param("listId") Integer measure_list_id, @Param("startTime") String startTime, @Param("endTime") String endTime, @Param("unclosecode") String unclosecode);
+    List<Map<String,Object>> searchMeasureListIssueTrendNewCountList(@Param("projectId") Integer projectId, @Param("listId") Integer measureListId, @Param("startTime") String startTime, @Param("endTime") String endTime, @Param("unclosecode") String unclosecode);
 
     /**
      * reformList
-     * @param project_id
-     * @param measure_list_id
+     * @param projectId
+     * @param measureListId
      * @param startTime
      * @param endTime
      * @param unclosecode
      * @return
      */
-    List<Map<String,Object>> searchMeasureListIssueTrendReformList(@Param("projectId") Integer project_id, @Param("listId") Integer measure_list_id, @Param("startTime") String startTime, @Param("endTime") String endTime, @Param("unclosecode") String unclosecode);
+    List<Map<String,Object>> searchMeasureListIssueTrendReformList(@Param("projectId") Integer projectId, @Param("listId") Integer measureListId, @Param("startTime") String startTime, @Param("endTime") String endTime, @Param("unclosecode") String unclosecode);
 
     /**
      *
-     * @param project_id
-     * @param measure_list_id
+     * @param projectId
+     * @param measureListId
      * @param unclosecode
      * @return
      */
-    Integer countMeasureListIssueDistributionCategory(@Param("projectId") Integer project_id, @Param("listId") Integer measure_list_id, @Param("unclosecode") String unclosecode);
+    Integer countMeasureListIssueDistributionCategory(@Param("projectId") Integer projectId, @Param("listId") Integer measureListId, @Param("unclosecode") String unclosecode);
 
     /**
      *
@@ -81,14 +81,14 @@ public interface MeasureListIssueMapper extends LFMySQLMapper<MeasureListIssue> 
 
     /**
      *
-     * @param list_id
-     * @param last_id
+     * @param listId
+     * @param lastId
      * @param timestamp
      * @param start
      * @param limit
      * @return
      */
-    List<MeasureListIssue> searchIssueListByListIdLastIdTimestampGt(@Param("list_id") Integer list_id, @Param("last_id") Integer last_id, @Param("timestamp") Long timestamp, @Param("start") Integer start, @Param("limit") Integer limit);
+    List<MeasureListIssue> searchIssueListByListIdLastIdTimestampGt(@Param("list_id") Integer listId, @Param("last_id") Integer lastId, @Param("timestamp") Long timestamp, @Param("start") Integer start, @Param("limit") Integer limit);
 
     /**
      *
@@ -106,23 +106,23 @@ public interface MeasureListIssueMapper extends LFMySQLMapper<MeasureListIssue> 
 
     /**
      *
-     * @param project_id
-     * @param measure_list_id
+     * @param projectId
+     * @param measureListId
      * @param unclosecode
      * @param categoryPathAndKey
      * @param status
      * @return
      */
-    Integer searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(@Param("projectId") Integer project_id, @Param("listId") Integer measure_list_id, @Param("unclosecode") String unclosecode, @Param("categoryPathAndKey") String categoryPathAndKey, @Param("status") Integer status);
+    Integer searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(@Param("projectId") Integer projectId, @Param("listId") Integer measureListId, @Param("unclosecode") String unclosecode, @Param("categoryPathAndKey") String categoryPathAndKey, @Param("status") Integer status);
 
     /**
      *
-     * @param project_id
-     * @param measure_list_id
+     * @param projectId
+     * @param measureListId
      * @param unclosecode
      * @return
      */
-    List<MeasureListIssue> searchMeasureListIssueDistributionCategory(@Param("projId") Integer project_id, @Param("listId") Integer measure_list_id, @Param("unclosecode") String unclosecode);
+    List<MeasureListIssue> searchMeasureListIssueDistributionCategory(@Param("projId") Integer projectId, @Param("listId") Integer measureListId, @Param("unclosecode") String unclosecode);
 
     MeasureListIssue GetIssueByProjectIdAndUuid(@Param("projectId") Integer projectId, @Param("uuid") String uuid);
 

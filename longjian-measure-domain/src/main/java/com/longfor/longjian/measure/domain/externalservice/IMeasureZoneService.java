@@ -10,20 +10,20 @@ import java.util.Set;
 public interface IMeasureZoneService {
     /**
      * 获取测区数量
-     * @param project_id
+     * @param projectId
      * @param ints
      * @return
      */
-    Integer searchTotalByProjectIdAndMeasureListId(Integer project_id, int[] ints);
+    Integer searchTotalByProjectIdAndMeasureListId(Integer projectId, int[] ints);
 
     /**
      *
-     * @param project_id
-     * @param measure_list_id
+     * @param projectId
+     * @param measureListId
      * @param subKey
      * @return
      */
-    Integer getMeasureZoneCountByListIdCategoryKey(Integer project_id, Integer measure_list_id, String subKey);
+    Integer getMeasureZoneCountByListIdCategoryKey(Integer projectId, Integer measureListId, String subKey);
 
     /**
      *
@@ -40,23 +40,23 @@ public interface IMeasureZoneService {
     /**
      *
      * @param projectId
-     * @param list_id
-     * @param last_id
+     * @param listId
+     * @param lastId
      * @param timestamp
      * @param start
      * @param limit
      * @return
      */
-    List<MeasureZone> searchZoneUnscopedByListIdLastIdUpdateAtGt2(Integer projectId, Integer list_id, Integer last_id, Long timestamp, Integer start, Integer limit);
+    List<MeasureZone> searchZoneUnscopedByListIdLastIdUpdateAtGt2(Integer projectId, Integer listId, Integer lastId, Long timestamp, Integer start, Integer limit);
 
     /**
      *
      * @param projectId
-     * @param list_id
+     * @param listId
      * @param timestamp
      * @return
      */
-    Integer getCountZoneUnscopedByListIdUpdateAtGt(Integer projectId, Integer list_id, Long timestamp);
+    Integer getCountZoneUnscopedByListIdUpdateAtGt(Integer projectId, Integer listId, Long timestamp);
 
     /**
      *
@@ -67,11 +67,27 @@ public interface IMeasureZoneService {
      */
     List<MeasureZone> searchZoneByUuid(Integer projId, Set<String> zoneUuids);
 
-    MeasureZone GetByProjIdAndIdNoFoundErr(Integer projectId,Integer id);
+    /**
+     *
+     * @param projectId
+     * @param id
+     * @return
+     */
+    MeasureZone getByProjIdAndIdNoFoundErr(Integer projectId,Integer id);
 
-    Integer GetMeasureListBuildingCountAndRegionCount(Integer measureListId);
+    /**
+     *
+     * @param measureListId
+     * @return
+     */
+    Integer getMeasureListBuildingCountAndRegionCount(Integer measureListId);
 
-    Integer GetMeasureListCategoryCountAndCheckItemCount (Integer measureListId);
+    /**
+     *
+     * @param measureListId
+     * @return
+     */
+    Integer getMeasureListCategoryCountAndCheckItemCount (Integer measureListId);
 
     /**
      *
@@ -91,23 +107,41 @@ public interface IMeasureZoneService {
 
     /**
      *
-     * @param project_id
+     * @param projectId
      * @param zoneUuids
      * @return
      */
-    List<MeasureZone> searchZoneByProjUuids(Integer project_id, List<String> zoneUuids);
-    List<MeasureZone> selectByProjectIdAndRegionUUIdIn(Integer project_id, List<String> region_uuid_list);
-    MeasureZone GetZoneByUuid (Integer projId,String uuid);
+    List<MeasureZone> searchZoneByProjUuids(Integer projectId, List<String> zoneUuids);
+
+    /**
+     *
+     * @param projectId
+     * @param regionUuidList
+     * @return
+     */
+    List<MeasureZone> selectByProjectIdAndRegionUUIdIn(Integer projectId, List<String> regionUuidList);
 
     /**
      *
      * @param projId
-     * @param list_id
+     * @param uuid
      * @return
      */
-    List<MeasureZone> searchByListId(Integer projId, Integer list_id);
+    MeasureZone getZoneByUuid (Integer projId,String uuid);
 
-    void insertMany(List<MeasureZone> insert_zone_list);
+    /**
+     *
+     * @param projId
+     * @param listId
+     * @return
+     */
+    List<MeasureZone> searchByListId(Integer projId, Integer listId);
+
+    /**
+     *
+     * @param insertZoneList
+     */
+    void insertMany(List<MeasureZone> insertZoneList);
 
     int selectCountByExample(Example example);
 }

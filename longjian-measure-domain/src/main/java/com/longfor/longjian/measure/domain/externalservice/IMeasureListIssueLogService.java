@@ -9,14 +9,14 @@ public interface IMeasureListIssueLogService {
     /**
      *
      * @param projectId
-     * @param list_id
-     * @param last_id
+     * @param listId
+     * @param lastId
      * @param timestamp
      * @param start
      * @param pageSize
      * @return
      */
-    List<MeasureListIssueLog> searchIssueLogListByListIdLastIdTimestampGt(Integer projectId, Integer list_id, Integer last_id, Long timestamp, Integer start, Integer pageSize);
+    List<MeasureListIssueLog> searchIssueLogListByListIdLastIdTimestampGt(Integer projectId, Integer listId, Integer lastId, Long timestamp, Integer start, Integer pageSize);
 
     /**
      *
@@ -34,18 +34,18 @@ public interface IMeasureListIssueLogService {
 
     /**
      *
-     * @param project_id
+     * @param projectId
      * @param uuid
      * @return
      */
-    List<MeasureListIssueLog> searchByIssueUuid(Integer project_id, String uuid);
+    List<MeasureListIssueLog> searchByIssueUuid(Integer projectId, String uuid);
 
     /**
      * 
-     * @param project_id
+     * @param projectId
      * @param uuid
      * @param reformnocheck
      * @return
      */
-    List<MeasureListIssueLog> searchIssueLogByIssueUuidAndStatus(Integer project_id, String uuid, int reformnocheck);
+    List<MeasureListIssueLog> searchIssueLogByIssueUuidAndStatus(Integer projectId, String uuid, int reformnocheck);
 }

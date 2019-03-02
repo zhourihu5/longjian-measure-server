@@ -19,8 +19,8 @@ public class MeasureRegionRelServiceImpl implements IMeasureRegionRelService {
     MeasureRegionRelMapper measureRegionRelMapper;
 
     @Override
-    public Map<String, Object> selectByRelId(String rel_id) {
-        return measureRegionRelMapper.selectByRelId(rel_id);
+    public Map<String, Object> selectByRelId(String relId) {
+        return measureRegionRelMapper.selectByRelId(relId);
     }
 
     @Override
@@ -29,8 +29,8 @@ public class MeasureRegionRelServiceImpl implements IMeasureRegionRelService {
     }
 
     @Override
-    public List<MeasureRegionRel> searchRelUnscopedByProjIdLastIdUpdateAtGt(Integer project_id, Integer last_id, Long timestamp, Integer measureApiGetPerTime, Integer start) {
-        return measureRegionRelMapper.searchRelUnscopedByProjIdLastIdUpdateAtGt(project_id,last_id,timestamp,measureApiGetPerTime,start);
+    public List<MeasureRegionRel> searchRelUnscopedByProjIdLastIdUpdateAtGt(Integer projectId, Integer lastId, Long timestamp, Integer measureApiGetPerTime, Integer start) {
+        return measureRegionRelMapper.searchRelUnscopedByProjIdLastIdUpdateAtGt(projectId,lastId,timestamp,measureApiGetPerTime,start);
     }
 
     @Override
@@ -45,21 +45,21 @@ public class MeasureRegionRelServiceImpl implements IMeasureRegionRelService {
     }
 
     @Override
-    public List<MeasureRegionRel> selectByProjectIdAndIdNoDeleted(Integer project_id, List<Integer> rel_id_list) {
-        if (rel_id_list == null || rel_id_list.size() <= 0){
+    public List<MeasureRegionRel> selectByProjectIdAndIdNoDeleted(Integer projectId, List<Integer> relIdList) {
+        if (relIdList == null || relIdList.size() <= 0){
             return new ArrayList<>();
         }
         Example example = new Example(MeasureRegionRel.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("projectId",project_id);
-        criteria.andIn("id",rel_id_list);
+        criteria.andEqualTo("projectId",projectId);
+        criteria.andIn("id",relIdList);
         criteria.andIsNull("deleteAt");
         return measureRegionRelMapper.selectByExample(example);
     }
 
     @Override
-    public MeasureRegionRel update(MeasureRegionRel rel_model) {
-        measureRegionRelMapper.updateByPrimaryKeySelective(rel_model);
-        return rel_model;
+    public MeasureRegionRel update(MeasureRegionRel relModel) {
+        measureRegionRelMapper.updateByPrimaryKeySelective(relModel);
+        return relModel;
     }
 }

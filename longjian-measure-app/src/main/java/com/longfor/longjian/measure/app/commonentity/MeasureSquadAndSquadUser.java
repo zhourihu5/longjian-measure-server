@@ -14,7 +14,9 @@ import java.util.List;
 @Data
 @SuppressWarnings("squid:S1068")
 public class MeasureSquadAndSquadUser {
+    @SuppressWarnings("squid:S00116")
     private MeasureSquad Squad;
+    @SuppressWarnings("squid:S00116")
     private List<MeasureSquadUser> Users;
 }
 

@@ -14,38 +14,38 @@ public interface MeasureTagMapper extends LFMySQLMapper<MeasureTag> {
      * wangxs
      * 2018-11-22 17:17
      *
-     * @param group_id
+     * @param groupId
      * @param ownership
      * @return
      */
-    List<Map<String,Object>> searchByGroupId(@Param("groupId") Integer group_id, @Param("ownership") Integer ownership);
+    List<Map<String,Object>> searchByGroupId(@Param("groupId") Integer groupId, @Param("ownership") Integer ownership);
 
     /**
      * 通过groupId,projId查询tag
-     * @param group_id
-     * @param proj_id
+     * @param groupId
+     * @param projId
      * @param ownership
      * @return
      */
-    List<Map<String,Object>> searchByGroupIdAndProjId(@Param("groupId") Integer group_id, @Param("projId") Integer proj_id, @Param("ownership") Integer ownership);
+    List<Map<String,Object>> searchByGroupIdAndProjId(@Param("groupId") Integer groupId, @Param("projId") Integer projId, @Param("ownership") Integer ownership);
 
     /**
      *
-     * @param group_id
+     * @param groupId
      * @param tagId
      * @param ownership
      * @return
      */
-    Integer updateByIdAndOwnership(@Param("group_id")Integer group_id, @Param("tagId")Integer tagId,@Param("name")String name, @Param("ownership") Integer ownership, @Param("newDate")Date newDate);
+    Integer updateByIdAndOwnership(@Param("group_id")Integer groupId, @Param("tagId")Integer tagId,@Param("name")String name, @Param("ownership") Integer ownership, @Param("newDate")Date newDate);
 
     /**
      *
-     * @param group_id
-     * @param project_id
+     * @param groupId
+     * @param projId
      * @param tagId
      * @param ownership
      * @param newDate
      * @return
      */
-    Integer updateByProjectIdAndOwnership(@Param("group_id")Integer group_id, @Param("project_id")Integer project_id, @Param("tagId")Integer tagId,@Param("name")String name, @Param("ownership")Integer ownership, @Param("newDate")Date newDate);
+    Integer updateByProjectIdAndOwnership(@Param("group_id")Integer groupId, @Param("project_id")Integer projId, @Param("tagId")Integer tagId,@Param("name")String name, @Param("ownership")Integer ownership, @Param("newDate")Date newDate);
 }

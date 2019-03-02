@@ -67,7 +67,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
             ctrlTool.projPerm(request, "项目.实测实量.爆点管理.查看");
             projectBase = (ProjectBase) sessionInfo.getBaseInfo("cur_proj");
         } catch (Exception e) {
-            log.error("error:" + e);
+            log.error(ERROR + e);
             throw new LjBaseRuntimeException(-9999, e.getMessage());
         }
         Integer projectId = projectBase.getId();
@@ -283,7 +283,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
         try {
             helper.execute();
         } catch (Exception e) {
-            throw new LjBaseRuntimeException(-9999, "error:" + e);
+            throw new LjBaseRuntimeException(-9999, ERROR + e);
         }
         return isClosed;
     }

@@ -23,30 +23,30 @@ public interface IMeasureListService {
 
     /**
      * total
-     * @param finish_status
+     * @param finishStatus
      * @param q
-     * @param project_id
+     * @param projectId
      * @param categoryPathAndKey
      * @param areaPathAndId
      * @param userIds
      * @return
      */
-    Integer getTotalMeasure(Integer finish_status, String q, Integer project_id, String categoryPathAndKey, String areaPathAndId, String[] userIds);
+    Integer getTotalMeasure(Integer finishStatus, String q, Integer projectId, String categoryPathAndKey, String areaPathAndId, String[] userIds);
 
     /**
      *
-     * @param project_id
+     * @param projectId
      * @return
      */
-    List<Map<String,Object>> searchByProjectId(Integer project_id);
+    List<Map<String,Object>> searchByProjectId(Integer projectId);
 
     /**
      *
-     * @param project_id
-     * @param measure_list_id
+     * @param projectId
+     * @param measureListId
      * @return
      */
-    MeasureList searchByProjectIdAndMeasureListId(Integer project_id, Integer measure_list_id);
+    MeasureList searchByProjectIdAndMeasureListId(Integer projectId, Integer measureListId);
     /**
      *
      * @param listId
@@ -64,21 +64,21 @@ public interface IMeasureListService {
 
     /**
      *
-     * @param project_id
-     * @param list_id
+     * @param projectId
+     * @param listId
      * @param uuid
-     * @param category_key
+     * @param categoryKey
      * @return
      */
-    List<MeasureZone> searchZoneByMeasureListIdRegionUuidCategoryKey(Integer project_id, Integer list_id, String uuid, String category_key);
+    List<MeasureZone> searchZoneByMeasureListIdRegionUuidCategoryKey(Integer projectId, Integer listId, String uuid, String categoryKey);
 
     /**
      *
-     * @param project_id
+     * @param projectId
      * @param uuid
      * @return
      */
-    List<MeasureZone> getZoneByUuid(Integer project_id, String uuid);
+    List<MeasureZone> getZoneByUuid(Integer projectId, String uuid);
 
     /**
      *
@@ -116,18 +116,18 @@ public interface IMeasureListService {
     /**
      *
      * @param projId
-     * @param list_id
+     * @param listId
      * @return
      */
-    List<MeasureSquad> searchOnlyMeasureSquadByProjIdAndListId(Integer projId, Integer list_id);
+    List<MeasureSquad> searchOnlyMeasureSquadByProjIdAndListId(Integer projId, Integer listId);
 
     /**
      *
      * @param projId
-     * @param list_id
+     * @param listId
      * @return
      */
-    MeasureList getNoFoundErr(Integer projId, Integer list_id);
+    MeasureList getNoFoundErr(Integer projId, Integer listId);
 
     /**
      *
@@ -154,12 +154,17 @@ public interface IMeasureListService {
     MeasureList getByProjIdAndIdNoFoundErr(Integer projectId, Integer id);
 
     /**
-     *
+     *SS
      * @param vo
      * @return
      * @throws LjBaseRuntimeException
      */
     Map<String, Object> conditionSearch(ConditionSearchVo vo) throws LjBaseRuntimeException;
 
+    /**
+     * SS
+     * @param vo
+     * @return
+     */
     MeasureList createMeasureList(CreateMeasureListVo vo );
 }

@@ -17,8 +17,8 @@ public class MeasureListIssueLogServiceImpl implements IMeasureListIssueLogServi
     @Resource
     private MeasureListIssueLogMapper measureListIssueLogMapper;
     @Override
-    public List<MeasureListIssueLog> searchIssueLogListByListIdLastIdTimestampGt(Integer projectId, Integer list_id, Integer last_id, Long timestamp, Integer start, Integer pageSize) {
-        return measureListIssueLogMapper.searchIssueLogListByListIdLastIdTimestampGt(projectId,list_id,last_id,timestamp,start,pageSize);
+    public List<MeasureListIssueLog> searchIssueLogListByListIdLastIdTimestampGt(Integer projectId, Integer listId, Integer lastId, Long timestamp, Integer start, Integer pageSize) {
+        return measureListIssueLogMapper.searchIssueLogListByListIdLastIdTimestampGt(projectId,listId,lastId,timestamp,start,pageSize);
     }
 
     @Override
@@ -37,20 +37,20 @@ public class MeasureListIssueLogServiceImpl implements IMeasureListIssueLogServi
     }
 
     @Override
-    public List<MeasureListIssueLog> searchByIssueUuid(Integer project_id, String uuid) {
+    public List<MeasureListIssueLog> searchByIssueUuid(Integer projectId, String uuid) {
         Example example = new Example(MeasureListIssueLog.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("projectId",project_id);
+        criteria.andEqualTo("projectId",projectId);
         criteria.andEqualTo("issueUuid",uuid);
         ExampleUtil.addDeleteAtJudge(example);
         return measureListIssueLogMapper.selectByExample(example);
     }
 
     @Override
-    public List<MeasureListIssueLog> searchIssueLogByIssueUuidAndStatus(Integer project_id, String uuid, int reformnocheck) {
+    public List<MeasureListIssueLog> searchIssueLogByIssueUuidAndStatus(Integer projectId, String uuid, int reformnocheck) {
         Example example = new Example(MeasureListIssueLog.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("projectId",project_id);
+        criteria.andEqualTo("projectId",projectId);
         criteria.andEqualTo("issueUuid",uuid);
         criteria.andEqualTo("status",reformnocheck);
         ExampleUtil.addDeleteAtJudge(example);

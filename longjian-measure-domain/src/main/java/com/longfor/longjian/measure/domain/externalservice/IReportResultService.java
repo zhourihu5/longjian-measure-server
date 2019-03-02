@@ -5,10 +5,10 @@ import com.longfor.longjian.measure.po.zhijian2.ReportResult;
 public interface IReportResultService {
     /**
      *
-     * @param report_uuid
+     * @param reportUuid
      * @return
      */
-    ReportResult getByReportUuid(String report_uuid);
+    ReportResult getByReportUuid(String reportUuid);
 
     /**
      *

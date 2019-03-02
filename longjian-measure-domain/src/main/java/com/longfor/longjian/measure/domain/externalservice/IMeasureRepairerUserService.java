@@ -10,22 +10,53 @@ public interface IMeasureRepairerUserService {
     /**
      *
      * @param projectId
-     * @param list_id
+     * @param listId
      * @param updateAtGt
      * @return
      */
-    List<MeasureRepairerUser> searchMeasureReparierUserByListIdTimestampGt(Integer projectId, Integer list_id, String updateAtGt);
+    List<MeasureRepairerUser> searchMeasureReparierUserByListIdTimestampGt(Integer projectId, Integer listId, String updateAtGt);
 
 
+    /**
+     *
+     * @param measureRepairerUser
+     * @return
+     */
     List<MeasureRepairerUser>select(MeasureRepairerUser measureRepairerUser);
 
+    /**
+     *
+     * @param map
+     */
     void delOld(Map<String,Object> map);
 
+    /**
+     *
+     * @param measureRepairerUsers
+     */
     void insertList(List<MeasureRepairerUser>measureRepairerUsers);
 
+    /**
+     *
+     * @param example
+     * @return
+     */
     List<MeasureRepairerUser> selectByExample(Example example);
 
+    /**
+     *
+     * @param projId
+     * @param listId
+     * @return
+     */
     List<MeasureRepairerUser> SearchMeasureReparierUserByListId(Integer projId,Integer listId);
 
-    void create(int proj_id, Integer id, String role_type, Integer user_id);
+    /**
+     *
+     * @param projId
+     * @param id
+     * @param roleType
+     * @param userId
+     */
+    void create(int projId, Integer id, String roleType, Integer userId);
 }

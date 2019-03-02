@@ -467,13 +467,13 @@ public class MeasureListIssueHelper {
 
         //已经有issue的zoneUuid
         log.debug(JSON.toJSONString(listIds));
-        if (listIds.size() > 0) {
+        if (!listIds.isEmpty()) {
             //检查提交的人员是否合法（在测量小组中）
             try {
                 List<String> needDropIssueUuidForUser = this.checkUserInSquad(this.needInsertIssueMap);
                 log.debug(JSON.toJSONString(needDropIssueUuidForUser));
                 //剔除新建列表中，其zoneUuid已经有issue的数据
-                if (needDropIssueUuidForUser.size() > 0) {
+                if (!needDropIssueUuidForUser.isEmpty()) {
                     for (String tempIssueUuid : needDropIssueUuidForUser
                     ) {
                         //记录丢弃的IssueUuid
@@ -491,7 +491,7 @@ public class MeasureListIssueHelper {
                 log.debug(JSON.toJSONString(needDropIssueUuidForZone));
 
                 //剔除新建列表中，其zoneUuid已经有issue的数据
-                if (needDropIssueUuidForZone != null && needDropIssueUuidForZone.size() > 0) {
+                if (needDropIssueUuidForZone != null && !needDropIssueUuidForZone.isEmpty()) {
                     needDropIssueUuidForZone.forEach(tempIssueUuid -> {
                         //记录丢弃的IssueUuid
                         this.settingDroppedIssue(
@@ -503,6 +503,7 @@ public class MeasureListIssueHelper {
                     });
                 }
             } catch (Exception e) {
+                log.error("error:",e);
                 throw e;
             }
         }
@@ -531,9 +532,7 @@ public class MeasureListIssueHelper {
 
         //处理3 找到被舍弃的issue对应的log，舍弃并返回告知客户端
         Map<String, DroppedVo> droppedIssueUuidMap = new HashMap<>();
-        this.droppedIssue.forEach(droppedVo -> {
-            droppedIssueUuidMap.put(droppedVo.getUuid(), droppedVo);
-        });
+        this.droppedIssue.forEach(droppedVo -> droppedIssueUuidMap.put(droppedVo.getUuid(), droppedVo));
 
         this.needInsertIssueLog = new ArrayList<>();
         this.issueLogs.forEach(issueLog -> {
@@ -672,14 +671,14 @@ public class MeasureListIssueHelper {
      * 设置舍弃的issue_log uuid及原因
      *
      * @param uuid
-     * @param reason_type
+     * @param reasonType
      * @param reason
      * @return
      */
-    public MeasureListIssueHelper settingDroppedIssueLog(String uuid, Integer reason_type, String reason) {
+    public MeasureListIssueHelper settingDroppedIssueLog(String uuid, Integer reasonType, String reason) {
         DroppedVo droppedVo = new DroppedVo();
         droppedVo.setUuid(uuid);
-        droppedVo.setReason_type(reason_type);
+        droppedVo.setReason_type(reasonType);
         droppedVo.setReason(reason);
         this.droppedIssueLog.add(droppedVo);
         return this;
@@ -716,7 +715,7 @@ public class MeasureListIssueHelper {
      * @return
      */
     public MeasureListIssueHelper initSquadId(Set<Integer> listIds) {
-        if (listIds.size() <= 0) {
+        if (listIds.isEmpty()) {
             return this;
         }
         this.listIdAndUserIdToSquadIdMap = new HashMap<>();
@@ -791,13 +790,13 @@ public class MeasureListIssueHelper {
         for (Map.Entry<String, MeasureListIssue> entry : needInsertIssueMap.entrySet()) {
             zoneUuids.add(entry.getValue().getZoneUuid());
         }
-        if (zoneUuids.size() == 0) {
+        if (zoneUuids.isEmpty()) {
             return new ArrayList<>();
         }
         //去重，不用做了 utils.DistinctStringSlice(&zoneUuids)
         try {
             List<MeasureListIssue> issuesInDb = measureListIssueService.searchMeasueListIssueInZoneUuids(zoneUuids);
-            if (issuesInDb.size() == 0) {
+            if (issuesInDb.isEmpty()) {
                 return new ArrayList<>();
             }
 
@@ -819,6 +818,7 @@ public class MeasureListIssueHelper {
                 }
             }
         } catch (Exception e) {
+            log.error("error:",e);
             throw e;
         }
         return needDropIssueUuid;
@@ -831,15 +831,13 @@ public class MeasureListIssueHelper {
      * @return
      */
     public MeasureListIssueHelper initArea(List<Integer> areaIds) {
-        if (areaIds.size() <= 0) {
+        if (areaIds.isEmpty()) {
             return this;
         }
         this.areaMap = new HashMap<>();
         try {
             List<Area> areas = areaService.getAreaByIds(areaIds);
-            areas.forEach(area -> {
-                this.areaMap.put(area.getId(), area);
-            });
+            areas.forEach(area -> this.areaMap.put(area.getId(), area));
         } catch (Exception e) {
             log.warn("helper init area error: " + e.getMessage());
             return this;
@@ -854,15 +852,13 @@ public class MeasureListIssueHelper {
      * @return
      */
     public MeasureListIssueHelper initCategory(List<String> categoryKeys) {
-        if (categoryKeys.size() <= 0) {
+        if (categoryKeys.isEmpty()) {
             return this;
         }
         this.categoryMap = new HashMap<>();
         try {
             List<CategoryV3> categorys = categoryV3Service.getCategoryByKeys(categoryKeys);
-            categorys.forEach(categoryV3 -> {
-                this.categoryMap.put(categoryV3.getKey(), categoryV3);
-            });
+            categorys.forEach(categoryV3 -> this.categoryMap.put(categoryV3.getKey(), categoryV3));
         } catch (Exception e) {
             log.warn("helper init category error: " + e.getMessage());
             return this;
@@ -877,15 +873,13 @@ public class MeasureListIssueHelper {
      * @return
      */
     public MeasureListIssueHelper initZone(List<String> zoneUuids) {
-        if (zoneUuids.size() <= 0) {
+        if (zoneUuids.isEmpty()) {
             return this;
         }
         this.zoneMap = new HashMap<>();
         try {
             List<MeasureZone> zones = measureZoneService.searchZoneByUuid(this.currentProjectId, new HashSet<>(zoneUuids));
-            zones.forEach(zone -> {
-                this.zoneMap.put(zone.getUuid(), zone);
-            });
+            zones.forEach(zone -> this.zoneMap.put(zone.getUuid(), zone));
         } catch (Exception e) {
             log.warn("helper init Zone error: " + e.getMessage());
             return this;

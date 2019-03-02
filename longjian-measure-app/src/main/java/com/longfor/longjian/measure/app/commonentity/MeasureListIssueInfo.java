@@ -14,10 +14,15 @@ import java.util.List;
 @SuppressWarnings("squid:S1068")
 public class MeasureListIssueInfo {
 
+    @SuppressWarnings("squid:S00116")
     private MeasureListIssue Issue;
+    @SuppressWarnings("squid:S00116")
     private String TaskName;
+    @SuppressWarnings("squid:S00116")
     private List<String> CategoryPathNames;
+    @SuppressWarnings("squid:S00116")
     private List<String> AreaPathNames;
+    @SuppressWarnings("squid:S00116")
     private String RepairerName;
 }
 

@@ -14,8 +14,8 @@ public interface IProjectService {
     /**
      *
      * @param projId
-     * @param list_id
+     * @param listId
      * @return
      */
-    MeasureList getByProjIdAndIdNoFoundErr(Integer projId, Integer list_id);
+    MeasureList getByProjIdAndIdNoFoundErr(Integer projId, Integer listId);
 }

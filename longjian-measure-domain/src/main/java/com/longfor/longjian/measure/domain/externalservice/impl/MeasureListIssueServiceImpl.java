@@ -82,10 +82,10 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     }
 
     @Override
-    public List<Map<String, Object>> searchMeasureListIssueTrend(Integer project_id, Integer measure_list_id, String startTime, String endTime, String UNCLOSECODE) throws ParseException {
+    public List<Map<String, Object>> searchMeasureListIssueTrend(Integer projectId, Integer measureListId, String startTime, String endTime, String UNCLOSECODE) throws ParseException {
         List<Map<String, Object>> result = new ArrayList<>();
-        List<Map<String, Object>> newCountList = measureListIssueMapper.searchMeasureListIssueTrendNewCountList(project_id, measure_list_id, startTime, endTime, UNCLOSECODE);
-        List<Map<String, Object>> trendReformList = measureListIssueMapper.searchMeasureListIssueTrendReformList(project_id, measure_list_id, startTime, endTime, UNCLOSECODE);
+        List<Map<String, Object>> newCountList = measureListIssueMapper.searchMeasureListIssueTrendNewCountList(projectId, measureListId, startTime, endTime, UNCLOSECODE);
+        List<Map<String, Object>> trendReformList = measureListIssueMapper.searchMeasureListIssueTrendReformList(projectId, measureListId, startTime, endTime, UNCLOSECODE);
         //数据合并，把两个查询出来的时间合并到开始到结束时间，数据是空就记0
         do {
             Map<String, Object> map = new HashMap<>();
@@ -119,13 +119,13 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     }
 
     @Override
-    public Integer countMeasureListIssueDistributionCategory(Integer project_id, Integer measure_list_id, String UNCLOSECODE) {
-        return measureListIssueMapper.countMeasureListIssueDistributionCategory(project_id, measure_list_id, UNCLOSECODE);
+    public Integer countMeasureListIssueDistributionCategory(Integer projectId, Integer measureListId, String UNCLOSECODE) {
+        return measureListIssueMapper.countMeasureListIssueDistributionCategory(projectId, measureListId, UNCLOSECODE);
     }
 
     @Override
-    public List<MeasureListIssue> searchMeasureListIssueDistributionCategory(Integer project_id, Integer measure_list_id, String unclosecode) {
-        return measureListIssueMapper.searchMeasureListIssueDistributionCategory(project_id, measure_list_id, unclosecode);
+    public List<MeasureListIssue> searchMeasureListIssueDistributionCategory(Integer projectId, Integer measureListId, String unclosecode) {
+        return measureListIssueMapper.searchMeasureListIssueDistributionCategory(projectId, measureListId, unclosecode);
     }
 
     @Override
@@ -136,8 +136,8 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     }
 
     @Override
-    public List<MeasureListIssue> searchIssueListByListIdLastIdTimestampGt(Integer list_id, Integer last_id, Long timestamp, Integer start, Integer pageSize) {
-        return measureListIssueMapper.searchIssueListByListIdLastIdTimestampGt(list_id, last_id, timestamp, start, pageSize);
+    public List<MeasureListIssue> searchIssueListByListIdLastIdTimestampGt(Integer listId, Integer lastId, Long timestamp, Integer start, Integer pageSize) {
+        return measureListIssueMapper.searchIssueListByListIdLastIdTimestampGt(listId, lastId, timestamp, start, pageSize);
     }
 
     @Override
@@ -172,8 +172,8 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     }
 
     @Override
-    public Integer searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(Integer project_id, Integer measure_list_id, String unclosecode, String categoryPathAndKey, Integer status) {
-        return measureListIssueMapper.searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(project_id, measure_list_id, unclosecode, categoryPathAndKey, status);
+    public Integer searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(Integer projectId, Integer measureListId, String unclosecode, String categoryPathAndKey, Integer status) {
+        return measureListIssueMapper.searchMeasureListIssueByCloseStatusAndStatusAndCategoryPathAndKeyLike(projectId, measureListId, unclosecode, categoryPathAndKey, status);
     }
 
     @Override
@@ -343,22 +343,22 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     }
 
     @Override
-    public void deletedByUpdateDeletedAt(Integer project_id, String uuid) {
+    public void deletedByUpdateDeletedAt(Integer projectId, String uuid) {
         MeasureListIssue measureListIssue = new MeasureListIssue();
         measureListIssue.setDeleteAt(new Date());
 
         Example example = new Example(MeasureListIssue.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo(PROJECTID, project_id);
+        criteria.andEqualTo(PROJECTID, projectId);
         criteria.andEqualTo("uuid", uuid);
 
         measureListIssueMapper.updateByExampleSelective(measureListIssue, example);
     }
 
     @Override
-    public MeasureListIssue getByConditionNoFoundErr(Integer project_id, String uuid) {
+    public MeasureListIssue getByConditionNoFoundErr(Integer projectId, String uuid) {
         Example example = new Example(MeasureListIssue.class);
-        example.createCriteria().andEqualTo("uuid", uuid).andEqualTo(PROJECTID, project_id);
+        example.createCriteria().andEqualTo("uuid", uuid).andEqualTo(PROJECTID, projectId);
         return measureListIssueMapper.selectOneByExample(example);
     }
 

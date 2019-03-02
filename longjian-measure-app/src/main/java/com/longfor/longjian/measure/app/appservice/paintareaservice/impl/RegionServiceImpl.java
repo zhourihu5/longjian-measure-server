@@ -37,13 +37,11 @@ public class RegionServiceImpl implements IRegionService {
     private IMeasureZoneService measureZoneService;
     private static final String POLYGON = "polygon";
     private static final String TAG_ID_LIST = "tag_id_list";
-
+    private static final String PATHFLAG = "/";
     @Override
     @Transactional
     public void add(Integer projectId, String regionList, Integer srcType) {
-        //todo: (python源码也是todo)
         //将bulk_create 移植到peewee2能加速, 待读源码移植
-
         //找出所有area_id对应的area
         Set areaIdSet = new HashSet();
         List<HashMap> regionInfoList = JSONArray.parseArray(regionList, HashMap.class);
@@ -51,9 +49,7 @@ public class RegionServiceImpl implements IRegionService {
                 areaIdSet.addAll((List) regionInfo.get("area_id_list"))
         );
         log.info(JSON.toJSONString(areaIdSet));
-        //area_id_list = area_id_set 不理解为啥set转换list
         List areaIdList = new ArrayList(areaIdSet);
-
         //查询area信息, 用id建立map关系
         List<AreaRetrieveVo> areaList = coreAreaService.searchByIdList(projectId, areaIdList);
         log.info("area_id_list: " + JSON.toJSONString(areaIdList));
@@ -61,15 +57,12 @@ public class RegionServiceImpl implements IRegionService {
         List<Area> areaLists = JSONArray.parseArray(JSON.toJSONString(areaList), Area.class);
         Map<Integer, Area> areaMap = areaLists.stream().collect(Collectors.toMap(Area::getId, area -> area));
         log.info("area_map: " + JSON.toJSONString(areaMap));
-
         Set<Integer> difference = new HashSet(areaIdList);
         difference.removeAll(areaMap.keySet());
         if (!difference.isEmpty()) {
             log.info("missing area_id: " + JSON.toJSONString(difference));
             throw new LjBaseRuntimeException(MeasureErrorEnum.AREAMISSING.getId(), MeasureErrorEnum.AREAMISSING.getValue());
         }
-
-        //todo: 有复杂的选择语句如何处理? 直接在peewee外部加一个固定参数的功能? (python源码也是todo)
         //获取measure_region现有的最大的index
         List<Map<String, Object>> indexMap = measureRegionService.getMaxRegionIndexGroupByAreaIdNoDeleted(projectId, areaIdList);
         Map<String, Object> indexDict = new HashMap<>();
@@ -77,25 +70,22 @@ public class RegionServiceImpl implements IRegionService {
                 indexDict.put(map.get("area_id").toString(), map.get("region_index"))
         );
         log.info("index_dict: " + JSON.toJSONString(indexDict));
-
         //补全没有出现过的测区index
         Map<String, Object> trueIndexDict = new HashMap<>();
         areaIdList.forEach(areaId ->
                 trueIndexDict.put(areaId.toString(), indexDict.get(areaId.toString()) == null ? 0 : indexDict.get(areaId.toString()))
         );
         log.info("true_index_dict: " + JSON.toJSONString(trueIndexDict));
-
         //插入region
         regionInfoList.forEach(regionInfo -> {
             List<MeasureRegion> modelList = new ArrayList<>();
-
             //region
             List<Integer> areaIdLists = JSONArray.parseArray(regionInfo.get("area_id_list").toString(), Integer.class);
             log.info("len : " + areaIdLists.size());
             log.info(JSON.toJSONString(regionInfoList));
             areaIdList.forEach(areaId -> {
                 Area areaInfo = areaMap.get(areaId);
-                String areaPathAndId = areaInfo.getPath() + areaId + "/";
+                String areaPathAndId = areaInfo.getPath() + areaId + PATHFLAG;
                 String uuid = UUID.randomUUID().toString();
                 String genUuid = uuid.replace("-", "");
                 String polygon = regionInfo.get(POLYGON).toString();

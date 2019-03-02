@@ -72,6 +72,7 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
     @Resource
     private IMeasureRegionRelService measureRegionRelService;
     private static final String USER_ID_LIST = "user_id_list";
+    private static final String PATHFLAG = "/";
     @Override
     public SetStatusVo setStatus(SetStatusReq setStatusReq) {
 
@@ -218,7 +219,6 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
         vo.setPlan_begin_on(planBeginOn);
         vo.setPlan_end_on(planEndOn);
         MeasureList listModel = measureListService.createMeasureList(vo);
-        //获取区域信息 todo lamada表达式没弄明白😐
         String[] areaIdList = areaIdLists.split(",");
         List<Integer> areaIdListInt = new ArrayList<>();
         for (String id : areaIdList
@@ -338,7 +338,7 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
                 regionModelList.forEach(LambdaExceptionUtil.throwingConsumerWrapper(regionModel -> {
                     MeasureZone measureZone = new MeasureZone();
                     Area area = areaDict.get(regionModel.getAreaId());
-                    String areaPathAndId = area == null ? "" : area.getPath() + area.getId() + "/";
+                    String areaPathAndId = area == null ? "" : area.getPath() + area.getId() + PATHFLAG;
                     measureZone.setRegionUuid(regionModel.getUuid());
                     measureZone.setUuid(UUID.randomUUID().toString().replaceAll("-", ""));
                     measureZone.setAreaId(area == null ? 0 : area.getId());

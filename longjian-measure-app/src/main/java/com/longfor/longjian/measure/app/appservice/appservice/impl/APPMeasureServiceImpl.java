@@ -127,7 +127,6 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             throw new LjBaseRuntimeException(-9999, e + "");
         }
         droppedInfoVo.setDropped(helper.getDroppedIssueLog());
-        reportUuidStatus = KeyProcedureTaskConstant.SUCCEED;
         ljBaseResponse.setData(droppedInfoVo);
         return ljBaseResponse;
     }
@@ -152,7 +151,6 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         }
         List<ResultListVo> zoneResults = JSONArray.parseArray(apiMeasureReportZoneResultReq.getData(), ResultListVo.class);
         List<DroppedVo> dropped = createZoneResultsNoProj(zoneResults);
-        reportUuidStatus = KeyProcedureTaskConstant.SUCCEED;
         droppedInfoVo.setDropped(dropped);
         ljBaseResponse.setData(droppedInfoVo);
         return ljBaseResponse;
@@ -202,7 +200,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             //如果有上传过就不让写入（在未有开关之前统一拒收）
             try {
                 List<MeasureZoneResult> measureZoneResults = measureZoneResultService.getByProjIdListIdZoneUuidSquadId(resultListVo.getProject_id(), resultListVo.getList_id(), resultListVo.getZone_uuid(), resultListVo.getSquad_id());
-                boolean has = measureZoneResults != null && measureZoneResults.size() > 0;
+                boolean has = measureZoneResults != null && !measureZoneResults.isEmpty();
                 if (has) {
                     log.warn("zone result already uploaded, zone_uuid:" + resultListVo.getZone_uuid());
                     ApiDropDataReasonEnum reason = ApiDropDataReasonEnum.MEASUREZONERESULTEXISTS;
@@ -331,7 +329,6 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                     droppedVos.add(droppedVo);
                     continue;
                 }
-//                zoneResult = measureZoneResultService.insertObjectNoAffectedErr(zoneResult);
                 try {
                     measureZoneResultService.insertObjectNoAffectedErr(zoneResult);
                 } catch (Exception e) {
@@ -424,7 +421,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
      *
      * @param formula
      */
-    private void calcResult(String formula, MeasureZoneResult result) throws Exception{
+    private void calcResult(String formula, MeasureZoneResult result) throws LjBaseRuntimeException{
         List<MeasureZoneGroupData> resultData = Lists.newArrayList();
         List<Map> dataZone = JSONArray.parseArray(result.getData(), Map.class);
         for (Map d : dataZone) {
@@ -460,7 +457,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                 log.info("JS执行结果res:{}", res);
             } catch (Exception e) {
                 log.error("执行JavaScript错误", e);
-                throw e;
+                throw new LjBaseRuntimeException(-9999,e+"");
             }
             Map resultValue = JSONObject.parseObject(res, Map.class);
             for (Map.Entry<String, MeasureZonePointData> entry : r.getData().entrySet()) {

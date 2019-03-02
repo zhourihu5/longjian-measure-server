@@ -12,11 +12,11 @@ public interface MeasureSquadUserMapper extends LFMySQLMapper<MeasureSquadUser> 
     /**
      *
      * @param projectId
-     * @param list_id
+     * @param lastId
      * @param updateAtGt
      * @return
      */
-    List<MeasureSquadUser> searchMeasureSquadUserByListIdTimestampGt(@Param("projectId") Integer projectId, @Param("listId") Integer list_id, @Param("updateAtGt") String updateAtGt);
+    List<MeasureSquadUser> searchMeasureSquadUserByListIdTimestampGt(@Param("projectId") Integer projectId, @Param("listId") Integer lastId, @Param("updateAtGt") String updateAtGt);
 
     /**
      *
