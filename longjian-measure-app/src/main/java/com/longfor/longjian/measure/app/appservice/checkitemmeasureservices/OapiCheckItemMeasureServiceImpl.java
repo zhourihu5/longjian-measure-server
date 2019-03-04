@@ -159,7 +159,6 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
         formVo.setRootCategoryId(fileReq.getId());
         String name = "";
         String mimeType = null;
-        byte[] content;
         CategoryV3 rc = new CategoryV3();
         FileResource fileResource = null;
         if (formVo.getRootCategoryId() > 0) {
@@ -173,7 +172,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
                 if (fileResource != null) {
                     name = fileResource.getFileName();
                     mimeType = fileResource.getMimeType();
-                    content = fileResourceService.readFileAll(fileResource.getId());
+                    fileResourceService.readFileAll(fileResource.getId());
                 }
             } catch (Exception e) {
                 ljBaseResponse.setMessage(e.getMessage());
@@ -185,7 +184,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
             try {
                 String filename = "./templates/file_templates/category_import_measure.xlsx";
                 name = "实测实量检查项导入模板.xlsx";
-                content = FileUtil.urlTobyte(filename);
+                FileUtil.urlTobyte(filename);
             } catch (IOException e) {
                 ljBaseResponse.setMessage(ERROR + e);
                 return ljBaseResponse;
@@ -209,11 +208,8 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
             map.put("fileName", fileResource.getFileName());
         }
         byte[] buff = new byte[1024];
-        BufferedInputStream bis = null;
-        OutputStream os = null;
-        try {
-            bis = new BufferedInputStream(new FileInputStream(map.get("schema").toString() + "/" + map.get("uri").toString()));
-            os = response.getOutputStream();
+        try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(map.get("schema").toString() + "/" + map.get("uri").toString()));
+                OutputStream os = response.getOutputStream()){
             int i = 0;
             while ((i = bis.read(buff)) != -1) {
                 os.write(buff, 0, i);
@@ -222,14 +218,8 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
             }
         } catch (IOException e) {
             log.error(e.getMessage());
-        } finally {
-            if (bis != null) {
-                bis.close();
-            }
-            if (os != null) {
-                os.close();
-            }
         }
+
         return ljBaseResponse;
     }
 }
