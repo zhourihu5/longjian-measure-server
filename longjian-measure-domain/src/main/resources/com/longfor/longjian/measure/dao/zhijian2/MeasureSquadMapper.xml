@@ -42,7 +42,7 @@
     (#{listId},#{projectId},#{name},#{planRate},#{rate},#{createAt},#{updateAt})
 
   </insert>
-  <select id="SearchSquadByProjIdListId" resultMap="BaseResultMap">
+  <select id="searchSquadByProjIdListId" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List"/>
     FROM

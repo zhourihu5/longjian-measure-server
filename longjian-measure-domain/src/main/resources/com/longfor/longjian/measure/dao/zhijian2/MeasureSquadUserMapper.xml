@@ -63,7 +63,7 @@
         </if>
 
     </update>
-    <select id="SearchBySquadId" resultMap="BaseResultMap">
+    <select id="searchBySquadId" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM

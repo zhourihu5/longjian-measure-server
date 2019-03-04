@@ -1,7 +1,9 @@
 package com.longfor.longjian.measure.web;
 
 
+import com.alibaba.fastjson.JSON;
 import com.longfor.longjian.measure.Application;
+import com.longfor.longjian.measure.app.req.measurelist.ConditionSearchReq;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,14 +23,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * wangxs
- * 2018-08-24 11:41
- * 历史填报接口单元测试
+ * 2019-03-04 13:51
+ * MeasureListController 单元测试
  */
 
 @RunWith(SpringJUnit4ClassRunner.class) // SpringJUnit支持，由此引入Spring-Test框架支持！
 @SpringBootTest(classes = Application.class) // 指定我们SpringBoot工程的Application启动类
 @WebAppConfiguration
-public class ProgressSearchTest {
+public class MeasureListSearchTest {
 
     private MockMvc mockMvc;
 
@@ -41,29 +43,25 @@ public class ProgressSearchTest {
     }
 
 
-    @Test
-    public void testGetBasicSourceInit(){
-//        String json = "{\"companyId\":5,\"searchStartTime\":\"2018-08-14\",\"searchEndTime\":\"2018-08-16\"}";
+//    @Test
+//    public void testConditionSearch() throws Exception {
+//        ConditionSearchReq conditionSearchReq = new ConditionSearchReq();
+//        conditionSearchReq.setGroup_id(4);
+//        conditionSearchReq.setArea_id("");
+//        conditionSearchReq.setCategory_key("");
+//        conditionSearchReq.setFinish_status(null);
+//        conditionSearchReq.setName("");
+//        conditionSearchReq.setPage(1);
+//        conditionSearchReq.setPage_size(20);
+//        conditionSearchReq.setProject_id(927);
+//        conditionSearchReq.setUser_id_list("");
 //        mockMvc.perform(
-//                post("/v1/api/app/progressSearch/getBasicSourceInit")
+//                post("measure/v1/papi/measure_list/condition_search")
 //                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-//                        .content(json))
+//                        .content(JSON.toJSONString(conditionSearchReq)))
 //                .andExpect(status().isOk())
 //                .andExpect(jsonPath("$.message").value("success"))
 //                .andDo(MockMvcResultHandlers.print())
 //                .andReturn();
-    }
-
-    @Test
-    public void testGetTeamOrProDetails(){
-//        String json = "{\"groupId\":4}";
-//        mockMvc.perform(
-//                post("/v1/api/app/progressSearch/getTeamOrProDetails")
-//                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-//                        .content(json))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.message").value("success"))
-//                .andDo(MockMvcResultHandlers.print())
-//                .andReturn();
-    }
+//    }
 }

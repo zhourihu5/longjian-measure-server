@@ -1,13 +1,19 @@
 package com.longfor.longjian.measure.util;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * 日期工具类
@@ -16,6 +22,12 @@ import java.util.Date;
 public class DateUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(DateUtil.class);
+    // 取得本地时间：
+    private static final Calendar cal = Calendar.getInstance();
+    // 取得时间偏移量：
+    private static final int zoneOffset = cal.get(java.util.Calendar.ZONE_OFFSET);
+    // 取得夏令时差：
+    private static final int dstOffset = cal.get(java.util.Calendar.DST_OFFSET);
 
 
     //日期格式，精确到日 2017-4-16
@@ -232,4 +244,21 @@ public class DateUtil {
         return dd;
     }
 
+
+    /**
+     * 2018-10-26T17:03:58+08:00 格式
+     * @param date
+     * @return
+     */
+    public static String getZoneDateTime(Date date) {
+        DateTimeFormatter formatter0 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(ZoneId.of("Asia/Shanghai"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssz");
+        ZonedDateTime zoneTime = ZonedDateTime.parse(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date) , formatter0);
+        return zoneTime.withFixedOffsetZone().format(formatter);
+    }
+
+
+//    public static void main(String[] args) {
+//        System.out.println(getZoneDateTime(new Date()));
+//    }
 }
