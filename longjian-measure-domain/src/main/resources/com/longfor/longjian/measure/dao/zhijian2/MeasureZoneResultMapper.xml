@@ -320,7 +320,7 @@ WHERE
 
   </update>
 
-  <select id="SearchZoneResultByProjIdZoneUuid" resultMap="BaseResultMap">
+  <select id="searchZoneResultByProjIdZoneUuid" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List"/>
     FROM

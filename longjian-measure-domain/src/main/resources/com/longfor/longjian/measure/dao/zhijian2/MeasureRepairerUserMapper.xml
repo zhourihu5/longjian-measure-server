@@ -52,7 +52,7 @@
     </if>
 
   </update>
-  <select id="SearchMeasureReparierUserByListId" resultMap="BaseResultMap">
+  <select id="searchMeasureReparierUserByListId" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List"/>
     FROM
