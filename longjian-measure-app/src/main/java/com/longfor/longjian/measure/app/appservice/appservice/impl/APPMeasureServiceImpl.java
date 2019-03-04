@@ -47,6 +47,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.longfor.longjian.measure.util.DateUtil.getZoneDateTime;
+
 @Service
 @Slf4j
 public class APPMeasureServiceImpl implements IAPPMeasureService {
@@ -296,7 +298,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                 resultListVo.getData().forEach(textResultVo -> {
                     Map<String, Object> groupData = Maps.newHashMap();
                     groupData.put("RecorderId", textResultVo.getRecorder_id());
-                    groupData.put(UPDATEAT, textResultVo.getUpdate_at());
+                    groupData.put(UPDATEAT, getZoneDateTime(new Date()));
                     groupData.put(TEXTURE, textResultVo.getTexture());
                     List<Map> textResultData = new ArrayList<>();
                     textResultVo.getData().forEach(singlePointTestVo -> {
