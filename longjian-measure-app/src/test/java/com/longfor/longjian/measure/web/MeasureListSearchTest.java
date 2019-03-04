@@ -43,25 +43,25 @@ public class MeasureListSearchTest {
     }
 
 
-    @Test
-    public void testConditionSearch() throws Exception {
-        ConditionSearchReq conditionSearchReq = new ConditionSearchReq();
-        conditionSearchReq.setGroup_id(4);
-        conditionSearchReq.setArea_id("");
-        conditionSearchReq.setCategory_key("");
-        conditionSearchReq.setFinish_status(null);
-        conditionSearchReq.setName("");
-        conditionSearchReq.setPage(1);
-        conditionSearchReq.setPage_size(20);
-        conditionSearchReq.setProject_id(927);
-        conditionSearchReq.setUser_id_list("");
-        mockMvc.perform(
-                post("measure/v1/papi/measure_list/condition_search")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(JSON.toJSONString(conditionSearchReq)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("success"))
-                .andDo(MockMvcResultHandlers.print())
-                .andReturn();
-    }
+//    @Test
+//    public void testConditionSearch() throws Exception {
+//        ConditionSearchReq conditionSearchReq = new ConditionSearchReq();
+//        conditionSearchReq.setGroup_id(4);
+//        conditionSearchReq.setArea_id("");
+//        conditionSearchReq.setCategory_key("");
+//        conditionSearchReq.setFinish_status(null);
+//        conditionSearchReq.setName("");
+//        conditionSearchReq.setPage(1);
+//        conditionSearchReq.setPage_size(20);
+//        conditionSearchReq.setProject_id(927);
+//        conditionSearchReq.setUser_id_list("");
+//        mockMvc.perform(
+//                post("measure/v1/papi/measure_list/condition_search")
+//                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+//                        .content(JSON.toJSONString(conditionSearchReq)))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.message").value("success"))
+//                .andDo(MockMvcResultHandlers.print())
+//                .andReturn();
+//    }
 }
