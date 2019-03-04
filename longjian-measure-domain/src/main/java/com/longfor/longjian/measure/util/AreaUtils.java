@@ -123,7 +123,7 @@ public class AreaUtils {
         List<Integer> totalIds = Arrays.asList(integerIds);
         totalIds.add(area.getId());
         for (int i = totalIds.size() - 1; i >= 0; i--) {
-            Area area1 = get(totalIds.get(i));
+            area = get(totalIds.get(i));
             if (area != null) {
                 if (area.getType().equals(AreaTypeEnum.ROOM.getId())) {
                     map.put("room", area.getName());
