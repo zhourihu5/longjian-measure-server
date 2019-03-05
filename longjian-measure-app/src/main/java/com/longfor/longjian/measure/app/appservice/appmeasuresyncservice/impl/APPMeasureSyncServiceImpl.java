@@ -112,11 +112,16 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         for (String projectId : projectIds
         ) {
             List<MeasureList> measureLists = measureListService.searchListByProjIdUserId(projectId, userId);
-            measureLists.forEach(measureList -> {
+            for (MeasureList measureList : measureLists) {
+                if (measureList.getCloseStatus().equals(MeasureListCloseStatusEnum.CLOSED.getId())) {
+                    continue;
+                } else if (measureList.getFinishStatus().equals(MeasureListFinishStatusEnum.FINISHED.getId())) {
+                    continue;
+                }
                 List<MeasureListArea> areas = measureListAreaService.searchByListId(projectId, measureList.getId());
                 TaskInfoVo taskInfoVo = convermeasureListToTaskInfoVo(measureList, areas);
                 taskInfoVos.add(taskInfoVo);
-            });
+            }
         }
         myTaskVo.setMeasure_list(taskInfoVos);
         ljBaseResponse.setData(myTaskVo);
