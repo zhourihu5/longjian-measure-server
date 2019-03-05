@@ -42,6 +42,7 @@ import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.servlet.http.HttpServletRequest;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -90,6 +91,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
     private static final String DATATYPE = "DataType";
     private static final String DESIGNVALUE = "DesignValue";
     private static final String DESIGNVALUEREQD = "DesignValueReqd";
+    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###################.###########");
 
     @Override
     public LjBaseResponse<DroppedInfoVo> reportIssue(ApiMeasureReportIssueReq apiMeasureReportIssueReq, HttpServletRequest request) throws LjBaseRuntimeException, ParseException {
@@ -304,7 +306,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                     textResultVo.getData().forEach(singlePointTestVo -> {
                         Map<String, Object> pointData = Maps.newHashMap();
                         pointData.put("Key", singlePointTestVo.getKey());
-                        List<Double> tempData = splitToFloatsComma(singlePointTestVo.getData(), true);
+                        List<String> tempData = splitToFloatsComma(singlePointTestVo.getData(), true);
                         pointData.put("Data", tempData);
                         pointData.put(DATATYPE, singlePointTestVo.getData_type());
                         pointData.put(DESIGNVALUE, singlePointTestVo.getDesign_value());
@@ -392,12 +394,12 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         return droppedVos;
     }
 
-    private List<Double> splitToFloatsComma(String idsStr, boolean ignoreBlank) {
+    private List<String> splitToFloatsComma(String idsStr, boolean ignoreBlank) {
         return splitToFloats(idsStr, ",", ignoreBlank);
     }
 
-    private List<Double> splitToFloats(String idsStr, String sep, boolean ignoreBlank) {
-        List<Double> ids = new ArrayList<>();
+    private List<String> splitToFloats(String idsStr, String sep, boolean ignoreBlank) {
+        List<String> ids = new ArrayList<>();
         for (String idStr : idsStr.split(sep)
         ) {
             idStr = idStr.trim();
@@ -406,7 +408,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
             }
             try {
                 double id = Double.parseDouble(idStr);
-                ids.add(id);
+                ids.add(DECIMAL_FORMAT.format(id));
             } catch (Exception e) {
                 if (ignoreBlank) {
                     continue;
