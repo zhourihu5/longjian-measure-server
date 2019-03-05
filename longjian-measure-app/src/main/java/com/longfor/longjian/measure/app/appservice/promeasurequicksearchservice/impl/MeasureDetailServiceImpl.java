@@ -55,14 +55,15 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
     private IMeasureRegionService regionSerVice;
     @Resource
     private IExportFileRecordService exportFileRecordService;
-    private static final  String  ROOTCATEGORYDATAS= "rootCategoryDatas";
-    private static final  String  MEASUREDDATA= "measuredData";
+    private static final String ROOTCATEGORYDATAS = "rootCategoryDatas";
+    private static final String MEASUREDDATA = "measuredData";
+
     @Override
     public void exportExcelAsync(Integer curUserId, Integer projId, Integer listId) {
         try {
             Project project = projectService.getByIdNoFoundErr(projId);
             MeasureList measureList = projectService.getByProjIdAndIdNoFoundErr(projId, listId);
-            if(measureList==null){
+            if (measureList == null) {
                 measureList = new MeasureList();
             }
             Map<String, Object> map = this.search4ExportExcel(projId, listId);
@@ -71,7 +72,7 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
             input.setMeasured_data(map.get(MEASUREDDATA) == null ? new MeasuredDataVo() : (MeasuredDataVo) map.get(MEASUREDDATA));
             Date date = new Date();
             String newTime = new SimpleDateFormat("yyyyMMddHHmmss").format(date);
-            exportFileRecordService.create(curUserId, project.getTeamId(), projId, ExportFileRecordType.MeasureDetail.getValue(), input, String.format("%s-统计.%s.xlsx", measureList.getName() == null ? "llll" : measureList.getName(), newTime), date);
+            exportFileRecordService.create(curUserId, project.getTeamId(), projId, ExportFileRecordType.MeasureDetail.getValue(), input, String.format("%s-统计.%s.xlsx", measureList.getName() == null ? "" : measureList.getName(), newTime), date);
         } catch (Exception e) {
             log.error("error:" + e);
             throw new LjBaseRuntimeException(-9999, e.getMessage());
@@ -87,8 +88,8 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
             Map<String, Boolean> zoneUuidMap = Maps.newHashMap();
             Map<Integer, Boolean> squadIdMap = Maps.newHashMap();
             for (MeasureZoneResult obj : measureZoneResults) {
-                String[] keys = StringUtils.split(StringUtils.trim(obj.getCategoryPathAndKey()), "/");
-                for (String key : keys) {
+                List<String> categoryPathAndKeyList = com.longfor.longjian.measure.util.StringUtil.removeStartAndEndStrAndSplit(obj.getCategoryPathAndKey(), "/", "/");
+                for (String key : categoryPathAndKeyList) {
                     categoryKeyMap.put(key, true);
                 }
                 ruleIdMap.put(obj.getRuleId(), true);
@@ -100,7 +101,7 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
             if (!categoryKeyMap.keySet().isEmpty()) {
                 List<CategoryV3> categorys = checkItemV3Service.searchCategoryByKeyIn(categoryKeyMap.keySet());
                 categorys.forEach(categoryV3 ->
-                    categoryMap.put(categoryV3.getKey(), categoryV3)
+                        categoryMap.put(categoryV3.getKey(), categoryV3)
                 );
             }
             // Rule
@@ -108,21 +109,21 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
             if (!ruleIdMap.keySet().isEmpty()) {
                 List<MeasureRule> rules = measureRuleService.searchUnscopedByIds(ruleIdMap.keySet());
                 rules.forEach(measureRule ->
-                    ruleMap.put(measureRule.getId(), measureRule)
+                        ruleMap.put(measureRule.getId(), measureRule)
                 );
             }
             // RegionUuid
             List<MeasureZone> measureZones = measureZoneService.searchByListId(projId, listId);
             Map<String, String> regionUuidMap = Maps.newHashMap();
             measureZones.forEach(measureZone ->
-                regionUuidMap.put(measureZone.getUuid(), measureZone.getRegionUuid())
+                    regionUuidMap.put(measureZone.getUuid(), measureZone.getRegionUuid())
             );
             // Area
 
             List<MeasureRegion> regions = measureRegionService.searchUnscopedByProjIdUpdateAtGt2(projId, DateConstant.TIME_FMT);
             Map<String, Integer> regionMap = Maps.newHashMap();
             regions.forEach(measureRegion ->
-                regionMap.put(measureRegion.getUuid(), measureRegion.getAreaId())
+                    regionMap.put(measureRegion.getUuid(), measureRegion.getAreaId())
             );
             Map<Integer, Boolean> areaIdMap = Maps.newHashMap();
             Collection<String> values = regionUuidMap.values();
@@ -137,7 +138,7 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                 List<AreaInfoWithExtendVo> areaExs = areaService.formatAreaInfoWithExtend(areas);
                 Map<Integer, AreaInfoWithExtendVo> areaMap = Maps.newHashMap();
                 areaExs.forEach(areaInfoWithExtendVo ->
-                    areaMap.put(areaInfoWithExtendVo.getArea().getId(), areaInfoWithExtendVo)
+                        areaMap.put(areaInfoWithExtendVo.getArea().getId(), areaInfoWithExtendVo)
                 );
                 measureZones.forEach(measureZone -> {
                     Integer areaId = regionMap.get(measureZone.getRegionUuid());
@@ -153,14 +154,14 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
             List<MeasureSquad> squads = measureListService.searchOnlyMeasureSquadByProjIdAndListId(projId, listId);
             Map<Integer, MeasureSquad> squadMap = Maps.newHashMap();
             squads.forEach(measureSquad ->
-                squadMap.put(measureSquad.getId(), measureSquad)
+                    squadMap.put(measureSquad.getId(), measureSquad)
             );
             Map<String, CategoryDataVo> categoryDataMap = Maps.newHashMap();
             List<CategoryDataVo> rootCategoryDatas = Lists.newArrayList();
-            measureZoneResults.forEach(obj -> {
-                String[] keys = StringUtils.split(StringUtils.trim(obj.getCategoryPathAndKey()), "/");
-                CategoryDataVo tail = new CategoryDataVo();
-                for (String k : keys) {
+            for (MeasureZoneResult obj : measureZoneResults) {
+                List<String> categoryPathAndKeyList = com.longfor.longjian.measure.util.StringUtil.removeStartAndEndStrAndSplit(obj.getCategoryPathAndKey(), "/", "/");
+                CategoryDataVo tail = null;
+                for (String k : categoryPathAndKeyList) {
                     CategoryDataVo d = categoryDataMap.get(k);
                     if (d == null) {
                         CategoryV3 categoryV3 = categoryMap.get(k);
@@ -181,7 +182,7 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                     tail = d;
                 }
                 if (tail.getRule() == null && ruleMap.get(obj.getRuleId()) != null) {
-                        tail.setRule(ruleMap.get(obj.getRuleId()));
+                    tail.setRule(ruleMap.get(obj.getRuleId()));
                 }
                 MeasureSquad squad = squadMap.get(obj.getSquadId());
                 if (squad == null) {
@@ -202,11 +203,11 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                 try {
                     this.addResult(obj, squad, regionUuid, areaInfoWithExtendVo, tail);
                 } catch (ParseException e) {
-                    log.error("error:",e);
+                    log.error("error:", e);
                 }
-            });
+            }
             rootCategoryDatas.forEach(categoryDataVo ->
-                reCalc(categoryDataVo)
+                    reCalc(categoryDataVo)
             );
             MeasuredDataVo measuredDataVo = this.getMeasuredDataByListId(projId, listId);
             map.put(MEASUREDDATA, measuredDataVo);
@@ -255,21 +256,21 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                 }
             }
             if (!zoneMap.keySet().isEmpty() && (proj.getId() != null || proj.getId().equals(0))) {
-                    List<MeasureZone> zones = measureListService.searchZoneByProjUuids(proj.getId(), zoneMap.keySet());
-                    zones.forEach(measureZone -> {
-                        zoneMap.put(measureZone.getUuid(), measureZone);
-                        regionMap.put(measureZone.getRegionUuid(), null);
-                    });
+                List<MeasureZone> zones = measureListService.searchZoneByProjUuids(proj.getId(), zoneMap.keySet());
+                zones.forEach(measureZone -> {
+                    zoneMap.put(measureZone.getUuid(), measureZone);
+                    regionMap.put(measureZone.getRegionUuid(), null);
+                });
             }
             if (!squadMap.keySet().isEmpty() && (proj.getId() != null || proj.getId().equals(0))) {
-                    List<MeasureSquad> squads = measureListService.searchByProjIdIdIn(proj.getId(), squadMap.keySet());
-                    squads.forEach(measureSquad -> md.getSquad_map().put(measureSquad.getId(), measureSquad.getName()));
+                List<MeasureSquad> squads = measureListService.searchByProjIdIdIn(proj.getId(), squadMap.keySet());
+                squads.forEach(measureSquad -> md.getSquad_map().put(measureSquad.getId(), measureSquad.getName()));
             }
             Map<Integer, MeasureRule> ruleMap2 = Maps.newHashMap();
             if (!ruleMap.keySet().isEmpty()) {
                 List<MeasureRule> measureRules = measureRuleService.searchByIds(ruleMap.keySet());
                 measureRules.forEach(measureRule ->
-                    ruleMap2.put(measureRule.getId(), measureRule)
+                        ruleMap2.put(measureRule.getId(), measureRule)
                 );
             }
             ruleMap.putAll(ruleMap2);
@@ -319,7 +320,7 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                     String points = ruleMap.get(measureZoneResult.getRuleId()).getPoints();
                     List<MeasurePointRule> pointRules = JSONArray.parseArray(points, MeasurePointRule.class);
                     pointRules.forEach(measurePointRule ->
-                        pointMap.put(measurePointRule.getKey(), measurePointRule)
+                            pointMap.put(measurePointRule.getKey(), measurePointRule)
                     );
                 }
                 String regionUuid = null;
@@ -360,7 +361,7 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                 List<String> categoryNames = Lists.newArrayList();
                 for (String key : StringUtils.split(measureZoneResult.getCategoryPathAndKey(), "/")) {
                     if (md.getCategory_map().get(key) != null && !md.getCategory_map().get(key).getName().equals("")) {
-                            categoryNames.add(md.getCategory_map().get(key).getName());
+                        categoryNames.add(md.getCategory_map().get(key).getName());
                     }
                 }
                 String categoryOrder = null;

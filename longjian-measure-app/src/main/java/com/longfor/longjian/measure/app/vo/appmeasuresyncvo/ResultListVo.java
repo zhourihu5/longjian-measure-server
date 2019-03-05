@@ -85,5 +85,5 @@ public class ResultListVo {
     /**
      *
      */
-    private Integer closeStatus;
+    private Integer close_status;
 }

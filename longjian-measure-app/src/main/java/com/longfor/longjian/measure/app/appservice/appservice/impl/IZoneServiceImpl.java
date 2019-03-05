@@ -165,7 +165,7 @@ public class IZoneServiceImpl implements IZoneService {
         resultListVo.setProject_id(measureZoneResult.getProjectId());
         resultListVo.setList_id(measureZoneResult.getListId());
         resultListVo.setArea_id(measureZoneResult.getAreaId());
-        resultListVo.setCloseStatus(measureZoneResult.getCloseStatus());
+        resultListVo.setClose_status(measureZoneResult.getCloseStatus());
         resultListVo.setZone_uuid(measureZoneResult.getZoneUuid());
         resultListVo.setSquad_id(measureZoneResult.getSquadId());
         resultListVo.setRule_id(measureZoneResult.getRuleId());
