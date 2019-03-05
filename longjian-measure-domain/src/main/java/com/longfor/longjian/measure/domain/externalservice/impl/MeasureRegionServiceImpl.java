@@ -74,7 +74,7 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
                 measureRegions.forEach(measureRegion -> {
                     MeasureRegion newMeasureRegion = new MeasureRegion();
                     newMeasureRegion.setUuid(measureRegion.getUuid());
-                    newMeasureRegion.setRegionIndex(indexMap2.get(measureRegion.getAreaId()));
+                    newMeasureRegion.setRegionIndex(indexMap2.get(measureRegion.getAreaId())+1);
                     newMeasureRegion.setProjectId(measureRegion.getProjectId());
                     newMeasureRegion.setAreaId(measureRegion.getAreaId());
                     newMeasureRegion.setRelId(measureRegion.getRelId() == null ? 0 :measureRegion.getRelId());

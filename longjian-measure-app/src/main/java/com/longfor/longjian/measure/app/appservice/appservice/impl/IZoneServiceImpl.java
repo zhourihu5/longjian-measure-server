@@ -14,7 +14,7 @@ import com.longfor.longjian.measure.app.feignclient.ICoreCategoryItemFeignServic
 import com.longfor.longjian.measure.app.req.feignreq.CategoriesInfoReq;
 import com.longfor.longjian.measure.app.req.feignreq.SearchByIdListReq;
 import com.longfor.longjian.measure.app.req.zone.*;
-import com.longfor.longjian.measure.app.vo.appmeasuresyncvo.ZoneInfoVo;
+import com.longfor.longjian.measure.app.vo.appmeasuresyncvo.*;
 import com.longfor.longjian.measure.app.vo.feignvo.AreaRetrieveVo;
 import com.longfor.longjian.measure.app.vo.feignvo.CategoryJsonProtoItemVo;
 import com.longfor.longjian.measure.app.vo.feignvo.CategoryJsonProtoVo;
@@ -88,8 +88,8 @@ public class IZoneServiceImpl implements IZoneService {
             JSONObject oneJb;
 
             MeasureZoneResult measureZoneResult = measureZoneResults.get(i);
-
-            oneJb = JSONObject.parseObject(JSONObject.toJSONString(measureZoneResult));
+            ResultListVo resultListVo= convertTheTypeMeasureZoneResultVo(measureZoneResult);
+            oneJb = JSONObject.parseObject(JSONObject.toJSONString(resultListVo));
 
             String resultData = measureZoneResult.getData();//第一层data
             if (StringUtils.isNotBlank(resultData)) {
@@ -127,8 +127,8 @@ public class IZoneServiceImpl implements IZoneService {
                 oneJb.put("data", twoArr);
             }
             MeasureRule measureRule = measureRuleService.selectById(measureZoneResult.getRuleId());
-
-            JSONObject ruleJb = JSONObject.parseObject(JSONObject.toJSONString(measureRule));
+            MeasureRuleVo measureRuleVo =convertTheTypeMeasureRuleVo(measureRule);
+            JSONObject ruleJb = JSONObject.parseObject(JSONObject.toJSONString(measureRuleVo));
 
             ruleJb.put("points", JSONArray.parse(measureRule.getPoints()));
 
@@ -139,6 +139,47 @@ public class IZoneServiceImpl implements IZoneService {
         totalJb.put("zone_result", arr);
 
         return totalJb;
+    }
+
+    private MeasureRuleVo convertTheTypeMeasureRuleVo(MeasureRule measureRule) {
+        MeasureRuleVo measureRuleVo =new MeasureRuleVo();
+        measureRuleVo.setId(measureRule.getId());
+        measureRuleVo.setCategory_key(measureRule.getCategoryKey());
+        measureRuleVo.setDesc(measureRule.getDesc());
+        measureRuleVo.setFormula(measureRule.getFormula());
+        measureRuleVo.setFormula_default(measureRule.getFormulaDefault());
+        measureRuleVo.setGroup_count_init(measureRule.getGroupCountInit());
+        measureRuleVo.setGroup_count_max(measureRule.getGroupCountMax());
+        measureRuleVo.setGroup_count_min(measureRule.getGroupCountMin());
+        measureRuleVo.setPoint_need(measureRule.getPointNeed());
+        measureRuleVo.setRule_type(measureRule.getRuleType());
+        measureRuleVo.setTeam_id(measureRule.getTeamId());
+        measureRuleVo.setTextures(measureRule.getTextures());
+        return measureRuleVo;
+    }
+
+    private ResultListVo convertTheTypeMeasureZoneResultVo(MeasureZoneResult measureZoneResult) {
+        ResultListVo resultListVo =new ResultListVo();
+        resultListVo.setId(measureZoneResult.getId());
+        resultListVo.setUuid(measureZoneResult.getUuid());
+        resultListVo.setProject_id(measureZoneResult.getProjectId());
+        resultListVo.setList_id(measureZoneResult.getListId());
+        resultListVo.setArea_id(measureZoneResult.getAreaId());
+        resultListVo.setCloseStatus(measureZoneResult.getCloseStatus());
+        resultListVo.setZone_uuid(measureZoneResult.getZoneUuid());
+        resultListVo.setSquad_id(measureZoneResult.getSquadId());
+        resultListVo.setRule_id(measureZoneResult.getRuleId());
+        resultListVo.setOk_total(measureZoneResult.getOkTotal());
+        resultListVo.setTotal(measureZoneResult.getTotal());
+        resultListVo.setScore(measureZoneResult.getScore());
+        resultListVo.setUpdate_at(measureZoneResult.getUpdateAt() == null ? 0 : DateUtil.dateToTimestamp(measureZoneResult.getUpdateAt()));
+        resultListVo.setDelete_at(measureZoneResult.getDeleteAt() == null ? 0 : DateUtil.dateToTimestamp(measureZoneResult.getDeleteAt()));
+        resultListVo.setRegion_uuid(measureZoneResult.getZoneUuid());
+        resultListVo.setArea_path_and_id(measureZoneResult.getAreaPathAndId());
+        resultListVo.setCategory_key(measureZoneResult.getCategoryKey());
+        resultListVo.setCategory_path_and_key(measureZoneResult.getCategoryPathAndKey());
+
+        return  resultListVo;
     }
 
     @Override

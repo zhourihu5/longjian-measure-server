@@ -21,5 +21,4 @@ public class MeasureRuleVo {
     private String textures;
     private Date create_at;
     private Date update_at;
-    private Date delete_at;
 }

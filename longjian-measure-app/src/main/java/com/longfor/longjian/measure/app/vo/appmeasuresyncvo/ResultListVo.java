@@ -82,5 +82,8 @@ public class ResultListVo {
      * 任务路径及KEY
      */
     private String category_path_and_key;
-
+    /**
+     *
+     */
+    private Integer closeStatus;
 }
