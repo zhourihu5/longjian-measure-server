@@ -76,13 +76,10 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
     }
 
     private void writeInput(String data, String exportName, String filepath) throws IOException {
-        FileOutputStream out = null;
-        OutputStreamWriter op = null;
-        try {
+        try (FileOutputStream out = new FileOutputStream(String.format("%s", filepath));
+             OutputStreamWriter op = new OutputStreamWriter(out, "utf-8")){
             log.info("erxportName :{}", exportName);
-            out = new FileOutputStream(String.format("%s", filepath));
-            op = new OutputStreamWriter(out, "utf-8");
-            File file = new File(String.format("%s", filepath));
+            File file = new File(String.format("/%s", filepath));
 
             if (!file.getParentFile().exists()) {
                 boolean mkdirs = file.getParentFile().mkdirs();
@@ -97,13 +94,6 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
             op.flush();
         } catch (IOException e) {
             log.error("error:", e);
-        } finally {
-            if (op != null) {
-                op.close();
-            }
-            if (out != null) {
-                out.close();
-            }
         }
     }
 }
