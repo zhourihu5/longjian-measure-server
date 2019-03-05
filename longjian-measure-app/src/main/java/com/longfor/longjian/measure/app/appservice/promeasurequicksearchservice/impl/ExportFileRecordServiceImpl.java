@@ -46,11 +46,17 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
         try {
             String data = JSON.toJSONString(input);
             //随机一个长度不超过long的最大长度的整数
+            log.info("生成随机数之前");
             long randCount = (long) (rand.nextDouble() * Long.MAX_VALUE);
+            log.info("读之前");
             String baseDir = exportVo.getMeasure_base_dir();
+            log.info("读之后");
             Integer ts = DateUtil.dateToTimestamp(new Date());
+            log.info("调用inputFilename");
             inputFilename = String.format("%d%d.%s", randCount, ts, "input");
+            log.info("调用outputFilename");
             outputFilename = String.format("/export/%d%d.%s", randCount, ts, "output");
+            log.info("调用filepath");
             String filepath = String.format("%s/%s", baseDir, inputFilename);
             log.info("{}",filepath);
             this.writeInput(data, exportName, filepath);
