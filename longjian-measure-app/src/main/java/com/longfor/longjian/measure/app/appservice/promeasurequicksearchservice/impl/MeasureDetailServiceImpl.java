@@ -72,6 +72,7 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
             input.setMeasured_data(map.get(MEASUREDDATA) == null ? new MeasuredDataVo() : (MeasuredDataVo) map.get(MEASUREDDATA));
             Date date = new Date();
             String newTime = new SimpleDateFormat("yyyyMMddHHmmss").format(date);
+            log.info("调用create方法");
             exportFileRecordService.create(curUserId, project.getTeamId(), projId, ExportFileRecordType.MeasureDetail.getValue(), input, String.format("%s-统计.%s.xlsx", measureList.getName() == null ? "" : measureList.getName(), newTime), date);
         } catch (Exception e) {
             log.error("error:" + e);
@@ -206,9 +207,11 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                     log.error("error:", e);
                 }
             }
+            log.info("调用reCalc(categoryDataVo)方法");
             rootCategoryDatas.forEach(categoryDataVo ->
                     reCalc(categoryDataVo)
             );
+            log.info("调用getMeasuredDataByListId方法");
             MeasuredDataVo measuredDataVo = this.getMeasuredDataByListId(projId, listId);
             map.put(MEASUREDDATA, measuredDataVo);
             map.put(ROOTCATEGORYDATAS, rootCategoryDatas);
@@ -411,6 +414,7 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                 }
 
             }
+            log.info("sort");
             Collections.sort(md.getDetails(), new Comparator<MeasuredDataGroupVo>() {
                 @Override
                 public int compare(MeasuredDataGroupVo a, MeasuredDataGroupVo b) {
