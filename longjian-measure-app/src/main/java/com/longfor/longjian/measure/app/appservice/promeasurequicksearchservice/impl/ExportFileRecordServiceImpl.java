@@ -52,6 +52,7 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
             inputFilename = String.format("%d%d.%s", randCount, ts, "input");
             outputFilename = String.format("/export/%d%d.%s", randCount, ts, "output");
             String filepath = String.format("%s/%s", baseDir, inputFilename);
+            log.info("{}",filepath);
             this.writeInput(data, exportName, filepath);
         } catch (Exception e) {
             log.error("error:" + e.getMessage());
@@ -75,10 +76,13 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
     }
 
     private void writeInput(String data, String exportName, String filepath) throws IOException {
-        try (FileOutputStream out = new FileOutputStream(String.format("%s", filepath));
-             OutputStreamWriter op = new OutputStreamWriter(out, "utf-8")){
+        FileOutputStream out = null;
+        OutputStreamWriter op = null;
+        try {
             log.info("erxportName :{}", exportName);
-            File file = new File(String.format("%s", filepath));
+            out = new FileOutputStream(String.format("D:/%s", filepath));
+            op = new OutputStreamWriter(out, "utf-8");
+            File file = new File(String.format("D:/%s", filepath));
 
             if (!file.getParentFile().exists()) {
                 boolean mkdirs = file.getParentFile().mkdirs();
@@ -93,6 +97,13 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
             op.flush();
         } catch (IOException e) {
             log.error("error:", e);
+        } finally {
+            if (op != null) {
+                op.close();
+            }
+            if (out != null) {
+                out.close();
+            }
         }
     }
 }
