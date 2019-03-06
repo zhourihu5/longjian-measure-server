@@ -79,7 +79,7 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
         try (FileOutputStream out = new FileOutputStream(String.format("%s", filepath));
              OutputStreamWriter op = new OutputStreamWriter(out, "utf-8")){
             log.info("erxportName :{}", exportName);
-            File file = new File(String.format("/%s", filepath));
+            File file = new File(String.format("%s", filepath));
 
             if (!file.getParentFile().exists()) {
                 boolean mkdirs = file.getParentFile().mkdirs();
