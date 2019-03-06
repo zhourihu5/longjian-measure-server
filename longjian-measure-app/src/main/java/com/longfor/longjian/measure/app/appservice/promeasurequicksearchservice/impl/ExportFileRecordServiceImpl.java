@@ -46,12 +46,13 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
         try {
             String data = JSON.toJSONString(input);
             //随机一个长度不超过long的最大长度的整数
-            long randCount = (long) (rand.nextDouble() * Long.MAX_VALUE);
+            long randCount = new Date().getTime();
             String baseDir = exportVo.getMeasure_base_dir();
             Integer ts = DateUtil.dateToTimestamp(new Date());
             inputFilename = String.format("%d%d.%s", randCount, ts, "input");
             outputFilename = String.format("/export/%d%d.%s", randCount, ts, "output");
             String filepath = String.format("%s/%s", baseDir, inputFilename);
+            log.info("{}",filepath);
             this.writeInput(data, exportName, filepath);
         } catch (Exception e) {
             log.error("error:" + e.getMessage());
@@ -78,7 +79,7 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
         try (FileOutputStream out = new FileOutputStream(String.format("%s", filepath));
              OutputStreamWriter op = new OutputStreamWriter(out, "utf-8")){
             log.info("erxportName :{}", exportName);
-            File file = new File(String.format("%s", filepath));
+            File file = new File(String.format("/%s", filepath));
 
             if (!file.getParentFile().exists()) {
                 boolean mkdirs = file.getParentFile().mkdirs();
