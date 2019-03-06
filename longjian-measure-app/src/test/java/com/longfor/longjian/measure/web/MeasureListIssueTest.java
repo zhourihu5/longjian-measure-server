@@ -54,7 +54,6 @@ public class MeasureListIssueTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("success"))
-                .andDo(MockMvcResultHandlers.print())
                 .andReturn();
     }
 }

@@ -53,7 +53,6 @@ public class MeasureListSearchTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("success"))
-                .andDo(MockMvcResultHandlers.print())
                 .andReturn();
     }
 
@@ -68,7 +67,6 @@ public class MeasureListSearchTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("success"))
-                .andDo(MockMvcResultHandlers.print())
                 .andReturn();
     }
 }
