@@ -95,4 +95,68 @@ public class MeasureQuickSearchTest {
                 .andExpect(jsonPath("$.message").value("success"))
                 .andReturn();
     }
+
+    @Test
+    public void testIssueBriefJson() throws Exception {
+        mockMvc.perform(
+                post("/oapi/v3/measure/measure_statistic/issue_brief_json/").header("token",TOKEN)
+                        .param("project_id","1051")
+                        .param("measure_list_id","5651")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
+
+    @Test
+    public void testIssueTrendJson() throws Exception {
+        mockMvc.perform(
+                post("/oapi/v3/measure/measure_statistic/issue_trend_json/").header("token",TOKEN)
+                        .param("project_id","927")
+                        .param("measure_list_id","5527")
+                        .param("begin_on","0")
+                        .param("end_on","0")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
+
+    @Test
+    public void testIssueDistributionCategoryJson() throws Exception {
+        mockMvc.perform(
+                post("/oapi/v3/measure/measure_statistic/issue_distribution_category_json/").header("token",TOKEN)
+                        .param("project_id","1051")
+                        .param("measure_list_id","5651")
+                        .param("category_key","")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
+
+    @Test
+    public void testGetRootCategory() throws Exception {
+        mockMvc.perform(
+                post("/oapi/v3/measure/ajax_json/get_root_category/").header("token",TOKEN)
+                        .param("project_id","927")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
+
+    @Test
+    public void testSubCategoryAreaPercentage() throws Exception {
+        mockMvc.perform(
+                post("/oapi/v3/measure/measure_statistic/sub_category_area_percentage/").header("token",TOKEN)
+                        .param("project_id","927")
+                        .param("list_ids","5665")
+                        .param("area_ids","2942525,2950220,2950239")
+                        .param("parent_category_key","1605")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
 }
