@@ -56,4 +56,19 @@ public class MeasureListSearchTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
     }
+
+    @Test
+    public void testSquadSearch() throws Exception {
+        mockMvc.perform(
+                post("/measure/v1/papi/staff/squad_search/").header("token",TOKEN)
+                        .param("group_id","4")
+                        .param("project_id","927")
+                        .param("team_id","25")
+                        .param("list_id","5526")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
 }
