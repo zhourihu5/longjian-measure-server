@@ -160,7 +160,7 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
             List<CategoryDataVo> rootCategoryDatas = Lists.newArrayList();
             for (MeasureZoneResult obj : measureZoneResults) {
                 List<String> categoryPathAndKeyList = com.longfor.longjian.measure.util.StringUtil.removeStartAndEndStrAndSplit(obj.getCategoryPathAndKey(), "/", "/");
-                CategoryDataVo tail = null;
+                CategoryDataVo tail =null;
                 for (String k : categoryPathAndKeyList) {
                     CategoryDataVo d = categoryDataMap.get(k);
                     if (d == null) {
@@ -181,7 +181,7 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                     }
                     tail = d;
                 }
-                if (tail.getRule() == null && ruleMap.get(obj.getRuleId()) != null) {
+                if (tail != null && tail.getRule() == null && ruleMap.get(obj.getRuleId()) != null) {
                     tail.setRule(ruleMap.get(obj.getRuleId()));
                 }
                 MeasureSquad squad = squadMap.get(obj.getSquadId());
@@ -206,9 +206,9 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                     log.error("error:", e);
                 }
             }
-            rootCategoryDatas.forEach(categoryDataVo ->
-                    reCalc(categoryDataVo)
-            );
+            for (CategoryDataVo categoryDataVo : rootCategoryDatas) {
+                reCalc(categoryDataVo);
+            }
             MeasuredDataVo measuredDataVo = this.getMeasuredDataByListId(projId, listId);
             map.put(MEASUREDDATA, measuredDataVo);
             map.put(ROOTCATEGORYDATAS, rootCategoryDatas);
@@ -345,13 +345,13 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                             if (order.equals(0)) {
                                 order = area.getId();
                             }
-                            if (area.getType().equals(AreaTypeEnum.BUILDING.getId())) {
+                            if (area.getType().equals(AreaTypeEnum.BUILDING.getId().shortValue())) {
                                 buildingId = areaId;
                                 buildingOrder = order;
-                            } else if (area.getType().equals(AreaTypeEnum.FLOOR.getId())) {
+                            } else if (area.getType().equals(AreaTypeEnum.FLOOR.getId().shortValue())) {
                                 floorId = areaId;
                                 floorOrder = order;
-                            } else if (area.getType().equals(AreaTypeEnum.HOUSE.getId())) {
+                            } else if (area.getType().equals(AreaTypeEnum.HOUSE.getId().shortValue())) {
                                 houseId = areaId;
                                 houseOrder = order;
                             }
@@ -464,12 +464,12 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                 okRateVo.setOk_total((okRateVo.getOk_total() == null ? 0 : okRateVo.getOk_total()) + (squadOkRate.getOk_total() == null ? 0 : squadOkRate.getOk_total()));
                 okRateVo.setTotal((okRateVo.getTotal() == null ? 0 : okRateVo.getTotal()) + (squadOkRate.getTotal() == null ? 0 : squadOkRate.getTotal()));
             });
-            child.getSquads().forEach(measureSquad -> {
+            for (MeasureSquad measureSquad : child.getSquads()){
                 if (squadMap.get(measureSquad.getId()) == null) {
                     squadMap.put(measureSquad.getId(), true);
                     squads.add(measureSquad);
                 }
-            });
+            }
 
         }
         d.setSquads(squads);

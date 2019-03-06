@@ -38,7 +38,7 @@ public class CategoryDataVo implements Serializable {
      */
     private List<CategoryDataVo> children = Lists.newArrayList();
 
-    private MeasureRule rule = new MeasureRule();
+    private MeasureRule rule ;
     private List<PointDataVo> data =Lists.newArrayList();
     private Map<String,Integer> dataIndex = Maps.newHashMap();
 }

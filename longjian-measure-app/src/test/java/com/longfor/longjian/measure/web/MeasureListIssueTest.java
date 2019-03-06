@@ -1,6 +1,5 @@
 package com.longfor.longjian.measure.web;
 
-
 import com.longfor.longjian.common.filter.UrlFilter;
 import com.longfor.longjian.measure.Application;
 import org.junit.Before;
@@ -20,14 +19,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * wangxs
- * 2019-03-04 13:51
- * MeasureListController 单元测试
+ * @Date 2019/3/6 15:08
+ * Created by Jiazhongmin
  */
-
 @RunWith(SpringJUnit4ClassRunner.class) // SpringJUnit支持，由此引入Spring-Test框架支持！
 @SpringBootTest(classes = Application.class,webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT) // 指定我们SpringBoot工程的Application启动类
-public class MeasureListSearchTest {
+public class MeasureListIssueTest {
     private static final String TOKEN = "rOFM0joOPtQ8_bpX8hZb0MUWRvfjNXqT3URKpEyAAFwuFtymZUD2J-MBj7mvy3WJ";
     private MockMvc mockMvc;
     @Autowired
@@ -38,33 +35,22 @@ public class MeasureListSearchTest {
     }
 
     @Test
-    public void testConditionSearch() throws Exception {
+    public void testIssueQueryJson() throws Exception {
         mockMvc.perform(
-                post("/measure/v1/papi/measure_list/condition_search").header("token",TOKEN)
-                        .param("group_id","4")
-                        .param("area_id","")
-                        .param("category_key","")
-                        .param("finish_status","")
-                        .param("name","")
-                        .param("page","1")
-                        .param("page_size","20")
+                post("/oapi/v3/measure/measure_list_issue/issue_query_json/").header("token",TOKEN)
                         .param("project_id","927")
-                        .param("user_id_list","")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("success"))
-                .andDo(MockMvcResultHandlers.print())
-                .andReturn();
-    }
-
-    @Test
-    public void testSquadSearch() throws Exception {
-        mockMvc.perform(
-                post("/measure/v1/papi/staff/squad_search/").header("token",TOKEN)
+                        .param("page_level","")
                         .param("group_id","4")
-                        .param("project_id","927")
                         .param("team_id","25")
-                        .param("list_id","5526")
+                        .param("limit","10")
+                        .param("page","1")
+                        .param("category_key","")
+                        .param("area_ids","927")
+                        .param("measure_list_ids","")
+                        .param("create_at_range","")
+                        .param("is_overdue","false")
+                        .param("repairer_id","")
+                        .param("status","")
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("success"))
