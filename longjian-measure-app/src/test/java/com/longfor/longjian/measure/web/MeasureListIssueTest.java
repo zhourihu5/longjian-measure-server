@@ -56,4 +56,76 @@ public class MeasureListIssueTest {
                 .andExpect(jsonPath("$.message").value("success"))
                 .andReturn();
     }
+
+    @Test
+    public void testIssueInfo() throws Exception {
+        mockMvc.perform(
+                post("/oapi/v3/measure/measure_list_issue_detail/issue_info/").header("token",TOKEN)
+                        .param("uuid","d99fdd4f5d4340849eba65f48e50038f")
+                        .param("project_id","927")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
+
+    @Test
+    public void testIssueStatus() throws Exception {
+        mockMvc.perform(
+                post("/oapi/v3/measure/measure_list_issue_detail/issue_status/").header("token",TOKEN)
+                        .param("uuid","d99fdd4f5d4340849eba65f48e50038f")
+                        .param("project_id","927")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
+
+    @Test
+    public void testHistoryLogs() throws Exception {
+        mockMvc.perform(
+                post("/oapi/v3/measure/measure_list_issue_detail/history_logs/").header("token",TOKEN)
+                        .param("uuid","d99fdd4f5d4340849eba65f48e50038f")
+                        .param("project_id","927")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
+
+    @Test
+    public void testZoneInfo() throws Exception {
+        mockMvc.perform(
+                post("/oapi/v3/measure/measure_list_issue_detail/zone_info/").header("token",TOKEN)
+                        .param("uuid","d99fdd4f5d4340849eba65f48e50038f")
+                        .param("project_id","927")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
+
+    @Test
+    public void testRepairLogs() throws Exception {
+        mockMvc.perform(
+                post("/oapi/v3/measure/measure_list_issue_detail/repair_logs/").header("token",TOKEN)
+                        .param("uuid","d99fdd4f5d4340849eba65f48e50038f")
+                        .param("project_id","927")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
+
+    @Test
+    public void testRepairList() throws Exception {
+        mockMvc.perform(
+                post("/oapi/v3/measure/measure_list_issue_detail/repair_list/").header("token",TOKEN)
+                        .param("uuid","d99fdd4f5d4340849eba65f48e50038f")
+                        .param("project_id","927")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
 }

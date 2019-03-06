@@ -69,4 +69,39 @@ public class MeasureListSearchTest {
                 .andExpect(jsonPath("$.message").value("success"))
                 .andReturn();
     }
+
+    @Test
+    public void testPaginationSearch() throws Exception {
+        mockMvc.perform(
+                post("/measure/v1/papi/zone/pagination_search/").header("token",TOKEN)
+                        .param("group_id","4")
+                        .param("project_id","927")
+                        .param("team_id","25")
+                        .param("list_id","5526")
+                        .param("category_key_list","")
+                        .param("area_id_list","")
+                        .param("page","1")
+                        .param("page_size","20")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
+
+
+    @Test
+    public void testRepairerListSearch() throws Exception {
+        mockMvc.perform(
+                post("/measure/v1/papi/staff/repairer_list_search/").header("token",TOKEN)
+                        .param("group_id","4")
+                        .param("project_id","927")
+                        .param("team_id","25")
+                        .param("list_id","5526")
+                        .param("role_type","2")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
+
 }
