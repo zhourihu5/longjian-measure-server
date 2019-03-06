@@ -76,4 +76,17 @@ public class MeasureRegionTest {
                 .andExpect(jsonPath("$.message").value("success"))
                 .andReturn();
     }
+
+    @Test
+    public void testSearchByRegionUuid() throws Exception {
+        mockMvc.perform(
+                post("/measure/v1/papi/measure_region_rel/search_by_region_uuid/").header("token",TOKEN)
+                        .param("group_id","4")
+                        .param("proj_id","927")
+                        .param("region_uuid","f77b5597e70243f1a37a238513fe83ef")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
 }

@@ -128,4 +128,15 @@ public class MeasureListIssueTest {
                 .andExpect(jsonPath("$.message").value("success"))
                 .andReturn();
     }
+
+    @Test
+    public void testSimpleList() throws Exception {
+        mockMvc.perform(
+                post("/oapi/v3/project/user/simple_list/").header("token",TOKEN)
+                        .param("project_id","927")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
 }

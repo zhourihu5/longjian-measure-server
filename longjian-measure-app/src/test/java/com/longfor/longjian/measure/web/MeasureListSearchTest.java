@@ -116,4 +116,51 @@ public class MeasureListSearchTest {
                 .andReturn();
     }
 
+    @Test
+    public void testAllowUserSearch() throws Exception {
+        mockMvc.perform(
+                post("/measure/v1/papi/staff/allow_user_search").header("token",TOKEN)
+                        .param("group_id","4")
+                        .param("project_id","927")
+                        .param("list_id","5525")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
+
+    @Test
+    public void testSubCategorys() throws Exception {
+        mockMvc.perform(
+                post("/v3/measure/measure_list/sub_categorys/").header("token",TOKEN)
+                        .param("project_id","927")
+                        .param("key","1605")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
+
+    @Test
+    public void testUserList() throws Exception {
+        mockMvc.perform(
+                post("/v3/measure/ajax_json/user_list/").header("token",TOKEN)
+                        .param("project_id","927")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
+
+    @Test
+    public void testUserList2() throws Exception {
+        mockMvc.perform(
+                post("/oapi/v3/measure/ajax_json/user_list/").header("token",TOKEN)
+                        .param("project_id","927")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
+
 }
