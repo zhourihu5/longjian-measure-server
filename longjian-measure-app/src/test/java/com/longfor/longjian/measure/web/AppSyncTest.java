@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = Application.class,webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT) // 指定我们SpringBoot工程的Application启动类
 public class AppSyncTest {
 
-    private static final String TOKEN = "rOFM0joOPtQ8_bpX8hZb0MUWRvfjNXqT3URKpEyAAFwuFtymZUD2J-MBj7mvy3WJ";
+    private static final String TOKEN = "7MCigh6Ia1ZQiViXRlQWnIv6QG1ftlV1xYFIE9jYO6NPwY2DN59T3AM2O-t4e4Bb";
     private MockMvc mockMvc;
     @Autowired
     protected WebApplicationContext wac;
