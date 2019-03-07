@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = Application.class,webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT) // 指定我们SpringBoot工程的Application启动类
 public class MeasureQuickSearchTest {
 
-    private static final String TOKEN = "7MCigh6Ia1ZQiViXRlQWnIv6QG1ftlV1xYFIE9jYO6NPwY2DN59T3AM2O-t4e4Bb";
+    private static final String TOKEN = "CIk3j0aMgsNOmvgPNyzfBdMF4_Jiirs-al1duQ1MS1ZfohrgCW80bMxleOGxHD_0";
     private MockMvc mockMvc;
     @Autowired
     protected WebApplicationContext wac;
