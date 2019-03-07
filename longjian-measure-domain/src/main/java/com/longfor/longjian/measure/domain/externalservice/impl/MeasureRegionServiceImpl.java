@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -75,6 +77,7 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
                     MeasureRegion newMeasureRegion = new MeasureRegion();
                     newMeasureRegion.setUuid(measureRegion.getUuid());
                     newMeasureRegion.setRegionIndex(indexMap2.get(measureRegion.getAreaId())+1);
+                    indexMap2.put(areaId,indexMap2.get(measureRegion.getAreaId())+1);
                     newMeasureRegion.setProjectId(measureRegion.getProjectId());
                     newMeasureRegion.setAreaId(measureRegion.getAreaId());
                     newMeasureRegion.setRelId(measureRegion.getRelId() == null ? 0 :measureRegion.getRelId());
@@ -201,11 +204,13 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
     }
 
     @Override
-    public List<MeasureRegion> searchUnscopedByProjIdUpdateAtGt2(Integer projId, String timeFmt) {
+    public List<MeasureRegion> searchUnscopedByProjIdUpdateAtGt2(Integer projId, String timeFmt) throws ParseException {
         Example example = new Example(MeasureRegion.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo(PROJECTID, projId);
-        criteria.andGreaterThan("updateAt", timeFmt);
+        if(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(timeFmt).getTime() > 0){
+            criteria.andGreaterThan("updateAt", timeFmt);
+        }
         return measureRegionMapper.selectByExample(example);
     }
 

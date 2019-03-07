@@ -8,6 +8,7 @@ import com.longfor.longjian.measure.dao.zhijian2.AreaMapper;
 import com.longfor.longjian.measure.domain.externalservice.IAreaService;
 import com.longfor.longjian.measure.po.zhijian2.Area;
 import com.longfor.longjian.measure.util.AreaUtils;
+import com.longfor.longjian.measure.util.ExampleUtil;
 import com.longfor.longjian.measure.vo.AreaInfoWithExtendVo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
@@ -63,6 +64,7 @@ public class AreaServiceImpl implements IAreaService {
     public List<Area> selectByIds(Set<Integer> keySet) {
         Example example = new Example(Area.class);
         example.createCriteria().andIn("id", keySet);
+        ExampleUtil.addDeleteAtJudge(example);
         return areaMapper.selectByExample(example);
     }
 

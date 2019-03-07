@@ -177,7 +177,6 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                         } else {
                             tail.getChildren().add(d);
                         }
-
                     }
                     tail = d;
                 }
@@ -200,11 +199,7 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                     areaInfoWithExtendVo.setArea(new Area());
                     regionUuidToAreaMap.put(regionUuid, areaInfoWithExtendVo);
                 }
-                try {
                     this.addResult(obj, squad, regionUuid, areaInfoWithExtendVo, tail);
-                } catch (ParseException e) {
-                    log.error("error:", e);
-                }
             }
             for (CategoryDataVo categoryDataVo : rootCategoryDatas) {
                 reCalc(categoryDataVo);

@@ -3,6 +3,7 @@ package com.longfor.longjian.measure.domain.externalservice.impl;
 import com.longfor.longjian.measure.dao.zhijian2.MeasureZoneResultMapper;
 import com.longfor.longjian.measure.domain.externalservice.IMeasureZoneResultService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureZoneResult;
+import com.longfor.longjian.measure.util.ExampleUtil;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
@@ -122,6 +123,7 @@ public class MeasureZoneResultServiceImpl implements IMeasureZoneResultService {
     public List<MeasureZoneResult> searchByListId(Integer projId, Integer listId) {
         Example example =new Example(MeasureZoneResult.class);
         example.createCriteria().andEqualTo("projectId",projId).andEqualTo(LISTID,listId);
+        ExampleUtil.addDeleteAtJudge(example);
         return measureZoneResultMapper.selectByExample(example);
     }
 

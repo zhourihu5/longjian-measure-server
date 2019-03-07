@@ -4,6 +4,7 @@ import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.measure.po.zhijian2.MeasureRegion;
 import tk.mybatis.mapper.entity.Example;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -147,7 +148,7 @@ public interface IMeasureRegionService {
      * @param timeFmt
      * @return
      */
-    List<MeasureRegion> searchUnscopedByProjIdUpdateAtGt2(Integer projId, String timeFmt);
+    List<MeasureRegion> searchUnscopedByProjIdUpdateAtGt2(Integer projId, String timeFmt) throws ParseException;
 
     /**
      *

@@ -6,6 +6,7 @@ import com.longfor.longjian.measure.dao.zhijian2.CheckItemV3Mapper;
 import com.longfor.longjian.measure.domain.externalservice.ICheckItemV3Service;
 import com.longfor.longjian.measure.po.zhijian2.CategoryV3;
 import com.longfor.longjian.measure.po.zhijian2.CheckItemV3;
+import com.longfor.longjian.measure.util.ExampleUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -52,6 +53,7 @@ public class CheckItemV3ServiceImpl implements ICheckItemV3Service {
     public List<CategoryV3> searchCategoryByKeyIn(Set<String> keySet) {
         Example example =new Example(CategoryV3.class);
         example.createCriteria().andIn("key",keySet);
+        ExampleUtil.addDeleteAtJudge(example);
         return categoryV3Mapper.selectByExample(example);
     }
 }

@@ -8,6 +8,7 @@ import com.longfor.longjian.measure.dao.zhijian2.*;
 import com.longfor.longjian.measure.domain.externalservice.IMeasureListService;
 import com.longfor.longjian.measure.po.zhijian2.*;
 import com.longfor.longjian.measure.util.DateUtil;
+import com.longfor.longjian.measure.util.ExampleUtil;
 import com.longfor.longjian.measure.vo.ConditionSearchVo;
 import com.longfor.longjian.measure.vo.CreateMeasureListVo;
 import com.longfor.longjian.measure.vo.CreateZoneFromAppVo;
@@ -163,6 +164,7 @@ public class MeasureListServiceImpl implements IMeasureListService {
     public List<MeasureSquad> searchOnlyMeasureSquadByProjIdAndListId(Integer projId, Integer listId) {
         Example example = new Example(MeasureSquad.class);
         example.createCriteria().andEqualTo(PROJECTID, projId).andEqualTo(LISTID, listId);
+        ExampleUtil.addDeleteAtJudge(example);
         return measureSquadMapper.selectByExample(example);
     }
 

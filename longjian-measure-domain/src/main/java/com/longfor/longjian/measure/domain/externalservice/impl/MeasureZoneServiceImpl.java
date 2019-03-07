@@ -125,6 +125,7 @@ public class MeasureZoneServiceImpl implements IMeasureZoneService {
     public List<MeasureZone> searchByListId(Integer projId, Integer listId) {
         Example example =new Example(MeasureZone.class);
         example.createCriteria().andEqualTo(PROJECTID,projId).andEqualTo("listId",listId);
+        ExampleUtil.addDeleteAtJudge(example);
         return measureZoneMapper.selectByExample(example);
     }
 
