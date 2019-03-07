@@ -489,15 +489,14 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
                 }
             }
         }
-        OkRateVo okRateVo = new OkRateVo();
-        okRateVo.setOk_total((d.getOk_rate().getOk_total() == null ? 0 : d.getOk_rate().getOk_total()) + (result.getOkTotal() == null ? 0 : result.getOkTotal()));
-        okRateVo.setTotal((result.getTotal() == null ? 0 : result.getTotal()));
-        d.setOk_rate(okRateVo);
+        d.getOk_rate().setOk_total((d.getOk_rate().getOk_total() == null ? 0 : d.getOk_rate().getOk_total()) + (result.getOkTotal() == null ? 0 : result.getOkTotal()));
+        d.getOk_rate().setTotal((result.getTotal() == null ? 0 : result.getTotal()));
         String squadId = String.format("%s", squad.getId());
         OkRateVo squadRate = d.getSquad_ok_rates().get(squadId);
         if (squadRate == null) {
             squadRate = new OkRateVo();
             d.getSquad_ok_rates().put(squadId, squadRate);
+            d.getSquads().add(squad);
         }
         squadRate.setOk_total((squadRate.getOk_total() == null ? 0 : squadRate.getOk_total()) + (result.getOkTotal() == null ? 0 : result.getOkTotal()));
         squadRate.setTotal((squadRate.getTotal() == null ? 0 : squadRate.getTotal()) + (result.getTotal() == null ? 0 : result.getTotal()));
@@ -518,10 +517,8 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
             d.getData().add(newZoneData(regionUuid, areaInfoWithExtendVo));
         }
         addZoneData2(zoneData, squadId, d.getData().get(dataIndex));
-        OkRateVo okRateVo = new OkRateVo();
-        okRateVo.setOk_total((d.getOk_rate().getOk_total() == null ? 0 : d.getOk_rate().getOk_total()) + (zoneData.getOkTotal() == null ? 0 : zoneData.getOkTotal()));
-        okRateVo.setTotal((d.getOk_rate().getTotal() == null ? 0 : d.getOk_rate().getTotal()) + (zoneData.getTotal() == null ? 0 : zoneData.getTotal()));
-        d.setOk_rate(okRateVo);
+        d.getOk_rate().setOk_total((d.getOk_rate().getOk_total() == null ? 0 : d.getOk_rate().getOk_total()) + (zoneData.getOkTotal() == null ? 0 : zoneData.getOkTotal()));
+        d.getOk_rate().setTotal((d.getOk_rate().getTotal() == null ? 0 : d.getOk_rate().getTotal()) + (zoneData.getTotal() == null ? 0 : zoneData.getTotal()));
         squadRate.setOk_total((squadRate.getOk_total() == null ? 0 : squadRate.getOk_total()) + (zoneData.getOkTotal() == null ? 0 : zoneData.getOkTotal()));
         squadRate.setTotal((squadRate.getTotal() == null ? 0 : squadRate.getTotal()) + (zoneData.getTotal() == null ? 0 : zoneData.getTotal()));
     }
@@ -529,16 +526,12 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
     private void addZoneData2(MeasureZonePointDataVo zoneData, String squadId, MeasureZoneDataVo d) {
         List<MeasureZonePointDataVo> data = d.getData().get(squadId);
         if (data == null || data.isEmpty()) {
+            data =Lists.newArrayList();
             d.getSquad_ok_rates().put(squadId, new OkRateVo());
         }
-        Map<String, List<MeasureZonePointDataVo>> datamap = d.getData();
-        List<MeasureZonePointDataVo> dataVos = new ArrayList<>();
-        dataVos.add(zoneData);
-        datamap.put(squadId, dataVos);
-        OkRateVo okRateVo = new OkRateVo();
-        okRateVo.setOk_total((d.getOk_rate().getOk_total() == null ? 0 : d.getOk_rate().getOk_total()) + (zoneData.getOkTotal() == null ? 0 : zoneData.getOkTotal()));
-        okRateVo.setTotal((d.getOk_rate().getTotal() == null ? 0 : d.getOk_rate().getTotal()) + (zoneData.getTotal() == null ? 0 : zoneData.getTotal()));
-        d.setOk_rate(okRateVo);
+        data.add(zoneData);
+        d.getOk_rate().setOk_total((d.getOk_rate().getOk_total() == null ? 0 : d.getOk_rate().getOk_total()) + (zoneData.getOkTotal() == null ? 0 : zoneData.getOkTotal()));
+        d.getOk_rate().setTotal((d.getOk_rate().getTotal() == null ? 0 : d.getOk_rate().getTotal()) + (zoneData.getTotal() == null ? 0 : zoneData.getTotal()));
         OkRateVo squadRate = d.getSquad_ok_rates().get(squadId);
         squadRate.setOk_total((squadRate.getOk_total() == null ? 0 : squadRate.getOk_total()) + (zoneData.getOkTotal() == null ? 0 : zoneData.getOkTotal()));
         squadRate.setTotal((squadRate.getTotal() == null ? 0 : squadRate.getTotal()) + (zoneData.getTotal() == null ? 0 : zoneData.getTotal()));
