@@ -357,7 +357,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
                         Date date = new Date();
                         log.info("时间{}", DateUtil.dateToString(date));
                         try {
-                            Date parse = sdf.parse(sdf.format(new Date((t.getUpdate_at() * 1000))));
+                            Date parse = sdf.parse(sdf.format(new Date((t.getUpdate_at() * 1000L))));
                             clientCreateAt = sdf.format(parse);
                         } catch (NumberFormatException e) {
                             log.error("error:", e);
