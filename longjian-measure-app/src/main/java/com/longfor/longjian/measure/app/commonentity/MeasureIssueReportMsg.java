@@ -85,7 +85,7 @@ public class MeasureIssueReportMsg {
         measureIssue.setCategory_key(appendVo.getCategoryKey());
         measureIssue.setCategory_path_and_key(appendVo.getCategoryPathAndKey());
         measureIssue.setSender_id(appendVo.getSenderId());
-        measureIssue.setTimestamp(appendVo.getTimeAt().getTime());
+        measureIssue.setTimestamp(appendVo.getTimeAt().getTime() / 1000);
         return measureIssue;
     }
 }
