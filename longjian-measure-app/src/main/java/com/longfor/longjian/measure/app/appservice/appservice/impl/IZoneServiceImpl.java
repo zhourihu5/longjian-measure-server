@@ -78,6 +78,7 @@ public class IZoneServiceImpl implements IZoneService {
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo(PROJECTID, getResultReq.getProject_id());
         criteria.andEqualTo("zoneUuid", getResultReq.getZone_uuid());
+        ExampleUtil.addDeleteAtJudge(example);
 
         List<MeasureZoneResult> measureZoneResults = measureZoneResultService.selectByExample(example);
 

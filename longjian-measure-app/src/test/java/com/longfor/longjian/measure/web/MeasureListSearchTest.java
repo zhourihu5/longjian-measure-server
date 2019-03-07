@@ -22,13 +22,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * wangxs
  * 2019-03-04 13:51
- * MeasureListController 单元测试
  */
 
 @RunWith(SpringJUnit4ClassRunner.class) // SpringJUnit支持，由此引入Spring-Test框架支持！
 @SpringBootTest(classes = Application.class,webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT) // 指定我们SpringBoot工程的Application启动类
 public class MeasureListSearchTest {
-    private static final String TOKEN = "rOFM0joOPtQ8_bpX8hZb0MUWRvfjNXqT3URKpEyAAFwuFtymZUD2J-MBj7mvy3WJ";
+    private static final String TOKEN = "7MCigh6Ia1ZQiViXRlQWnIv6QG1ftlV1xYFIE9jYO6NPwY2DN59T3AM2O-t4e4Bb";
     private MockMvc mockMvc;
     @Autowired
     protected WebApplicationContext wac;
@@ -69,4 +68,99 @@ public class MeasureListSearchTest {
                 .andExpect(jsonPath("$.message").value("success"))
                 .andReturn();
     }
+
+    @Test
+    public void testPaginationSearch() throws Exception {
+        mockMvc.perform(
+                post("/measure/v1/papi/zone/pagination_search/").header("token",TOKEN)
+                        .param("group_id","4")
+                        .param("project_id","927")
+                        .param("team_id","25")
+                        .param("list_id","5526")
+                        .param("category_key_list","")
+                        .param("area_id_list","")
+                        .param("page","1")
+                        .param("page_size","20")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
+
+
+    @Test
+    public void testRepairerListSearch() throws Exception {
+        mockMvc.perform(
+                post("/measure/v1/papi/staff/repairer_list_search/").header("token",TOKEN)
+                        .param("group_id","4")
+                        .param("project_id","927")
+                        .param("team_id","25")
+                        .param("list_id","5526")
+                        .param("role_type","2")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
+
+    @Test
+    public void testGetResult() throws Exception {
+        mockMvc.perform(
+                post("/measure/v1/papi/zone/get_result/").header("token",TOKEN)
+                        .param("group_id","4")
+                        .param("project_id","1051")
+                        .param("zone_uuid","dbddaebfd28142278ee43213a84fcebe")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
+
+    @Test
+    public void testAllowUserSearch() throws Exception {
+        mockMvc.perform(
+                post("/measure/v1/papi/staff/allow_user_search").header("token",TOKEN)
+                        .param("group_id","4")
+                        .param("project_id","927")
+                        .param("list_id","5525")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
+
+    @Test
+    public void testSubCategorys() throws Exception {
+        mockMvc.perform(
+                post("/v3/measure/measure_list/sub_categorys/").header("token",TOKEN)
+                        .param("project_id","927")
+                        .param("key","1605")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
+
+    @Test
+    public void testUserList() throws Exception {
+        mockMvc.perform(
+                post("/v3/measure/ajax_json/user_list/").header("token",TOKEN)
+                        .param("project_id","927")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
+
+    @Test
+    public void testUserList2() throws Exception {
+        mockMvc.perform(
+                post("/oapi/v3/measure/ajax_json/user_list/").header("token",TOKEN)
+                        .param("project_id","927")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
+
 }
