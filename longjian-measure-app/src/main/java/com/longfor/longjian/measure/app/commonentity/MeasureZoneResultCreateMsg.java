@@ -57,7 +57,7 @@ public class MeasureZoneResultCreateMsg implements Serializable {
         measureZoneResult.setCategory_key(vo.getCategoryKey());
         measureZoneResult.setCategory_path_and_key(vo.getCategoryPathAndKey());
         measureZoneResult.setOk_total(vo.getOkTotal());
-        measureZoneResult.setTimestamp(vo.getTimeAt());
+        measureZoneResult.setTimestamp(vo.getTimeAt() / 1000);
         measureZoneResult.setTotal(vo.getTotal());
         created_results.add(measureZoneResult);
     }
