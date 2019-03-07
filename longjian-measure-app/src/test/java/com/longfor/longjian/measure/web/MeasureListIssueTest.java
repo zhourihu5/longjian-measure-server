@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class) // SpringJUnit支持，由此引入Spring-Test框架支持！
 @SpringBootTest(classes = Application.class,webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT) // 指定我们SpringBoot工程的Application启动类
 public class MeasureListIssueTest {
-    private static final String TOKEN = "7MCigh6Ia1ZQiViXRlQWnIv6QG1ftlV1xYFIE9jYO6NPwY2DN59T3AM2O-t4e4Bb";
+    private static final String TOKEN = "PYZJzTcPfNsPQ4Dkse2BdNHf9uflkPkgWBczFgXUkWrf40iOCjLu9WwXH_2PjRvu";
     private MockMvc mockMvc;
     @Autowired
     protected WebApplicationContext wac;
@@ -134,6 +134,20 @@ public class MeasureListIssueTest {
         mockMvc.perform(
                 post("/oapi/v3/project/user/simple_list/").header("token",TOKEN)
                         .param("project_id","927")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
+    @Test
+    public void testExportExcel() throws Exception {
+        mockMvc.perform(
+                post("/v3/measure/measure_detail/export_excel/").header("token",TOKEN)
+                        .param("project_id","1051")
+                        .param("page_level","project")
+                        .param("group_id","4")
+                        .param("team_id","25")
+                        .param("list_id","5651")
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("success"))
