@@ -103,7 +103,7 @@ public class MeasureListSearchTest {
                 .andReturn();
     }
 
-    @Test
+    /*@Test
     public void testGetResult() throws Exception {
         mockMvc.perform(
                 post("/measure/v1/papi/zone/get_result/").header("token",TOKEN)
@@ -114,7 +114,7 @@ public class MeasureListSearchTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("success"))
                 .andReturn();
-    }
+    }*/
 
     @Test
     public void testAllowUserSearch() throws Exception {
