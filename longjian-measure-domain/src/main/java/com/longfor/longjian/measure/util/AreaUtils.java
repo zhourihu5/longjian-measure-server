@@ -5,7 +5,6 @@ import com.google.common.collect.Maps;
 import com.longfor.longjian.measure.consts.enums.AreaTypeEnum;
 import com.longfor.longjian.measure.po.zhijian2.Area;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.lang.StringUtils;
 

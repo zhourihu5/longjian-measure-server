@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @LFFeignClient(group = "longjian-basic-server",value = "measureCheckItem",configuration = LFFeignConfiguration.class)
 public interface IMeasureFeignService {
     @PostMapping(value = "update_json" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    LjBaseResponse<CheckItemUpdateJsonVo> updateJson(@RequestParam(required = true,name = "category_id") Integer category_id,
+    LjBaseResponse<CheckItemUpdateJsonVo> updateJson(@RequestParam(required = true,name = "category_id") Integer categoryId,
                                                      @RequestParam(required = true,name = "cls")Integer cls,
-                                                     @RequestParam(required = true,name = "file_md5")String file_md5,
+                                                     @RequestParam(required = true,name = "file_md5")String fileMd5,
                                                      @RequestParam(required = true,name = "force")Boolean force);
     @GetMapping(value = "list_tree_json" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     LjBaseResponse<CheckItemListVo> listTreeJson(@RequestParam(required = true,name = "id") Integer id);

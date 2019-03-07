@@ -27,6 +27,7 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
     private MeasureRegionMapper measureRegionMapper;
     private static final String PROJECTID = "projectId";
     private static final String DELETEAT = "deleteAt";
+
     @Override
     public List<Map<String, Object>> getProjMeasureRegionByAreaId(Integer projectId, Integer areaId) {
         return measureRegionMapper.getProjMeasureRegionByAreaId(projectId, areaId);
@@ -60,29 +61,26 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
         Set<Integer> areaIds = new HashSet<>();
         measureRegions.forEach(measureRegion -> areaIds.add(measureRegion.getAreaId()));
         List<MeasureRegion> measureRegionLists = new ArrayList<>();
-        if(!areaIds.isEmpty()){
+        if (!areaIds.isEmpty()) {
             try {
                 Map<String, Integer> indexMap = measureRegionMapper.searchMeasureRegionAreaMaxIndexByAreaIdList(projectId, areaIds);
                 Integer areaId = indexMap.get("area_id");
                 Integer maxindex = indexMap.get("max_index");
                 Map<Integer, Integer> indexMap2 = Maps.newHashMap();
-                indexMap2.put(areaId,maxindex);
-                measureRegions.forEach(measureRegion -> {
-                    if (indexMap2.get(measureRegion.getAreaId()) == null) {
-                        Integer maxIndex = indexMap2.get(measureRegion.getAreaId());
-                        maxIndex = 0;
-                    }
-                });
+                indexMap2.put(areaId, maxindex);
+                measureRegions.forEach(measureRegion ->
+                        indexMap2.putIfAbsent(measureRegion.getAreaId(), 0)
+                );
                 measureRegions.forEach(measureRegion -> {
                     MeasureRegion newMeasureRegion = new MeasureRegion();
                     newMeasureRegion.setUuid(measureRegion.getUuid());
-                    newMeasureRegion.setRegionIndex(indexMap2.get(measureRegion.getAreaId())+1);
-                    indexMap2.put(areaId,indexMap2.get(measureRegion.getAreaId())+1);
+                    newMeasureRegion.setRegionIndex(indexMap2.get(measureRegion.getAreaId()) + 1);
+                    indexMap2.put(areaId, indexMap2.get(measureRegion.getAreaId()) + 1);
                     newMeasureRegion.setProjectId(measureRegion.getProjectId());
                     newMeasureRegion.setAreaId(measureRegion.getAreaId());
-                    newMeasureRegion.setRelId(measureRegion.getRelId() == null ? 0 :measureRegion.getRelId());
+                    newMeasureRegion.setRelId(measureRegion.getRelId() == null ? 0 : measureRegion.getRelId());
                     newMeasureRegion.setSrcType(measureRegion.getSrcType());
-                    newMeasureRegion.setTagIdList(measureRegion.getTagIdList() == null ? "": measureRegion.getTagIdList());
+                    newMeasureRegion.setTagIdList(measureRegion.getTagIdList() == null ? "" : measureRegion.getTagIdList());
                     newMeasureRegion.setAreaPathAndId(measureRegion.getAreaPathAndId());
                     newMeasureRegion.setDrawingMd5(measureRegion.getDrawingMd5());
                     newMeasureRegion.setPolygon(measureRegion.getPolygon());
@@ -92,7 +90,7 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
                 });
                 measureRegionMapper.insertList(measureRegionLists);
             } catch (Exception e) {
-                throw new LjBaseRuntimeException(-9999,e+"");
+                throw new LjBaseRuntimeException(-9999, e + "");
             }
         }
         return measureRegionLists;
@@ -208,7 +206,7 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
         Example example = new Example(MeasureRegion.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo(PROJECTID, projId);
-        if(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(timeFmt).getTime() > 0){
+        if (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(timeFmt).getTime() > 0) {
             criteria.andGreaterThan("updateAt", timeFmt);
         }
         return measureRegionMapper.selectByExample(example);

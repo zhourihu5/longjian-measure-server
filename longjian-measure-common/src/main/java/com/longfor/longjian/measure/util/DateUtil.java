@@ -1,7 +1,5 @@
 package com.longfor.longjian.measure.util;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +11,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
 /**
  * 日期工具类
@@ -170,9 +167,8 @@ public class DateUtil {
     /**
      * 获取某个时间前7天（一周）短时间
      * @return
-     * @throws ParseException
      */
-    public static String getBeforeWeekShortDate(Date date) throws ParseException {
+    public static String getBeforeWeekShortDate(Date date){
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.add(Calendar.DATE, - 7);

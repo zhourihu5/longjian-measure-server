@@ -139,8 +139,7 @@ public class DateTool {
         SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD);
         Long time = date1.getTime();
         String d = format.format(time);
-        Date startDate = format.parse(d);
-        return startDate;
+        return format.parse(d);
     }
 
     /**
@@ -168,7 +167,7 @@ public class DateTool {
      * @return
      * @throws ParseException
      */
-    public static String getBeforeWeekShortDate(Date date) throws ParseException {
+    public static String getBeforeWeekShortDate(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.add(Calendar.DATE, - 7);
@@ -184,7 +183,7 @@ public class DateTool {
      * @return
      * @throws ParseException
      */
-    public static String getShortDateStringByLong(Long dateLong) throws ParseException {
+    public static String getShortDateStringByLong(Long dateLong) {
         SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD);
         return format.format(dateLong);
     }
@@ -195,7 +194,7 @@ public class DateTool {
      * @return
      * @throws ParseException
      */
-    public static String getDateStringByLong(Long dateLong) throws ParseException {
+    public static String getDateStringByLong(Long dateLong){
         SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS);
         return format.format(dateLong);
     }
