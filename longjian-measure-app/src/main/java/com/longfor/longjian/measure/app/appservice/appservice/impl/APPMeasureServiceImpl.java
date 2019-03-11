@@ -182,6 +182,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         return dropData;
     }
 
+    @SuppressWarnings({"squid:S3776","squid:S1141"})
     private List<DroppedVo> createZoneResults(Integer projId, List<ResultListVo> data) throws ParseException {
         Map<String, MeasureZone> zoneUuidMap = new HashMap<>();
         Map<String, MeasureRule> ruleMap = new HashMap<>();
@@ -425,6 +426,7 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
      *
      * @param formula
      */
+    @SuppressWarnings("squid:S3776")
     private void calcResult(String formula, MeasureZoneResult result) throws LjBaseRuntimeException{
         List<MeasureZoneGroupData> resultData = Lists.newArrayList();
         List<Map> dataZone = JSONArray.parseArray(result.getData(), Map.class);

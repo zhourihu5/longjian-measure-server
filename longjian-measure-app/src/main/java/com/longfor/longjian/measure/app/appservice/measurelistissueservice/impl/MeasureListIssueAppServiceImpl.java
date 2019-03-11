@@ -58,6 +58,7 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
     public static final String ERROR = "error:";
 
     @Override
+    @SuppressWarnings("squid:S3776")
     public LjBaseResponse<MeasureIssueQueryVo> issueQueryJson(MeasureIssueQueryReq req, HttpServletRequest request) throws LjBaseRuntimeException {
         LjBaseResponse<MeasureIssueQueryVo> ljBaseResponse = new LjBaseResponse<>();
         MeasureIssueQueryVo measureIssueQueryVo = new MeasureIssueQueryVo();

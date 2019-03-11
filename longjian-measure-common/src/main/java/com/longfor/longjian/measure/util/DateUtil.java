@@ -27,6 +27,7 @@ public class DateUtil {
     //可以精确到秒  2017-4-16 12:43:37
     public static final DateFormat dateFormatter = DateFormat.getDateTimeInstance();
     public static final String YYYY_MM_DD = "yyyy-MM-dd";
+    public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
 
     private DateUtil(){}
 
@@ -159,7 +160,7 @@ public class DateUtil {
     }
 
     public static Long getLongFromString(String time) throws ParseException {
-        SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf= new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS);
         Date dt2 = sdf.parse(time);
         return dt2.getTime();
     }
@@ -214,7 +215,7 @@ public class DateUtil {
      * @throws ParseException
      */
     public static String getLongDateStringByLong(Long dateLong){
-        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS);
         return format.format(dateLong);
     }
 
@@ -241,9 +242,9 @@ public class DateUtil {
      * @return
      */
     public static String getZoneDateTime(Date date) {
-        DateTimeFormatter formatter0 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(ZoneId.of("Asia/Shanghai"));
+        DateTimeFormatter formatter0 = DateTimeFormatter.ofPattern(YYYY_MM_DD_HH_MM_SS).withZone(ZoneId.of("Asia/Shanghai"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssz");
-        ZonedDateTime zoneTime = ZonedDateTime.parse(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date) , formatter0);
+        ZonedDateTime zoneTime = ZonedDateTime.parse(new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS).format(date) , formatter0);
         return zoneTime.withFixedOffsetZone().format(formatter);
     }
 

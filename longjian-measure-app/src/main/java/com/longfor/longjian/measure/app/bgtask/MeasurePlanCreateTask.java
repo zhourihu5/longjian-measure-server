@@ -27,6 +27,7 @@ public class MeasurePlanCreateTask implements ExportTask {
     private UserTaskNotice userTaskNotice;
     private static final String USERID = "userId";
     @Override
+    @SuppressWarnings({"squid:S3776","squid:S1141"})
     public void run() {
         while (true) {
             try {

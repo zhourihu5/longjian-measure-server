@@ -198,6 +198,7 @@ public class MeasureListServiceImpl implements IMeasureListService {
     }
 
     @Override
+    @SuppressWarnings("squid:S3776")
     public Map<String, Object> conditionSearch(ConditionSearchVo vo) throws LjBaseRuntimeException {
         List<Integer> listIdSet = Lists.newArrayList();
         List<Integer> userIdList = Lists.newArrayList();

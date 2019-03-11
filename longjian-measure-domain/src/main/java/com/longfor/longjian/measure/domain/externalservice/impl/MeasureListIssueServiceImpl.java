@@ -74,7 +74,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
         //查找所有测区
         int count = measureZoneMapper.searchTotalByProjectIdAndMeasureListId(vo.getProject_id(), new int[]{vo.getMeasure_list_id()});
         String zonePercentage = String.format("%.2f", (Double.parseDouble(zoneCount.toString()) / count) * 100);
-        if ("0.00".equals(zonePercentage) || zoneCount == 0 || count == 0) {
+        if ("0.00".equals(zonePercentage) || zoneCount == 0) {
             map.put("zone_percentage", "0");
         } else {
             map.put("zone_percentage", zonePercentage);
@@ -178,6 +178,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     }
 
     @Override
+    @SuppressWarnings("squid:S3776")
     public Map<String, Object> searchMeasueListIssueInProj(SearchMeasueListIssueInProjVo vo) throws ParseException {
         Map<String, Object> map = Maps.newHashMap();
         Example example = new Example(MeasureListIssue.class);

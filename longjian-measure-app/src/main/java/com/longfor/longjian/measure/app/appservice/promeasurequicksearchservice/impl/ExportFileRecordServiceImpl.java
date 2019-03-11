@@ -33,10 +33,8 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
     private ExportVo exportVo;
     @Resource
     private IExportFileRecordDomainService exportFileRecordDomainService;
-    private Random rand;
 
     public ExportFileRecordServiceImpl() throws NoSuchAlgorithmException {
-        rand = SecureRandom.getInstanceStrong();
     }
 
     @Override

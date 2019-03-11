@@ -184,6 +184,7 @@ public class IZoneServiceImpl implements IZoneService {
     }
 
     @Override
+    @SuppressWarnings("squid:S3776")
     public JSONObject paginationSearch(PaginationSearchReq paginationSearchReq) throws CommonException {
 
         JSONObject jb = new JSONObject();

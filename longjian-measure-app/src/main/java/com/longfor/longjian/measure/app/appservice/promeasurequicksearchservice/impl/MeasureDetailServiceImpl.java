@@ -79,6 +79,7 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
         }
     }
 
+    @SuppressWarnings("squid:S3776")
     private Map<String, Object> search4ExportExcel(Integer projId, Integer listId) {
         Map<String, Object> map = Maps.newHashMap();
         try {
@@ -213,6 +214,7 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
         return map;
     }
 
+    @SuppressWarnings("squid:S3776")
     private MeasuredDataVo getMeasuredDataByListId(Integer projId, Integer listId) {
         try {
             MeasuredDataVo md = new MeasuredDataVo();
@@ -438,6 +440,7 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
         }
     }
 
+    @SuppressWarnings("squid:S3776")
     private void reCalc(CategoryDataVo d) {
         if (d.getChildren().size() == 0) {
             return;
@@ -472,6 +475,7 @@ public class MeasureDetailServiceImpl implements IMeasureDetailService {
         d.setSquad_ok_rates(squadOkRates);
     }
 
+    @SuppressWarnings("squid:S3776")
     private void addResult(MeasureZoneResult result, MeasureSquad squad, String regionUuid, AreaInfoWithExtendVo areaInfoWithExtendVo, CategoryDataVo d) throws ParseException {
         List<String> dataList = Arrays.asList(result.getData());
         for (String groupData : dataList) {

@@ -523,6 +523,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
      * @param getBlisterRateCheckItemsReq
      * @return
      */
+    @SuppressWarnings("squid:S3776")
     private List<BlisterCategoryDetailsVo> searchMeasureListIssueDistributionCategory(GetBlisterRateCheckItemsReq getBlisterRateCheckItemsReq) {
         List<BlisterCategoryDetailsVo> r = new ArrayList<>();
         List<MeasureListIssue> issues = measureListIssueService.searchMeasureListIssueDistributionCategory(getBlisterRateCheckItemsReq.getProject_id(), getBlisterRateCheckItemsReq.getMeasure_list_id(), MeasureListConstant.UNCLOSECODE);
@@ -821,6 +822,7 @@ public class ProMeasureServiceImpl implements IProMeasureService {
      * @param measureZoneResults
      * @return
      */
+    @SuppressWarnings("squid:S3776")
     private List<SquadsPassVo> getSquadsPassVos(List<MeasureSquad> measureSquadlist, Integer total, List<Map<String, Object>> measureZoneResults, List<Map<String, Object>> results) {
         List<SquadsPassVo> squadsPassVos = new ArrayList<>();
         measureSquadlist.forEach(measureSquad -> {

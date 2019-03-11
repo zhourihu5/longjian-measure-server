@@ -113,9 +113,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         ) {
             List<MeasureList> measureLists = measureListService.searchListByProjIdUserId(projectId, userId);
             for (MeasureList measureList : measureLists) {
-                if (measureList.getCloseStatus().equals(MeasureListCloseStatusEnum.CLOSED.getId())) {
-                    continue;
-                } else if (measureList.getFinishStatus().equals(MeasureListFinishStatusEnum.FINISHED.getId())) {
+                if (measureList.getCloseStatus().equals(MeasureListCloseStatusEnum.CLOSED.getId()) || measureList.getFinishStatus().equals(MeasureListFinishStatusEnum.FINISHED.getId())) {
                     continue;
                 }
                 List<MeasureListArea> areas = measureListAreaService.searchByListId(projectId, measureList.getId());
@@ -264,6 +262,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
     }
 
     @Override
+    @SuppressWarnings("squid:S3776")
     public LjBaseResponse<DroppedInfoVo> reportRegion(ApiMeasureReportRegionReq apiMeasureReportRegionReq, HttpServletRequest request) throws LjBaseRuntimeException {
         // 检查uuid，没有uuid也可以执行以下代码以保存请求内容
         LjBaseResponse<DroppedInfoVo> ljBaseResponse = new LjBaseResponse<>();
@@ -380,6 +379,7 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
     }
 
     @Override
+    @SuppressWarnings("squid:S3776")
     public LjBaseResponse<DroppedInfoVo> reportZone(ApiMeasureReportZoneReq req, HttpServletRequest request) throws LjBaseRuntimeException {
         ReportStatusEnum reportUuidStatus = ReportStatusEnum.ERROR;
         LjBaseResponse<DroppedInfoVo> ljBaseResponse = new LjBaseResponse<>();

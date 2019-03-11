@@ -146,6 +146,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
     }
 
     @Override
+    @SuppressWarnings("squid:S3776")
     public LjBaseResponse<Object> file(FileReq fileReq, HttpServletRequest request, HttpServletResponse response) throws LjBaseRuntimeException, IOException {
         TeamBase teamBase = null;
         try {

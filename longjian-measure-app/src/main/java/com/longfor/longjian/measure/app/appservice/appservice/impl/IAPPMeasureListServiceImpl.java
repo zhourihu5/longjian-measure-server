@@ -197,6 +197,7 @@ public class IAPPMeasureListServiceImpl implements IAPPMeasureListService {
 
     @Override
     @Transactional
+    @SuppressWarnings("squid:S3776")
     public void add(Map params) {
         int projId = (int) params.get("proj_id");
         String areaIdLists = params.get("area_id_list").toString();

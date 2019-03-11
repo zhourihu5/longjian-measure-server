@@ -173,6 +173,7 @@ public class MeasureListIssueHelper {
      *
      * @return
      */
+    @SuppressWarnings("squid:S3776")
     public MeasureListIssueHelper done() {
         String issueUuid = this.currentLog.getIssueUuid();
         MeasureListIssue issue;
@@ -359,6 +360,7 @@ public class MeasureListIssueHelper {
         return this;
     }
 
+    @SuppressWarnings("squid:S3776")
     public List<Object> modifyIssue(MeasureListIssue issue) {
         //仅修改允许被修改的字段
         boolean changed = false;
@@ -454,6 +456,7 @@ public class MeasureListIssueHelper {
     /**
      * 执行操作
      */
+    @SuppressWarnings("squid:S3776")
     public void execute() {
         //处理1：看新建列表里面，有没有ZoneUuid已经是存在issue的
         Set<Integer> listIds = new HashSet<>();

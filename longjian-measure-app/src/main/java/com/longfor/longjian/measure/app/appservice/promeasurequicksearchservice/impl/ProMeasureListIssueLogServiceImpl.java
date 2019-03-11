@@ -35,6 +35,7 @@ public class ProMeasureListIssueLogServiceImpl implements IProMeasureListIssueLo
     private IUserService userService;
 
     @Override
+    @SuppressWarnings("squid:S3776")
     public List<MeasureListIssueHistoryRepairLogVo> getIssueActionLogByIssueUuid(Integer projectId, String uuid) {
         List<MeasureListIssueHistoryRepairLogVo> items = new LinkedList<>();
 

@@ -114,6 +114,7 @@ public class MeasureListIssueDetailImple implements IMeasureListIssueDetailServi
     }
 
     @Override
+    @SuppressWarnings("squid:S3776")
     public MeasureListIssueDetailZoneInfoVo zoneInfo(GetMeasureListIssueDetailReq req) {
         MeasureListIssueDetailZoneInfoVo vo = new MeasureListIssueDetailZoneInfoVo();
         List<MeasureListIssueDetailSquadVo> squads = new ArrayList<>();
