@@ -198,9 +198,9 @@ public class APPMeasureServiceImpl implements IAPPMeasureService {
         List<MeasureRegion> regions = measureRegionService.searchByUuids(projId, regionUuidMap.keySet());
         Map<String, MeasureRegion> regionMap = regions.stream().collect(Collectors.toMap(MeasureRegion::getUuid, measureRegion -> measureRegion));
         List<DroppedVo> droppedVos = new ArrayList<>();
-        MeasureZoneResultCreateMsg msgPkg = new MeasureZoneResultCreateMsg();
         for (ResultListVo resultListVo : data
         ) {
+            MeasureZoneResultCreateMsg msgPkg = new MeasureZoneResultCreateMsg();
             //0、根据zone_uuid看是否有上传过
             //如果有上传过就不让写入（在未有开关之前统一拒收）
             try {
