@@ -35,7 +35,7 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
     private IExportFileRecordDomainService exportFileRecordDomainService;
 
     @SuppressWarnings("squid:S1186")
-    public ExportFileRecordServiceImpl() throws NoSuchAlgorithmException {
+    public ExportFileRecordServiceImpl(){
     }
 
     @Override
