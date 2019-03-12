@@ -36,13 +36,6 @@ public class AreaUtils {
         return areas;
     }
 
-
-    public static List<Area> getAreaList() {
-
-        return list;
-    }
-
-
     public static String getName(Integer id) {
         try {
             Area area = areas.get(id);

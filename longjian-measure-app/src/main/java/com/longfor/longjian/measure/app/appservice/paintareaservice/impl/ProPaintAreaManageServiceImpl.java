@@ -45,47 +45,17 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
     @Override
     public LjBaseResponse<GroupRegionTagVo> getGroupMeasureRegionTag(GetGroupMeasureRegionTagReq getGroupMeasureRegionTagReq) throws LjBaseRuntimeException {
         LjBaseResponse<GroupRegionTagVo> ljBaseResponse = new LjBaseResponse<>();
-        GroupRegionTagVo groupRegionTagVo = new GroupRegionTagVo();
-        List<TagListVo> listVos = new ArrayList<>();
         //查询tag
         List<Map<String, Object>> tagList = measureTagService.searchByGroupIdAndProjId(getGroupMeasureRegionTagReq.getGroup_id(), 0, MeasureTagConstant.GROUP);
-        for (Map<String, Object> map : tagList
-        ) {
-            //map转换成vo
-            TagListVo tagListVo = null;
-            try {
-                tagListVo = (TagListVo) ConvertUtil.convertMap(TagListVo.class, map);
-            } catch (Exception e) {
-                throw new LjBaseRuntimeException(-9999, e + "");
-            }
-            listVos.add(tagListVo);
-        }
-        groupRegionTagVo.setTag_list(listVos);
-        ljBaseResponse.setData(groupRegionTagVo);
-        return ljBaseResponse;
+        return  tagListConvert(tagList,ljBaseResponse);
     }
 
     @Override
     public LjBaseResponse<GroupRegionTagVo> getProjMeasureRegionTag(GetProjMeasureRegionTagReq getProjMeasureRegionTagReq) throws LjBaseRuntimeException {
         LjBaseResponse<GroupRegionTagVo> ljBaseResponse = new LjBaseResponse<>();
-        GroupRegionTagVo groupRegionTagVo = new GroupRegionTagVo();
-        List<TagListVo> listVos = new ArrayList<>();
         //查询tag
         List<Map<String, Object>> tagList = measureTagService.searchByGroupIdAndProjId(getProjMeasureRegionTagReq.getGroup_id(), getProjMeasureRegionTagReq.getProject_id(), MeasureTagConstant.PROJECT);
-        for (Map<String, Object> map : tagList
-        ) {
-            //map转换成vo
-            TagListVo tagListVo = null;
-            try {
-                tagListVo = (TagListVo) ConvertUtil.convertMap(TagListVo.class, map);
-            } catch (Exception e) {
-                throw new LjBaseRuntimeException(-9999, e + "");
-            }
-            listVos.add(tagListVo);
-        }
-        groupRegionTagVo.setTag_list(listVos);
-        ljBaseResponse.setData(groupRegionTagVo);
-        return ljBaseResponse;
+        return  tagListConvert(tagList,ljBaseResponse);
     }
 
     @Override
@@ -172,6 +142,24 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
         Integer affCount = measureTagService.editOnProjId(editByProjId.getGroup_id(), editByProjId.getProject_id(), editTagProtoVos, MeasureTagConstant.PROJECT);
         ljBaseResponse.setMessage(String.format("总共修改了 %s 条数据", affCount));
         ljBaseResponse.setResult(0);
+        return ljBaseResponse;
+    }
+    private LjBaseResponse<GroupRegionTagVo> tagListConvert(List<Map<String, Object>> tagList, LjBaseResponse<GroupRegionTagVo> ljBaseResponse){
+        GroupRegionTagVo groupRegionTagVo = new GroupRegionTagVo();
+        List<TagListVo> listVos = new ArrayList<>();
+        for (Map<String, Object> map : tagList
+        ) {
+            //map转换成vo
+            TagListVo tagListVo = null;
+            try {
+                tagListVo = (TagListVo) ConvertUtil.convertMap(TagListVo.class, map);
+            } catch (Exception e) {
+                throw new LjBaseRuntimeException(-9999, e + "");
+            }
+            listVos.add(tagListVo);
+        }
+        groupRegionTagVo.setTag_list(listVos);
+        ljBaseResponse.setData(groupRegionTagVo);
         return ljBaseResponse;
     }
 }
