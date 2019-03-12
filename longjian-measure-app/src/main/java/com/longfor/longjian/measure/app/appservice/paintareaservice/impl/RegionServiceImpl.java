@@ -77,8 +77,9 @@ public class RegionServiceImpl implements IRegionService {
         );
         log.info("true_index_dict: " + JSON.toJSONString(trueIndexDict));
         //插入region
+        List<MeasureRegion> modelList = new ArrayList<>();
+        List<MeasureRegion> modelSaveList = new ArrayList<>();
         regionInfoList.forEach(regionInfo -> {
-            List<MeasureRegion> modelList = new ArrayList<>();
             //region
             List<Integer> areaIdLists = JSONArray.parseArray(regionInfo.get("area_id_list").toString(), Integer.class);
             log.info("len : " + areaIdLists.size());
@@ -106,30 +107,30 @@ public class RegionServiceImpl implements IRegionService {
                 MeasureRegion model = JSONObject.toJavaObject((JSON) JSON.toJSON(regionDict), MeasureRegion.class);
                 model.setCreateAt(new Date());
                 model.setUpdateAt(new Date());
-                MeasureRegion regionModel = measureRegionService.save(model);
-                modelList.add(regionModel);
+                modelSaveList.add(model);
             });
-            //数量大于一个的时候创立关联关系
-            if (modelList.size() > 1) {
-                String regionIds = String.join(",", modelList.stream().map(measureRegion ->
-                        measureRegion.getId() + ""
-                ).collect(Collectors.toList()).toArray(new String[modelList.size()]));
-                Map<String, Object> relDict = new HashMap<>();
-                relDict.put("desc", "");
-                relDict.put("project_id", projectId);
-                relDict.put("region_ids", regionIds);
-                MeasureRegionRel model = JSONObject.toJavaObject((JSON) JSON.toJSON(relDict), MeasureRegionRel.class);
-                model.setCreateAt(new Date());
-                model.setUpdateAt(new Date());
-                MeasureRegionRel relModel = measureRegionRelService.save(model);
-
-                //关系写回measure_region
-                modelList.forEach(mode -> {
-                    mode.setRelId(relModel.getId());
-                    measureRegionService.update(mode);
-                });
-            }
         });
+        modelList = measureRegionService.saveList(modelSaveList);
+        //数量大于一个的时候创立关联关系
+        if (modelList.size() > 1) {
+            String regionIds = String.join(",", modelList.stream().map(measureRegion ->
+                    measureRegion.getId() + ""
+            ).collect(Collectors.toList()).toArray(new String[modelList.size()]));
+            Map<String, Object> relDict = new HashMap<>();
+            relDict.put("desc", "");
+            relDict.put("project_id", projectId);
+            relDict.put("region_ids", regionIds);
+            MeasureRegionRel model = JSONObject.toJavaObject((JSON) JSON.toJSON(relDict), MeasureRegionRel.class);
+            model.setCreateAt(new Date());
+            model.setUpdateAt(new Date());
+            MeasureRegionRel relModel = measureRegionRelService.save(model);
+
+            //关系写回measure_region
+            modelList.forEach(mode -> {
+                mode.setRelId(relModel.getId());
+            });
+            measureRegionService.updateList(modelList);
+        }
     }
 
     @Override

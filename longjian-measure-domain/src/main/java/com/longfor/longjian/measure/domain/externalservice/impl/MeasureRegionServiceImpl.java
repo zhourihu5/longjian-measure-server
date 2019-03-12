@@ -135,6 +135,24 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
     }
 
     @Override
+    public void updateList(List<MeasureRegion> modelList) {
+        modelList.forEach(measureRegion -> {
+            measureRegion.setUpdateAt(new Date());
+        });
+        measureRegionMapper.updateList(modelList);
+    }
+
+    @Override
+    public List<MeasureRegion> saveList(List<MeasureRegion> modelSaveList) {
+        modelSaveList.forEach(measureRegion -> {
+            measureRegion.setCreateAt(new Date());
+            measureRegion.setUpdateAt(new Date());
+        });
+        measureRegionMapper.insertMeasureRegion(modelSaveList);
+        return modelSaveList;
+    }
+
+    @Override
     public MeasureRegion update(MeasureRegion mode) {
         mode.setUpdateAt(new Date());
         measureRegionMapper.updateByPrimaryKeySelective(mode);

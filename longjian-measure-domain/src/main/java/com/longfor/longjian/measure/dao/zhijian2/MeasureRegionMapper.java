@@ -88,4 +88,15 @@ public interface MeasureRegionMapper extends LFMySQLMapper<MeasureRegion> {
      * @return
      */
     MeasureRegion GetByUuid(@Param("projId") Integer projId, @Param("uuid") String uuid);
+
+    /**
+     *
+     * @param modelList
+     */
+    void updateList(@Param("modelList") List<MeasureRegion> modelList);
+
+    /**
+     *
+     * @param modelSaveList
+     */
 }

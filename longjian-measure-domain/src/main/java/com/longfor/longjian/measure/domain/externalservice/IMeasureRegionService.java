@@ -158,4 +158,12 @@ public interface IMeasureRegionService {
      * @return
      */
     List<MeasureRegion> searchByIdAndAreaIdAndProjectIdNoDeleted(List<String> regionIdList, List<String> copyAreaIdList, int projId);
+
+    List<MeasureRegion> saveList(List<MeasureRegion> modelSaveList);
+
+    /**
+     *
+     * @param modelList
+     */
+    void updateList(List<MeasureRegion> modelList);
 }

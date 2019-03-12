@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.longfor.longjian.measure.dao.zhijian2.MeasureRegionMapper" >
-  <resultMap id="BaseResultMap" type="com.longfor.longjian.measure.po.zhijian2.MeasureRegion" >
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="project_id" property="projectId" jdbcType="INTEGER" />
-    <result column="area_id" property="areaId" jdbcType="INTEGER" />
-    <result column="area_path_and_id" property="areaPathAndId" jdbcType="VARCHAR" />
-    <result column="drawing_md5" property="drawingMd5" jdbcType="VARCHAR" />
-    <result column="polygon" property="polygon" jdbcType="VARCHAR" />
-    <result column="region_index" property="regionIndex" jdbcType="INTEGER" />
-    <result column="rel_id" property="relId" jdbcType="INTEGER" />
-    <result column="src_type" property="srcType" jdbcType="INTEGER" />
-    <result column="uuid" property="uuid" jdbcType="VARCHAR" />
-    <result column="tag_id_list" property="tagIdList" jdbcType="VARCHAR" />
-    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
-    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
-    <result column="delete_at" property="deleteAt" jdbcType="TIMESTAMP" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    <!--
-      WARNING - @mbg.generated
-    -->
-    id, project_id, area_id, area_path_and_id, drawing_md5, polygon, region_index, rel_id, 
-    src_type, uuid, tag_id_list, create_at, update_at, delete_at
-  </sql>
+<mapper namespace="com.longfor.longjian.measure.dao.zhijian2.MeasureRegionMapper">
+    <resultMap id="BaseResultMap" type="com.longfor.longjian.measure.po.zhijian2.MeasureRegion">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="project_id" property="projectId" jdbcType="INTEGER"/>
+        <result column="area_id" property="areaId" jdbcType="INTEGER"/>
+        <result column="area_path_and_id" property="areaPathAndId" jdbcType="VARCHAR"/>
+        <result column="drawing_md5" property="drawingMd5" jdbcType="VARCHAR"/>
+        <result column="polygon" property="polygon" jdbcType="VARCHAR"/>
+        <result column="region_index" property="regionIndex" jdbcType="INTEGER"/>
+        <result column="rel_id" property="relId" jdbcType="INTEGER"/>
+        <result column="src_type" property="srcType" jdbcType="INTEGER"/>
+        <result column="uuid" property="uuid" jdbcType="VARCHAR"/>
+        <result column="tag_id_list" property="tagIdList" jdbcType="VARCHAR"/>
+        <result column="create_at" property="createAt" jdbcType="TIMESTAMP"/>
+        <result column="update_at" property="updateAt" jdbcType="TIMESTAMP"/>
+        <result column="delete_at" property="deleteAt" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        id, project_id, area_id, area_path_and_id, drawing_md5, polygon, region_index, rel_id,
+        src_type, uuid, tag_id_list, create_at, update_at, delete_at
+    </sql>
 
-  <select id="getProjMeasureRegionByAreaId" resultType="map">
+    <select id="getProjMeasureRegionByAreaId" resultType="map">
     SELECT
     mr.area_id,
     mr.area_path_and_id,
@@ -54,37 +54,37 @@
     AND mrr.delete_at IS NULL
   </select>
 
-  <select id="searchUnscopedByProjIdUpdateAtGt" resultMap="BaseResultMap">
-SELECT
-	<include refid="Base_Column_List"/>
-FROM
-	measure_region
-WHERE
-	project_id = #{projectId}
-	<if test="updateAtGte != null and updateAtGte != '0001-01-01 00:00:00'">
-      AND update_at = #{updateAtGte}
-    </if>
-  </select>
+    <select id="searchUnscopedByProjIdUpdateAtGt" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        measure_region
+        WHERE
+        project_id = #{projectId}
+        <if test="updateAtGte != null and updateAtGte != '0001-01-01 00:00:00'">
+            AND update_at = #{updateAtGte}
+        </if>
+    </select>
 
-  <select id="searchUnscopedByProjIdLastIdUpdateAtGt" resultMap="BaseResultMap">
-SELECT
-	<include refid="Base_Column_List"/>
-FROM
-	measure_region
-WHERE
-	project_id = #{projectId}
-	AND id > #{lastId}
-    <if test="timestamp != null and timestamp >= 0">
-	AND update_at > FROM_UNIXTIME( #{timestamp} )
-    </if>
-    <if test="measureApiGetPerTime != 0">
-      ORDER BY
-      id ASC
-      LIMIT #{start},#{measureApiGetPerTime}
-    </if>
-  </select>
-  <!--List<measurelist> getNoProjNoFoundErr(@Param("listId") String listId);-->
-  <select id="getNoProjNoFoundErr" resultType="map">
+    <select id="searchUnscopedByProjIdLastIdUpdateAtGt" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        measure_region
+        WHERE
+        project_id = #{projectId}
+        AND id > #{lastId}
+        <if test="timestamp != null and timestamp >= 0">
+            AND update_at > FROM_UNIXTIME( #{timestamp} )
+        </if>
+        <if test="measureApiGetPerTime != 0">
+            ORDER BY
+            id ASC
+            LIMIT #{start},#{measureApiGetPerTime}
+        </if>
+    </select>
+    <!--List<measurelist> getNoProjNoFoundErr(@Param("listId") String listId);-->
+    <select id="getNoProjNoFoundErr" resultType="map">
         select
      id, `name`, project_id, area_type, close_status, finish_status, root_category_key,
     plan_begin_on, plan_end_on, create_at, update_at, delete_at
@@ -95,87 +95,140 @@ WHERE
     AND delete_at IS NULL
 
     </select>
-  <select id="getCountUnscopedByProjIdUpdateAtGt" resultType="int">
-    SELECT
-    count(id)
-    FROM
-    measure_region
-    WHERE
-    project_id = #{projectId}
-    <if test="timestamp != null and timestamp >= 0">
-    AND update_at > FROM_UNIXTIME( #{timestamp} )
-    </if>
-  </select>
+    <select id="getCountUnscopedByProjIdUpdateAtGt" resultType="int">
+        SELECT
+        count(id)
+        FROM
+        measure_region
+        WHERE
+        project_id = #{projectId}
+        <if test="timestamp != null and timestamp >= 0">
+            AND update_at > FROM_UNIXTIME( #{timestamp} )
+        </if>
+    </select>
 
-  <select id="searchByUuids" resultMap="BaseResultMap">
-SELECT
-	<include refid="Base_Column_List" />
-FROM
-	measure_region
-WHERE
-	project_id = #{projId}
-	AND uuid IN
-    <foreach collection="uuids" index="index" item="item" open="(" separator="," close=")">
-      #{item}
-    </foreach>
-  </select>
-  <!--List<MeasureRegion> searchMeasureRegionAreaMaxIndexByAreaIdList(@Param("projectId")Integer projectId, @Param("areaIds")Set<Integer> areaIds);-->
-  <select id="searchMeasureRegionAreaMaxIndexByAreaIdList" resultType="map">
-    select area_id,max(region_index) AS max_index
-    from  measure_region where area_id in
-        <foreach collection="areaIds" index="index" item="item" open="(" separator="," close=")">
-           #{item}
+    <select id="searchByUuids" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        measure_region
+        WHERE
+        project_id = #{projId}
+        AND uuid IN
+        <foreach collection="uuids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
         </foreach>
-    and delete_at is NULL GROUP BY area_id
+    </select>
+    <!--List<MeasureRegion> searchMeasureRegionAreaMaxIndexByAreaIdList(@Param("projectId")Integer projectId, @Param("areaIds")Set<Integer> areaIds);-->
+    <select id="searchMeasureRegionAreaMaxIndexByAreaIdList" resultType="map">
+        select area_id,max(region_index) AS max_index
+        from measure_region where area_id in
+        <foreach collection="areaIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and delete_at is NULL GROUP BY area_id
 
-  </select>
-  <insert id="insertMeasureRegion" parameterType="java.util.List">
-    insert into  measure_region(id, project_id, area_id, area_path_and_id, drawing_md5, polygon, region_index, rel_id,
-    src_type, uuid, tag_id_list, create_at, update_at, delete_at)
-    values
-    <foreach collection ="list" item="measureRegion" index= "index" separator =",">
-      (
-      #{measureRegion.id}, #{measureRegion.projectId},#{measureRegion.areaId},#{measureRegion.areaPathAndId},
-      #{measureRegion.drawingMd5},#{measureRegion.polygon},#{measureRegion.regionIndex},#{measureRegion.relId},
-      #{measureRegion.srcType},#{measureRegion.uuid},#{measureRegion.tagIdList},#{measureRegion.createAt},#{measureRegion.updateAt},
-      #{measureRegion.deleteAt}
-      )
-    </foreach >
-  </insert>
-  <!--MeasureRegion getByConditionNoFoundErr(@Param("project_id") Integer project_id, @Param("uuid") String uuid);-->
-  <select id="getByConditionNoFoundErr" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from measure_region where project_id = #{project_id}
-    and uuid = #{uuid}
-  </select>
+    </select>
+    <insert id="insertMeasureRegion" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        insert into measure_region(id, project_id, area_id, area_path_and_id, drawing_md5, polygon, region_index,
+        rel_id,
+        src_type, uuid, tag_id_list, create_at, update_at, delete_at)
+        values
+        <foreach collection="list" item="measureRegion" index="index" separator=",">
+            (
+            #{measureRegion.id}, #{measureRegion.projectId},#{measureRegion.areaId},#{measureRegion.areaPathAndId},
+            #{measureRegion.drawingMd5},#{measureRegion.polygon},#{measureRegion.regionIndex},#{measureRegion.relId},
+            #{measureRegion.srcType},#{measureRegion.uuid},#{measureRegion.tagIdList},#{measureRegion.createAt},#{measureRegion.updateAt},
+            #{measureRegion.deleteAt}
+            )
+        </foreach>
+    </insert>
+    <!--void updateList(List<MeasureRegion> modelList);-->
+    <update id="updateList" parameterType="java.util.List">
+        <if test="modelList!=null">
+            <foreach collection="modelList" item="model" index="index" open="" close="" separator=";">
+                update measure_region
+                <set>
+                <if test="model.projectId !=null">
+                    project_id = #{model.projectId},
+                </if>
+                <if test="model.areaId !=null">
+                    area_id=#{model.areaId},
+                </if>
+                <if test="model.areaPathAndId !=null">
+                    area_path_and_id=#{model.areaPathAndId},
+                </if>
+                <if test="model.drawingMd5 !=null">
+                    drawing_md5 = #{model.drawingMd5},
+                </if>
+                <if test="model.polygon !=null">
+                    polygon=#{model.polygon},
+                </if>
+                <if test="model.regionIndex !=null">
+                    region_index=#{model.regionIndex},
+                </if>
+                <if test="model.relId !=null">
+                    rel_id=#{model.relId},
+                </if>
+                <if test="model.srcType !=null">
+                    src_type = #{model.srcType},
+                </if>
+                <if test="model.uuid !=null">
+                    uuid=#{model.uuid},
+                </if>
+                <if test="model.tagIdList !=null">
+                    tag_id_list=#{model.tagIdList},
+                </if>
+                <if test="model.createAt !=null">
+                    create_at=#{model.createAt},
+                </if>
+                <if test="model.updateAt !=null">
+                    update_at=#{model.updateAt},
+                </if>
+                <if test="model.deleteAt !=null">
+                    delete_at=#{model.deleteAt}
+                </if>
+                </set>
+                <where>
+                    id=#{model.id}
+                </where>
+            </foreach>
+        </if>
+    </update>
+    <!--MeasureRegion getByConditionNoFoundErr(@Param("project_id") Integer project_id, @Param("uuid") String uuid);-->
+    <select id="getByConditionNoFoundErr" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from measure_region where project_id = #{project_id}
+        and uuid = #{uuid}
+    </select>
 
-  <select id="getMaxRegionIndexGroupByAreaIdNoDeleted" resultType="map">
-    SELECT
-	MAX( region_index ) region_index,
-	area_id
-    FROM
-	measure_region
-    WHERE
-	project_id = #{projId}
-	AND area_id IN
-    <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
-      #{item}
-    </foreach>
-	AND delete_at IS NULL
-    GROUP BY
-	area_id
-  </select>
-  <select id="GetByUuid" resultMap="BaseResultMap">
-    SELECT
-    <include refid="Base_Column_List"/>
-    FROM
-    measure_region
-    WHERE
-    project_id = #{projId}
-    AND
-    uuid = #{uuid}
-    AND
-    delete_at IS NULL
-  </select>
+    <select id="getMaxRegionIndexGroupByAreaIdNoDeleted" resultType="map">
+        SELECT
+        MAX( region_index ) region_index,
+        area_id
+        FROM
+        measure_region
+        WHERE
+        project_id = #{projId}
+        AND area_id IN
+        <foreach collection="areaIdList" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND delete_at IS NULL
+        GROUP BY
+        area_id
+    </select>
+    <select id="GetByUuid" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        measure_region
+        WHERE
+        project_id = #{projId}
+        AND
+        uuid = #{uuid}
+        AND
+        delete_at IS NULL
+    </select>
 </mapper>
