@@ -229,10 +229,10 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
         }
         if (vo.getIs_overdue() != null && !vo.getIs_overdue().equals(false)) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Long nowTimestamp = sdf.parse("2006-01-02 23:59:59").getTime();
-            Long startTimestamp = sdf.parse("1980-01-01 00:00:00").getTime();
-            criteria.andGreaterThan("planEndOn", startTimestamp.intValue());
-            criteria.andCondition("( end_on > plan_end_on or ( end_on < " + startTimestamp.intValue() + " and plan_end_on < " + nowTimestamp.intValue() + " ))");
+            Date nowTimestamp = new Date();
+            Date startTimestamp = sdf.parse("1980-01-01 00:00:00");
+            criteria.andGreaterThan("planEndOn", startTimestamp);
+            criteria.andCondition("( end_on > plan_end_on or ( end_on < " + com.longfor.longjian.common.util.DateUtil.dateToTimestamp(startTimestamp) + " and plan_end_on < " + com.longfor.longjian.common.util.DateUtil.dateToTimestamp(nowTimestamp) + " ))");
         }
         criteria.andIsNull(DELETEAT);
         Integer count = measureListIssueMapper.selectCountByExample(example);
