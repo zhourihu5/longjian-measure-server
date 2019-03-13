@@ -6,10 +6,10 @@ import com.longfor.longjian.measure.app.appservice.promeasurequicksearchservice.
 import com.longfor.longjian.measure.app.commonentity.MeasureListIssueLogDetail;
 import com.longfor.longjian.measure.app.vo.promeasurequicksearchvo.MeasureListIssueHistoryRepairLogItemVo;
 import com.longfor.longjian.measure.app.vo.promeasurequicksearchvo.MeasureListIssueHistoryRepairLogVo;
+import com.longfor.longjian.measure.consts.constant.MeasureListIssueType;
 import com.longfor.longjian.measure.consts.enums.MeasureListCloseStatusEnum;
 import com.longfor.longjian.measure.consts.enums.MeasureListIssueActionLogTypeEnum;
 import com.longfor.longjian.measure.consts.enums.MeasureListIssueCheckStatusEnum;
-import com.longfor.longjian.measure.consts.constant.MeasureListIssueType;
 import com.longfor.longjian.measure.domain.externalservice.IMeasureListIssueLogService;
 import com.longfor.longjian.measure.domain.externalservice.IUserService;
 import com.longfor.longjian.measure.po.zhijian2.MeasureListIssueLog;

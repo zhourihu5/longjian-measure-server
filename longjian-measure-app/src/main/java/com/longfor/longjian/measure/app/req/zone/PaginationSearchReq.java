@@ -2,7 +2,6 @@ package com.longfor.longjian.measure.app.req.zone;
 
 import com.longfor.longjian.common.consts.ReqParamCheckErrors;
 import lombok.Data;
-import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
 

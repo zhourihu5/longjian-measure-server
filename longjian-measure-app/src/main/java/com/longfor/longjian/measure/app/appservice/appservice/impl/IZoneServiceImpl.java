@@ -14,7 +14,9 @@ import com.longfor.longjian.measure.app.feignclient.ICoreCategoryItemFeignServic
 import com.longfor.longjian.measure.app.req.feignreq.CategoriesInfoReq;
 import com.longfor.longjian.measure.app.req.feignreq.SearchByIdListReq;
 import com.longfor.longjian.measure.app.req.zone.*;
-import com.longfor.longjian.measure.app.vo.appmeasuresyncvo.*;
+import com.longfor.longjian.measure.app.vo.appmeasuresyncvo.MeasureRuleVo;
+import com.longfor.longjian.measure.app.vo.appmeasuresyncvo.ResultListVo;
+import com.longfor.longjian.measure.app.vo.appmeasuresyncvo.ZoneInfoVo;
 import com.longfor.longjian.measure.app.vo.feignvo.AreaRetrieveVo;
 import com.longfor.longjian.measure.app.vo.feignvo.CategoryJsonProtoItemVo;
 import com.longfor.longjian.measure.app.vo.feignvo.CategoryJsonProtoVo;

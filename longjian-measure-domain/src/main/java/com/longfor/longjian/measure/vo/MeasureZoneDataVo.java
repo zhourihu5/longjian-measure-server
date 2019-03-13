@@ -1,6 +1,5 @@
 package com.longfor.longjian.measure.vo;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.Data;
 import lombok.NoArgsConstructor;

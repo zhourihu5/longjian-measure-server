@@ -1,6 +1,8 @@
 package com.longfor.longjian.measure.po.zhijian2_stat;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Table(name = "measure_issue_proj_stat_partner")
 public class MeasureIssueProjStatPartner {

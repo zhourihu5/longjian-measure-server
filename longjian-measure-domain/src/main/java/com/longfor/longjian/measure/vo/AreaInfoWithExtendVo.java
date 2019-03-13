@@ -3,7 +3,6 @@ package com.longfor.longjian.measure.vo;
 import com.longfor.longjian.measure.po.zhijian2.Area;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.xpath.operations.Bool;
 
 import java.util.List;
 

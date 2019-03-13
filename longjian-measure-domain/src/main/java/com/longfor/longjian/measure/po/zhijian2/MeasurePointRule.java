@@ -1,6 +1,8 @@
 package com.longfor.longjian.measure.po.zhijian2;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Table(name = "measure_point_rule")
 public class MeasurePointRule {

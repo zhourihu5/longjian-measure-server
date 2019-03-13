@@ -1,11 +1,13 @@
 package com.longfor.longjian.measure.app.vo.appmeasuresyncvo;
 
 import lombok.Data;
+
+import java.util.Date;
+
 /**
  * Jiazm
  * 2018/12/13 16:25
  */
-import java.util.Date;
 @Data
 public class MeasureListVo {
     private Integer id;

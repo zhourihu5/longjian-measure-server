@@ -1,7 +1,10 @@
 package com.longfor.longjian.measure.po.zhijian2;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "measure_region_rel")
 public class MeasureRegionRel {
