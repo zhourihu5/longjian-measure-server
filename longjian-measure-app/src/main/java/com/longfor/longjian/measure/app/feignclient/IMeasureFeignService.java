@@ -23,5 +23,6 @@ public interface IMeasureFeignService {
                                                      @RequestParam(required = true,name = "file_md5")String fileMd5,
                                                      @RequestParam(required = true,name = "force")Boolean force);
     @GetMapping(value = "list_tree_json" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    LjBaseResponse<CheckItemListVo> listTreeJson(@RequestParam(required = true,name = "id") Integer id);
+    LjBaseResponse<CheckItemListVo> listTreeJson(@RequestParam(required = true,name = "id") Integer id,
+                                                 @RequestParam(required = true,name = "module") String module);
 }
