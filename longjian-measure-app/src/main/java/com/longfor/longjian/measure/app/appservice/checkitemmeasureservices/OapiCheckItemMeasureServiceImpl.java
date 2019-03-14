@@ -3,6 +3,7 @@ package com.longfor.longjian.measure.app.appservice.checkitemmeasureservices;
 import com.google.common.collect.Maps;
 import com.longfor.longjian.common.FeignClient.IPermissionService;
 import com.longfor.longjian.common.base.LjBaseResponse;
+import com.longfor.longjian.common.consts.GroupModuleEnum;
 import com.longfor.longjian.common.entity.TeamBase;
 import com.longfor.longjian.common.exception.LjBaseRuntimeException;
 import com.longfor.longjian.common.util.CtrlTool;
@@ -138,7 +139,7 @@ public class OapiCheckItemMeasureServiceImpl implements IOapiCheckItemMeasureSer
 
     @Override
     public LjBaseResponse<CheckItemListVo> listTreeJson(ListTreeJsonReq listTreeJsonReq, HttpServletRequest request) {
-        LjBaseResponse<CheckItemListVo> ljBaseResponse = measureFeignService.listTreeJson(listTreeJsonReq.getId());
+        LjBaseResponse<CheckItemListVo> ljBaseResponse = measureFeignService.listTreeJson(listTreeJsonReq.getId(), GroupModuleEnum.SCSL.getId());
         CheckItemListVo data = ljBaseResponse.getData();
         LjBaseResponse<CheckItemListVo> ljBaseResponse2 = new LjBaseResponse<>();
         ljBaseResponse2.setData(data);
