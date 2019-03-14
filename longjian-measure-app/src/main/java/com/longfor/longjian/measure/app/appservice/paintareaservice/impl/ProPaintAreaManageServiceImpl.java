@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.longfor.longjian.common.base.LjBaseResponse;
 import com.longfor.longjian.common.exception.LjBaseRuntimeException;
+import com.longfor.longjian.common.util.CtrlTool;
+import com.longfor.longjian.common.util.RequestContextHolderUtil;
 import com.longfor.longjian.measure.app.appservice.paintareaservice.IProPaintAreaManageService;
 import com.longfor.longjian.measure.app.req.measureregionreq.AddOnGroupReq;
 import com.longfor.longjian.measure.app.req.measureregionreq.AddOnProjReq;
@@ -39,6 +41,8 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
     private IMeasureTagService measureTagService;
     @Autowired
     private IMeasureRegionService measureRegionService;
+    @Autowired
+    private CtrlTool ctrlTool;
 
     private static final String RELID = "relId";
 
@@ -98,6 +102,7 @@ public class ProPaintAreaManageServiceImpl implements IProPaintAreaManageService
 
     @Override
     public LjBaseResponse<Object> editOnGroup(EditOnGroupReq editOnGroupReq) {
+        ctrlTool.teamPerm(RequestContextHolderUtil.getRequest(),"集团.实测实量.描画区域标签管理.编辑");
         LjBaseResponse<Object> ljBaseResponse = new LjBaseResponse<>();
         List<EditTagProtoVo> editTagProtoVos = JSONArray.parseArray(editOnGroupReq.getEdit_tag_list(), EditTagProtoVo.class);
         Integer affCount = measureTagService.editOnGroup(editOnGroupReq.getGroup_id(), editTagProtoVos, MeasureTagConstant.GROUP);
