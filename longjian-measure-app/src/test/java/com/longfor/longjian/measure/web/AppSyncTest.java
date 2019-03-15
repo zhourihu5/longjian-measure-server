@@ -8,9 +8,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -25,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = Application.class,webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT) // 指定我们SpringBoot工程的Application启动类
 public class AppSyncTest {
 
-    private static final String TOKEN = "IttoRbVgCglLi6cYI07SqvRrZUXinj2lQJpZ-ZXY2NdIzGCGGwxHIBhMtE5ltg9e";
+    private static final String TOKEN = "7TVhfaOsW_eB5kGqUg3UKZe90unNcsnCYBQ2XjuQeorSSXaMer1in8Whwr-3vEyw";
     private MockMvc mockMvc;
     @Autowired
     protected WebApplicationContext wac;
@@ -214,6 +216,87 @@ public class AppSyncTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
+    @Test
+    @Transactional
+    @Rollback
+    public void testAddOnProj() throws Exception {
+        mockMvc.perform(
+                post("/measure/v1/papi/measure_region_tag/add_on_proj/").header("token",TOKEN)
+                        .param("group_id","1")
+                        .param("project_id","1")
+                        .param("name_list","测试专用33,测试专用44")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+    @Test
+    @Transactional
+    @Rollback
+    public void testEditByProjId() throws Exception {
+        mockMvc.perform(
+                post("/measure/v1/papi/measure_region_tag/add_on_group/").header("token",TOKEN)
+                        .param("group_id","3")
+                        .param("name_list","测试专用1,测试专用2,测试专用3")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+    @Test
+    @Transactional
+    @Rollback
+    public void testIssueDel() throws Exception {
+        mockMvc.perform(
+                post("/oapi/v3/measure/measure_list_issue/issue_del/").header("token",TOKEN)
+                        .param("uuid","23e0c8132d0d4812bd297c3a28934e68")
+                        .param("project_id","927")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+    @Test
+    @Transactional
+    @Rollback
+    public void testIssueCloseStatus() throws Exception {
+        mockMvc.perform(
+                post("/oapi/v3/measure/measure_list_issue/issue_close_status/").header("token",TOKEN)
+                        .param("uuid","23e0c8132d0d4812bd297c3a28934e68")
+                        .param("project_id","927")
+                        .param("close_status","4")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+    @Test
+    @Transactional
+    @Rollback
+    public void testUpdateRepairer() throws Exception {
+        mockMvc.perform(
+                post("/oapi/v3/measure/measure_list_issue_detail/update_repairer/").header("token",TOKEN)
+                        .param("uuid","23e0c8132d0d4812bd297c3a28934e68")
+                        .param("project_id","927")
+                        .param("group_id","4")
+                        .param("page_level","project")
+                        .param("team_id","25")
+                        .param("repairer_id","19865")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+    @Test
+    @Transactional
+    @Rollback
+    public void testMeasureRegionAdd() throws Exception {
+        mockMvc.perform(
+                post("/measure/v1/papi/measure_region/delete/").header("token",TOKEN)
+                        .param("project_id","927")
+                        .param("group_id","4")
+                        .param("page_level","project")
+                        .param("team_id","25")
+                        .param("region_id_list","12001747,12001748")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
                 .andReturn();
     }
 }
