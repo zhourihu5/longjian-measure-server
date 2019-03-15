@@ -77,7 +77,7 @@ public class RegionServiceImpl implements IRegionService {
         );
         log.info("true_index_dict: " + JSON.toJSONString(trueIndexDict));
         //插入region
-        List<MeasureRegion> modelList = new ArrayList<>();
+        List<MeasureRegion> modelList;
         List<MeasureRegion> modelSaveList = new ArrayList<>();
         regionInfoList.forEach(regionInfo -> {
             //region
