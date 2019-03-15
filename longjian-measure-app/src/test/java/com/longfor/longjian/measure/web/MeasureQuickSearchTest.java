@@ -40,7 +40,7 @@ public class MeasureQuickSearchTest {
     public void testMeasureListJson() throws Exception {
         mockMvc.perform(
                 post("/oapi/v3/measure/measure_statistic/measure_list_json/").header("token",TOKEN)
-                        .param("project_id","1051")
+                        .param("project_id","927")
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("success"))
@@ -51,8 +51,8 @@ public class MeasureQuickSearchTest {
     public void testSquadMeasureStatsJson() throws Exception {
         mockMvc.perform(
                 post("/oapi/v3/measure/measure_statistic/squad_measure_stats_json/").header("token",TOKEN)
-                        .param("project_id","1051")
-                        .param("measure_list_id","5651")
+                        .param("project_id","927")
+                        .param("measure_list_id","5526")
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("success"))
@@ -63,8 +63,8 @@ public class MeasureQuickSearchTest {
     public void testSquadCompletenessJson() throws Exception {
         mockMvc.perform(
                 post("/oapi/v3/measure/measure_statistic/squad_completeness_json/").header("token",TOKEN)
-                        .param("project_id","1051")
-                        .param("measure_list_id","5651")
+                        .param("project_id","927")
+                        .param("measure_list_id","5526")
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("success"))
@@ -76,7 +76,7 @@ public class MeasureQuickSearchTest {
         mockMvc.perform(
                 post("/oapi/v3/measure/measure_statistic/squad_special_point_json/").header("token",TOKEN)
                         .param("project_id","1051")
-                        .param("measure_list_id","5651")
+                        .param("measure_list_id","5526")
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("success"))
@@ -87,8 +87,8 @@ public class MeasureQuickSearchTest {
     public void testCategoryDetailsJson() throws Exception {
         mockMvc.perform(
                 post("/oapi/v3/measure/measure_statistic/category_details_json/").header("token",TOKEN)
-                        .param("project_id","1051")
-                        .param("measure_list_id","5651")
+                        .param("project_id","927")
+                        .param("measure_list_id","5526")
                         .param("category_key","")
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
@@ -151,9 +151,9 @@ public class MeasureQuickSearchTest {
         mockMvc.perform(
                 post("/oapi/v3/measure/measure_statistic/sub_category_area_percentage/").header("token",TOKEN)
                         .param("project_id","927")
-                        .param("list_ids","5665")
-                        .param("area_ids","2942525,2950220,2950239")
-                        .param("parent_category_key","1605")
+                        .param("list_ids","5526")
+                        .param("area_ids","2970149")
+                        .param("parent_category_key","10204")
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("success"))
