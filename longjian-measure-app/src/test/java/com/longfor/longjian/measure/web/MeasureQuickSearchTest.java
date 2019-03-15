@@ -75,7 +75,7 @@ public class MeasureQuickSearchTest {
     public void testSquadSpecialPointJson() throws Exception {
         mockMvc.perform(
                 post("/oapi/v3/measure/measure_statistic/squad_special_point_json/").header("token",TOKEN)
-                        .param("project_id","1051")
+                        .param("project_id","927")
                         .param("measure_list_id","5526")
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
