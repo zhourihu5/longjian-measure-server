@@ -8,9 +8,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -25,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = Application.class,webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT) // 指定我们SpringBoot工程的Application启动类
 public class AppSyncTest {
 
-    private static final String TOKEN = "IttoRbVgCglLi6cYI07SqvRrZUXinj2lQJpZ-ZXY2NdIzGCGGwxHIBhMtE5ltg9e";
+    private static final String TOKEN = "7TVhfaOsW_eB5kGqUg3UKZe90unNcsnCYBQ2XjuQeorSSXaMer1in8Whwr-3vEyw";
     private MockMvc mockMvc;
     @Autowired
     protected WebApplicationContext wac;
@@ -211,6 +213,20 @@ public class AppSyncTest {
                         .param("list_id","1")
                         .param("last_id","0")
                         .param("timestamp","1420041600")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("success"))
+                .andReturn();
+    }
+    @Test
+    @Transactional
+    @Rollback
+    public void testIssueEdit() throws Exception {
+        mockMvc.perform(
+                post("measure/v1/papi/measure_region_tag/add_on_proj/").header("token",TOKEN)
+                        .param("group_id","1")
+                        .param("project_id","1")
+                        .param("name_list","测试专用33,测试专用44")
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("success"))
