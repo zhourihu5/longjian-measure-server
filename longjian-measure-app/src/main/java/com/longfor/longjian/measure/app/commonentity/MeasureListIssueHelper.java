@@ -623,7 +623,7 @@ public class MeasureListIssueHelper {
                         appendReformedVo.setAreaPathAndId(issue.getAreaPathAndId());
                         appendReformedVo.setCategoryKey(issue.getCategoryKey());
                         appendReformedVo.setCategoryPathAndKey(issue.getCategoryPathAndKey());
-                        appendReformedVo.setSenderId(issue.getSenderId());
+                        appendReformedVo.setSenderId(issue.getRepairerId());
                         appendReformedVo.setTimeAt(issue.getClientCreateAt());
                         msgPkg.appendReformed(appendReformedVo);
                         break;
@@ -638,7 +638,7 @@ public class MeasureListIssueHelper {
                         appendCheckedVo.setAreaPathAndId(issue.getAreaPathAndId());
                         appendCheckedVo.setCategoryKey(issue.getCategoryKey());
                         appendCheckedVo.setCategoryPathAndKey(issue.getCategoryPathAndKey());
-                        appendCheckedVo.setSenderId(issue.getSenderId());
+                        appendCheckedVo.setSenderId(issue.getDestroyUser());
                         appendCheckedVo.setTimeAt(issue.getClientCreateAt());
                         msgPkg.appendChecked(appendCheckedVo);
                         break;
