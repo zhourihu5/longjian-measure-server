@@ -29,37 +29,7 @@ public class DateTool {
 
     private DateTool(){}
 
-    /**
-     * 返回短时间格式
-     *
-     * @return返回短时间格式 yyyy-MM-dd
-     */
-    public static Date getNowDateShort(Date date)  {
-        String dateString = formatter.format(date);
-        Date dd= null;
-        try {
-            dd = formatter.parse(dateString);
-        } catch (ParseException e) {
-            logger.error(e.getMessage());
-        }
-        return dd;
-    }
 
-    /**
-     * 将长时间格式转换短时间格式
-     *
-     * @return返回短时间格式 yyyy-MM-dd
-     */
-    public static Date getDateShort(Date date)  {
-        String dateString = formatter.format(date);
-        Date dd= null;
-        try {
-            dd = formatter.parse(dateString);
-        } catch (ParseException e) {
-            logger.error(e.getMessage());
-        }
-        return dd;
-    }
 
     /**
      * 获取现在时间
@@ -77,23 +47,7 @@ public class DateTool {
      * @param nowTime
      * @return
      */
-    public static boolean compareDate(String startTime,String endTime,String nowTime){
-        boolean flag=true;
-        try {
-            Date st=dateFormatter.parse(startTime);
-            Date en=dateFormatter.parse(endTime);
-            Date now=dateFormatter.parse(nowTime);
-            if(now.before(st)){
-                flag=false;
-            }
-            if(en.before(now)){
-                flag=true;
-            }
-        } catch (ParseException e) {
-            logger.error(e.getMessage());
-        }
-        return flag;
-    }
+
 
 
     /**
@@ -125,36 +79,8 @@ public class DateTool {
     }
 
 
-    /**
-     * 获取前N天短时间
-     * @return
-     * @throws ParseException
-     */
-    public static Date getYeasterShortDate(int days) throws ParseException {
-        Date date = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.add(Calendar.DAY_OF_MONTH, days);
-        Date date1 = calendar.getTime();
-        SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD);
-        Long time = date1.getTime();
-        String d = format.format(time);
-        return format.parse(d);
-    }
 
-    /**
-     * 获取传入日期前一天的短时间
-     */
-    public static Date getYeasterShortDateByDate(Date date) throws ParseException {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.add(Calendar.DAY_OF_MONTH, -1);
-        Date date1 = calendar.getTime();
-        SimpleDateFormat format =  new SimpleDateFormat(YYYY_MM_DD);
-        Long time = date1.getTime();
-        String d = format.format(time);
-        return format.parse(d);
-    }
+
 
     public static Long getLongFromString(String time) throws ParseException {
         SimpleDateFormat sdf= new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS);
