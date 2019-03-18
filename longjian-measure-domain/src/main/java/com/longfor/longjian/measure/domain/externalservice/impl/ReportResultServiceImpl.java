@@ -4,6 +4,7 @@ import com.longfor.longjian.measure.dao.zhijian2.ReportResultMapper;
 import com.longfor.longjian.measure.domain.externalservice.IReportResultService;
 import com.longfor.longjian.measure.po.zhijian2.ReportResult;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -18,11 +19,13 @@ public class ReportResultServiceImpl implements IReportResultService {
     }
 
     @Override
+    @Transactional
     public void updateByPrimaryKey(ReportResult item) {
         reportResultMapper.updateByPrimaryKey(item);
     }
 
     @Override
+    @Transactional
     public void insertSelective(ReportResult reportResult) {
         reportResultMapper.insertSelective(reportResult);
     }

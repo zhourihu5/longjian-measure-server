@@ -61,21 +61,17 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
         Set<Integer> areaIds = new HashSet<>();
         measureRegions.forEach(measureRegion -> areaIds.add(measureRegion.getAreaId()));
         List<MeasureRegion> measureRegionLists = new ArrayList<>();
+        Map<Integer, Integer> indexMap = Maps.newHashMap();
         if (!areaIds.isEmpty()) {
             try {
-                Map<String, Integer> indexMap = measureRegionMapper.searchMeasureRegionAreaMaxIndexByAreaIdList(projectId, areaIds);
-                Integer areaId = indexMap.get("area_id");
-                Integer maxindex = indexMap.get("max_index");
-                Map<Integer, Integer> indexMap2 = Maps.newHashMap();
-                indexMap2.put(areaId, maxindex);
-                measureRegions.forEach(measureRegion ->
-                        indexMap2.putIfAbsent(measureRegion.getAreaId(), 0)
-                );
-                measureRegions.forEach(measureRegion -> {
+                indexMap = measureRegionMapper.searchMeasureRegionAreaMaxIndexByAreaIdList(projectId, areaIds);
+                Integer areaId = areaIds.iterator().next();
+                for (MeasureRegion measureRegion : measureRegions) {
+                    indexMap.putIfAbsent(measureRegion.getAreaId(), 0);
                     MeasureRegion newMeasureRegion = new MeasureRegion();
                     newMeasureRegion.setUuid(measureRegion.getUuid());
-                    newMeasureRegion.setRegionIndex(indexMap2.get(measureRegion.getAreaId()) + 1);
-                    indexMap2.put(areaId, indexMap2.get(measureRegion.getAreaId()) + 1);
+                    newMeasureRegion.setRegionIndex(indexMap.get(measureRegion.getAreaId()) + 1);
+                    indexMap.put(areaId, indexMap.get(measureRegion.getAreaId()) + 1);
                     newMeasureRegion.setProjectId(measureRegion.getProjectId());
                     newMeasureRegion.setAreaId(measureRegion.getAreaId());
                     newMeasureRegion.setRelId(measureRegion.getRelId() == null ? 0 : measureRegion.getRelId());
@@ -87,7 +83,7 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
                     newMeasureRegion.setCreateAt(new Date());
                     newMeasureRegion.setUpdateAt(new Date());
                     measureRegionLists.add(newMeasureRegion);
-                });
+                }
                 measureRegionMapper.insertList(measureRegionLists);
             } catch (Exception e) {
                 throw new LjBaseRuntimeException(-9999, e + "");
