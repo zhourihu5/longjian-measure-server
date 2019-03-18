@@ -58,7 +58,7 @@ public interface MeasureRegionMapper extends LFMySQLMapper<MeasureRegion> {
      * @param areaIds
      * @return
      */
-    Map<String,Integer> searchMeasureRegionAreaMaxIndexByAreaIdList(@Param("projectId")Integer projectId, @Param("areaIds")Set<Integer> areaIds);
+    Map<Integer,Integer> searchMeasureRegionAreaMaxIndexByAreaIdList(@Param("projectId")Integer projectId, @Param("areaIds")Set<Integer> areaIds);
 
     /**
      *
