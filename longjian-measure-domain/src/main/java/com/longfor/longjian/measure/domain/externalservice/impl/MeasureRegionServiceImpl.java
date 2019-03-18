@@ -65,7 +65,7 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
         if (!areaIds.isEmpty()) {
             try {
                 indexMap = measureRegionMapper.searchMeasureRegionAreaMaxIndexByAreaIdList(projectId, areaIds);
-                Integer areaId = indexMap.get("area_id");
+                Integer areaId = areaIds.iterator().next();
                 for (MeasureRegion measureRegion : measureRegions) {
                     indexMap.putIfAbsent(measureRegion.getAreaId(), 0);
                     MeasureRegion newMeasureRegion = new MeasureRegion();
