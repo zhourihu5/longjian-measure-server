@@ -5,6 +5,7 @@ import com.longfor.longjian.measure.domain.externalservice.IMeasureZoneResultSer
 import com.longfor.longjian.measure.po.zhijian2.MeasureZoneResult;
 import com.longfor.longjian.measure.util.ExampleUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
@@ -82,6 +83,7 @@ public class MeasureZoneResultServiceImpl implements IMeasureZoneResultService {
     }
 
     @Override
+    @Transactional
     public int insertObjectNoAffectedErr(MeasureZoneResult zoneResult) {
         return measureZoneResultMapper.insertSelective(zoneResult);
     }
