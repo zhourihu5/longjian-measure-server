@@ -61,12 +61,15 @@ public class MeasureRegionServiceImpl implements IMeasureRegionService {
         Set<Integer> areaIds = new HashSet<>();
         measureRegions.forEach(measureRegion -> areaIds.add(measureRegion.getAreaId()));
         List<MeasureRegion> measureRegionLists = new ArrayList<>();
-        Map<Integer, Integer> indexMap = Maps.newHashMap();
+        Map<Integer, Integer> indexMap;
         if (!areaIds.isEmpty()) {
             try {
                 indexMap = measureRegionMapper.searchMeasureRegionAreaMaxIndexByAreaIdList(projectId, areaIds);
                 Integer areaId = areaIds.iterator().next();
                 for (MeasureRegion measureRegion : measureRegions) {
+                    if(indexMap ==null){
+                        indexMap = Maps.newHashMap();
+                    }
                     indexMap.putIfAbsent(measureRegion.getAreaId(), 0);
                     MeasureRegion newMeasureRegion = new MeasureRegion();
                     newMeasureRegion.setUuid(measureRegion.getUuid());
