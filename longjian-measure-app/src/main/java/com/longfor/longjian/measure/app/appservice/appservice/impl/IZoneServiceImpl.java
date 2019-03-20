@@ -128,13 +128,12 @@ public class IZoneServiceImpl implements IZoneService {
                 oneJb.put("data", twoArr);
             }
             MeasureRule measureRule = measureRuleService.selectById(measureZoneResult.getRuleId());
-            MeasureRuleVo measureRuleVo =convertTheTypeMeasureRuleVo(measureRule);
-            JSONObject ruleJb = JSONObject.parseObject(JSONObject.toJSONString(measureRuleVo));
-
-            ruleJb.put("points", JSONArray.parse(measureRule.getPoints()));
-
-            oneJb.put("rule", ruleJb);
-
+            if (measureRule != null){
+                MeasureRuleVo measureRuleVo =convertTheTypeMeasureRuleVo(measureRule);
+                JSONObject ruleJb = JSONObject.parseObject(JSONObject.toJSONString(measureRuleVo));
+                ruleJb.put("points", JSONArray.parse(measureRule.getPoints()));
+                oneJb.put("rule", ruleJb);
+            }
             arr.add(oneJb);
         }
         totalJb.put("zone_result", arr);
