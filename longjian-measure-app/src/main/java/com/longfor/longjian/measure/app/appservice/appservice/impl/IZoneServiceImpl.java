@@ -30,6 +30,7 @@ import com.longfor.longjian.measure.util.ArrayUtil;
 import com.longfor.longjian.measure.util.ConvertUtil;
 import com.longfor.longjian.measure.util.ExampleUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -91,8 +92,10 @@ public class IZoneServiceImpl implements IZoneService {
             JSONObject oneJb;
 
             MeasureZoneResult measureZoneResult = measureZoneResults.get(i);
-            ResultListVo resultListVo= convertTheTypeMeasureZoneResultVo(measureZoneResult);
+            ResultListVo resultListVo = convertTheTypeMeasureZoneResultVo(measureZoneResult);
             oneJb = JSONObject.parseObject(JSONObject.toJSONString(resultListVo));
+            //vo 有区别，暂时这样处理
+            oneJb.put("update_at", DateUtil.dateToString(measureZoneResult.getUpdateAt()));
 
             String resultData = measureZoneResult.getData();//第一层data
             if (StringUtils.isNotBlank(resultData)) {
@@ -130,13 +133,16 @@ public class IZoneServiceImpl implements IZoneService {
                 oneJb.put("data", twoArr);
             }
             MeasureRule measureRule = measureRuleService.selectById(measureZoneResult.getRuleId());
-            MeasureRuleVo measureRuleVo =convertTheTypeMeasureRuleVo(measureRule);
-            JSONObject ruleJb = JSONObject.parseObject(JSONObject.toJSONString(measureRuleVo));
-
-            ruleJb.put("points", JSONArray.parse(measureRule.getPoints()));
-
-            oneJb.put("rule", ruleJb);
-
+            JSONObject ruleJb = new JSONObject();
+            ruleJb.put("points", new JSONArray());
+            if (measureRule != null) {
+                MeasureRuleVo measureRuleVo = convertTheTypeMeasureRuleVo(measureRule);
+                ruleJb = JSONObject.parseObject(JSONObject.toJSONString(measureRuleVo));
+                ruleJb.put("points", JSONArray.parse(measureRule.getPoints()));
+                oneJb.put("rule", ruleJb);
+            } else {
+                oneJb.put("rule", ruleJb);
+            }
             arr.add(oneJb);
         }
         totalJb.put("zone_result", arr);
@@ -145,7 +151,7 @@ public class IZoneServiceImpl implements IZoneService {
     }
 
     private MeasureRuleVo convertTheTypeMeasureRuleVo(MeasureRule measureRule) {
-        MeasureRuleVo measureRuleVo =new MeasureRuleVo();
+        MeasureRuleVo measureRuleVo = new MeasureRuleVo();
         measureRuleVo.setId(measureRule.getId());
         measureRuleVo.setCategory_key(measureRule.getCategoryKey());
         measureRuleVo.setDesc(measureRule.getDesc());
@@ -162,7 +168,7 @@ public class IZoneServiceImpl implements IZoneService {
     }
 
     private ResultListVo convertTheTypeMeasureZoneResultVo(MeasureZoneResult measureZoneResult) {
-        ResultListVo resultListVo =new ResultListVo();
+        ResultListVo resultListVo = new ResultListVo();
         resultListVo.setId(measureZoneResult.getId());
         resultListVo.setUuid(measureZoneResult.getUuid());
         resultListVo.setProject_id(measureZoneResult.getProjectId());
@@ -182,7 +188,7 @@ public class IZoneServiceImpl implements IZoneService {
         resultListVo.setCategory_key(measureZoneResult.getCategoryKey());
         resultListVo.setCategory_path_and_key(measureZoneResult.getCategoryPathAndKey());
 
-        return  resultListVo;
+        return resultListVo;
     }
 
     @Override
@@ -283,13 +289,15 @@ public class IZoneServiceImpl implements IZoneService {
                 List<MeasureRegion> measureRegionList = measureRegionService.selectByExample(zoneExample);
 
                 String[] keyList = measureZone.getCategoryPathAndKey().split("/");
-
-                MeasureRegion measureRegion = measureRegionList.get(0);
+                MeasureRegion measureRegion = new MeasureRegion();
+                if (CollectionUtils.isNotEmpty(measureRegionList)) {
+                    measureRegion = measureRegionList.get(0);
+                }
 
                 StringBuilder categoryFullName = new StringBuilder();
 
                 for (int k = 1; k < keyList.length; k++) {
-                    categoryFullName.append("/").append(checkItemDict.get(keyList[k]).getName());
+                    categoryFullName.append("/").append(checkItemDict.get(keyList[k]) == null ? "" : checkItemDict.get(keyList[k]).getName());
                 }
                 Map polygon = JSON.parseObject(measureRegion.getPolygon());
 
@@ -308,7 +316,7 @@ public class IZoneServiceImpl implements IZoneService {
                 regionDict.put("polygon", polygon);
                 regionDict.put("rel", measureRegionRelService.selectById(measureRegion.getRelId()));
 
-                innerJb.put("area_full_name", areaDict.get(measureRegion.getAreaId()).getFull_name());
+                innerJb.put("area_full_name", areaDict.get(measureRegion.getAreaId()) == null ? "" : areaDict.get(measureRegion.getAreaId()).getFull_name());
                 innerJb.put("category_full_name", categoryFullName);
                 innerJb.put("region", regionDict);
                 ZoneInfoVo zoneInfoVo = conversionType(measureZone);
