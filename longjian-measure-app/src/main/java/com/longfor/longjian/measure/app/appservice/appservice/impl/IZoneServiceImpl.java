@@ -91,6 +91,8 @@ public class IZoneServiceImpl implements IZoneService {
             MeasureZoneResult measureZoneResult = measureZoneResults.get(i);
             ResultListVo resultListVo= convertTheTypeMeasureZoneResultVo(measureZoneResult);
             oneJb = JSONObject.parseObject(JSONObject.toJSONString(resultListVo));
+            //vo 有区别，暂时这样处理
+            oneJb.put("update_at",measureZoneResult.getUpdateAt());
 
             String resultData = measureZoneResult.getData();//第一层data
             if (StringUtils.isNotBlank(resultData)) {
@@ -128,10 +130,14 @@ public class IZoneServiceImpl implements IZoneService {
                 oneJb.put("data", twoArr);
             }
             MeasureRule measureRule = measureRuleService.selectById(measureZoneResult.getRuleId());
+            JSONObject ruleJb = new JSONObject();
+            ruleJb.put("points",new JSONArray());
             if (measureRule != null){
                 MeasureRuleVo measureRuleVo =convertTheTypeMeasureRuleVo(measureRule);
-                JSONObject ruleJb = JSONObject.parseObject(JSONObject.toJSONString(measureRuleVo));
+                ruleJb = JSONObject.parseObject(JSONObject.toJSONString(measureRuleVo));
                 ruleJb.put("points", JSONArray.parse(measureRule.getPoints()));
+                oneJb.put("rule", ruleJb);
+            }else{
                 oneJb.put("rule", ruleJb);
             }
             arr.add(oneJb);
