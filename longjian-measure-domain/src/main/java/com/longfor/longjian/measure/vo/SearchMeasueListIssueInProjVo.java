@@ -18,6 +18,7 @@ public class SearchMeasueListIssueInProjVo {
     private List<String> measureListIdList;
     private List<String> createAtRangeList;
     private Integer status;
+    private Integer close_status;
     private Integer repairer_id;
     private Boolean is_overdue;
 }
