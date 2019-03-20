@@ -92,7 +92,7 @@ public class IZoneServiceImpl implements IZoneService {
             ResultListVo resultListVo= convertTheTypeMeasureZoneResultVo(measureZoneResult);
             oneJb = JSONObject.parseObject(JSONObject.toJSONString(resultListVo));
             //vo 有区别，暂时这样处理
-            oneJb.put("update_at",measureZoneResult.getUpdateAt());
+            oneJb.put("update_at",DateUtil.dateToString(measureZoneResult.getUpdateAt()));
 
             String resultData = measureZoneResult.getData();//第一层data
             if (StringUtils.isNotBlank(resultData)) {
