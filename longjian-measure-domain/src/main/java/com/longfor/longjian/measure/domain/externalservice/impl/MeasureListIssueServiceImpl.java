@@ -51,6 +51,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     private static final String REFORM_COUNT = "reform_count";
     private static final String PROJECTID = "projectId";
     private static final String PATHFLAG = "/";
+
     @Override
     public Integer countByMeasureListId(String id) {
         Example example = new Example(MeasureListIssue.class);
@@ -196,18 +197,18 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
             try {
                 this.createAreasMapByLeaveIds(vo.getAreaIdList());
             } catch (Exception e) {
-                throw new LjBaseRuntimeException(-9999,e+"");
+                throw new LjBaseRuntimeException(-9999, e + "");
             }
             Example.Criteria criteria1 = example.createCriteria();
             for (Integer s : vo.getAreaIdList()) {
                 String pathAndId = AreaUtils.getPathAndId(s);
                 if (!pathAndId.equals("")) {
-                    criteria1.orCondition("(area_path_and_id like \""+this.startswith(pathAndId)+"\" and area_id = "+s+" )");
+                    criteria1.orCondition("(area_path_and_id like \"" + this.startswith(pathAndId) + "\" and area_id = " + s + " )");
                 }
             }
             example.and(criteria1);
         }
-        if (vo.getCategory_key()!= null && vo.getCategory_key().length() > 0) {
+        if (vo.getCategory_key() != null && vo.getCategory_key().length() > 0) {
             Example.Criteria criteria2 = example.createCriteria();
             try {
                 CategoryV3 category = categoryV3Mapper.getCategoryByKeyNoFoundErr(vo.getCategory_key());
@@ -217,14 +218,17 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
                 }
                 example.and(criteria2);
             } catch (Exception e) {
-                throw new LjBaseRuntimeException(-9999,e+"");
+                throw new LjBaseRuntimeException(-9999, e + "");
             }
 
         }
-        if (vo.getStatus()!= null && vo.getStatus() > 0) {
+        if (vo.getClose_status() == null && vo.getStatus() != null && vo.getStatus() > 0) {
             criteria.andEqualTo("status", vo.getStatus());
         }
-        if (vo.getRepairer_id()!= null && vo.getRepairer_id() > 0) {
+        if (vo.getClose_status() != null && vo.getClose_status() > 0) {
+            criteria.andEqualTo("closeStatus", vo.getClose_status());
+        }
+        if (vo.getRepairer_id() != null && vo.getRepairer_id() > 0) {
             criteria.andEqualTo("repairerId", vo.getRepairer_id());
         }
         if (vo.getIs_overdue() != null && !vo.getIs_overdue().equals(false)) {
@@ -237,7 +241,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
         criteria.andIsNull(DELETEAT);
         Integer count = measureListIssueMapper.selectCountByExample(example);
         Integer start = 0;
-        if (vo.getPage()> 1) {
+        if (vo.getPage() > 1) {
             start = (vo.getPage() - 1) * vo.getLimit();
         }
         String orderBy = "id ASC";
@@ -253,7 +257,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
             List<Area> areas = this.selectAllByLeaveIds(areaIdList);
             this.createAreasMapByAreaList(areas);
         } catch (Exception e) {
-            throw new LjBaseRuntimeException(-9999,e+"");
+            throw new LjBaseRuntimeException(-9999, e + "");
         }
     }
 
@@ -322,7 +326,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
     }
 
     @Override
-    public Map<Integer, List<String>> getAreaPathNamesMap(List<Integer> areaIdLists){
+    public Map<Integer, List<String>> getAreaPathNamesMap(List<Integer> areaIdLists) {
         this.createAreasMapByLeaveIds(areaIdLists);
         Map<Integer, List<String>> mAreaName = Maps.newHashMap();
         areaIdLists.forEach(id -> mAreaName.put(id, AreaUtils.getPathNames(id)));

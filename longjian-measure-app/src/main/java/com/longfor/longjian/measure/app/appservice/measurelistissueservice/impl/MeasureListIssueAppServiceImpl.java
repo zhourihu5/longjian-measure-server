@@ -92,6 +92,9 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
             vo.setStatus(req.getStatus());
             vo.setRepairer_id(req.getRepairer_id());
             vo.setIs_overdue(req.getIs_overdue());
+            if(req.getStatus() ==5){
+                vo.setClose_status(2);
+            }
             issueMap = measureListIssueService.searchMeasueListIssueInProj(vo);
 
         } catch (Exception e) {
