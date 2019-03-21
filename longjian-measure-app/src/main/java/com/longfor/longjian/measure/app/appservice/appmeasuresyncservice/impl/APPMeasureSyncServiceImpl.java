@@ -474,6 +474,38 @@ public class APPMeasureSyncServiceImpl implements IAPPMeasureSyncService {
         return ljBaseResponse;
     }
 
+    @Override
+    public LjBaseResponse<RuleListVo> getMeasureRuleV2(ApiMeasureRuleReqV2 apiMeasureRuleReqV2) {
+        LjBaseResponse<RuleListVo> ljBaseResponse = new LjBaseResponse<>();
+        List<RuleInfoVo> ruleInfoVos = new ArrayList<>();
+        RuleListVo ruleListVo = new RuleListVo();
+        //切割categoryKeys
+        if (apiMeasureRuleReqV2.getCategory_keys().length() == 0) {
+            throw new LjBaseRuntimeException(-9999, "category keys is empty.");
+        }
+        String[] categoryKeys = apiMeasureRuleReqV2.getCategory_keys().split(",");
+        //数组转换List
+        List<String> categoryKeysList = Arrays.asList(categoryKeys);
+        //查询categoryKeys
+        List<CategoryV3> categoryList = categoryV3Service.getCategoryByKeys(categoryKeysList);
+        Map<Integer, Integer> mTeamId = Maps.newHashMap();
+        for (CategoryV3 category : categoryList
+        ) {
+            mTeamId.put(category.getTeamId(), category.getTeamId());
+        }
+        mTeamId.forEach((k, v) -> {
+            List<MeasureRule> measureRuleList = measureRuleService.searchUnscopedByTeamIdLastUpdateAtGt(v, apiMeasureRuleReqV2.getTimestamp());
+            for (MeasureRule measureRule : measureRuleList
+            ) {
+                RuleInfoVo ruleInfoVo = converMeasureRuleToRuleInfoVo(measureRule);
+                ruleInfoVos.add(ruleInfoVo);
+            }
+        });
+        ruleListVo.setRule_list(ruleInfoVos);
+        ljBaseResponse.setData(ruleListVo);
+        return ljBaseResponse;
+    }
+
     /**
      * @param measureRule
      * @return

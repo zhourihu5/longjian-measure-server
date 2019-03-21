@@ -81,5 +81,17 @@
 
             where id=#{id} and delete_at IS  NULL
     </select>
+    
+    <select id="searchUnscopedByTeamIdLastUpdateAtGt" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        measure_rule
+        WHERE
+        team_id = #{teamId}
+        <if test="timestamp != null and timestamp >= 0">
+            AND update_at > FROM_UNIXTIME( #{timestamp} )
+        </if>
+    </select>
 
 </mapper>

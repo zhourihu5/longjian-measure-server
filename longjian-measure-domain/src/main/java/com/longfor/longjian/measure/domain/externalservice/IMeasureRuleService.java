@@ -36,4 +36,6 @@ public interface IMeasureRuleService {
      * @return
      */
     List<MeasureRule> searchByIds(Set<Integer> keySet);
+
+    List<MeasureRule> searchUnscopedByTeamIdLastUpdateAtGt(Integer v, Long timestamp);
 }

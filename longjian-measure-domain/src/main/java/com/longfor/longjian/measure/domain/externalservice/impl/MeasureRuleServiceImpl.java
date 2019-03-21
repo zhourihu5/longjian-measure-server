@@ -8,13 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Set;
 
 @Service
 public class MeasureRuleServiceImpl implements IMeasureRuleService {
 
-    @Autowired
+    @Resource
     private MeasureRuleMapper measureRuleMapper;
 
 
@@ -46,5 +47,10 @@ public class MeasureRuleServiceImpl implements IMeasureRuleService {
         Example example = new Example(MeasureRule.class);
         example.createCriteria().andIn("id", keySet);
         return measureRuleMapper.selectByExample(example);
+    }
+
+    @Override
+    public List<MeasureRule> searchUnscopedByTeamIdLastUpdateAtGt(Integer teamId, Long timestamp) {
+        return measureRuleMapper.searchUnscopedByTeamIdLastUpdateAtGt(teamId,timestamp);
     }
 }

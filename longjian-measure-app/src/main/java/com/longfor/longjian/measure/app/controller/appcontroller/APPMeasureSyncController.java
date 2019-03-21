@@ -46,6 +46,16 @@ public class APPMeasureSyncController {
     }
 
     /**
+     * 分量
+     * @param apiMeasureRuleReqV2
+     * @return
+     */
+    @RequestMapping(value = "info/measure_rule_v2/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public LjBaseResponse<RuleListVo> getMeasureRule(@Valid ApiMeasureRuleReqV2 apiMeasureRuleReqV2){
+        return appMeasureSyncService.getMeasureRuleV2(apiMeasureRuleReqV2);
+    }
+
+    /**
      * 获取指定项目的描画区域，此为全量接口
      * http://192.168.37.159:3000/project/8/interface/api/382
      * @param apiMeasureRegionReq
