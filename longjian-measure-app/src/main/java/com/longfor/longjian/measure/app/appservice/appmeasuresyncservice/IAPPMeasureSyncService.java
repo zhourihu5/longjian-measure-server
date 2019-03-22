@@ -74,4 +74,6 @@ public interface IAPPMeasureSyncService {
      * @return
      */
     LjBaseResponse<DroppedInfoVo>  reportZone(ApiMeasureReportZoneReq apiMeasureReportZoneReq,HttpServletRequest request) throws LjBaseRuntimeException;
+
+    LjBaseResponse<RuleListVo> getMeasureRuleV2(ApiMeasureRuleReqV2 apiMeasureRuleReqV2);
 }

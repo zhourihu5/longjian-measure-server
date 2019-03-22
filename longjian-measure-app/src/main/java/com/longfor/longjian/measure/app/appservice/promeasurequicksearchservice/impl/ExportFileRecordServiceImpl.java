@@ -46,7 +46,7 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
             String baseDir = exportVo.getMeasure_base_dir();
             Integer ts = DateUtil.dateToTimestamp(new Date());
             inputFilename = String.format("%d%d.%s", randCount, ts, "input");
-            outputFilename = String.format("/export/%d%d.%s", randCount, ts, "output");
+            outputFilename = String.format("export/%d%d.%s", randCount, ts, "output");
             String filepath = String.format("%s/%s", baseDir, inputFilename);
             log.info("{}",filepath);
             this.writeInput(data, exportName, filepath);
@@ -54,7 +54,7 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
             log.error("error:" + e.getMessage());
             throw new LjBaseRuntimeException(-9999, e + "");
         }
-        String filepath = exportVo.getMeasure_base_uri() + outputFilename;
+        String filepath = exportVo.getMeasure_base_uri() +"/"+ outputFilename;
         InsertFullVo insertFullVo = new InsertFullVo();
         insertFullVo.setUserId(userId);
         insertFullVo.setTeamId(teamId);
@@ -63,7 +63,7 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
         insertFullVo.setParams(String.format("%s %s", inputFilename, outputFilename));
         insertFullVo.setResultFilePath(filepath);
         insertFullVo.setResultName(exportName);
-        insertFullVo.setStatus(0);
+        insertFullVo.setStatus(10);
         insertFullVo.setErrorMsg("");
         insertFullVo.setExecuteAt(executeAt);
         Map<String, Object> map = exportFileRecordDomainService.insertFull(insertFullVo);

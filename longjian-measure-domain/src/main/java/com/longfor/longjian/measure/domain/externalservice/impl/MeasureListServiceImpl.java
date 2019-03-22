@@ -260,12 +260,12 @@ public class MeasureListServiceImpl implements IMeasureListService {
             List<CategoryV3> categoryV3s = this.searchbykeylist(vo.getGroup_id(), keyList);
             Example example5 = new Example(MeasureListArea.class);
             Example.Criteria criteria1 = example5.createCriteria();
-            criteria1.andEqualTo(LISTID,list_model.getId()).andCondition("area_path_and_id  REGEXP '^/[1-9][0-9]*/$'");
+            criteria1.andEqualTo(LISTID,list_model.getId()).andCondition("area_path_and_id  REGEXP '^/[1-9][0-9/]*/$'");
             List<MeasureListArea> areaList = measureListAreaMapper.selectByExample(example5);
             Set<Integer> areaIdList = Sets.newHashSet();
             List<String> topAreas =Lists.newArrayList();
             if(!areaList.isEmpty()){
-                areaList.forEach(measureListArea-> areaIdList.add(measureListArea.getAreaId()));
+                areaList.forEach(measureListArea-> areaIdList.add(Integer.parseInt(Arrays.asList(measureListArea.getAreaPathAndId().split("/")).get(1))));
                 List<Area> areaInfoList = searchByIdList(vo.getProject_id(), areaIdList);
                 areaInfoList.forEach(area -> topAreas.add(area.getName()));
             }
