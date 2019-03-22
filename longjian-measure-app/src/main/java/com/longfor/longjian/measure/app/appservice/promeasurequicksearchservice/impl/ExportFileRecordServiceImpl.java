@@ -54,7 +54,7 @@ public class ExportFileRecordServiceImpl implements IExportFileRecordService {
             log.error("error:" + e.getMessage());
             throw new LjBaseRuntimeException(-9999, e + "");
         }
-        String filepath = exportVo.getMeasure_base_uri() + outputFilename;
+        String filepath = exportVo.getMeasure_base_uri() +"/"+ outputFilename;
         InsertFullVo insertFullVo = new InsertFullVo();
         insertFullVo.setUserId(userId);
         insertFullVo.setTeamId(teamId);
