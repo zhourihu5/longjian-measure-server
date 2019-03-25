@@ -112,7 +112,7 @@
     <select id="searchMeasureListIssueTrendReformList" resultType="map">
     SELECT
     COUNT(`end_on`) AS reform_count,
-    DATE_FORMAT(
+    FROM_UNIXTIME(
     `end_on`,
     '%Y-%m-%d'
     ) AS days

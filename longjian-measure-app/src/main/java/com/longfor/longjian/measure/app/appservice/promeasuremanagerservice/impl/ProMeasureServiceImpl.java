@@ -348,6 +348,9 @@ public class ProMeasureServiceImpl implements IProMeasureService {
         List<Map<String, Object>> blisterTimeNotesList = measureListIssueService.searchMeasureListIssueTrend(getBlisterRateInfoTimeNotesReq.getProject_id(), getBlisterRateInfoTimeNotesReq.getMeasure_list_id(), startTime, endTime, MeasureListConstant.UNCLOSECODE);
         blisterTimeNotesList.forEach(LambdaExceptionUtil.throwingConsumerWrapper(blisterTimeNote -> {
             BlisterTimeNotesVo blisterTimeNotesVo = (BlisterTimeNotesVo) ConvertUtil.convertMap(BlisterTimeNotesVo.class, blisterTimeNote);
+            if (blisterTimeNotesVo.getReform_count() == null){
+                blisterTimeNotesVo.setReform_count(0);
+            }
             blisterTimeNotesVos.add(blisterTimeNotesVo);
         }));
         itemsVo.setItems(blisterTimeNotesVos);
