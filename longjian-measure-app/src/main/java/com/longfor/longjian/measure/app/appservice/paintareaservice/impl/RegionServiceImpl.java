@@ -78,13 +78,14 @@ public class RegionServiceImpl implements IRegionService {
         log.info("true_index_dict: " + JSON.toJSONString(trueIndexDict));
         //插入region
         List<MeasureRegion> modelList;
-        List<MeasureRegion> modelSaveList = new ArrayList<>();
-        regionInfoList.forEach(regionInfo -> {
+        List<MeasureRegion> modelSaveList = null;
+        for (HashMap regionInfo : regionInfoList) {
             //region
             List<Integer> areaIdLists = JSONArray.parseArray(regionInfo.get("area_id_list").toString(), Integer.class);
             log.info("len : " + areaIdLists.size());
             log.info(JSON.toJSONString(regionInfoList));
-            areaIdList.forEach(areaId -> {
+            modelSaveList = new ArrayList<>();
+            for (Object areaId : areaIdList) {
                 Area areaInfo = areaMap.get(areaId);
                 String areaPathAndId = areaInfo.getPath() + areaId + PATHFLAG;
                 String uuid = UUID.randomUUID().toString();
@@ -108,8 +109,8 @@ public class RegionServiceImpl implements IRegionService {
                 model.setCreateAt(new Date());
                 model.setUpdateAt(new Date());
                 modelSaveList.add(model);
-            });
-        });
+            }
+        }
         modelList = measureRegionService.saveList(modelSaveList);
         //数量大于一个的时候创立关联关系
         if (modelList.size() > 1) {
