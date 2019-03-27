@@ -184,14 +184,30 @@ public class MeasureListIssueAppServiceImpl implements IMeasureListIssueAppServi
             MeasureIssueQueryItemVo r = new MeasureIssueQueryItemVo();
             MeasureListSearchResultVo measureList = new MeasureListSearchResultVo();
             measureList.setId(item.getListId() == null ? 0 : item.getListId());
-            measureList.setName(mMeasureListName.get(item.getListId()) == null ? "" : mMeasureListName.get(item.getListId()));
+            if(mMeasureListName ==null){
+                measureList.setName("");
+            }else {
+                measureList.setName(mMeasureListName.get(item.getListId()) == null ? "" : mMeasureListName.get(item.getListId()));
+            }
             UserInfoVo repairer = new UserInfoVo();
             repairer.setId(item.getRepairerId() == null ? 0 : item.getRepairerId());
-            repairer.setReal_name(mUserName.get(item.getRepairerId()) == null ? "" : mUserName.get(item.getRepairerId()));
+            if(mUserName == null){
+                repairer.setReal_name("");
+            }else {
+                repairer.setReal_name(mUserName.get(item.getRepairerId()) == null ? "" : mUserName.get(item.getRepairerId()));
+            }
             r.setMeasure_list(measureList);
             r.setRepairer(repairer);
-            r.setArea_path_names(mAreaName.get(item.getAreaId()));
-            r.setCategory_path_names(mCategoryName.get(item.getCategoryKey()));
+            if(mAreaName == null){
+                r.setArea_path_names(new ArrayList<>());
+            }else{
+                r.setArea_path_names(mAreaName.get(item.getAreaId()));
+            }
+            if(mCategoryName ==null){
+                r.setCategory_path_names(new ArrayList<>());
+            }else{
+                r.setCategory_path_names(mCategoryName.get(item.getCategoryKey()));
+            }
             r.setId(item.getId());
             r.setUuid(item.getUuid());
             r.setProject_id(item.getProjectId());
