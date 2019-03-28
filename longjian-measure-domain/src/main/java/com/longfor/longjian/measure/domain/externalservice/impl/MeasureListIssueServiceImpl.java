@@ -273,6 +273,9 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
             ids.addAll(sidss);
         });
         ids.addAll(totalIds);
+        if(ids.isEmpty()){
+            return  new ArrayList<>();
+        }
         return areaMapper.selectByIds(StringUtils.join(ids.toArray(), ","));
     }
 
