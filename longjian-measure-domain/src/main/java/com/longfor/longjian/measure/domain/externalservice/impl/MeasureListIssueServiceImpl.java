@@ -224,6 +224,7 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
         }
         if (vo.getClose_status() == null && vo.getStatus() != null && vo.getStatus() > 0) {
             criteria.andEqualTo("status", vo.getStatus());
+            criteria.andEqualTo("closeStatus",2);
         }
         if (vo.getClose_status() != null && vo.getClose_status() > 0) {
             criteria.andEqualTo("closeStatus", vo.getClose_status());
@@ -273,6 +274,9 @@ public class MeasureListIssueServiceImpl implements IMeasureListIssueService {
             ids.addAll(sidss);
         });
         ids.addAll(totalIds);
+        if(ids.isEmpty()){
+            return  new ArrayList<>();
+        }
         return areaMapper.selectByIds(StringUtils.join(ids.toArray(), ","));
     }
 
